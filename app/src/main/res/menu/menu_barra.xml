@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/materiasFragment"
+        android:icon="@drawable/ic_menu_principal"
+        android:title="Principal"
+        app:action="@id/materiasFragment" />
+
+    <item
+        android:id="@+id/agregarMateriaFragment"
+        android:icon="@drawable/ic_menu_agregar"
+        android:title="Agregar Materia"
+        app:action="@id/agregarMateriaFragment" />
+
+    <item
+        android:id="@+id/configuracionFragment"
+        android:icon="@drawable/ic_menu_configuracion"
+        android:title="Configuración"
+        app:action="@id/configuracionFragment" />
+
+    <item
+        android:id="@+id/accesibilidadFragment"
+        android:icon="@drawable/ic_menu_accesibilidad"
+        android:title="Accesibilidad"
+        app:action="@id/accesibilidadFragment" />
+
+    <item
+        android:id="@+id/cuentaFragment"
+        android:icon="@drawable/ic_menu_cuenta"
+        android:title="Cuenta"
+        app:action="@id/cuentaFragment" />
+
+    <item
+        android:id="@+id/ayudaFragment"
+        android:icon="@drawable/ic_ayuda"
+        android:title="Ayuda"
+        app:action="@id/ayudaFragment" />
+
+</menu>

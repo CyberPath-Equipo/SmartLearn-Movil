@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.main.combo.principal.materias.MateriasFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_esquinas_redondeadas_fondo"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Inicio"
+            android:textSize="22sp"
+            android:textColor="@color/acento"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Materias Inscritas:"
+            android:textColor="@color/acento"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <SearchView
+            android:id="@+id/searchViewMaterias"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/bg_esquinas_redondas_elementos"
+            android:hint="Buscar materia por nombre..."
+            android:iconifiedByDefault="false"
+            android:queryHint="Escribe el nombre de la materia" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginTop="8dp"
+            android:text="Desliza para explorar más materias ➡"
+            android:textColor="@color/acento"
+            android:textSize="14sp"
+            android:textStyle="italic" />
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/viewPagerMaterias"
+            android:layout_width="match_parent"
+            android:layout_height="400dp"
+            android:layout_marginTop="20dp"
+            android:clipToPadding="false"
+            android:paddingStart="40dp"
+            android:paddingEnd="40dp"
+            android:layout_marginBottom="15dp"
+            android:clipChildren="false" />
+
+        <LinearLayout
+            android:id="@+id/btn_ultimo_subtema"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/bg_esquinas_redondas_elementos"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:orientation="vertical"
+            android:padding="12dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="O continúa donde lo dejaste: "
+                android:textColor="#B0FFFFFF"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tv_ultimo_subtema"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Último subtema"
+                android:textColor="@android:color/white"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

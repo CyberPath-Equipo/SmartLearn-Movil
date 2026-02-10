@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_esquinas_redondeadas_fondo"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <!-- Título dinámico -->
+        <TextView
+            android:id="@+id/tv_titulo_editar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Cambiar Nombre de Usuario"
+            android:textColor="@color/acento"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="30dp"
+            android:gravity="center"
+            android:text="Ingresa el nuevo valor y tu contraseña actual"
+            android:textColor="@color/acento"
+            android:textSize="16sp" />
+
+        <!-- Campo nuevo (nombre, correo o contraseña) -->
+        <EditText
+            android:id="@+id/et_nuevo_valor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/bg_esquinas_redondas_elementos"
+            android:hint="Nuevo valor"
+            android:padding="14dp"
+            android:textColor="@android:color/white"
+            android:textColorHint="#B0FFFFFF"
+            android:textSize="18sp" />
+
+        <!-- Confirmar Campo nuevo (nombre, correo o contraseña) -->
+        <EditText
+            android:id="@+id/et_nuevo_valor_confirmacion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/bg_esquinas_redondas_elementos"
+            android:hint="Nuevo valor"
+            android:padding="14dp"
+            android:textColor="@android:color/white"
+            android:textColorHint="#B0FFFFFF"
+            android:textSize="18sp" />
+
+        <!-- Contraseña actual (siempre se pide por seguridad) -->
+        <EditText
+            android:id="@+id/et_contrasena_actual"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_esquinas_redondas_elementos"
+            android:hint="Contraseña actual (requerida)"
+            android:inputType="textPassword"
+            android:padding="14dp"
+            android:textColor="@android:color/white"
+            android:textColorHint="#B0FFFFFF"
+            android:textSize="18sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btn_cancelar"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="1"
+                android:backgroundTint="#666666"
+                android:text="Cancelar"
+                android:textColor="@android:color/white" />
+
+            <Button
+                android:id="@+id/btn_guardar_cambio"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/acento"
+                android:text="Guardar"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

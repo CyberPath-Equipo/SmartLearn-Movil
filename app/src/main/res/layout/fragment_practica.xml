@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.main.combo.principal.ejercicios.EjerciciosFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_esquinas_redondeadas_fondo"
+        android:orientation="vertical" >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Ejercicios"
+            android:textColor="@color/acento"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+        <TextView
+            android:id="@+id/tv_subtema"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Ejercicios del Subtema:"
+            android:textColor="@color/acento"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <ListView
+            android:paddingVertical="20dp"
+            android:paddingHorizontal="15dp"
+            android:id="@+id/listViewEjercicios"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="14dp" />
+
+    </LinearLayout>
+
+</LinearLayout>

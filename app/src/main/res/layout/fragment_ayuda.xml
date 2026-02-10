@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:fillViewport="true"
+    tools:context=".ui.main.combo.ayuda.AyudaFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_esquinas_redondeadas_fondo"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Ayuda y Soporte"
+                android:textSize="22sp"
+                android:textColor="@color/acento" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:gravity="center"
+                android:text="Estamos aquí para ayudarte"
+                android:textSize="16sp"
+                android:textColor="@color/acento" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:text="Si eres profesor y quieres colaborar creando contenido para Smart Learn, regístrate en nuestra página web:"
+                android:textSize="15sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:background="?android:attr/selectableItemBackground"
+                android:padding="12dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:id="@+id/layout_registro_profesores">
+
+                <ImageView
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:src="@drawable/ic_web"
+                    app:tint="@color/acento" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="12dp"
+                    android:autoLink="web"
+                    android:linksClickable="true"
+                    android:textColorLink="@color/acento"
+                    android:text="http://smartlearn.com/profesores/registro"
+                    android:textColor="@color/acento"
+                    android:textStyle="bold"
+                    android:textSize="15sp"/>
+            </LinearLayout>
+
+            <!-- Web -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="35dp"
+                android:text="¿Tienes problemas o dudas? Contáctanos por cualquiera de estos medios:"
+                android:textSize="15sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:background="?android:attr/selectableItemBackground"
+                android:padding="12dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:id="@+id/layout_web">
+
+                <ImageView
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:src="@drawable/ic_web"
+                    app:tint="@color/secundario" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="12dp"
+                    android:autoLink="web"
+                    android:linksClickable="true"
+                    android:textColorLink="@color/secundario"
+                    android:text="http://smartlearn.com"
+                    android:textSize="15sp" />
+            </LinearLayout>
+
+            <!-- Instagram -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:background="?android:attr/selectableItemBackground"
+                android:padding="12dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:id="@+id/layout_instagram">
+
+                <ImageView
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:src="@drawable/ic_instagram"
+                    app:tint="#E4405F" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="12dp"
+                    android:autoLink="web"
+                    android:linksClickable="true"
+                    android:text="Instagram: @cyberpath_contacto"
+                    android:textColor="#E4405F"
+                    android:textSize="15sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:background="?android:attr/selectableItemBackground"
+                android:padding="12dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:id="@+id/layout_correo">
+
+                <ImageView
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:src="@drawable/ic_correo"
+                    app:tint="@color/white" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="12dp"
+                    android:autoLink="email"
+                    android:linksClickable="true"
+                    android:textColorLink="@color/white"
+                    android:text="cyberpath_contacto@gmail.com"
+                    android:textSize="15sp" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:gravity="center"
+                android:text="¡Gracias por usar Smart Learn!\n- El equipo de CyberPath"
+                android:textSize="15sp" />
+
+        </LinearLayout>
+
+        <!-- Cuestionario de Satisfacción -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/bg_esquinas_redondeadas_fondo">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Cuestionario de Satisfacción"
+                android:textSize="20sp"
+                android:textColor="@color/acento"
+                android:layout_marginBottom="16dp" />
+
+            <!-- Pregunta 1: Calidad del contenido -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="¿Cómo calificarías la calidad del contenido?"
+                android:textSize="16sp"
+                android:layout_marginBottom="8dp" />
+
+            <RatingBar
+                android:id="@+id/rating_contenido"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:numStars="5"
+                android:stepSize="1"
+                android:rating="0"
+                android:layout_marginBottom="16dp" />
+
+            <!-- Pregunta 2: Facilidad de uso -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="¿Cómo calificarías la facilidad de uso de la app?"
+                android:textSize="16sp"
+                android:layout_marginBottom="8dp" />
+
+            <RatingBar
+                android:id="@+id/rating_facilidad"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:numStars="5"
+                android:stepSize="1"
+                android:rating="0"
+                android:layout_marginBottom="16dp" />
+
+            <!-- Pregunta 3: Recomendación -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="¿Recomendarías la app a un amigo?"
+                android:textSize="16sp"
+                android:layout_marginBottom="8dp" />
+
+            <RadioGroup
+                android:id="@+id/rg_recomendacion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="16dp">
+
+                <RadioButton
+                    android:id="@+id/rb_si"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Sí"
+                    android:layout_weight="1" />
+
+                <RadioButton
+                    android:id="@+id/rb_no"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="No"
+                    android:layout_weight="1" />
+            </RadioGroup>
+
+            <!-- Comentarios opcionales -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Comentarios adicionales (opcional):"
+                android:textSize="16sp"
+                android:layout_marginBottom="8dp" />
+
+            <EditText
+                android:id="@+id/et_comentarios"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Escribe tus comentarios aquí..."
+                android:inputType="textMultiLine"
+                android:minLines="3"
+                android:layout_marginBottom="16dp" />
+
+            <!-- Botón Enviar -->
+            <Button
+                android:id="@+id/btn_enviar_feedback"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Enviar Feedback"
+                android:backgroundTint="@color/acento"
+                android:textColor="@android:color/white" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>
