@@ -4,7 +4,9 @@
     <color name="white">#FFFFFFFF</color>
     <color name="principal">#193881</color>
     <color name="secundario">#359762</color>
-    <color name="acento">#3F92CA</color>
+    <color name="acento">#015B6A</color>
     <color name="empresa">#020136</color>
     <color name="azul_principal">#030034</color>
+    <color name="bg_azul">#465767</color>
+    <color name="bg_header">#172A3E</color>
 </resources>

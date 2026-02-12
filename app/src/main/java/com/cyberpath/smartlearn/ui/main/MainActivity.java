@@ -16,7 +16,7 @@ import com.google.android.material.navigation.NavigationView;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
-    private NavController navController;
+    private NavController navController; //TODO: AGREGAR EL NOMBRE DEL USUARIO EN EL FRAGMENT DE MATERIAS
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

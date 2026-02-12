@@ -5,7 +5,7 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/img_fondo_principal"
+    android:background="@color/bg_azul"
     tools:context=".ui.main.MainActivity">
 
     <LinearLayout
@@ -13,14 +13,21 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="125dp"
+            android:background="@drawable/bg_esquinas_rectas"
+            android:backgroundTint="@color/bg_header"
+            android:layout_marginTop="-20dp"/>
+
         <include
             android:id="@+id/header_fijo"
             layout="@layout/nav_header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="10dp"
-            android:layout_marginTop="45dp"
-            android:layout_marginBottom="20dp" />
+            android:layout_marginTop="-70dp"
+            android:layout_marginBottom="40dp" />
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/nav_host_fragment"

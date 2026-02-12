@@ -63,6 +63,7 @@ public class MateriasFragment extends Fragment {
 
     private final Handler filtroHandler = new Handler(Looper.getMainLooper());
     private Runnable filtroRunnable;
+    private TextView nombreUusario;
 
     EntradaAudio entradaAudio = EntradaAudio.obtenerInstancia();
 
@@ -83,6 +84,8 @@ public class MateriasFragment extends Fragment {
 
         entradaAudio.detenerEscucha();
 
+        nombreUusario = getActivity().findViewById(R.id.tv_nombre_usuario);
+        nombreUusario.setText("Hola, " + usuarioActual.getNombreCuenta());
 
         adapterMaterias = new AdaptadorMaterias(new ArrayList<>(), this::onMateriaClick);
 
