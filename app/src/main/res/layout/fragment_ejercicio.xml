@@ -8,6 +8,7 @@
     android:layout_marginVertical="100dp"
     android:paddingHorizontal="25dp" 
     android:background="@drawable/bg_esquinas_redondeadas_fondo"
+    android:backgroundTint="@color/bg_azul"
     tools:context=".ui.main.combo.principal.materias.contenido.practica.EjercicioFragment">
 
     <LinearLayout
@@ -37,7 +38,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Verificar"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:backgroundTint="@color/acento"
             android:layout_gravity="center_horizontal" />
 

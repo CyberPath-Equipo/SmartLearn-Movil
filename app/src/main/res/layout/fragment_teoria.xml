@@ -5,12 +5,14 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:fillViewport="true"
+    android:background="@color/bg_azul"
     tools:context=".ui.main.combo.principal.materias.contenido.teoria.TeoriaFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/bg_esquinas_redondeadas_fondo_teoria"
+        android:backgroundTint="@color/white"
         android:orientation="vertical"
         android:padding="16dp">
 
@@ -21,7 +23,7 @@
             android:gravity="center"
             android:text="Nombre Subtema"
             android:textSize="22sp"
-            android:textColor="@color/acento" />
+            android:textColor="@color/azul_principal" />
 
         <TextView
             android:id="@+id/tv_contenido_teoria"
@@ -30,7 +32,7 @@
             android:layout_marginTop="8dp"
             android:text="Mucho texto"
             android:textSize="16sp"
-            android:textColor="@color/white" />
+            android:textColor="@color/black" />
 
     </LinearLayout>
 

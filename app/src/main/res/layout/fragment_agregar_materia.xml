@@ -11,6 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/bg_esquinas_redondeadas_fondo"
+        android:backgroundTint="@color/white"
         android:orientation="vertical"
         android:padding="10dp">
 
@@ -19,7 +20,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="Inscripción de Materias"
-            android:textColor="@color/acento"
+            android:textColor="@color/azul_principal"
             android:textSize="22sp"
             android:textStyle="bold" />
 
@@ -28,7 +29,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="Materias Disponibles:"
-            android:textColor="@color/acento"
+            android:textColor="@color/azul_principal"
             android:textSize="16sp"
             android:textStyle="bold" />
 
@@ -51,7 +52,7 @@
             android:gravity="center"
             android:layout_marginTop="8dp"
             android:text="Desliza para explorar más materias ➡"
-            android:textColor="@color/acento"
+            android:textColor="@color/azul_principal"
             android:textSize="14sp"
             android:textStyle="italic" />
 

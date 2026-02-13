@@ -2,12 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/bg_azul"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/bg_esquinas_redondeadas_fondo"
+        android:backgroundTint="@color/white"
         android:orientation="vertical"
         android:padding="10dp">
 
@@ -18,7 +20,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="Cambiar Nombre de Usuario"
-            android:textColor="@color/acento"
+            android:textColor="@color/azul_principal"
             android:textSize="22sp"
             android:textStyle="bold" />
 
@@ -28,7 +30,7 @@
             android:layout_marginBottom="30dp"
             android:gravity="center"
             android:text="Ingresa el nuevo valor y tu contraseña actual"
-            android:textColor="@color/acento"
+            android:textColor="@color/azul_principal"
             android:textSize="16sp" />
 
         <!-- Campo nuevo (nombre, correo o contraseña) -->
@@ -40,7 +42,7 @@
             android:background="@drawable/bg_esquinas_redondas_elementos"
             android:hint="Nuevo valor"
             android:padding="14dp"
-            android:textColor="@android:color/white"
+            android:textColor="@android:color/black"
             android:textColorHint="#B0FFFFFF"
             android:textSize="18sp" />
 
@@ -53,7 +55,7 @@
             android:background="@drawable/bg_esquinas_redondas_elementos"
             android:hint="Nuevo valor"
             android:padding="14dp"
-            android:textColor="@android:color/white"
+            android:textColor="@android:color/black"
             android:textColorHint="#B0FFFFFF"
             android:textSize="18sp" />
 
@@ -66,7 +68,7 @@
             android:hint="Contraseña actual (requerida)"
             android:inputType="textPassword"
             android:padding="14dp"
-            android:textColor="@android:color/white"
+            android:textColor="@android:color/black"
             android:textColorHint="#B0FFFFFF"
             android:textSize="18sp" />
 
@@ -94,7 +96,7 @@
                 android:layout_weight="1"
                 android:backgroundTint="@color/acento"
                 android:text="Guardar"
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 android:textStyle="bold" />
         </LinearLayout>
 

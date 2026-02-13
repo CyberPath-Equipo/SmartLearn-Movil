@@ -4,12 +4,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/bg_azul"
     tools:context=".ui.main.combo.principal.materias.SubtemasFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/bg_esquinas_redondeadas_fondo"
+        android:backgroundTint="@color/white"
         android:orientation="vertical"
         android:padding="10dp">
 

@@ -5,12 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/bg_azul"
     tools:context=".ui.main.combo.cuenta.CuentaFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/bg_esquinas_redondeadas_fondo"
+        android:backgroundTint="@color/white"
         android:orientation="vertical"
         android:padding="10dp">
 
@@ -20,7 +22,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="Mi Cuenta"
-            android:textColor="@color/acento"
+            android:textColor="@color/azul_principal"
             android:textSize="22sp"
             android:textStyle="bold" />
 
@@ -30,7 +32,7 @@
             android:layout_marginBottom="20dp"
             android:gravity="center"
             android:text="Toca para modificar tus datos"
-            android:textColor="@color/acento"
+            android:textColor="@color/azul_principal"
             android:textSize="16sp"
             android:textStyle="bold" />
 
@@ -50,7 +52,7 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:src="@drawable/ic_usuario"
-                app:tint="@color/white" />
+                app:tint="@color/azul_principal" />
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -63,7 +65,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Nombre de usuario"
-                    android:textColor="#B0FFFFFF"
+                    android:textColor="@color/black"
                     android:textSize="14sp" />
 
                 <TextView
@@ -71,7 +73,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Juan Pérez"
-                    android:textColor="@android:color/white"
+                    android:textColor="@android:color/black"
                     android:textSize="18sp"
                     android:textStyle="bold" />
             </LinearLayout>
@@ -93,7 +95,7 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:src="@drawable/ic_correo"
-                app:tint="@color/white" />
+                app:tint="@color/azul_principal" />
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -106,7 +108,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Correo electrónico"
-                    android:textColor="#B0FFFFFF"
+                    android:textColor="@color/black"
                     android:textSize="14sp" />
 
                 <TextView
@@ -114,7 +116,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="juan@example.com"
-                    android:textColor="@android:color/white"
+                    android:textColor="@android:color/black"
                     android:textSize="18sp"
                     android:textStyle="bold" />
             </LinearLayout>
@@ -136,7 +138,7 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:src="@drawable/ic_contrasena"
-                app:tint="@color/white" />
+                app:tint="@color/azul_principal" />
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -149,14 +151,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Contraseña"
-                    android:textColor="#B0FFFFFF"
+                    android:textColor="@color/black"
                     android:textSize="14sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="••••••••••"
-                    android:textColor="@android:color/white"
+                    android:textColor="@android:color/black"
                     android:textSize="22sp"
                     android:textStyle="bold" />
             </LinearLayout>

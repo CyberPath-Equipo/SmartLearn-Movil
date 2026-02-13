@@ -44,7 +44,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="@color/empresa"
+        android:background="@color/bg_azul"
         app:headerLayout="@layout/header_barra"
         app:itemIconTint="@color/white"
         app:itemTextColor="@color/white"

@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:fillViewport="true"
+    android:background="@color/bg_azul"
     tools:context=".ui.main.combo.ayuda.AyudaFragment">
 
     <LinearLayout
@@ -16,6 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_esquinas_redondeadas_fondo"
+            android:backgroundTint="@color/white"
             android:orientation="vertical"
             android:padding="16dp">
 
@@ -25,7 +27,7 @@
                 android:gravity="center"
                 android:text="Ayuda y Soporte"
                 android:textSize="22sp"
-                android:textColor="@color/acento" />
+                android:textColor="@color/azul_principal" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -34,7 +36,7 @@
                 android:gravity="center"
                 android:text="Estamos aquí para ayudarte"
                 android:textSize="16sp"
-                android:textColor="@color/acento" />
+                android:textColor="@color/azul_principal" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -99,7 +101,7 @@
                     android:layout_width="28dp"
                     android:layout_height="28dp"
                     android:src="@drawable/ic_web"
-                    app:tint="@color/secundario" />
+                    app:tint="@color/azul_principal" />
 
                 <TextView
                     android:layout_width="0dp"
@@ -108,7 +110,7 @@
                     android:layout_marginStart="12dp"
                     android:autoLink="web"
                     android:linksClickable="true"
-                    android:textColorLink="@color/secundario"
+                    android:textColorLink="@color/azul_principal"
                     android:text="http://smartlearn.com"
                     android:textSize="15sp" />
             </LinearLayout>
@@ -160,7 +162,7 @@
                     android:layout_width="28dp"
                     android:layout_height="28dp"
                     android:src="@drawable/ic_correo"
-                    app:tint="@color/white" />
+                    app:tint="@color/bg_azul" />
 
                 <TextView
                     android:layout_width="0dp"
@@ -169,7 +171,7 @@
                     android:layout_marginStart="12dp"
                     android:autoLink="email"
                     android:linksClickable="true"
-                    android:textColorLink="@color/white"
+                    android:textColorLink="@color/bg_azul"
                     android:text="cyberpath_contacto@gmail.com"
                     android:textSize="15sp" />
             </LinearLayout>
@@ -191,7 +193,8 @@
             android:orientation="vertical"
             android:padding="16dp"
             android:layout_marginTop="16dp"
-            android:background="@drawable/bg_esquinas_redondeadas_fondo">
+            android:background="@drawable/bg_esquinas_redondeadas_fondo"
+            android:backgroundTint="@color/white">
 
             <TextView
                 android:layout_width="match_parent"
@@ -199,7 +202,7 @@
                 android:gravity="center"
                 android:text="Cuestionario de Satisfacción"
                 android:textSize="20sp"
-                android:textColor="@color/acento"
+                android:textColor="@color/azul_principal"
                 android:layout_marginBottom="16dp" />
 
             <!-- Pregunta 1: Calidad del contenido -->

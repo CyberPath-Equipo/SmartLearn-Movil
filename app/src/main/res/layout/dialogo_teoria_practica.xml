@@ -52,7 +52,7 @@
                 android:backgroundTint="@color/acento"
                 android:contentDescription="Botón para iniciar sesión"
                 android:text="Teoría"
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 android:textStyle="bold" />
 
             <Button
@@ -62,7 +62,7 @@
                 android:backgroundTint="@color/acento"
                 android:contentDescription="Botón para iniciar sesión"
                 android:text="Práctica"
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 android:textStyle="bold" />
         </LinearLayout>
         <Button
@@ -71,7 +71,7 @@
             android:layout_height="wrap_content"
             android:backgroundTint="#BEBFC3"
             android:contentDescription="Botón para iniciar sesión"
-            android:text="cancelar"
+            android:text="Cancelar"
             android:textSize="13sp"
             android:textColor="@color/black"
             android:textStyle="bold" />

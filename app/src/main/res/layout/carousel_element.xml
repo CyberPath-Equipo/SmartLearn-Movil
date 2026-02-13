@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg_esquinas_redondas_elementos"
+    android:backgroundTint="@color/bg_header"
     android:gravity="center"
     android:orientation="vertical"
     android:padding="16dp">
