@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:fillViewport="true"
-    android:background="@color/bg_azul"
+    android:background="?attr/android:colorBackground"
     tools:context=".ui.main.combo.ayuda.AyudaFragment">
 
     <LinearLayout
@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_esquinas_redondeadas_fondo"
-            android:backgroundTint="@color/white"
+            android:backgroundTint="?attr/colorSurface"
             android:orientation="vertical"
             android:padding="16dp">
 
@@ -27,7 +27,7 @@
                 android:gravity="center"
                 android:text="Ayuda y Soporte"
                 android:textSize="22sp"
-                android:textColor="@color/azul_principal" />
+                android:textColor="?attr/colorOnSurface" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -36,12 +36,13 @@
                 android:gravity="center"
                 android:text="Estamos aquí para ayudarte"
                 android:textSize="16sp"
-                android:textColor="@color/azul_principal" />
+                android:textColor="?attr/colorOnSurface" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
+                android:textColor="?attr/colorOnSurface"
                 android:text="Si eres profesor y quieres colaborar creando contenido para Smart Learn, regístrate en nuestra página web:"
                 android:textSize="15sp" />
 
@@ -61,7 +62,7 @@
                     android:layout_width="28dp"
                     android:layout_height="28dp"
                     android:src="@drawable/ic_web"
-                    app:tint="@color/acento" />
+                    app:tint="?attr/colorTertiary" />
 
                 <TextView
                     android:layout_width="0dp"
@@ -70,9 +71,8 @@
                     android:layout_marginStart="12dp"
                     android:autoLink="web"
                     android:linksClickable="true"
-                    android:textColorLink="@color/acento"
+                    android:textColorLink="?attr/colorTertiary"
                     android:text="http://smartlearn.com/profesores/registro"
-                    android:textColor="@color/acento"
                     android:textStyle="bold"
                     android:textSize="15sp"/>
             </LinearLayout>
@@ -82,6 +82,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="35dp"
+                android:textColor="?attr/colorOnSurface"
                 android:text="¿Tienes problemas o dudas? Contáctanos por cualquiera de estos medios:"
                 android:textSize="15sp" />
 
@@ -101,7 +102,7 @@
                     android:layout_width="28dp"
                     android:layout_height="28dp"
                     android:src="@drawable/ic_web"
-                    app:tint="@color/azul_principal" />
+                    app:tint="@color/brandCyberPath" />
 
                 <TextView
                     android:layout_width="0dp"
@@ -110,7 +111,7 @@
                     android:layout_marginStart="12dp"
                     android:autoLink="web"
                     android:linksClickable="true"
-                    android:textColorLink="@color/azul_principal"
+                    android:textColorLink="@color/brandCyberPath"
                     android:text="http://smartlearn.com"
                     android:textSize="15sp" />
             </LinearLayout>
@@ -162,7 +163,7 @@
                     android:layout_width="28dp"
                     android:layout_height="28dp"
                     android:src="@drawable/ic_correo"
-                    app:tint="@color/bg_azul" />
+                    app:tint="@color/brandSmartLearn" />
 
                 <TextView
                     android:layout_width="0dp"
@@ -171,7 +172,7 @@
                     android:layout_marginStart="12dp"
                     android:autoLink="email"
                     android:linksClickable="true"
-                    android:textColorLink="@color/bg_azul"
+                    android:textColorLink="@color/brandSmartLearn"
                     android:text="cyberpath_contacto@gmail.com"
                     android:textSize="15sp" />
             </LinearLayout>
@@ -181,6 +182,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="40dp"
                 android:gravity="center"
+                android:textColor="?attr/colorOnSurface"
                 android:text="¡Gracias por usar Smart Learn!\n- El equipo de CyberPath"
                 android:textSize="15sp" />
 
@@ -194,7 +196,7 @@
             android:padding="16dp"
             android:layout_marginTop="16dp"
             android:background="@drawable/bg_esquinas_redondeadas_fondo"
-            android:backgroundTint="@color/white">
+            android:backgroundTint="?attr/colorSurface">
 
             <TextView
                 android:layout_width="match_parent"
@@ -202,7 +204,7 @@
                 android:gravity="center"
                 android:text="Cuestionario de Satisfacción"
                 android:textSize="20sp"
-                android:textColor="@color/azul_principal"
+                android:textColor="?attr/colorOnSurface"
                 android:layout_marginBottom="16dp" />
 
             <!-- Pregunta 1: Calidad del contenido -->
@@ -211,6 +213,7 @@
                 android:layout_height="wrap_content"
                 android:text="¿Cómo calificarías la calidad del contenido?"
                 android:textSize="16sp"
+                android:textColor="?attr/colorOnSurface"
                 android:layout_marginBottom="8dp" />
 
             <RatingBar
@@ -228,6 +231,7 @@
                 android:layout_height="wrap_content"
                 android:text="¿Cómo calificarías la facilidad de uso de la app?"
                 android:textSize="16sp"
+                android:textColor="?attr/colorOnSurface"
                 android:layout_marginBottom="8dp" />
 
             <RatingBar
@@ -245,6 +249,7 @@
                 android:layout_height="wrap_content"
                 android:text="¿Recomendarías la app a un amigo?"
                 android:textSize="16sp"
+                android:textColor="?attr/colorOnSurface"
                 android:layout_marginBottom="8dp" />
 
             <RadioGroup
@@ -275,6 +280,7 @@
                 android:layout_height="wrap_content"
                 android:text="Comentarios adicionales (opcional):"
                 android:textSize="16sp"
+                android:textColor="?attr/colorOnSurface"
                 android:layout_marginBottom="8dp" />
 
             <EditText
@@ -292,7 +298,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Enviar Feedback"
-                android:backgroundTint="@color/acento"
+                android:backgroundTint="?attr/colorTertiary"
                 android:textColor="@android:color/white" />
 
         </LinearLayout>

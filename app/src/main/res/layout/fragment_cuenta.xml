@@ -5,14 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/bg_azul"
+    android:background="?attr/android:colorBackground"
     tools:context=".ui.main.combo.cuenta.CuentaFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/bg_esquinas_redondeadas_fondo"
-        android:backgroundTint="@color/white"
+        android:backgroundTint="?attr/colorSurface"
         android:orientation="vertical"
         android:padding="10dp">
 
@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="Mi Cuenta"
-            android:textColor="@color/azul_principal"
+            android:textColor="?attr/colorOnSurface"
             android:textSize="22sp"
             android:textStyle="bold" />
 
@@ -32,7 +32,7 @@
             android:layout_marginBottom="20dp"
             android:gravity="center"
             android:text="Toca para modificar tus datos"
-            android:textColor="@color/azul_principal"
+            android:textColor="?attr/colorOnSurface"
             android:textSize="16sp"
             android:textStyle="bold" />
 
@@ -52,7 +52,7 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:src="@drawable/ic_usuario"
-                app:tint="@color/azul_principal" />
+                app:tint="@color/brandCyberPath" />
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -65,7 +65,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Nombre de usuario"
-                    android:textColor="@color/black"
+                    android:textColor="?attr/colorOnSurface"
                     android:textSize="14sp" />
 
                 <TextView
@@ -73,7 +73,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Juan Pérez"
-                    android:textColor="@android:color/black"
+                    android:textColor="?attr/colorOnSurface"
                     android:textSize="18sp"
                     android:textStyle="bold" />
             </LinearLayout>
@@ -95,7 +95,7 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:src="@drawable/ic_correo"
-                app:tint="@color/azul_principal" />
+                app:tint="@color/brandCyberPath" />
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -108,7 +108,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Correo electrónico"
-                    android:textColor="@color/black"
+                    android:textColor="?attr/colorOnSurface"
                     android:textSize="14sp" />
 
                 <TextView
@@ -116,7 +116,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="juan@example.com"
-                    android:textColor="@android:color/black"
+                    android:textColor="?attr/colorOnSurface"
                     android:textSize="18sp"
                     android:textStyle="bold" />
             </LinearLayout>
@@ -138,7 +138,7 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:src="@drawable/ic_contrasena"
-                app:tint="@color/azul_principal" />
+                app:tint="@color/brandCyberPath" />
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -151,14 +151,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Contraseña"
-                    android:textColor="@color/black"
+                    android:textColor="?attr/colorOnSurface"
                     android:textSize="14sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="••••••••••"
-                    android:textColor="@android:color/black"
+                    android:textColor="?attr/colorOnSurface"
                     android:textSize="22sp"
                     android:textStyle="bold" />
             </LinearLayout>
@@ -170,9 +170,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
-            android:backgroundTint="#88FF4444"
+            android:backgroundTint="?attr/colorError"
             android:text="Eliminar Cuenta"
-            android:textColor="@android:color/white"
+            android:textColor="@color/colorOnBackground"
             android:textStyle="bold" />
 
     </LinearLayout>

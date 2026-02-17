@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:background="@android:color/white"
+        android:background="?attr/colorSurface"
         android:gravity="center"
         android:orientation="vertical"
         android:padding="24dp">
@@ -24,7 +24,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="8dp"
             android:text="Nombre Subtema"
-            android:textColor="@color/black"
+            android:textColor="?attr/colorOnSurface"
             android:textSize="22sp"
             android:textStyle="bold" />
 
@@ -34,7 +34,7 @@
             android:layout_marginBottom="24dp"
             android:gravity="center"
             android:text="¿A qué seccion deseas navegar?"
-            android:textColor="@color/black"
+            android:textColor="?attr/colorOnSurface"
             android:textSize="17sp" />
 
         <LinearLayout
@@ -49,31 +49,31 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="12dp"
-                android:backgroundTint="@color/acento"
+                android:backgroundTint="?attr/colorTertiary"
                 android:contentDescription="Botón para iniciar sesión"
                 android:text="Teoría"
-                android:textColor="@color/white"
+                android:textColor="?attr/colorOnPrimary"
                 android:textStyle="bold" />
 
             <Button
                 android:id="@+id/btn_practica"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/acento"
+                android:backgroundTint="?attr/colorTertiary"
                 android:contentDescription="Botón para iniciar sesión"
                 android:text="Práctica"
-                android:textColor="@color/white"
+                android:textColor="?attr/colorOnPrimary"
                 android:textStyle="bold" />
         </LinearLayout>
         <Button
             android:id="@+id/btn_cancelar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="#BEBFC3"
+            android:backgroundTint="?attr/colorButtonNormal"
             android:contentDescription="Botón para iniciar sesión"
             android:text="Cancelar"
             android:textSize="13sp"
-            android:textColor="@color/black"
+            android:textColor="?attr/colorOnSurface"
             android:textStyle="bold" />
     </LinearLayout>
 </androidx.cardview.widget.CardView>

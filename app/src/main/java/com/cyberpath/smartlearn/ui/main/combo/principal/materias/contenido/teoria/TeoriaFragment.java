@@ -118,7 +118,7 @@ public class TeoriaFragment extends Fragment {
                     if (esPalabraCompleta) {
                         // Aplicamos color al texto original (manteniendo mayúsculas/minúsculas)
                         spannable.setSpan(
-                                new ForegroundColorSpan(getResources().getColor(R.color.secundario, null)),
+                                new ForegroundColorSpan(getResources().getColor(R.color.colorSecondary, null)),
                                 start,
                                 end,
                                 Spanned.SPAN_EXCLUSIVE_EXCLUSIVE

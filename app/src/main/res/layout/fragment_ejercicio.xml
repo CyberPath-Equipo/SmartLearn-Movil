@@ -8,7 +8,7 @@
     android:layout_marginVertical="100dp"
     android:paddingHorizontal="25dp" 
     android:background="@drawable/bg_esquinas_redondeadas_fondo"
-    android:backgroundTint="@color/bg_azul"
+    android:backgroundTint="?attr/android:colorBackground"
     tools:context=".ui.main.combo.principal.materias.contenido.practica.EjercicioFragment">
 
     <LinearLayout
@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:textColor="@android:color/white"
+            android:textColor="?attr/colorSurface"
             android:layout_marginBottom="24dp" />
 
         <RadioGroup
@@ -38,8 +38,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Verificar"
-            android:textColor="@color/white"
-            android:backgroundTint="@color/acento"
+            android:textColor="?attr/colorSurface"
+            android:backgroundTint="?attr/colorTertiary"
             android:layout_gravity="center_horizontal" />
 
     </LinearLayout>
@@ -59,7 +59,7 @@
             android:text="¡Has terminado!"
             android:textSize="28sp"
             android:textStyle="bold"
-            android:textColor="#2E7D32"
+            android:textColor="?attr/colorSecondary"
             android:layout_marginBottom="16dp" />
 
         <TextView
@@ -82,8 +82,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Volver a ejercicios"
-            android:backgroundTint="#4CAF50"
-            android:textColor="@color/white" />
+            android:backgroundTint="?attr/colorSecondary"
+            android:textColor="?attr/colorSurface" />
 
         <LinearLayout
             android:id="@+id/layout_retroalimentacion"
@@ -106,8 +106,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Revisar Teoría"
-                android:backgroundTint="#4CAF50"
-                android:textColor="@color/white" />
+                android:backgroundTint="?attr/colorSecondary"
+                android:textColor="?attr/colorSurface" />
         </LinearLayout>
 
     </LinearLayout>

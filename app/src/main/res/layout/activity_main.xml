@@ -5,7 +5,7 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bg_azul"
+    android:background="?attr/android:colorBackground"
     tools:context=".ui.main.MainActivity">
 
     <LinearLayout
@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="125dp"
             android:background="@drawable/bg_esquinas_rectas"
-            android:backgroundTint="@color/bg_header"
+            android:backgroundTint="?attr/colorPrimary"
             android:layout_marginTop="-20dp"/>
 
         <include
@@ -44,10 +44,10 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="@color/bg_azul"
+        android:background="?attr/android:colorBackground"
         app:headerLayout="@layout/header_barra"
-        app:itemIconTint="@color/white"
-        app:itemTextColor="@color/white"
+        app:itemIconTint="?attr/colorSurface"
+        app:itemTextColor="?attr/colorOnBackground"
         app:menu="@menu/menu_barra" />
 
 </androidx.drawerlayout.widget.DrawerLayout>

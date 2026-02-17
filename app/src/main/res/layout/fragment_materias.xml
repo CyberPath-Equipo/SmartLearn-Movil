@@ -4,14 +4,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/bg_azul"
+    android:background="?attr/android:colorBackground"
     tools:context=".ui.main.combo.principal.materias.MateriasFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/bg_esquinas_redondeadas_fondo"
-        android:backgroundTint="@color/white"
+        android:backgroundTint="?attr/colorSurface"
         android:orientation="vertical"
         android:padding="10dp">
 
@@ -22,7 +22,7 @@
             android:gravity="center"
             android:text="Hola, "
             android:textSize="22sp"
-            android:textColor="@color/azul_principal"
+            android:textColor="?attr/colorOnSurface"
             android:textStyle="bold"/>
 
         <SearchView
@@ -41,7 +41,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/bg_esquinas_redondeadas_fondo"
-        android:backgroundTint="@color/white"
+        android:backgroundTint="?attr/colorSurface"
         android:orientation="vertical"
         android:layout_marginTop="20dp"
         android:padding="10dp">
@@ -51,7 +51,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="Materias Inscritas:"
-            android:textColor="@color/azul_principal"
+            android:textColor="?attr/colorOnSurface"
             android:textSize="16sp"
             android:textStyle="bold" />
 
@@ -61,7 +61,7 @@
             android:gravity="center"
             android:layout_marginTop="8dp"
             android:text="Desliza para explorar más materias ➡"
-            android:textColor="@color/azul_principal"
+            android:textColor="?attr/colorOnSurface"
             android:textSize="14sp"
             android:textStyle="italic" />
 
@@ -91,7 +91,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="O continúa donde lo dejaste: "
-                android:textColor="#B0FFFFFF"
+                android:textColor="?attr/colorSurface"
                 android:textSize="14sp" />
 
             <TextView
@@ -99,7 +99,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Último subtema"
-                android:textColor="@android:color/white"
+                android:textColor="?attr/colorSurface"
                 android:textSize="18sp"
                 android:textStyle="bold" />
         </LinearLayout>

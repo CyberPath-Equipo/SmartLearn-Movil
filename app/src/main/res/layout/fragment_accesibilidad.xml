@@ -4,14 +4,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/bg_azul"
+    android:background="?attr/android:colorBackground"
     tools:context=".ui.main.combo.accesibilidad.AccesibilidadFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="350dp"
         android:background="@drawable/bg_esquinas_redondeadas_fondo"
-        android:backgroundTint="@color/white"
+        android:backgroundTint="?attr/colorSurface"
         android:orientation="vertical"
         android:padding="10dp">
 
@@ -21,7 +21,7 @@
             android:layout_marginBottom="15dp"
             android:text="Accesibilidad con\nComandos de voz"
             android:textAlignment="center"
-            android:textColor="@color/azul_principal"
+            android:textColor="?attr/colorOnSurface"
             android:textSize="22sp"
             android:textStyle="bold" />
 
@@ -39,7 +39,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Activa"
-                android:textColor="@android:color/black"
+                android:textColor="?attr/colorOnSurface"
                 android:textSize="18sp" />
 
             <RadioButton
@@ -48,7 +48,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Inactiva"
-                android:textColor="@android:color/black"
+                android:textColor="?attr/colorOnSurface"
                 android:textSize="18sp" />
         </RadioGroup>
 
@@ -56,6 +56,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginHorizontal="20dp"
+            android:textColor="?attr/colorOnSurface"
             android:text="@string/accesibilidad"
             android:textSize="15sp" />
 
