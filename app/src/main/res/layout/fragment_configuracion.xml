@@ -119,7 +119,7 @@
                 android:layout_weight="1"
                 android:backgroundTint="?attr/colorSecondary"
                 android:text="Guardar"
-                android:textColor="?attr/colorOnSurface"
+                android:textColor="?attr/colorOnBackground"
                 android:textStyle="bold" />
 
         </LinearLayout>

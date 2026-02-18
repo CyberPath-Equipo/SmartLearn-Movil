@@ -102,7 +102,7 @@
                     android:layout_width="28dp"
                     android:layout_height="28dp"
                     android:src="@drawable/ic_web"
-                    app:tint="@color/brandCyberPath" />
+                    app:tint="?attr/colorSecondary" />
 
                 <TextView
                     android:layout_width="0dp"
@@ -111,7 +111,7 @@
                     android:layout_marginStart="12dp"
                     android:autoLink="web"
                     android:linksClickable="true"
-                    android:textColorLink="@color/brandCyberPath"
+                    android:textColorLink="?attr/colorSecondary"
                     android:text="http://smartlearn.com"
                     android:textSize="15sp" />
             </LinearLayout>
@@ -264,6 +264,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Sí"
+                    android:textColor="?attr/colorOnSurface"
                     android:layout_weight="1" />
 
                 <RadioButton
@@ -271,6 +272,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="No"
+                    android:textColor="?attr/colorOnSurface"
                     android:layout_weight="1" />
             </RadioGroup>
 
@@ -288,6 +290,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Escribe tus comentarios aquí..."
+                android:textColorHint="?attr/colorOnSurface"
+                android:textColor="?attr/colorOnSurface"
                 android:inputType="textMultiLine"
                 android:minLines="3"
                 android:layout_marginBottom="16dp" />

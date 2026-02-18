@@ -12,6 +12,10 @@ public class PreferencesManager {
     private static final String KEY_ID_USUARIO = "id_usuario";
     private static final String KEY_TAMANO_FUENTE = "tamano_letra";
     private static final String KEY_ID_SUBTEMA_ULTIMA_CONEXION = "subtema_ultima_conexion";
+    private static final String KEY_TEMA_APP = "tema_app";
+    public static final int THEME_LIGHT = 0;
+    public static final int THEME_DARK = 1;
+    public static final int THEME_ACCESSIBLE = 2;
 
     private static SharedPreferences getPrefs(Context context) {
         return context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
@@ -56,4 +60,13 @@ public class PreferencesManager {
     public static int getIdSubtemaUltimaConexion(Context context) {
         return getPrefs(context).getInt(KEY_ID_SUBTEMA_ULTIMA_CONEXION, -1);
     }
+
+    public static void setTemaApp(Context context, int theme) {
+        getPrefs(context).edit().putInt(KEY_TEMA_APP, theme).apply();
+    }
+
+    public static int getTemaApp(Context context) {
+        return getPrefs(context).getInt(KEY_TEMA_APP, THEME_ACCESSIBLE);
+    }
+
 }

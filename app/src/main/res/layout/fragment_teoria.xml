@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="Nombre Subtema"
-            android:textSize="22sp"
+            style="?attr/textAppearanceTitleLarge"
             android:textColor="?attr/colorOnSurface" />
 
         <TextView
@@ -31,8 +31,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="Mucho texto"
-            android:textSize="16sp"
-            android:textColor="?attr/colorOnSurface" />
+            style="?attr/textAppearanceTitleLarge"
+            android:textColor="?attr/colorOnSurface"
+            android:lineSpacingMultiplier="1.2"/>
 
     </LinearLayout>
 

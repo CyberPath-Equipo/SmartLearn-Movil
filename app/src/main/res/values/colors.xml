@@ -23,20 +23,20 @@
         <color name="colorSecondary">#359762</color>
         <color name="colorAccent">#015B6A</color>
 
+    <!-- ========= COLORES ACCESSIBLE ========= -->
+        <color name="accessible_background">#000000</color>
+        <color name="accessible_surface">#121212</color>
 
-    <!-- ========= COLORES DARK ========= -->
-        <!-- ========= COLORES BASE LIGHT ========= -->
-        <color name="colorDarkHeader">#121E2C</color>
-        <color name="colorDarkBackground">#0F1722</color>
-        <color name="colorDarkSurface">#1B2A38</color>
+        <color name="accessible_on_background">#FFFFFF</color>
+        <color name="accessible_on_surface">#FFFFFF</color>
 
-        <!-- ========= COLORES DE TEXTO ========= -->
-        <color name="colorDarkOnSurfacePrimary">#C4C4C4</color>
-        <color name="colorDarkOnSurface">#FFFFFF</color>
-        <color name="colorDarkOnBackground">#E6EDF3</color>
+        <color name="accessible_primary">#42A5F5</color>
+        <color name="accessible_on_primary">#000000</color>
 
-        <!-- ========= COLORES DE ACCIÓN ========= -->
-        <color name="colorDarkSecondary">#3FAF7A</color>
-        <color name="colorDarkAccent">#2E8CA0</color>
+        <color name="accessible_secondary">#FFD600</color>
+        <color name="accessible_on_secondary">#000000</color>
+
+        <color name="accessible_tertiary">#FF6F00</color>
+        <color name="accessible_on_tertiary">#000000</color>
 
 </resources>

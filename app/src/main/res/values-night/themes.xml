@@ -5,16 +5,16 @@
         <item name="android:windowLightStatusBar">false</item>
 
         <!-- Colores -->
-        <item name="colorPrimary">@color/colorDarkHeader</item>
-        <item name="colorOnPrimary">@color/colorDarkOnBackground</item>
+        <item name="colorPrimary">@color/colorHeader</item>
+        <item name="colorOnPrimary">@color/colorOnBackground</item>
 
-        <item name="android:colorBackground">@color/colorDarkBackground</item>
-        <item name="colorOnBackground">@color/colorDarkOnBackground</item>
+        <item name="android:colorBackground">@color/colorBackground</item>
+        <item name="colorOnBackground">@color/colorOnBackground</item>
 
-        <item name="colorSurface">@color/colorDarkSurface</item>
-        <item name="colorOnSurface">@color/colorDarkOnSurface</item>
+        <item name="colorSurface">@color/colorSurface</item>
+        <item name="colorOnSurface">@color/colorOnSurface</item>
 
-        <item name="colorSecondary">@color/colorDarkSecondary</item>
-        <item name="colorTertiary">@color/colorDarkAccent</item>
+        <item name="colorSecondary">@color/colorSecondary</item>
+        <item name="colorTertiary">@color/colorAccent</item>
     </style>
 </resources>

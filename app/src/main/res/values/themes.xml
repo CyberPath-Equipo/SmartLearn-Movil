@@ -19,4 +19,55 @@
         <item name="colorButtonNormal">#BEBFC3</item>
         <item name="colorError">#88FF4444</item>
     </style>
+
+    <style name="Theme.SmartLearn.Accessible" parent="Theme.Material3.DayNight.NoActionBar">
+
+        <item name="colorPrimary">@color/accessible_primary</item>
+        <item name="colorOnPrimary">@color/accessible_on_primary</item>
+
+        <item name="colorSecondary">@color/accessible_secondary</item>
+
+        <item name="colorTertiary">@color/accessible_tertiary</item>
+
+        <item name="android:colorBackground">@color/accessible_background</item>
+        <item name="colorOnBackground">@color/accessible_on_background</item>
+
+        <item name="colorSurface">@color/accessible_surface</item>
+        <item name="colorOnSurface">@color/accessible_on_surface</item>
+
+        <item name="android:statusBarColor">@color/accessible_background</item>
+        <item name="android:navigationBarColor">@color/accessible_background</item>
+        <item name="colorButtonNormal">@color/accessible_tertiary</item>
+        <item name="colorError">#E90808</item>
+
+        <item name="textAppearanceBodyLarge">
+            @style/TextAppearance.SmartLearn.Accessible.BodyLarge
+        </item>
+
+        <item name="textAppearanceTitleLarge">
+            @style/TextAppearance.SmartLearn.Accessible.TitleLarge
+        </item>
+
+        <item name="textAppearanceLabelLarge">
+            @style/TextAppearance.SmartLearn.Accessible.LabelLarge
+        </item>
+
+    </style>
+
+    <!-- ============================= -->
+    <!-- TAMAÑO DE TEXTO ACCESIBLE -->
+    <!-- ============================= -->
+
+    <style name="TextAppearance.SmartLearn.Accessible.BodyLarge" parent="TextAppearance.Material3.BodyLarge">
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="TextAppearance.SmartLearn.Accessible.TitleLarge" parent="TextAppearance.Material3.TitleLarge">
+        <item name="android:textSize">24sp</item>
+    </style>
+
+    <style name="TextAppearance.SmartLearn.Accessible.LabelLarge" parent="TextAppearance.Material3.LabelLarge">
+        <item name="android:textSize">16sp</item>
+    </style>
+
 </resources>

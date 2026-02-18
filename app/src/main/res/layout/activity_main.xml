@@ -46,7 +46,7 @@
         android:layout_gravity="start"
         android:background="?attr/android:colorBackground"
         app:headerLayout="@layout/header_barra"
-        app:itemIconTint="?attr/colorSurface"
+        app:itemIconTint="?attr/colorOnBackground"
         app:itemTextColor="?attr/colorOnBackground"
         app:menu="@menu/menu_barra" />
 
