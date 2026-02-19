@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:text="Hola"
         android:textColor="?attr/colorOnBackground"
-        android:textSize="16sp"
+        android:textAppearance="?attr/textAppearanceBodyLarge"
         android:layout_marginHorizontal="10dp" />
 
     <ImageView

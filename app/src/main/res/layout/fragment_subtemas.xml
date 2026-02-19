@@ -21,7 +21,7 @@
             android:gravity="center"
             android:text="Subtemas"
             android:textColor="?attr/colorTertiary"
-            android:textSize="22sp"
+            android:textAppearance="?attr/textAppearanceHeadlineMedium"
             android:textStyle="bold" />
 
         <TextView
@@ -31,7 +31,7 @@
             android:gravity="center"
             android:text="Tema: ''Algún Subtema''"
             android:textColor="?attr/colorTertiary"
-            android:textSize="16sp"
+            android:textAppearance="?attr/textAppearanceBodyLarge"
             android:textStyle="bold" />
 
         <TextView
@@ -41,7 +41,7 @@
             android:layout_marginTop="8dp"
             android:text="Desliza para explorar más subtemas ➡"
             android:textColor="?attr/colorTertiary"
-            android:textSize="14sp"
+            android:textAppearance="?attr/textAppearanceBodyLarge"
             android:textStyle="italic" />
 
         <androidx.viewpager2.widget.ViewPager2

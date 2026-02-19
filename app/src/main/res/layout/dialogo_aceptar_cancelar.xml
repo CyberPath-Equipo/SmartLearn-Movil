@@ -25,7 +25,7 @@
             android:layout_marginBottom="8dp"
             android:text="Inscribir materia"
             android:textColor="?attr/colorOnSurface"
-            android:textSize="22sp"
+            android:textAppearance="?attr/textAppearanceHeadlineMedium"
             android:textStyle="bold" />
 
         <TextView
@@ -34,9 +34,9 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
             android:gravity="center"
-            android:text="¿Deseas inscribirte en: Cálculo II?"
+            android:text="¿Deseas inscribirte en: Cálculo ?"
             android:textColor="?attr/colorOnSurface"
-            android:textSize="17sp" />
+            android:textAppearance="?attr/textAppearanceTitleLarge" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -53,7 +53,8 @@
                 android:contentDescription="Botón para iniciar sesión"
                 android:text="Cancelar"
                 android:textColor="?attr/colorOnPrimary"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:textAppearance="?attr/textAppearanceBodyLarge"/>
 
             <Button
                 android:id="@+id/btnAceptar"
@@ -63,7 +64,8 @@
                 android:contentDescription="Botón para iniciar sesión"
                 android:text="Aceptar"
                 android:textColor="?attr/colorOnPrimary"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:textAppearance="?attr/textAppearanceBodyLarge"/>
         </LinearLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

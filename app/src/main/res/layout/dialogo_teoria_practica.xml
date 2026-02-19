@@ -25,7 +25,7 @@
             android:layout_marginBottom="8dp"
             android:text="Nombre Subtema"
             android:textColor="?attr/colorOnSurface"
-            android:textSize="22sp"
+            android:textAppearance="?attr/textAppearanceHeadlineMedium"
             android:textStyle="bold" />
 
         <TextView
@@ -35,7 +35,7 @@
             android:gravity="center"
             android:text="¿A qué seccion deseas navegar?"
             android:textColor="?attr/colorOnSurface"
-            android:textSize="17sp" />
+            android:textAppearance="?attr/textAppearanceTitleLarge" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -53,6 +53,7 @@
                 android:contentDescription="Botón para iniciar sesión"
                 android:text="Teoría"
                 android:textColor="?attr/colorOnPrimary"
+                android:textAppearance="?attr/textAppearanceBodyLarge"
                 android:textStyle="bold" />
 
             <Button
@@ -63,6 +64,7 @@
                 android:contentDescription="Botón para iniciar sesión"
                 android:text="Práctica"
                 android:textColor="?attr/colorOnPrimary"
+                android:textAppearance="?attr/textAppearanceBodyLarge"
                 android:textStyle="bold" />
         </LinearLayout>
         <Button
@@ -72,7 +74,7 @@
             android:backgroundTint="?attr/colorButtonNormal"
             android:contentDescription="Botón para iniciar sesión"
             android:text="Cancelar"
-            android:textSize="13sp"
+            android:textAppearance="?attr/textAppearanceBodyLarge"
             android:textColor="?attr/colorOnSurface"
             android:textStyle="bold" />
     </LinearLayout>

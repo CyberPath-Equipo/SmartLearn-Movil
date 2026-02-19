@@ -21,7 +21,7 @@
             android:id="@+id/tv_nombre_usuario"
             android:gravity="center"
             android:text="Hola, "
-            android:textSize="22sp"
+            android:textAppearance="?attr/textAppearanceHeadlineMedium"
             android:textColor="?attr/colorOnSurface"
             android:textStyle="bold"/>
 
@@ -52,7 +52,7 @@
             android:gravity="center"
             android:text="Materias Inscritas:"
             android:textColor="?attr/colorOnSurface"
-            android:textSize="16sp"
+            android:textAppearance="?attr/textAppearanceTitleLarge"
             android:textStyle="bold" />
 
         <TextView
@@ -62,7 +62,7 @@
             android:layout_marginTop="8dp"
             android:text="Desliza para explorar más materias ➡"
             android:textColor="?attr/colorOnSurface"
-            android:textSize="14sp"
+            android:textAppearance="?attr/textAppearanceBodyLarge"
             android:textStyle="italic" />
 
         <androidx.viewpager2.widget.ViewPager2
@@ -100,7 +100,7 @@
                 android:layout_height="wrap_content"
                 android:text="Último subtema"
                 android:textColor="?attr/colorSurface"
-                android:textSize="18sp"
+                android:textAppearance="?attr/textAppearanceBodyMedium"
                 android:textStyle="bold" />
         </LinearLayout>
     </LinearLayout>

@@ -21,7 +21,7 @@
             android:gravity="center"
             android:text="Cambiar Nombre de Usuario"
             android:textColor="?attr/colorOnSurface"
-            android:textSize="22sp"
+            android:textAppearance="?attr/textAppearanceHeadlineMedium"
             android:textStyle="bold" />
 
         <TextView
@@ -31,7 +31,7 @@
             android:gravity="center"
             android:text="Ingresa el nuevo valor y tu contraseña actual"
             android:textColor="?attr/colorOnSurface"
-            android:textSize="16sp" />
+            android:textAppearance="?attr/textAppearanceTitleLarge" />
 
         <!-- Campo nuevo (nombre, correo o contraseña) -->
         <EditText
@@ -86,7 +86,8 @@
                 android:layout_weight="1"
                 android:backgroundTint="?attr/colorButtonNormal"
                 android:text="Cancelar"
-                android:textColor="?attr/colorOnSurface" />
+                android:textColor="?attr/colorOnSurface"
+                android:textAppearance="?attr/textAppearanceBodyLarge" />
 
             <Button
                 android:id="@+id/btn_guardar_cambio"
@@ -97,7 +98,8 @@
                 android:backgroundTint="?attr/colorTertiary"
                 android:text="Guardar"
                 android:textColor="?attr/colorSurface"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:textAppearance="?attr/textAppearanceBodyLarge" />
         </LinearLayout>
 
     </LinearLayout>

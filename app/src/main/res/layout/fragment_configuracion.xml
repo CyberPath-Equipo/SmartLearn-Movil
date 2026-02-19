@@ -22,7 +22,7 @@
             android:gravity="center"
             android:text="Configuración"
             android:textColor="?attr/colorOnSurface"
-            android:textSize="22sp"
+            android:textAppearance="?attr/textAppearanceHeadlineMedium"
             android:textStyle="bold" />
 
         <TextView
@@ -32,7 +32,7 @@
             android:gravity="center"
             android:text="Ajusta las opciones según tus necesidades"
             android:textColor="?attr/colorOnSurface"
-            android:textSize="16sp"
+            android:textAppearance="?attr/textAppearanceTitleLarge"
             android:textStyle="bold" />
 
         <LinearLayout
@@ -46,7 +46,7 @@
                 android:layout_height="wrap_content"
                 android:text="Tamaño de fuente"
                 android:textColor="?attr/colorOnSurface"
-                android:textSize="17sp" />
+                android:textAppearance="?attr/textAppearanceTitleLarge" />
 
             <SeekBar
                 android:id="@+id/seekbar_tamano_fuente"
@@ -71,7 +71,7 @@
                 android:layout_weight="1"
                 android:text="Modo oscuro"
                 android:textColor="?attr/colorOnSurface"
-                android:textSize="17sp" />
+                android:textAppearance="?attr/textAppearanceTitleLarge" />
 
             <com.google.android.material.switchmaterial.SwitchMaterial
                 android:id="@+id/switch_modo_oscuro"
@@ -93,7 +93,7 @@
                 android:layout_height="wrap_content"
                 android:text="Selección de idioma"
                 android:textColor="?attr/colorOnSurface"
-                android:textSize="17sp" />
+                android:textAppearance="?attr/textAppearanceTitleLarge" />
 
             <Spinner
                 android:id="@+id/spinner_idioma"
@@ -120,7 +120,8 @@
                 android:backgroundTint="?attr/colorSecondary"
                 android:text="Guardar"
                 android:textColor="?attr/colorOnBackground"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:textAppearance="?attr/textAppearanceTitleLarge" />
 
         </LinearLayout>
 

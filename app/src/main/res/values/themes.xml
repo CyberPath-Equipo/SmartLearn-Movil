@@ -18,6 +18,21 @@
         <item name="colorTertiary">@color/colorAccent</item>
         <item name="colorButtonNormal">#BEBFC3</item>
         <item name="colorError">#88FF4444</item>
+
+        <!-- Texto -->
+        <item name="textAppearanceHeadlineMedium"> @style/TextAppearance.SmartLearn.Headline </item>
+
+        <item name="textAppearanceTitleLarge">
+            @style/TextAppearance.SmartLearn.Subtitle
+        </item>
+
+        <item name="textAppearanceBodyLarge">
+            @style/TextAppearance.SmartLearn.Body
+        </item>
+
+        <item name="textAppearanceBodyMedium">
+            @style/TextAppearance.SmartLearn.BodyReading
+        </item>
     </style>
 
     <style name="Theme.SmartLearn.Accessible" parent="Theme.Material3.DayNight.NoActionBar">
@@ -40,34 +55,65 @@
         <item name="colorButtonNormal">@color/accessible_tertiary</item>
         <item name="colorError">#E90808</item>
 
-        <item name="textAppearanceBodyLarge">
-            @style/TextAppearance.SmartLearn.Accessible.BodyLarge
+        <!-- Texto -->
+        <item name="textAppearanceHeadlineMedium">
+            @style/TextAppearance.SmartLearn.Accessible.Headline
         </item>
 
         <item name="textAppearanceTitleLarge">
-            @style/TextAppearance.SmartLearn.Accessible.TitleLarge
+            @style/TextAppearance.SmartLearn.Accessible.Subtitle
         </item>
 
-        <item name="textAppearanceLabelLarge">
-            @style/TextAppearance.SmartLearn.Accessible.LabelLarge
+        <item name="textAppearanceBodyLarge">
+            @style/TextAppearance.SmartLearn.Accessible.Body
+        </item>
+
+        <item name="textAppearanceBodyMedium">
+            @style/TextAppearance.SmartLearn.Accessible.BodyReading
         </item>
 
     </style>
 
     <!-- ============================= -->
-    <!-- TAMAÑO DE TEXTO ACCESIBLE -->
+    <!--        Tipografía (Base)      -->
     <!-- ============================= -->
 
-    <style name="TextAppearance.SmartLearn.Accessible.BodyLarge" parent="TextAppearance.Material3.BodyLarge">
-        <item name="android:textSize">18sp</item>
-    </style>
-
-    <style name="TextAppearance.SmartLearn.Accessible.TitleLarge" parent="TextAppearance.Material3.TitleLarge">
+    <style name="TextAppearance.SmartLearn.Headline" parent="TextAppearance.Material3.HeadlineMedium"> <!-- Subtemas -->
         <item name="android:textSize">24sp</item>
     </style>
 
-    <style name="TextAppearance.SmartLearn.Accessible.LabelLarge" parent="TextAppearance.Material3.LabelLarge">
+    <style name="TextAppearance.SmartLearn.Subtitle" parent="TextAppearance.Material3.TitleLarge"> <!-- Secciones -->
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="TextAppearance.SmartLearn.Body" parent="TextAppearance.Material3.BodyLarge"> <!-- Parrafos -->
         <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="TextAppearance.SmartLearn.BodyReading" parent="TextAppearance.Material3.BodyMedium"> <!-- Contenido denso (Teoría) -->
+        <item name="android:textSize">17sp</item>
+        <item name="android:lineSpacingExtra">10dp</item>
+    </style>
+
+    <!-- ============================= -->
+    <!--     Tipografía (Accesible)    -->
+    <!-- ============================= -->
+
+    <style name="TextAppearance.SmartLearn.Accessible.Headline" parent="TextAppearance.Material3.HeadlineMedium">
+        <item name="android:textSize">28sp</item>
+    </style>
+
+    <style name="TextAppearance.SmartLearn.Accessible.Subtitle" parent="TextAppearance.Material3.TitleLarge">
+        <item name="android:textSize">24sp</item>
+    </style>
+
+    <style name="TextAppearance.SmartLearn.Accessible.Body" parent="TextAppearance.Material3.BodyLarge">
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="TextAppearance.SmartLearn.Accessible.BodyReading" parent="TextAppearance.Material3.BodyMedium">
+        <item name="android:textSize">19sp</item>
+        <item name="android:lineSpacingExtra">6dp</item>
     </style>
 
 </resources>

@@ -66,7 +66,7 @@ public class PreferencesManager {
     }
 
     public static int getTemaApp(Context context) {
-        return getPrefs(context).getInt(KEY_TEMA_APP, THEME_ACCESSIBLE);
+        return getPrefs(context).getInt(KEY_TEMA_APP, THEME_LIGHT);
     }
 
 }

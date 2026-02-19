@@ -26,7 +26,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="Ayuda y Soporte"
-                android:textSize="22sp"
+                android:textAppearance="?attr/textAppearanceHeadlineMedium"
                 android:textColor="?attr/colorOnSurface" />
 
             <TextView
@@ -35,7 +35,7 @@
                 android:layout_marginTop="8dp"
                 android:gravity="center"
                 android:text="Estamos aquí para ayudarte"
-                android:textSize="16sp"
+                android:textAppearance="?attr/textAppearanceTitleLarge"
                 android:textColor="?attr/colorOnSurface" />
 
             <TextView
@@ -44,7 +44,7 @@
                 android:layout_marginTop="30dp"
                 android:textColor="?attr/colorOnSurface"
                 android:text="Si eres profesor y quieres colaborar creando contenido para Smart Learn, regístrate en nuestra página web:"
-                android:textSize="15sp" />
+                android:textAppearance="?attr/textAppearanceBodyLarge" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -84,7 +84,7 @@
                 android:layout_marginTop="35dp"
                 android:textColor="?attr/colorOnSurface"
                 android:text="¿Tienes problemas o dudas? Contáctanos por cualquiera de estos medios:"
-                android:textSize="15sp" />
+                android:textAppearance="?attr/textAppearanceBodyLarge" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -184,7 +184,7 @@
                 android:gravity="center"
                 android:textColor="?attr/colorOnSurface"
                 android:text="¡Gracias por usar Smart Learn!\n- El equipo de CyberPath"
-                android:textSize="15sp" />
+                android:textAppearance="?attr/textAppearanceBodyLarge" />
 
         </LinearLayout>
 
@@ -203,7 +203,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="Cuestionario de Satisfacción"
-                android:textSize="20sp"
+                android:textAppearance="?attr/textAppearanceTitleLarge"
                 android:textColor="?attr/colorOnSurface"
                 android:layout_marginBottom="16dp" />
 
@@ -212,7 +212,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="¿Cómo calificarías la calidad del contenido?"
-                android:textSize="16sp"
+                android:textAppearance="?attr/textAppearanceBodyLarge"
                 android:textColor="?attr/colorOnSurface"
                 android:layout_marginBottom="8dp" />
 
@@ -230,7 +230,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="¿Cómo calificarías la facilidad de uso de la app?"
-                android:textSize="16sp"
+                android:textAppearance="?attr/textAppearanceBodyLarge"
                 android:textColor="?attr/colorOnSurface"
                 android:layout_marginBottom="8dp" />
 
@@ -248,7 +248,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="¿Recomendarías la app a un amigo?"
-                android:textSize="16sp"
+                android:textAppearance="?attr/textAppearanceBodyLarge"
                 android:textColor="?attr/colorOnSurface"
                 android:layout_marginBottom="8dp" />
 
@@ -281,7 +281,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Comentarios adicionales (opcional):"
-                android:textSize="16sp"
+                android:textAppearance="?attr/textAppearanceBodyLarge"
                 android:textColor="?attr/colorOnSurface"
                 android:layout_marginBottom="8dp" />
 
@@ -303,6 +303,7 @@
                 android:layout_height="wrap_content"
                 android:text="Enviar Feedback"
                 android:backgroundTint="?attr/colorTertiary"
+                android:textAppearance="?attr/textAppearanceTitleLarge"
                 android:textColor="@android:color/white" />
 
         </LinearLayout>

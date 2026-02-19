@@ -18,7 +18,7 @@
             android:gravity="center"
             android:text="Ejercicios"
             android:textColor="?attr/colorTertiary"
-            android:textSize="22sp"
+            android:textAppearance="?attr/textAppearanceHeadlineMedium"
             android:textStyle="bold" />
         <TextView
             android:id="@+id/tv_subtema"
@@ -27,7 +27,7 @@
             android:gravity="center"
             android:text="Ejercicios del Subtema:"
             android:textColor="?attr/colorTertiary"
-            android:textSize="16sp"
+            android:textAppearance="?attr/textAppearanceTitleLarge"
             android:textStyle="bold" />
 
         <ListView

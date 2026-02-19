@@ -22,7 +22,7 @@
             android:id="@+id/tv_question"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
+            android:textAppearance="?attr/textAppearanceTitleLarge"
             android:textStyle="bold"
             android:textColor="?attr/colorSurface"
             android:layout_marginBottom="24dp" />
@@ -38,6 +38,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Verificar"
+            android:textAppearance="?attr/textAppearanceBodyLarge"
             android:textColor="?attr/colorSurface"
             android:backgroundTint="?attr/colorTertiary"
             android:layout_gravity="center_horizontal" />

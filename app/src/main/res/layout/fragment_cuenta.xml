@@ -23,7 +23,7 @@
             android:gravity="center"
             android:text="Mi Cuenta"
             android:textColor="?attr/colorOnSurface"
-            android:textSize="22sp"
+            android:textAppearance="?attr/textAppearanceHeadlineMedium"
             android:textStyle="bold" />
 
         <TextView
@@ -33,7 +33,7 @@
             android:gravity="center"
             android:text="Toca para modificar tus datos"
             android:textColor="?attr/colorOnSurface"
-            android:textSize="16sp"
+            android:textAppearance="?attr/textAppearanceTitleLarge"
             android:textStyle="bold" />
 
         <LinearLayout
@@ -66,7 +66,7 @@
                     android:layout_height="wrap_content"
                     android:text="Nombre de usuario"
                     android:textColor="?attr/colorOnSurface"
-                    android:textSize="14sp" />
+                    android:textAppearance="?attr/textAppearanceBodyLarge" />
 
                 <TextView
                     android:id="@+id/tv_nombre_actual"
@@ -74,7 +74,7 @@
                     android:layout_height="wrap_content"
                     android:text="Juan Pérez"
                     android:textColor="?attr/colorOnSurface"
-                    android:textSize="18sp"
+                    android:textAppearance="?attr/textAppearanceTitleLarge"
                     android:textStyle="bold" />
             </LinearLayout>
         </LinearLayout>
@@ -109,7 +109,7 @@
                     android:layout_height="wrap_content"
                     android:text="Correo electrónico"
                     android:textColor="?attr/colorOnSurface"
-                    android:textSize="14sp" />
+                    android:textAppearance="?attr/textAppearanceBodyLarge" />
 
                 <TextView
                     android:id="@+id/tv_correo_actual"
@@ -117,7 +117,7 @@
                     android:layout_height="wrap_content"
                     android:text="juan@example.com"
                     android:textColor="?attr/colorOnSurface"
-                    android:textSize="18sp"
+                    android:textAppearance="?attr/textAppearanceTitleLarge"
                     android:textStyle="bold" />
             </LinearLayout>
 
@@ -152,14 +152,14 @@
                     android:layout_height="wrap_content"
                     android:text="Contraseña"
                     android:textColor="?attr/colorOnSurface"
-                    android:textSize="14sp" />
+                    android:textAppearance="?attr/textAppearanceBodyLarge" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="••••••••••"
                     android:textColor="?attr/colorOnSurface"
-                    android:textSize="22sp"
+                    android:textAppearance="?attr/textAppearanceTitleLarge"
                     android:textStyle="bold" />
             </LinearLayout>
 
@@ -173,6 +173,7 @@
             android:backgroundTint="?attr/colorError"
             android:text="Eliminar Cuenta"
             android:textColor="@color/colorOnBackground"
+            android:textAppearance="?attr/textAppearanceTitleLarge"
             android:textStyle="bold" />
 
     </LinearLayout>
