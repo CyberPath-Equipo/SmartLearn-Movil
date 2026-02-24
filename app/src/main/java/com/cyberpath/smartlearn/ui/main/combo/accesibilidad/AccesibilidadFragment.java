@@ -14,12 +14,14 @@ import androidx.fragment.app.Fragment;
 
 import com.cyberpath.smartlearn.R;
 import com.cyberpath.smartlearn.util.preferences.PreferencesManager;
+import com.cyberpath.smartlearn.util.preferences.ThemeManager;
 
 public class AccesibilidadFragment extends Fragment {
 
     private RadioGroup radioGroup;
     private RadioButton radioActiva;
     private RadioButton radioInactiva;
+    private boolean isTemaAccesible;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -36,6 +38,7 @@ public class AccesibilidadFragment extends Fragment {
         radioInactiva = view.findViewById(R.id.radio_inactiva);
 
         boolean modoAudioActivado = PreferencesManager.isModoAudioActivado(requireContext());
+        isTemaAccesible = PreferencesManager.getTemaApp(requireContext()) == PreferencesManager.THEME_ACCESSIBLE;
 
         if (modoAudioActivado) {
             radioActiva.setChecked(true);
@@ -46,6 +49,15 @@ public class AccesibilidadFragment extends Fragment {
         radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
             boolean activar = (checkedId == R.id.radio_activa);
             PreferencesManager.setModoAudio(requireContext(), activar);
+            if (activar){
+                PreferencesManager.setTemaApp(requireContext(), PreferencesManager.THEME_ACCESSIBLE);
+                ThemeManager.applyTheme(requireActivity());
+            } else{
+                PreferencesManager.setTemaApp(requireContext(), PreferencesManager.THEME_LIGHT);
+                ThemeManager.applyTheme(requireActivity());
+            }
+
+            requireActivity().recreate(); 
 
             Toast.makeText(requireContext(),
                     activar ? "Modo audio activado" : "Modo audio desactivado", Toast.LENGTH_SHORT).show();

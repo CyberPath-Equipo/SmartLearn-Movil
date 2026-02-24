@@ -5,14 +5,14 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:fillViewport="true"
-    android:background="@color/bg_azul"
-    tools:context=".ui.main.combo.principal.materias.contenido.teoria.TeoriaFragment">
+    android:background="?attr/android:colorBackground"
+    tools:context=".ui.main.combo.principal.contenido.teoria.TeoriaFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/bg_esquinas_redondeadas_fondo_teoria"
-        android:backgroundTint="@color/white"
+        android:backgroundTint="?attr/colorSurface"
         android:orientation="vertical"
         android:padding="16dp">
 
@@ -22,8 +22,8 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="Nombre Subtema"
-            android:textSize="22sp"
-            android:textColor="@color/azul_principal" />
+            android:textAppearance="?attr/textAppearanceTitleLarge"
+            android:textColor="?attr/colorOnSurface" />
 
         <TextView
             android:id="@+id/tv_contenido_teoria"
@@ -31,8 +31,10 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="Mucho texto"
-            android:textSize="16sp"
-            android:textColor="@color/black" />
+            android:textAppearance="?attr/textAppearanceBodyMedium"
+            android:textColor="?attr/colorOnSurface"
+            android:lineSpacingExtra="5dp"
+            android:lineSpacingMultiplier="1.2"/>
 
     </LinearLayout>
 

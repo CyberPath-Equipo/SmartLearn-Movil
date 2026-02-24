@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/bg_esquinas_redondeadas_fondo"
-        android:backgroundTint="@color/white"
+        android:backgroundTint="?attr/colorSurface"
         android:orientation="vertical"
         android:padding="10dp">
 
@@ -20,8 +20,8 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="Inscripción de Materias"
-            android:textColor="@color/azul_principal"
-            android:textSize="22sp"
+            android:textColor="?attr/colorOnSurface"
+            android:textAppearance="?attr/textAppearanceHeadlineMedium"
             android:textStyle="bold" />
 
         <TextView
@@ -29,8 +29,8 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="Materias Disponibles:"
-            android:textColor="@color/azul_principal"
-            android:textSize="16sp"
+            android:textColor="?attr/colorOnSurface"
+            android:textAppearance="?attr/textAppearanceTitleLarge"
             android:textStyle="bold" />
 
         <!-- Agregar SearchView aquí -->
@@ -52,8 +52,8 @@
             android:gravity="center"
             android:layout_marginTop="8dp"
             android:text="Desliza para explorar más materias ➡"
-            android:textColor="@color/azul_principal"
-            android:textSize="14sp"
+            android:textColor="?attr/colorOnSurface"
+            android:textAppearance="?attr/textAppearanceBodyLarge"
             android:textStyle="italic" />
 
         <androidx.viewpager2.widget.ViewPager2

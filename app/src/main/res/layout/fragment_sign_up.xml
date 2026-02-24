@@ -37,7 +37,7 @@
                     android:layout_marginBottom="16dp"
                     android:gravity="center"
                     android:text="Registro de Usuarios"
-                    android:textColor="@color/principal"
+                    android:textColor="@color/brandSmartLearn"
                     android:textSize="36sp"
                     android:textStyle="bold" />
 
@@ -47,10 +47,10 @@
                     android:layout_marginHorizontal="12dp"
                     android:layout_marginBottom="12dp"
                     app:boxBackgroundMode="outline"
-                    app:boxStrokeColor="@color/principal"
+                    app:boxStrokeColor="@color/brandSmartLearn"
                     app:boxStrokeWidth="@dimen/cardview_default_elevation"
                     app:startIconDrawable="@drawable/ic_usuario"
-                    app:startIconTint="@color/principal">
+                    app:startIconTint="@color/brandSmartLearn">
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_nombre"
                         android:layout_width="match_parent"
@@ -74,11 +74,11 @@
                     android:layout_marginHorizontal="12dp"
                     android:layout_marginBottom="12dp"
                     app:boxBackgroundMode="outline"
-                    app:boxStrokeColor="@color/principal"
+                    app:boxStrokeColor="@color/brandSmartLearn"
                     app:boxStrokeWidth="@dimen/cardview_default_elevation"
                     app:endIconMode="password_toggle"
                     app:startIconDrawable="@drawable/ic_contrasena"
-                    app:startIconTint="@color/principal">
+                    app:startIconTint="@color/brandSmartLearn">
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_contraseña"
                         android:layout_width="match_parent"
@@ -102,10 +102,10 @@
                     android:layout_marginHorizontal="12dp"
                     android:layout_marginBottom="12dp"
                     app:boxBackgroundMode="outline"
-                    app:boxStrokeColor="@color/principal"
+                    app:boxStrokeColor="@color/brandSmartLearn"
                     app:boxStrokeWidth="@dimen/cardview_default_elevation"
                     app:startIconDrawable="@drawable/ic_correo"
-                    app:startIconTint="@color/principal">
+                    app:startIconTint="@color/brandSmartLearn">
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_correo"
                         android:layout_width="match_parent"
@@ -130,7 +130,7 @@
                     android:layout_marginTop="15dp"
                     android:gravity="center"
                     android:text="Accesibilidad para\n Discapacidad Visual"
-                    android:textColor="@color/principal"
+                    android:textColor="@color/brandSmartLearn"
                     android:textSize="20sp" />
 
                 <RadioGroup
@@ -147,7 +147,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="Activa"
-                        android:textColor="@color/principal"
+                        android:textColor="@color/brandSmartLearn"
                         android:textSize="18sp" />
 
                     <RadioButton
@@ -156,7 +156,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="Inactiva"
-                        android:textColor="@color/principal"
+                        android:textColor="@color/brandSmartLearn"
                         android:textSize="18sp" />
                 </RadioGroup>
 
@@ -167,7 +167,7 @@
                     android:layout_marginTop="8dp"
                     android:gravity="center"
                     android:text="Tipo de Usuario"
-                    android:textColor="@color/principal"
+                    android:textColor="@color/brandSmartLearn"
                     android:textSize="20sp" />
 
                 <RadioGroup
@@ -184,7 +184,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="Alumno"
-                        android:textColor="@color/principal"
+                        android:textColor="@color/brandSmartLearn"
                         android:textSize="18sp" />
 
                     <RadioButton
@@ -193,7 +193,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="Docente"
-                        android:textColor="@color/principal"
+                        android:textColor="@color/brandSmartLearn"
                         android:textSize="18sp" />
                 </RadioGroup>
 
@@ -209,9 +209,9 @@
                     android:textColor="@color/white"
                     android:textSize="18sp"
                     android:textStyle="bold"
-                    app:backgroundTint="@color/secundario"
+                    app:backgroundTint="?attr/colorSecondary"
                     app:cornerRadius="12dp"
-                    app:strokeColor="@color/principal"
+                    app:strokeColor="@color/brandSmartLearn"
                     app:strokeWidth="2dp" />
 
                 <com.google.android.material.button.MaterialButton
@@ -226,9 +226,9 @@
                     android:textColor="@color/white"
                     android:textSize="18sp"
                     android:textStyle="bold"
-                    app:backgroundTint="@color/acento"
+                    app:backgroundTint="?attr/colorTertiary"
                     app:cornerRadius="12dp"
-                    app:strokeColor="@color/principal"
+                    app:strokeColor="@color/brandSmartLearn"
                     app:strokeWidth="2dp" />
             </LinearLayout>
         </ScrollView>

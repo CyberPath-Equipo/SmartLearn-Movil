@@ -31,15 +31,15 @@ public class EntradaAudio implements RecognitionListener {
             "no", "incorrecto", "eso no", "negativo", "nop", "de ninguna manera"
     );
     private static EntradaAudio instancia;
-    private SpeechRecognizer speechRecognizer;
     private final Context context;
     private final SalidaAudio salidaAudio;
+    private final Handler mainHandler = new Handler(Looper.getMainLooper());
+    private SpeechRecognizer speechRecognizer;
     private boolean estaInicializado = false;
     private volatile boolean estaEscuchando = false;
     private OnConfirmacionListener confirmacionListener;
     private OnOpcionSeleccionadaListener opcionListener;
     private List<String> opcionesActuales;
-    private final Handler mainHandler = new Handler(Looper.getMainLooper());
 
     private EntradaAudio(Context context) {
         this.context = context.getApplicationContext();
@@ -91,7 +91,8 @@ public class EntradaAudio implements RecognitionListener {
 
         if (!isReady()) {
             Log.w(TAG, "STT no listo o falta permiso");
-            if (salidaAudio != null) salidaAudio.hablar("Reconocimiento de voz no disponible o falta permiso.", true);
+            if (salidaAudio != null)
+                salidaAudio.hablar("Reconocimiento de voz no disponible o falta permiso.", true);
             return;
         }
         if (estaEscuchando) {
@@ -110,7 +111,8 @@ public class EntradaAudio implements RecognitionListener {
 
         if (!isReady()) {
             Log.w(TAG, "STT no listo o falta permiso");
-            if (salidaAudio != null) salidaAudio.hablar("Reconocimiento de voz no disponible o falta permiso.", true);
+            if (salidaAudio != null)
+                salidaAudio.hablar("Reconocimiento de voz no disponible o falta permiso.", true);
             return;
         }
         if (estaEscuchando) {
@@ -233,7 +235,8 @@ public class EntradaAudio implements RecognitionListener {
         estaEscuchando = false;
         Log.e(TAG, "Error en STT: " + error);
         if (error == SpeechRecognizer.ERROR_INSUFFICIENT_PERMISSIONS) {
-            if (salidaAudio != null) salidaAudio.hablar("No tengo permiso para usar el micrófono.", true);
+            if (salidaAudio != null)
+                salidaAudio.hablar("No tengo permiso para usar el micrófono.", true);
             opcionListener = null;
             confirmacionListener = null;
             return;
@@ -242,14 +245,40 @@ public class EntradaAudio implements RecognitionListener {
         mainHandler.postDelayed(this::iniciarEscucha, 400);
     }
 
-    @Override public void onPartialResults(Bundle partialResults) { }
-    @Override public void onReadyForSpeech(Bundle params) { Log.d(TAG, "Listo para escuchar"); }
-    @Override public void onBeginningOfSpeech() { }
-    @Override public void onRmsChanged(float rmsdB) { }
-    @Override public void onBufferReceived(byte[] buffer) { }
-    @Override public void onEndOfSpeech() { }
-    @Override public void onEvent(int eventType, Bundle params) { }
+    @Override
+    public void onPartialResults(Bundle partialResults) {
+    }
 
-    public interface OnConfirmacionListener { void onResultado(boolean esAfirmacion); }
-    public interface OnOpcionSeleccionadaListener { void onOpcionSeleccionada(int indice); }
+    @Override
+    public void onReadyForSpeech(Bundle params) {
+        Log.d(TAG, "Listo para escuchar");
+    }
+
+    @Override
+    public void onBeginningOfSpeech() {
+    }
+
+    @Override
+    public void onRmsChanged(float rmsdB) {
+    }
+
+    @Override
+    public void onBufferReceived(byte[] buffer) {
+    }
+
+    @Override
+    public void onEndOfSpeech() {
+    }
+
+    @Override
+    public void onEvent(int eventType, Bundle params) {
+    }
+
+    public interface OnConfirmacionListener {
+        void onResultado(boolean esAfirmacion);
+    }
+
+    public interface OnOpcionSeleccionadaListener {
+        void onOpcionSeleccionada(int indice);
+    }
 }

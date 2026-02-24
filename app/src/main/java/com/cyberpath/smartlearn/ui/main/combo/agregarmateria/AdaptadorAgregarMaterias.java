@@ -16,13 +16,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AdaptadorAgregarMaterias extends RecyclerView.Adapter<AdaptadorAgregarMaterias.MateriaViewHolder> {
-
-    private List<Materia> listaMaterias = new ArrayList<>();
     private final OnMateriaClickListener listener;
+    private List<Materia> listaMaterias = new ArrayList<>();
+
+    public interface OnMateriaClickListener {
+        void onMateriaClick(Materia materia);
+    }
 
     public AdaptadorAgregarMaterias(List<Materia> listaMaterias, OnMateriaClickListener listener) {
         this.listener = listener;
-        if (listaMaterias != null) this.listaMaterias = new ArrayList<>(listaMaterias);
+        if (listaMaterias != null) {
+            this.listaMaterias = new ArrayList<>(listaMaterias);
+        }
         setHasStableIds(true);
     }
 
@@ -39,6 +44,7 @@ public class AdaptadorAgregarMaterias extends RecyclerView.Adapter<AdaptadorAgre
     public long getItemId(int position) {
         int realSize = getRealSize();
         if (realSize == 0) return position;
+
         int realPos = position % realSize;
         Materia m = listaMaterias.get(realPos);
         return m != null && m.getId() != null ? m.getId().longValue() : realPos;
@@ -46,20 +52,21 @@ public class AdaptadorAgregarMaterias extends RecyclerView.Adapter<AdaptadorAgre
 
     @Override
     public int getItemViewType(int position) {
-        // Mismo viewType para todos, pero se podría personalizar si hace falta.
         return 0;
     }
 
     @NonNull
     @Override
     public MateriaViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.carousel_element, parent, false);
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.carousel_element, parent, false);
         return new MateriaViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull MateriaViewHolder holder, int position) {
         int realSize = getRealSize();
+
         if (realSize == 0) {
             holder.tvNombre.setText("");
             holder.tvDescripcion.setText("");
@@ -68,22 +75,26 @@ public class AdaptadorAgregarMaterias extends RecyclerView.Adapter<AdaptadorAgre
             return;
         }
 
-        // Mapear posición "infinita" a posición real
         int realPos = position % realSize;
-        if (realPos < 0) realPos += realSize; // por seguridad (aunque position >= 0 en ViewPager)
+        if (realPos < 0) realPos += realSize;
 
         Materia materia = listaMaterias.get(realPos);
+
         if (materia != null) {
             holder.tvNombre.setText(materia.getNombre() != null ? materia.getNombre() : "");
-            holder.tvDescripcion.setText(materia.getDescripcion() != null ? materia.getDescripcion() : "Descripción no disponible");
+            holder.tvDescripcion.setText(materia.getDescripcion() != null ?
+                    materia.getDescripcion() : "Descripción no disponible");
         } else {
             holder.tvNombre.setText("");
             holder.tvDescripcion.setText("Descripción no disponible");
         }
+
         holder.imageMateria.setImageResource(R.drawable.ic_launcher_foreground);
 
         holder.itemView.setOnClickListener(v -> {
-            if (listener != null && materia != null) listener.onMateriaClick(materia);
+            if (listener != null && materia != null) {
+                listener.onMateriaClick(materia);
+            }
         });
     }
 
@@ -93,10 +104,6 @@ public class AdaptadorAgregarMaterias extends RecyclerView.Adapter<AdaptadorAgre
         if (realSize == 0) return 0;
         if (realSize == 1) return 1;
         return Integer.MAX_VALUE;
-    }
-
-    public interface OnMateriaClickListener {
-        void onMateriaClick(Materia materia);
     }
 
     public static class MateriaViewHolder extends RecyclerView.ViewHolder {

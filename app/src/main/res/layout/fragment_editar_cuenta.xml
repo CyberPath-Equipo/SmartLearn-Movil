@@ -2,14 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bg_azul"
+    android:background="?attr/android:colorBackground"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/bg_esquinas_redondeadas_fondo"
-        android:backgroundTint="@color/white"
+        android:backgroundTint="?attr/colorSurface"
         android:orientation="vertical"
         android:padding="10dp">
 
@@ -20,8 +20,8 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="Cambiar Nombre de Usuario"
-            android:textColor="@color/azul_principal"
-            android:textSize="22sp"
+            android:textColor="?attr/colorOnSurface"
+            android:textAppearance="?attr/textAppearanceHeadlineMedium"
             android:textStyle="bold" />
 
         <TextView
@@ -30,8 +30,8 @@
             android:layout_marginBottom="30dp"
             android:gravity="center"
             android:text="Ingresa el nuevo valor y tu contraseña actual"
-            android:textColor="@color/azul_principal"
-            android:textSize="16sp" />
+            android:textColor="?attr/colorOnSurface"
+            android:textAppearance="?attr/textAppearanceTitleLarge" />
 
         <!-- Campo nuevo (nombre, correo o contraseña) -->
         <EditText
@@ -42,8 +42,8 @@
             android:background="@drawable/bg_esquinas_redondas_elementos"
             android:hint="Nuevo valor"
             android:padding="14dp"
-            android:textColor="@android:color/black"
-            android:textColorHint="#B0FFFFFF"
+            android:textColor="?attr/colorOnSurface"
+            android:textColorHint="?attr/colorSurface"
             android:textSize="18sp" />
 
         <!-- Confirmar Campo nuevo (nombre, correo o contraseña) -->
@@ -55,8 +55,8 @@
             android:background="@drawable/bg_esquinas_redondas_elementos"
             android:hint="Nuevo valor"
             android:padding="14dp"
-            android:textColor="@android:color/black"
-            android:textColorHint="#B0FFFFFF"
+            android:textColor="?attr/colorOnSurface"
+            android:textColorHint="?attr/colorSurface"
             android:textSize="18sp" />
 
         <!-- Contraseña actual (siempre se pide por seguridad) -->
@@ -68,8 +68,8 @@
             android:hint="Contraseña actual (requerida)"
             android:inputType="textPassword"
             android:padding="14dp"
-            android:textColor="@android:color/black"
-            android:textColorHint="#B0FFFFFF"
+            android:textColor="?attr/colorOnSurface"
+            android:textColorHint="?attr/colorSurface"
             android:textSize="18sp" />
 
         <LinearLayout
@@ -84,9 +84,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:layout_weight="1"
-                android:backgroundTint="#666666"
+                android:backgroundTint="?attr/colorButtonNormal"
                 android:text="Cancelar"
-                android:textColor="@android:color/white" />
+                android:textColor="?attr/colorOnSurface"
+                android:textAppearance="?attr/textAppearanceBodyLarge" />
 
             <Button
                 android:id="@+id/btn_guardar_cambio"
@@ -94,10 +95,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_weight="1"
-                android:backgroundTint="@color/acento"
+                android:backgroundTint="?attr/colorTertiary"
                 android:text="Guardar"
-                android:textColor="@color/white"
-                android:textStyle="bold" />
+                android:textColor="?attr/colorSurface"
+                android:textStyle="bold"
+                android:textAppearance="?attr/textAppearanceBodyLarge" />
         </LinearLayout>
 
     </LinearLayout>

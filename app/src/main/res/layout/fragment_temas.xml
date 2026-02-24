@@ -3,15 +3,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bg_azul"
+    android:background="?attr/android:colorBackground"
     android:orientation="vertical"
-    tools:context=".ui.main.combo.principal.materias.TemasFragment">
+    tools:context=".ui.main.combo.principal.tema.TemasFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/bg_esquinas_redondeadas_fondo"
-        android:backgroundTint="@color/white"
+        android:backgroundTint="?attr/colorSurface"
         android:orientation="vertical"
         android:padding="10dp">
 
@@ -20,8 +20,8 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="Temas"
-            android:textColor="@color/acento"
-            android:textSize="22sp"
+            android:textColor="?attr/colorTertiary"
+            android:textAppearance="?attr/textAppearanceHeadlineMedium"
             android:textStyle="bold" />
 
         <TextView
@@ -30,8 +30,8 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="Materia: ''Algúna Materia''"
-            android:textColor="@color/acento"
-            android:textSize="16sp"
+            android:textColor="?attr/colorTertiary"
+            android:textAppearance="?attr/textAppearanceTitleLarge"
             android:textStyle="bold" />
 
         <TextView
@@ -40,8 +40,8 @@
             android:gravity="center"
             android:layout_marginTop="8dp"
             android:text="Desliza para explorar más temas ➡"
-            android:textColor="@color/acento"
-            android:textSize="14sp"
+            android:textColor="?attr/colorTertiary"
+            android:textAppearance="?attr/textAppearanceBodyLarge"
             android:textStyle="italic" />
 
         <androidx.viewpager2.widget.ViewPager2

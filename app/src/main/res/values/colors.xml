@@ -2,11 +2,41 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="principal">#193881</color>
-    <color name="secundario">#359762</color>
-    <color name="acento">#015B6A</color>
-    <color name="empresa">#020136</color>
-    <color name="azul_principal">#030034</color>
-    <color name="bg_azul">#465767</color>
-    <color name="bg_header">#172A3E</color>
+
+    <!-- ========= COLORES DE MARCA ========= -->
+    <color name="brandSmartLearn">#193881</color>
+    <color name="brandCyberPath">#020136</color>
+
+
+    <!-- ========= COLORES LIGHT ========= -->
+    <!-- ========= COLORES BASE LIGHT ========= -->
+    <color name="colorHeader">#172A3E</color>
+    <color name="colorBackground">#465767</color>
+    <color name="colorSurface">#FFFFFFFF</color>
+
+    <!-- ========= COLORES DE TEXTO ========= -->
+    <color name="colorOnSurfacePrimary">#030034</color>
+    <color name="colorOnSurface">#FF000000</color>
+    <color name="colorOnBackground">#FFFFFFFF</color>
+
+    <!-- ========= COLORES DE ACCIÓN ========= -->
+    <color name="colorSecondary">#359762</color>
+    <color name="colorAccent">#015B6A</color>
+
+    <!-- ========= COLORES ACCESSIBLE ========= -->
+    <color name="accessible_background">#000000</color>
+    <color name="accessible_surface">#121212</color>
+
+    <color name="accessible_on_background">#FFFFFF</color>
+    <color name="accessible_on_surface">#FFFFFF</color>
+
+    <color name="accessible_primary">#42A5F5</color>
+    <color name="accessible_on_primary">#000000</color>
+
+    <color name="accessible_secondary">#FFD600</color>
+    <color name="accessible_on_secondary">#000000</color>
+
+    <color name="accessible_tertiary">#FF6F00</color>
+    <color name="accessible_on_tertiary">#000000</color>
+
 </resources>

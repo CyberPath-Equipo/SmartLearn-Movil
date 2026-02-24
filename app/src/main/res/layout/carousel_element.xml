@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg_esquinas_redondas_elementos"
-    android:backgroundTint="@color/bg_header"
+    android:backgroundTint="?attr/colorPrimary"
     android:gravity="center"
     android:orientation="vertical"
     android:padding="16dp">
@@ -21,8 +21,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Nombre de la Materia"
-        android:textColor="@android:color/white"
-        android:textSize="18sp"
+        android:textColor="?attr/colorOnPrimary"
+        android:textAppearance="?attr/textAppearanceHeadlineMedium"
         android:textStyle="bold"
         android:gravity="center"
         android:layout_marginBottom="30dp"/>
@@ -31,8 +31,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Descripción:"
-        android:textColor="@android:color/white"
-        android:textSize="16sp"
+        android:textColor="?attr/colorOnPrimary"
+        android:textAppearance="?attr/textAppearanceTitleLarge"
         android:gravity="center" />
 
     <TextView
@@ -41,8 +41,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="Descripción de la materia aquí."
-        android:textColor="@android:color/white"
-        android:textSize="15sp"
+        android:textColor="?attr/colorOnPrimary"
+        android:textAppearance="?attr/textAppearanceBodyLarge"
         android:gravity="center" />
 
     <!-- Nueva barra de progreso (invisible por defecto) -->
@@ -62,7 +62,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="Progreso: 0%"
-        android:textColor="@android:color/white"
+        android:textColor="@color/colorOnBackground"
         android:textSize="14sp"
         android:visibility="gone"
         android:gravity="center" />

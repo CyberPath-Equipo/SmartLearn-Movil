@@ -13,9 +13,15 @@
         tools:layout="@layout/fragment_agregar_materia" />
 
     <!-- 1. Materias -->
+    <action
+        android:id="@+id/action_global_materias"
+        app:destination="@id/materiasFragment"
+        app:popUpTo="@id/materiasFragment"
+        app:popUpToInclusive="true" />
+
     <fragment
         android:id="@+id/materiasFragment"
-        android:name="com.cyberpath.smartlearn.ui.main.combo.principal.materias.MateriasFragment"
+        android:name="com.cyberpath.smartlearn.ui.main.combo.principal.materia.MateriasFragment"
         android:label="Materias"
         tools:layout="@layout/fragment_materias">
 
@@ -47,7 +53,7 @@
     <!-- 2. Temas -->
     <fragment
         android:id="@+id/temasFragment"
-        android:name="com.cyberpath.smartlearn.ui.main.combo.principal.materias.TemasFragment"
+        android:name="com.cyberpath.smartlearn.ui.main.combo.principal.tema.TemasFragment"
         android:label="Temas"
         tools:layout="@layout/fragment_temas">
 
@@ -73,7 +79,7 @@
     <!-- 3. Subtemas -->
     <fragment
         android:id="@+id/subtemasFragment"
-        android:name="com.cyberpath.smartlearn.ui.main.combo.principal.materias.SubtemasFragment"
+        android:name="com.cyberpath.smartlearn.ui.main.combo.principal.subtema.SubtemasFragment"
         android:label="Subtemas"
         tools:layout="@layout/fragment_subtemas">
 
@@ -106,7 +112,7 @@
     <!-- 1. Teoria -->
     <fragment
         android:id="@+id/teoriaFragment"
-        android:name="com.cyberpath.smartlearn.ui.main.combo.principal.materias.contenido.teoria.TeoriaFragment"
+        android:name="com.cyberpath.smartlearn.ui.main.combo.principal.contenido.teoria.TeoriaFragment"
         android:label="fragment_teoria"
         tools:layout="@layout/fragment_teoria">
         <action
@@ -126,7 +132,7 @@
     <!-- 2. Practica -->
     <fragment
         android:id="@+id/practicaFragment"
-        android:name="com.cyberpath.smartlearn.ui.main.combo.principal.materias.contenido.practica.PracticaFragment"
+        android:name="com.cyberpath.smartlearn.ui.main.combo.principal.contenido.practica.PracticaFragment"
         android:label="fragment_practica"
         tools:layout="@layout/fragment_practica">
 
@@ -153,7 +159,7 @@
     <!-- 1. Ejercicio -->
     <fragment
         android:id="@+id/ejercicioFragment"
-        android:name="com.cyberpath.smartlearn.ui.main.combo.principal.materias.contenido.practica.EjercicioFragment"
+        android:name="com.cyberpath.smartlearn.ui.main.combo.principal.contenido.practica.ejercicio.EjercicioFragment"
         android:label="Práctica"
         tools:layout="@layout/fragment_ejercicio">
         <argument

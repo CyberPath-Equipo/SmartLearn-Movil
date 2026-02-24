@@ -32,7 +32,7 @@
             android:layout_marginBottom="16dp"
             android:gravity="center"
             android:text="Inicio de Sesión"
-            android:textColor="@color/principal"
+            android:textColor="@color/brandSmartLearn"
             android:textSize="36sp"
             android:textStyle="bold" />
 
@@ -42,10 +42,10 @@
             android:layout_marginHorizontal="12dp"
             android:layout_marginBottom="12dp"
             app:boxBackgroundMode="outline"
-            app:boxStrokeColor="@color/principal"
+            app:boxStrokeColor="@color/brandSmartLearn"
             app:boxStrokeWidth="@dimen/cardview_default_elevation"
             app:startIconDrawable="@drawable/ic_usuario"
-            app:startIconTint="@color/principal">
+            app:startIconTint="@color/brandSmartLearn">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_nombre_usuario"
@@ -68,11 +68,11 @@
             android:layout_marginHorizontal="12dp"
             android:layout_marginBottom="20dp"
             app:boxBackgroundMode="outline"
-            app:boxStrokeColor="@color/principal"
+            app:boxStrokeColor="@color/brandSmartLearn"
             app:boxStrokeWidth="@dimen/cardview_default_elevation"
             app:endIconMode="password_toggle"
             app:startIconDrawable="@drawable/ic_contrasena"
-            app:startIconTint="@color/principal">
+            app:startIconTint="@color/brandSmartLearn">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_contrasena"
@@ -100,12 +100,12 @@
             android:layout_marginBottom="10dp"
             android:elevation="8dp"
             android:text="@string/action_sign_in"
-            android:textColor="@color/white"
+            android:textColor="?attr/colorSurface"
             android:textSize="18sp"
             android:textStyle="bold"
-            app:backgroundTint="@color/secundario"
+            app:backgroundTint="?attr/colorSecondary"
             app:cornerRadius="12dp"
-            app:strokeColor="@color/principal"
+            app:strokeColor="@color/brandSmartLearn"
             app:strokeWidth="2dp" />
 
         <com.google.android.material.button.MaterialButton
@@ -115,12 +115,12 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="12dp"
             android:text="@string/action_registro"
-            android:textColor="@color/white"
+            android:textColor="?attr/colorSurface"
             android:textSize="18sp"
             android:textStyle="bold"
-            app:backgroundTint="@color/acento"
+            app:backgroundTint="?attr/colorTertiary"
             app:cornerRadius="12dp"
-            app:strokeColor="@color/principal"
+            app:strokeColor="@color/brandSmartLearn"
             app:strokeWidth="2dp" />
     </LinearLayout>
 

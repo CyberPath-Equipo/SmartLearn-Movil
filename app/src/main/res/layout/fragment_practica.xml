@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ui.main.combo.principal.ejercicios.EjerciciosFragment">
+    tools:context=".ui.main.combo.principal.contenido.practica.PracticaFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -17,8 +17,8 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="Ejercicios"
-            android:textColor="@color/acento"
-            android:textSize="22sp"
+            android:textColor="?attr/colorTertiary"
+            android:textAppearance="?attr/textAppearanceHeadlineMedium"
             android:textStyle="bold" />
         <TextView
             android:id="@+id/tv_subtema"
@@ -26,8 +26,8 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="Ejercicios del Subtema:"
-            android:textColor="@color/acento"
-            android:textSize="16sp"
+            android:textColor="?attr/colorTertiary"
+            android:textAppearance="?attr/textAppearanceTitleLarge"
             android:textStyle="bold" />
 
         <ListView
