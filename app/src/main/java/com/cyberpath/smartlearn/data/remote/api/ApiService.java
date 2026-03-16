@@ -38,7 +38,7 @@ public interface ApiService {
     @GET("/smartlearn/api/usuario/{idUsuario}/materia/{idMateria}/ejercicios-realizados")
     Call<Long> getEjerciciosRealizadosByUsuarioAndMateria(@Path("idUsuario") int idUsuario, @Path("idMateria") int idMateria);
 
-    @POST("/smartlearn/api/usuario")
+    @POST("/smartlearn/api/registro")
     Call<Usuario> save(@Body Usuario usuario);
 
     @POST("/smartlearn/api/usuario/login")
