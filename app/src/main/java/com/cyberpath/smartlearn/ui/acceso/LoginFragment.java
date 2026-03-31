@@ -19,15 +19,20 @@ import com.cyberpath.smartlearn.util.preferences.PreferencesManager;
 
 public class LoginFragment extends Fragment implements View.OnClickListener {
     private static final String TAG = "LoginFragment";
+    private static final String KEY_BIOMETRIA_AUTO_SOLICITADA = "biometria_auto_solicitada";
 
     private Button btnLogin, btnRegistro;
     private EditText etUsuario, etContrasena;
 
     private LoginLogic loginLogic;
+    private boolean biometriaAutoSolicitada = false;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (savedInstanceState != null) {
+            biometriaAutoSolicitada = savedInstanceState.getBoolean(KEY_BIOMETRIA_AUTO_SOLICITADA, false);
+        }
         loginLogic = new LoginLogic(this);
     }
 
@@ -51,12 +56,19 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         etContrasena = view.findViewById(R.id.et_contrasena);
 
         boolean usuarioRegistrado = PreferencesManager.isUsuarioRegistrado(requireContext());
-        if (usuarioRegistrado) {
+        if (usuarioRegistrado && !biometriaAutoSolicitada) {
+            biometriaAutoSolicitada = true;
             Log.d(TAG, "Usuario registrado encontrado. Intentando biometría...");
             view.post(() -> loginLogic.accesoBiometrico());
         } else {
             Log.d(TAG, "Primera vez o sin usuario registrado. Mostrando solo login manual.");
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean(KEY_BIOMETRIA_AUTO_SOLICITADA, biometriaAutoSolicitada);
     }
 
     @Override

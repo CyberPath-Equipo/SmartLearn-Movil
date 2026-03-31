@@ -10,6 +10,8 @@ import com.cyberpath.smartlearn.data.remote.api.RetrofitClient;
 import com.cyberpath.smartlearn.ui.main.combo.cuenta.CuentaFragment;
 import com.cyberpath.smartlearn.ui.main.combo.cuenta.EditarCuentaFragment;
 import com.cyberpath.smartlearn.util.constants.UsuarioCst;
+import com.cyberpath.smartlearn.util.preferences.PreferencesManager;
+import com.cyberpath.smartlearn.util.validation.ValidationUtils;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -44,21 +46,38 @@ public class CuentaLogic {
             return;
         }
 
-        if ("contrasena".equals(tipoEdicion) && !nuevoValor.equals(confirmacion)) {
-            showToast("Las contraseñas no coinciden");
-            return;
-        }
-
         switch (tipoEdicion) {
             case "nombre":
                 usuarioActual.setNombreCuenta(nuevoValor);
                 break;
+            case "nombreCompleto":
+                if (!ValidationUtils.isNombreCompletoValido(nuevoValor)) {
+                    showToast("El nombre completo no puede contener números");
+                    return;
+                }
+                usuarioActual.setNombreCompleto(nuevoValor);
+                break;
             case "correo":
+                if (!ValidationUtils.isCorreoValido(nuevoValor)) {
+                    showToast("Ingresa un correo con formato válido");
+                    return;
+                }
                 usuarioActual.setCorreo(nuevoValor);
                 break;
             case "contrasena":
+                if (!nuevoValor.equals(confirmacion)) {
+                    showToast("Las contraseñas no coinciden");
+                    return;
+                }
+                if (!ValidationUtils.isContrasenaValida(nuevoValor)) {
+                    showToast("La contraseña debe tener mínimo 6 caracteres y al menos un número");
+                    return;
+                }
                 usuarioActual.setContrasena(nuevoValor);
                 break;
+            default:
+                showToast("Tipo de edición no válido");
+                return;
         }
 
         actualizarUsuarioAPI(usuarioActual);
@@ -66,7 +85,7 @@ public class CuentaLogic {
 
     private void actualizarUsuarioAPI(Usuario usuario) {
         ApiService api = RetrofitClient.getApiService();
-        Call<Usuario> call = api.update(usuario.getId(), usuario);
+        Call<Usuario> call = api.updateUsuario(usuario.getId(), usuario);
 
         call.enqueue(new Callback<Usuario>() {
             @Override
@@ -75,7 +94,12 @@ public class CuentaLogic {
 
                 if (response.isSuccessful()) {
                     if (response.body() != null) {
-                        UsuarioCst.asignarConstantesUsuario(cuentaFragment.requireContext(), response.body().getId());
+                        Usuario usuarioActualizado = response.body();
+                        UsuarioCst.USUARIO_ACTUAL = usuarioActualizado;
+                        PreferencesManager.setIdUsuario(cuentaFragment.requireContext(), usuarioActualizado.getId());
+                        PreferencesManager.setNombreUsuario(cuentaFragment.requireContext(), usuarioActualizado.getNombreCuenta());
+                        PreferencesManager.setNombreCompletoUsuario(cuentaFragment.requireContext(), usuarioActualizado.getNombreCompleto());
+                        PreferencesManager.setCorreoUsuario(cuentaFragment.requireContext(), usuarioActualizado.getCorreo());
                     }
 
                     if (cuentaFragment instanceof EditarCuentaFragment) {
@@ -114,7 +138,11 @@ public class CuentaLogic {
                     Usuario usuarioActualizado = response.body();
 
                     UsuarioCst.USUARIO_ACTUAL.setNombreCuenta(usuarioActualizado.getNombreCuenta());
+                    UsuarioCst.USUARIO_ACTUAL.setNombreCompleto(usuarioActualizado.getNombreCompleto());
                     UsuarioCst.USUARIO_ACTUAL.setCorreo(usuarioActualizado.getCorreo());
+                    PreferencesManager.setNombreUsuario(cuentaFragment.requireContext(), usuarioActualizado.getNombreCuenta());
+                    PreferencesManager.setNombreCompletoUsuario(cuentaFragment.requireContext(), usuarioActualizado.getNombreCompleto());
+                    PreferencesManager.setCorreoUsuario(cuentaFragment.requireContext(), usuarioActualizado.getCorreo());
 
                     if (cuentaFragment instanceof CuentaFragment) {
                         ((CuentaFragment) cuentaFragment).actualizarDatosUsuario();
@@ -126,6 +154,17 @@ public class CuentaLogic {
             public void onFailure(Call<Usuario> call, Throwable t) {
             }
         });
+    }
+
+    public void guardarPreferenciasAccesibilidad(boolean accesibilidadVisual, boolean accesibilidadAuditiva) {
+        boolean visualAnterior = PreferencesManager.isAccesibilidadVisualActivada(context);
+
+        PreferencesManager.setAccesibilidadVisual(context, accesibilidadVisual);
+        PreferencesManager.setAccesibilidadAuditivaActivada(context, accesibilidadAuditiva);
+
+        if (cuentaFragment instanceof CuentaFragment) {
+            ((CuentaFragment) cuentaFragment).onPreferenciasAccesibilidadGuardadas(visualAnterior != accesibilidadVisual);
+        }
     }
 
     public void eliminarCuenta(String contrasenaIngresada) {
@@ -142,7 +181,7 @@ public class CuentaLogic {
         }
 
         ApiService api = RetrofitClient.getApiService();
-        Call<Void> call = api.delete(usuarioActual.getId());
+        Call<Void> call = api.deleteUsuario(usuarioActual.getId());
 
         call.enqueue(new Callback<Void>() {
             @Override

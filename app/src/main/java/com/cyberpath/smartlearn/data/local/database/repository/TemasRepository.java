@@ -25,15 +25,18 @@ public class TemasRepository {
 
         try {
             db = database.getReadableDatabase();
-            String query = "SELECT id_tema, id_materia, nombre FROM tbl_tema WHERE id_materia = ?";
+            String query = "SELECT id_tema, id_materia, nombre, orden, created_at, updated_at FROM tbl_tema WHERE id_materia = ? ORDER BY COALESCE(orden, 0), id_tema";
             Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(idMateria)});
 
             if (cursor.moveToFirst()) {
                 do {
                     Tema tema = new Tema();
                     tema.setId(cursor.getInt(0));
-
+                    tema.setIdMateria(cursor.getInt(1));
                     tema.setNombre(cursor.getString(2));
+                    tema.setOrden(cursor.getInt(3));
+                    tema.setCreatedAt(cursor.getString(4));
+                    tema.setUpdatedAt(cursor.getString(5));
 
                     temas.add(tema);
                 } while (cursor.moveToNext());
@@ -58,6 +61,9 @@ public class TemasRepository {
                 values.put("id_tema", tema.getId());
                 values.put("id_materia", tema.getIdMateria());
                 values.put("nombre", tema.getNombre());
+                values.put("orden", tema.getOrden());
+                values.put("created_at", tema.getCreatedAt());
+                values.put("updated_at", tema.getUpdatedAt());
 
                 db.insertWithOnConflict("tbl_tema", null, values, SQLiteDatabase.CONFLICT_REPLACE);
             }

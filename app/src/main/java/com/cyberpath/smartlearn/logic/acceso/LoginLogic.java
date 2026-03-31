@@ -32,6 +32,7 @@ public class LoginLogic {
 
     private final LoginFragment loginFragment;
     private final ActivityResultLauncher<String> biometricPermissionLauncher;
+    private boolean navegacionEjecutada = false;
 
     public LoginLogic(LoginFragment fragment) {
         this.loginFragment = fragment;
@@ -157,8 +158,17 @@ public class LoginLogic {
     }
 
     public void navegacionMainActivity() {
-        //Log.d(TAG, "Usuario " + UsuarioCst.USUARIO_ACTUAL.getId());
+        if (navegacionEjecutada) {
+            return;
+        }
+        navegacionEjecutada = true;
+
         Intent intent = new Intent(loginFragment.requireContext(), MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         loginFragment.startActivity(intent);
+
+        if (loginFragment.getActivity() != null) {
+            loginFragment.getActivity().finish();
+        }
     }
 }

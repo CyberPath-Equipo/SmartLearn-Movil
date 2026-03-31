@@ -18,10 +18,12 @@ import com.cyberpath.smartlearn.util.preferences.ThemeManager;
 
 public class AccesibilidadFragment extends Fragment {
 
-    private RadioGroup radioGroup;
-    private RadioButton radioActiva;
-    private RadioButton radioInactiva;
-    private boolean isTemaAccesible;
+    private RadioGroup radioGroupVisual;
+    private RadioGroup radioGroupAuditiva;
+    private RadioButton radioVisualActiva;
+    private RadioButton radioVisualInactiva;
+    private RadioButton radioAuditivaActiva;
+    private RadioButton radioAuditivaInactiva;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -33,34 +35,42 @@ public class AccesibilidadFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        radioGroup = view.findViewById(R.id.grupo_accesibilidad);
-        radioActiva = view.findViewById(R.id.radio_activa);
-        radioInactiva = view.findViewById(R.id.radio_inactiva);
+        radioGroupVisual = view.findViewById(R.id.grupo_accesibilidad_visual);
+        radioGroupAuditiva = view.findViewById(R.id.grupo_accesibilidad_auditiva);
+        radioVisualActiva = view.findViewById(R.id.radio_visual_activa);
+        radioVisualInactiva = view.findViewById(R.id.radio_visual_inactiva);
+        radioAuditivaActiva = view.findViewById(R.id.radio_auditiva_activa);
+        radioAuditivaInactiva = view.findViewById(R.id.radio_auditiva_inactiva);
 
-        boolean modoAudioActivado = PreferencesManager.isModoAudioActivado(requireContext());
-        isTemaAccesible = PreferencesManager.getTemaApp(requireContext()) == PreferencesManager.THEME_ACCESSIBLE;
+        boolean accesibilidadVisualActiva = PreferencesManager.isAccesibilidadVisualActivada(requireContext());
+        boolean accesibilidadAuditivaActiva = PreferencesManager.isAccesibilidadAuditivaActivada(requireContext());
 
-        if (modoAudioActivado) {
-            radioActiva.setChecked(true);
+        if (accesibilidadVisualActiva) {
+            radioVisualActiva.setChecked(true);
         } else {
-            radioInactiva.setChecked(true);
+            radioVisualInactiva.setChecked(true);
         }
 
-        radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
-            boolean activar = (checkedId == R.id.radio_activa);
-            PreferencesManager.setModoAudio(requireContext(), activar);
-            if (activar){
-                PreferencesManager.setTemaApp(requireContext(), PreferencesManager.THEME_ACCESSIBLE);
-                ThemeManager.applyTheme(requireActivity());
-            } else{
-                PreferencesManager.setTemaApp(requireContext(), PreferencesManager.THEME_LIGHT);
-                ThemeManager.applyTheme(requireActivity());
-            }
+        if (accesibilidadAuditivaActiva) {
+            radioAuditivaActiva.setChecked(true);
+        } else {
+            radioAuditivaInactiva.setChecked(true);
+        }
 
-            requireActivity().recreate(); 
-
+        radioGroupVisual.setOnCheckedChangeListener((group, checkedId) -> {
+            boolean activar = (checkedId == R.id.radio_visual_activa);
+            PreferencesManager.setAccesibilidadVisual(requireContext(), activar);
+            ThemeManager.applyTheme(requireActivity());
+            requireActivity().recreate();
             Toast.makeText(requireContext(),
-                    activar ? "Modo audio activado" : "Modo audio desactivado", Toast.LENGTH_SHORT).show();
+                    activar ? "Accesibilidad visual activada" : "Accesibilidad visual desactivada", Toast.LENGTH_SHORT).show();
+        });
+
+        radioGroupAuditiva.setOnCheckedChangeListener((group, checkedId) -> {
+            boolean activar = (checkedId == R.id.radio_auditiva_activa);
+            PreferencesManager.setAccesibilidadAuditivaActivada(requireContext(), activar);
+            Toast.makeText(requireContext(),
+                    activar ? "Accesibilidad auditiva activada" : "Accesibilidad auditiva desactivada", Toast.LENGTH_SHORT).show();
         });
     }
 }

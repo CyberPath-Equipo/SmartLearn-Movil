@@ -25,7 +25,7 @@ public class SubtemasRepository {
 
         try {
             db = database.getReadableDatabase();
-            String query = "SELECT id_subtema, id_tema, nombre FROM tbl_subtema WHERE id_tema = ?";
+            String query = "SELECT id_subtema, id_tema, nombre, orden, created_at, updated_at FROM tbl_subtema WHERE id_tema = ? ORDER BY COALESCE(orden, 0), id_subtema";
             Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(idTema)});
 
             if (cursor.moveToFirst()) {
@@ -34,6 +34,9 @@ public class SubtemasRepository {
                     subtema.setId(cursor.getInt(0));
                     subtema.setIdTema(cursor.getInt(1));
                     subtema.setNombre(cursor.getString(2));
+                    subtema.setOrden(cursor.getInt(3));
+                    subtema.setCreatedAt(cursor.getString(4));
+                    subtema.setUpdatedAt(cursor.getString(5));
                     
                     subtemas.add(subtema);
                 } while (cursor.moveToNext());
@@ -56,8 +59,11 @@ public class SubtemasRepository {
             for (Subtema subtema : subtemas) {
                 ContentValues values = new ContentValues();
                 values.put("id_subtema", subtema.getId());
-                values.put("id_tema", subtema.getIdTema()); // Asegúrate que tu modelo tenga este método
+                values.put("id_tema", subtema.getIdTema());
                 values.put("nombre", subtema.getNombre());
+                values.put("orden", subtema.getOrden());
+                values.put("created_at", subtema.getCreatedAt());
+                values.put("updated_at", subtema.getUpdatedAt());
 
                 db.insertWithOnConflict("tbl_subtema", null, values, SQLiteDatabase.CONFLICT_REPLACE);
             }

@@ -70,7 +70,7 @@ public class SubtemasLogic {
                 if (response.isSuccessful() && response.body() != null) {
                     listaSubtemas.clear();
                     listaSubtemas.addAll(response.body());
-                    //guardarEnLocal(listaSubtemas);
+                    guardarEnLocal(listaSubtemas);
 
                     fragment.actualizarAdapter(listaSubtemas);
 
@@ -148,7 +148,7 @@ public class SubtemasLogic {
         ultimaConexion.setUltimaConexion(fecha);
         ultimaConexion.setIdSubtema(subtema.getId());
 
-        Call<UltimaConexion> call = apiService.update(idUsuario, ultimaConexion);
+        Call<UltimaConexion> call = apiService.updateUltimaConexion(idUsuario, ultimaConexion);
         call.enqueue(new Callback<UltimaConexion>() {
             @Override
             public void onResponse(Call<UltimaConexion> call, Response<UltimaConexion> response) {

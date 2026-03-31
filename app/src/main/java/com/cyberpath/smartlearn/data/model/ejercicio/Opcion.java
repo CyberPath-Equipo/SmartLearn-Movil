@@ -10,7 +10,14 @@ import lombok.NoArgsConstructor;
 public class Opcion {
     private Integer id;
     private String texto;
-    private boolean correcta;
+    /** Wrapper Boolean para coincidir con el DTO backend (puede ser null). */
+    private Boolean correcta;
+    private Integer orden;
 
     private Integer idPregunta;
+
+    /** Método de conveniencia para evitar NullPointerException al evaluar respuestas. */
+    public boolean isCorrecta() {
+        return Boolean.TRUE.equals(correcta);
+    }
 }

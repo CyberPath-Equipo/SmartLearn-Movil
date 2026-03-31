@@ -24,6 +24,7 @@ public class UsuarioCst {
                     USUARIO_ACTUAL = response.body();
                     PreferencesManager.setIdUsuario(context, USUARIO_ACTUAL.getId());
                     PreferencesManager.setNombreUsuario(context, USUARIO_ACTUAL.getNombreCuenta());
+                    PreferencesManager.setNombreCompletoUsuario(context, USUARIO_ACTUAL.getNombreCompleto());
                     PreferencesManager.setCorreoUsuario(context, USUARIO_ACTUAL.getCorreo());
                 }
             }

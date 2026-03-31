@@ -10,7 +10,9 @@ import lombok.NoArgsConstructor;
 public class IntentoEjercicio {
     private Integer id;
     private double puntaje;
+    private Integer duracionSeg;
     private String fecha;
+    private String estado;
 
     private Integer idUsuario;
     private Integer idEjercicio;

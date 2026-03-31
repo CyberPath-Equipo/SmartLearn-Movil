@@ -12,7 +12,10 @@ public class RecursoAdjunto {
     private Integer orden;
     private String titulo;
     private String url;
+    private String mimeType;
+    private Long tamanoBytes;
     private String descripcion;
+    private String creadoEn;
 
     private Integer idSubtema;
     private Integer idTipoRecurso;

@@ -22,9 +22,9 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
     private static final String TAG = "SignUpFragment";
 
     private Button btnRegresar, btnRegistro;
-    private EditText etNombre, etContrasena, etCorreo;
-    private RadioButton radioActiva, radioInactiva, radioAlumno, radioDocente;
-    private RadioGroup grupoAccesibilidad, grupoTipoUsuario;
+    private EditText etNombreUsuario, etNombreCompleto, etContrasena, etCorreo;
+    private RadioButton radioVisualActiva, radioVisualInactiva, radioAuditivaActiva, radioAuditivaInactiva, radioAlumno, radioDocente;
+    private RadioGroup grupoAccesibilidadVisual, grupoAccesibilidadAuditiva, grupoTipoUsuario;
     private ProgressBar loading;
 
     private SignupLogic signupLogic;
@@ -47,14 +47,18 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
 
         btnRegresar = view.findViewById(R.id.btn_regresar);
         btnRegistro = view.findViewById(R.id.btn_registro);
-        etNombre = view.findViewById(R.id.et_nombre);
+        etNombreUsuario = view.findViewById(R.id.et_nombre_usuario);
+        etNombreCompleto = view.findViewById(R.id.et_nombre_completo);
         etContrasena = view.findViewById(R.id.et_contraseña);
         etCorreo = view.findViewById(R.id.et_correo);
-        radioActiva = view.findViewById(R.id.radio_activa);
-        radioInactiva = view.findViewById(R.id.radio_inactiva);
+        radioVisualActiva = view.findViewById(R.id.radio_visual_activa);
+        radioVisualInactiva = view.findViewById(R.id.radio_visual_inactiva);
+        radioAuditivaActiva = view.findViewById(R.id.radio_auditiva_activa);
+        radioAuditivaInactiva = view.findViewById(R.id.radio_auditiva_inactiva);
         radioAlumno = view.findViewById(R.id.radio_alumno);
         radioDocente = view.findViewById(R.id.radio_docente);
-        grupoAccesibilidad = view.findViewById(R.id.grupo_accesibilidad);
+        grupoAccesibilidadVisual = view.findViewById(R.id.grupo_accesibilidad_visual);
+        grupoAccesibilidadAuditiva = view.findViewById(R.id.grupo_accesibilidad_auditiva);
         grupoTipoUsuario = view.findViewById(R.id.grupo_tipo_usuario);
         loading = view.findViewById(R.id.loading);
 
@@ -68,14 +72,31 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
             Navigation.findNavController(v).navigate(R.id.loginFragment);
         } else if (v.getId() == R.id.btn_registro) {
             signupLogic.registrarUsuario(
-                    etNombre.getText().toString().trim(),
+                    etNombreUsuario.getText().toString().trim(),
+                    etNombreCompleto.getText().toString().trim(),
                     etContrasena.getText().toString().trim(),
                     etCorreo.getText().toString().trim(),
-                    radioActiva.isChecked(),
-                    radioInactiva.isChecked(),
+                    radioVisualActiva.isChecked(),
+                    radioVisualInactiva.isChecked(),
+                    radioAuditivaActiva.isChecked(),
+                    radioAuditivaInactiva.isChecked(),
                     radioAlumno.isChecked(),
                     radioDocente.isChecked()
             );
+        }
+    }
+
+    public void actualizarEstadoCarga(boolean cargando) {
+        if (loading != null) {
+            loading.setVisibility(cargando ? View.VISIBLE : View.GONE);
+        }
+
+        if (btnRegistro != null) {
+            btnRegistro.setEnabled(!cargando);
+        }
+
+        if (btnRegresar != null) {
+            btnRegresar.setEnabled(!cargando);
         }
     }
 }

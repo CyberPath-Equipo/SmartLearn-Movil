@@ -3,6 +3,8 @@ package com.cyberpath.smartlearn.data.model.ejercicio;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.annotations.SerializedName;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,13 +26,25 @@ public class Ejercicio implements Parcelable {
     };
     private Integer id;
     private String nombre;
+    @SerializedName("hecho")
     private boolean hecho;
+    @SerializedName("activo")
+    private Boolean activo;
+    private String tipo;
+    private String dificultad;
+    private Integer orden;
+    private String createdAt;
     private Integer idSubtema;
 
     protected Ejercicio(Parcel in) {
         id = (Integer) in.readValue(Integer.class.getClassLoader());
         nombre = in.readString();
         hecho = in.readByte() != 0;
+        activo = (Boolean) in.readValue(Boolean.class.getClassLoader());
+        tipo = in.readString();
+        dificultad = in.readString();
+        orden = (Integer) in.readValue(Integer.class.getClassLoader());
+        createdAt = in.readString();
         idSubtema = (Integer) in.readValue(Integer.class.getClassLoader());
     }
 
@@ -44,6 +58,11 @@ public class Ejercicio implements Parcelable {
         dest.writeValue(id);
         dest.writeString(nombre);
         dest.writeByte((byte) (hecho ? 1 : 0));
+        dest.writeValue(activo);
+        dest.writeString(tipo);
+        dest.writeString(dificultad);
+        dest.writeValue(orden);
+        dest.writeString(createdAt);
         dest.writeValue(idSubtema);
     }
 }

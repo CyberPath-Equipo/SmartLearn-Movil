@@ -3,6 +3,8 @@ package com.cyberpath.smartlearn.data.model.contenido;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.annotations.SerializedName;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -25,6 +27,11 @@ public class Subtema implements Parcelable {
     };
     private Integer id;
     private String nombre;
+    private Integer orden;
+    @SerializedName("createdAt")
+    private String createdAt;
+    @SerializedName("updatedAt")
+    private String updatedAt;
     private Integer idTema;
 
     protected Subtema(Parcel in) {
@@ -35,6 +42,15 @@ public class Subtema implements Parcelable {
         }
 
         nombre = in.readString();
+
+        if (in.readByte() == 0) {
+            orden = null;
+        } else {
+            orden = in.readInt();
+        }
+
+        createdAt = in.readString();
+        updatedAt = in.readString();
 
         if (in.readByte() == 0) {
             idTema = null;
@@ -55,6 +71,16 @@ public class Subtema implements Parcelable {
 
         // nombre
         dest.writeString(nombre);
+
+        if (orden == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeInt(orden);
+        }
+
+        dest.writeString(createdAt);
+        dest.writeString(updatedAt);
 
         // idTema
         if (idTema == null) {
