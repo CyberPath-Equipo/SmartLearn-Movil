@@ -53,6 +53,9 @@ public class CuentaFragment extends Fragment {
             Integer idUsuario = UsuarioCst.obtenerIdUsuarioActual(requireContext());
             if (idUsuario != null) {
                 cargarUsuario(idUsuario);
+            } else {
+                textoNombre.setText("No disponible");
+                textoCorreo.setText("No disponible");
             }
         }
 

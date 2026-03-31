@@ -209,48 +209,31 @@ public class SubtemasFragment extends Fragment {
         createCall.enqueue(new Callback<UltimaConexion>() {
             @Override
             public void onResponse(Call<UltimaConexion> call, Response<UltimaConexion> response) {
+                if (!isAdded()) return;
+                android.content.Context ctx = getContext();
+                if (ctx == null) return;
                 if (response.isSuccessful()) {
-                    PreferencesManager.setIdSubtemaUltimaConexion(requireContext(), subtema.getId());
+                    PreferencesManager.setIdSubtemaUltimaConexion(ctx, subtema.getId());
                     return;
                 }
-                // Si ya existe (409/conflicto), intentar update usando el id de UltimaConexion.
+                // Si ya existe (409/conflicto), lo tratamos como éxito: el backend ya tiene un registro.
                 if (response.code() == 409) {
-                    UltimaConexion existente = response.body();
-                    if (existente == null || existente.getId() == null) {
-                        return;
-                    }
-                    Call<UltimaConexion> updateCall = apiService.updateUltimaConexion(existente.getId(), ultimaConexion);
-                    updateCall.enqueue(new Callback<UltimaConexion>() {
-                        @Override
-                        public void onResponse(Call<UltimaConexion> call, Response<UltimaConexion> response) {
-                            if (response.isSuccessful()) {
-                                PreferencesManager.setIdSubtemaUltimaConexion(requireContext(), subtema.getId());
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(Call<UltimaConexion> call, Throwable t) {
-                            requireActivity().runOnUiThread(() ->
-                                    Toast.makeText(getContext(), "Error de conexión: " + t.getMessage(), Toast.LENGTH_SHORT).show()
-                            );
-                        }
-                    });
+                    PreferencesManager.setIdSubtemaUltimaConexion(ctx, subtema.getId());
                 } else {
-                    requireActivity().runOnUiThread(() ->
-                            Toast.makeText(
-                                    getContext(),
-                                    "No se pudo guardar la última conexión. Código: " + response.code(),
-                                    Toast.LENGTH_SHORT
-                            ).show()
-                    );
+                    Toast.makeText(
+                            ctx,
+                            "No se pudo guardar la última conexión. Código: " + response.code(),
+                            Toast.LENGTH_SHORT
+                    ).show();
                 }
             }
 
             @Override
             public void onFailure(Call<UltimaConexion> call, Throwable t) {
-                requireActivity().runOnUiThread(() ->
-                        Toast.makeText(getContext(), "Error de conexión: " + t.getMessage(), Toast.LENGTH_SHORT).show()
-                );
+                if (!isAdded()) return;
+                android.content.Context ctx = getContext();
+                if (ctx == null) return;
+                Toast.makeText(ctx, "Error de conexión: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }

@@ -2,6 +2,8 @@ package com.cyberpath.smartlearn.util.constants;
 
 import android.content.Context;
 
+import android.util.Log;
+
 import com.cyberpath.smartlearn.data.api.ApiService;
 import com.cyberpath.smartlearn.data.api.RetrofitClient;
 import com.cyberpath.smartlearn.data.model.usuario.Usuario;
@@ -12,6 +14,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class UsuarioCst {
+    private static final String TAG = "UsuarioCst";
     public static Usuario USUARIO_ACTUAL;
 
     public static void asignarConstantesUsuario(Integer id) {
@@ -26,7 +29,7 @@ public class UsuarioCst {
 
             @Override
             public void onFailure(Call<Usuario> call, Throwable t) {
-                System.out.println("Error al cargar usuario");
+                Log.e(TAG, "Error al cargar usuario con id " + id, t);
             }
         });
     }

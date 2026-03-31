@@ -64,9 +64,7 @@ public class EditarCuentaFragment extends Fragment {
             cargarUsuarioActual(idUsuario);
         }
 
-        if (getArguments() != null) {
-            tipoEdicion = getArguments().getString("tipoEdicion", "nombre");
-        }
+        tipoEdicion = getArguments() != null ? getArguments().getString("tipoEdicion", "nombre") : "nombre";
 
         configurarUI();
 
