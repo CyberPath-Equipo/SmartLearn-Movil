@@ -13,6 +13,10 @@ import lombok.NoArgsConstructor;
 public class Pregunta {
     private Integer id;
     private String enunciado;
+    private String tipo;
+    private Integer orden;
+    private Double puntos;
+
     private Integer idEjercicio;
     private List<Opcion> opciones = new ArrayList<>();
 }

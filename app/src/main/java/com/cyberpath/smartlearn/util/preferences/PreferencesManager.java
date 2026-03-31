@@ -13,7 +13,9 @@ public class PreferencesManager {
     private static final String KEY_TAMANO_FUENTE = "tamano_letra";
     private static final String KEY_ID_SUBTEMA_ULTIMA_CONEXION = "subtema_ultima_conexion";
     private static final String KEY_NOMBRE_USUARIO = "nombre_usuario";
+    private static final String KEY_NOMBRE_COMPLETO_USUARIO = "nombre_completo_usuario";
     private static final String KEY_CORREO_USUARIO = "correo_usuario";
+    private static final String KEY_ACCESIBILIDAD_AUDITIVA = "accesibilidad_auditiva";
     private static final String KEY_TEMA_APP = "tema_app";
     public static final int THEME_LIGHT = 0;
     public static final int THEME_DARK = 1;
@@ -37,6 +39,15 @@ public class PreferencesManager {
 
     public static boolean isModoAudioActivado(Context context) {
         return getPrefs(context).getBoolean(KEY_MODO_AUDIO, false);
+    }
+
+    public static void setAccesibilidadVisual(Context context, boolean activada) {
+        setModoAudio(context, activada);
+        setTemaApp(context, activada ? THEME_ACCESSIBLE : THEME_LIGHT);
+    }
+
+    public static boolean isAccesibilidadVisualActivada(Context context) {
+        return isModoAudioActivado(context) || getTemaApp(context) == THEME_ACCESSIBLE;
     }
 
     public static void setIdUsuario(Context context, int id) {
@@ -71,12 +82,28 @@ public class PreferencesManager {
         return getPrefs(context).getString(KEY_NOMBRE_USUARIO, "");
     }
 
+    public static void setNombreCompletoUsuario(Context context, String nombreCompleto) {
+        getPrefs(context).edit().putString(KEY_NOMBRE_COMPLETO_USUARIO, nombreCompleto).apply();
+    }
+
+    public static String getNombreCompletoUsuario(Context context) {
+        return getPrefs(context).getString(KEY_NOMBRE_COMPLETO_USUARIO, "");
+    }
+
     public static void setCorreoUsuario(Context context, String correo) {
         getPrefs(context).edit().putString(KEY_CORREO_USUARIO, correo).apply();
     }
 
     public static String getCorreoUsuario(Context context) {
         return getPrefs(context).getString(KEY_CORREO_USUARIO, "");
+    }
+
+    public static void setAccesibilidadAuditivaActivada(Context context, boolean activada) {
+        getPrefs(context).edit().putBoolean(KEY_ACCESIBILIDAD_AUDITIVA, activada).apply();
+    }
+
+    public static boolean isAccesibilidadAuditivaActivada(Context context) {
+        return getPrefs(context).getBoolean(KEY_ACCESIBILIDAD_AUDITIVA, false);
     }
 
     public static void setTemaApp(Context context, int theme) {

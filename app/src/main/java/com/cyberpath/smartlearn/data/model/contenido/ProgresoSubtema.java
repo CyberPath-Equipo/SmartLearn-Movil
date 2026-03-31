@@ -1,7 +1,5 @@
 package com.cyberpath.smartlearn.data.model.contenido;
 
-import java.time.LocalDateTime;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,7 +13,7 @@ public class ProgresoSubtema {
     private Integer ejerciciosCompletados;
     private Integer ejerciciosTotales;
     private double porcentaje;
-    private LocalDateTime ultimoAcceso;
+    private String ultimoAcceso;
 
     private Integer idUsuario;
     private Integer idSubtema;

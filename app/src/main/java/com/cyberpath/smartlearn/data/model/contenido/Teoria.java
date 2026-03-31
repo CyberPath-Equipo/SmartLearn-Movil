@@ -11,6 +11,8 @@ public class Teoria {
     private Integer id;
     private String contenido;
     private boolean revisado;
+    private String fuente;
+    private String updatedAt;
 
     private Integer idSubtema;
 }

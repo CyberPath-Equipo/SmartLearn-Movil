@@ -25,7 +25,7 @@ public class MateriasRepository {
 
         try {
             db = database.getReadableDatabase();
-            String query = "SELECT id_materia, nombre, descripcion FROM tbl_materia";
+            String query = "SELECT id_materia, nombre, descripcion, slug, created_at, updated_at FROM tbl_materia";
             Cursor cursor = db.rawQuery(query, null);
 
             if (cursor.moveToFirst()) {
@@ -34,6 +34,9 @@ public class MateriasRepository {
                     materia.setId(cursor.getInt(0)); // id_materia
                     materia.setNombre(cursor.getString(1)); // nombre
                     materia.setDescripcion(cursor.getString(2)); // descripcion
+                    materia.setSlug(cursor.getString(3));
+                    materia.setCreatedAt(cursor.getString(4));
+                    materia.setUpdatedAt(cursor.getString(5));
                     materia.setProgreso(0); // Por defecto en offline
 
                     materias.add(materia);
@@ -54,7 +57,7 @@ public class MateriasRepository {
 
         try {
             db = database.getReadableDatabase();
-            String query = "SELECT id_materia, nombre, descripcion FROM tbl_materia WHERE nombre LIKE ?";
+            String query = "SELECT id_materia, nombre, descripcion, slug, created_at, updated_at FROM tbl_materia WHERE nombre LIKE ?";
             String[] selectionArgs = new String[]{"%" + nombre + "%"};
             Cursor cursor = db.rawQuery(query, selectionArgs);
 
@@ -64,6 +67,9 @@ public class MateriasRepository {
                     materia.setId(cursor.getInt(0));
                     materia.setNombre(cursor.getString(1));
                     materia.setDescripcion(cursor.getString(2));
+                    materia.setSlug(cursor.getString(3));
+                    materia.setCreatedAt(cursor.getString(4));
+                    materia.setUpdatedAt(cursor.getString(5));
                     materia.setProgreso(0);
 
                     materias.add(materia);
@@ -83,7 +89,7 @@ public class MateriasRepository {
 
         try {
             db = database.getReadableDatabase();
-            String query = "SELECT id_materia, nombre, descripcion FROM tbl_materia WHERE id_materia = ?";
+            String query = "SELECT id_materia, nombre, descripcion, slug, created_at, updated_at FROM tbl_materia WHERE id_materia = ?";
             Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(id)});
 
             if (cursor.moveToFirst()) {
@@ -91,6 +97,9 @@ public class MateriasRepository {
                 materia.setId(cursor.getInt(0));
                 materia.setNombre(cursor.getString(1));
                 materia.setDescripcion(cursor.getString(2));
+                materia.setSlug(cursor.getString(3));
+                materia.setCreatedAt(cursor.getString(4));
+                materia.setUpdatedAt(cursor.getString(5));
                 materia.setProgreso(0);
 
                 cursor.close();
@@ -114,6 +123,9 @@ public class MateriasRepository {
             values.put("id_materia", materia.getId());
             values.put("nombre", materia.getNombre());
             values.put("descripcion", materia.getDescripcion());
+            values.put("slug", materia.getSlug());
+            values.put("created_at", materia.getCreatedAt());
+            values.put("updated_at", materia.getUpdatedAt());
 
             // INSERT OR REPLACE para actualizar si existe
             db.insertWithOnConflict("tbl_materia", null, values, SQLiteDatabase.CONFLICT_REPLACE);
@@ -134,6 +146,9 @@ public class MateriasRepository {
                 values.put("id_materia", materia.getId());
                 values.put("nombre", materia.getNombre());
                 values.put("descripcion", materia.getDescripcion());
+                values.put("slug", materia.getSlug());
+                values.put("created_at", materia.getCreatedAt());
+                values.put("updated_at", materia.getUpdatedAt());
 
                 db.insertWithOnConflict("tbl_materia", null, values, SQLiteDatabase.CONFLICT_REPLACE);
             }

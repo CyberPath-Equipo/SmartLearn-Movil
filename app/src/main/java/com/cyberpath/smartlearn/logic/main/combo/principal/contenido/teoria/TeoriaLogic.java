@@ -53,7 +53,7 @@ public class TeoriaLogic {
 
     private void cargarTeoriaAPI() {
         ApiService apiService = RetrofitClient.getApiService();
-        Call<Teoria> call = apiService.getTeoriaById(subtema.getId());
+        Call<Teoria> call = apiService.getTeoriaBySubtema(subtema.getId());
 
         call.enqueue(new Callback<Teoria>() {
             @Override
@@ -62,7 +62,7 @@ public class TeoriaLogic {
 
                 if (response.isSuccessful() && response.body() != null) {
                     teoriaActual = response.body();
-                    //guardarEnLocal(teoriaActual);
+                    guardarEnLocal(teoriaActual);
 
                     mostrarContenido(teoriaActual);
                 } else {

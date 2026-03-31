@@ -3,6 +3,8 @@ package com.cyberpath.smartlearn.data.model.contenido;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.annotations.SerializedName;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -25,6 +27,11 @@ public class Materia implements Parcelable {
     private Integer id;
     private String nombre;
     private String descripcion;
+    private String slug;
+    @SerializedName("createdAt")
+    private String createdAt;
+    @SerializedName("updatedAt")
+    private String updatedAt;
     private int progreso;
 
     protected Materia(Parcel in) {
@@ -35,6 +42,9 @@ public class Materia implements Parcelable {
         }
         nombre = in.readString();
         descripcion = in.readString();
+        slug = in.readString();
+        createdAt = in.readString();
+        updatedAt = in.readString();
         progreso = in.readInt();
     }
 
@@ -53,6 +63,9 @@ public class Materia implements Parcelable {
         }
         dest.writeString(nombre);
         dest.writeString(descripcion);
+        dest.writeString(slug);
+        dest.writeString(createdAt);
+        dest.writeString(updatedAt);
         dest.writeInt(progreso);
     }
 }

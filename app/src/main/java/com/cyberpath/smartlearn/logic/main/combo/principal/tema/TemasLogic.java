@@ -67,7 +67,7 @@ public class TemasLogic {
                 if (response.isSuccessful() && response.body() != null) {
                     listaTemas.clear();
                     listaTemas.addAll(response.body());
-                    //guardarEnLocal(listaTemas);
+                    guardarEnLocal(listaTemas);
 
                     fragment.actualizarAdapter(listaTemas);
 

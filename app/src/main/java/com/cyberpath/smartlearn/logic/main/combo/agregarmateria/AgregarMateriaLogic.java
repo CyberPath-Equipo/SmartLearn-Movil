@@ -106,7 +106,7 @@ public class AgregarMateriaLogic {
     private void cargarAllMaterias() {
         cargandoAllMaterias = true;
         ApiService apiService = RetrofitClient.getApiService();
-        Call<List<Materia>> call = apiService.getMaterias();
+        Call<List<Materia>> call = apiService.getMateriasCatalogo();
 
         call.enqueue(new Callback<List<Materia>>() {
             @Override
@@ -219,7 +219,7 @@ public class AgregarMateriaLogic {
         fragment.showToast("Inscribiendo...");
 
         ApiService api = RetrofitClient.getApiService();
-        Call<UsuarioMateria> call = api.save(inscripcion);
+        Call<UsuarioMateria> call = api.saveUsuarioMateria(inscripcion);
         call.enqueue(new Callback<UsuarioMateria>() {
             @Override
             public void onResponse(Call<UsuarioMateria> call, Response<UsuarioMateria> response) {

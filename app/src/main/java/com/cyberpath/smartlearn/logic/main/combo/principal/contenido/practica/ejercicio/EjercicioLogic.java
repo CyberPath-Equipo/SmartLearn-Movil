@@ -47,6 +47,8 @@ public class EjercicioLogic {
     private int score = 0;
     private boolean ejercicioFinalizado = false;
     private Subtema subtema;
+    /** Marca el instante en que se empieza el ejercicio para calcular duracionSeg. */
+    private long inicioEjercicioMs = 0;
 
     public EjercicioLogic(EjercicioFragment fragment, Ejercicio ejercicio) {
         this.fragment = fragment;
@@ -115,6 +117,8 @@ public class EjercicioLogic {
             fragment.showToast("No hay preguntas disponibles");
             return;
         }
+
+        inicioEjercicioMs = System.currentTimeMillis();
 
         final int totalPreguntas = allPreguntas.size();
         final int[] completed = {0};
@@ -287,13 +291,19 @@ public class EjercicioLogic {
         nuevoIntento.setIdEjercicio(ejercicio.getId());
         nuevoIntento.setIdUsuario(idUsuario);
         nuevoIntento.setPuntaje(porcentaje);
+        nuevoIntento.setEstado(porcentaje >= 60 ? "aprobado" : "reprobado");
+
+        if (inicioEjercicioMs > 0) {
+            long durMs = System.currentTimeMillis() - inicioEjercicioMs;
+            nuevoIntento.setDuracionSeg((int) (durMs / 1000));
+        }
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
         String fechaActual = sdf.format(new Date());
         nuevoIntento.setFecha(fechaActual);
 
         ApiService api = RetrofitClient.getApiService();
-        api.save(nuevoIntento).enqueue(new Callback<IntentoEjercicio>() {
+        api.saveIntentoEjercicio(nuevoIntento).enqueue(new Callback<IntentoEjercicio>() {
             @Override
             public void onResponse(Call<IntentoEjercicio> call, Response<IntentoEjercicio> response) {
                 if (response.isSuccessful()) {
@@ -321,7 +331,7 @@ public class EjercicioLogic {
         ejercicioHecho.setHecho(true);
 
         ApiService api = RetrofitClient.getApiService();
-        Call<UsuarioEjercicio> call = api.save(ejercicioHecho);
+        Call<UsuarioEjercicio> call = api.saveUsuarioEjercicio(ejercicioHecho);
 
         call.enqueue(new Callback<UsuarioEjercicio>() {
             @Override

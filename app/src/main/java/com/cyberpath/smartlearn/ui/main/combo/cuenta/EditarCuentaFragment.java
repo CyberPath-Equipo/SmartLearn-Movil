@@ -1,6 +1,7 @@
 package com.cyberpath.smartlearn.ui.main.combo.cuenta;
 
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -73,20 +74,32 @@ public class EditarCuentaFragment extends Fragment {
             case "nombre":
                 tvTitulo.setText("Cambiar Nombre de Usuario");
                 etNuevoValor.setHint("Nuevo nombre");
+                etNuevoValor.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
+                etNuevoValorConfirmacion.setVisibility(View.GONE);
+                break;
+            case "nombreCompleto":
+                tvTitulo.setText("Cambiar Nombre Completo");
+                etNuevoValor.setHint("Nuevo nombre completo");
+                etNuevoValor.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_WORDS);
                 etNuevoValorConfirmacion.setVisibility(View.GONE);
                 break;
             case "correo":
                 tvTitulo.setText("Cambiar Correo Electrónico");
                 etNuevoValor.setHint("Nuevo correo");
+                etNuevoValor.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
                 etNuevoValorConfirmacion.setVisibility(View.GONE);
                 break;
             case "contrasena":
                 tvTitulo.setText("Cambiar Contraseña");
                 etNuevoValor.setHint("Nueva contraseña");
+                etNuevoValor.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
                 etNuevoValorConfirmacion.setHint("Confirmar nueva contraseña");
+                etNuevoValorConfirmacion.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
                 etNuevoValorConfirmacion.setVisibility(View.VISIBLE);
                 break;
         }
+
+        etContrasenaActual.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
     }
 
     private void navegarAtras() {

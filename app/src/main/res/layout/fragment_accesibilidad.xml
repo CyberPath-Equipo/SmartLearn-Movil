@@ -9,7 +9,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="350dp"
+        android:layout_height="wrap_content"
         android:background="@drawable/bg_esquinas_redondeadas_fondo"
         android:backgroundTint="?attr/colorSurface"
         android:orientation="vertical"
@@ -19,14 +19,23 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="15dp"
-            android:text="Accesibilidad con\nComandos de voz"
+            android:text="Configuración de accesibilidad"
             android:textAlignment="center"
             android:textColor="?attr/colorOnSurface"
             android:textAppearance="?attr/textAppearanceHeadlineMedium"
             android:textStyle="bold" />
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="Discapacidad visual"
+            android:textColor="?attr/colorOnSurface"
+            android:textAppearance="?attr/textAppearanceTitleLarge"
+            android:textStyle="bold" />
+
         <RadioGroup
-            android:id="@+id/grupo_accesibilidad"
+            android:id="@+id/grupo_accesibilidad_visual"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="40dp"
@@ -34,7 +43,7 @@
             android:orientation="horizontal">
 
             <RadioButton
-                android:id="@+id/radio_activa"
+                android:id="@+id/radio_visual_activa"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -43,7 +52,7 @@
                 android:textAppearance="?attr/textAppearanceBodyLarge" />
 
             <RadioButton
-                android:id="@+id/radio_inactiva"
+                android:id="@+id/radio_visual_inactiva"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -54,7 +63,43 @@
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="Discapacidad auditiva"
+            android:textColor="?attr/colorOnSurface"
+            android:textAppearance="?attr/textAppearanceTitleLarge"
+            android:textStyle="bold" />
+
+        <RadioGroup
+            android:id="@+id/grupo_accesibilidad_auditiva"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="40dp"
+            android:layout_marginBottom="20dp"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/radio_auditiva_activa"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Activa"
+                android:textColor="?attr/colorOnSurface"
+                android:textAppearance="?attr/textAppearanceBodyLarge" />
+
+            <RadioButton
+                android:id="@+id/radio_auditiva_inactiva"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Inactiva"
+                android:textColor="?attr/colorOnSurface"
+                android:textAppearance="?attr/textAppearanceBodyLarge" />
+        </RadioGroup>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginHorizontal="20dp"
             android:textColor="?attr/colorOnSurface"
             android:text="@string/accesibilidad"
