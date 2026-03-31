@@ -213,23 +213,37 @@ public class SubtemasFragment extends Fragment {
                     PreferencesManager.setIdSubtemaUltimaConexion(requireContext(), subtema.getId());
                     return;
                 }
-                // Si ya existe (409 u otro estado de conflicto), intentar update por id_usuario.
-                Call<UltimaConexion> updateCall = apiService.updateUltimaConexion(idUsuario, ultimaConexion);
-                updateCall.enqueue(new Callback<UltimaConexion>() {
-                    @Override
-                    public void onResponse(Call<UltimaConexion> call, Response<UltimaConexion> response) {
-                        if (response.isSuccessful()) {
-                            PreferencesManager.setIdSubtemaUltimaConexion(requireContext(), subtema.getId());
+                // Si ya existe (409/conflicto), intentar update usando el id de UltimaConexion.
+                if (response.code() == 409) {
+                    UltimaConexion existente = response.body();
+                    if (existente == null || existente.getId() == null) {
+                        return;
+                    }
+                    Call<UltimaConexion> updateCall = apiService.updateUltimaConexion(existente.getId(), ultimaConexion);
+                    updateCall.enqueue(new Callback<UltimaConexion>() {
+                        @Override
+                        public void onResponse(Call<UltimaConexion> call, Response<UltimaConexion> response) {
+                            if (response.isSuccessful()) {
+                                PreferencesManager.setIdSubtemaUltimaConexion(requireContext(), subtema.getId());
+                            }
                         }
-                    }
 
-                    @Override
-                    public void onFailure(Call<UltimaConexion> call, Throwable t) {
-                        requireActivity().runOnUiThread(() ->
-                                Toast.makeText(getContext(), "Error de conexión: " + t.getMessage(), Toast.LENGTH_SHORT).show()
-                        );
-                    }
-                });
+                        @Override
+                        public void onFailure(Call<UltimaConexion> call, Throwable t) {
+                            requireActivity().runOnUiThread(() ->
+                                    Toast.makeText(getContext(), "Error de conexión: " + t.getMessage(), Toast.LENGTH_SHORT).show()
+                            );
+                        }
+                    });
+                } else {
+                    requireActivity().runOnUiThread(() ->
+                            Toast.makeText(
+                                    getContext(),
+                                    "No se pudo guardar la última conexión. Código: " + response.code(),
+                                    Toast.LENGTH_SHORT
+                            ).show()
+                    );
+                }
             }
 
             @Override

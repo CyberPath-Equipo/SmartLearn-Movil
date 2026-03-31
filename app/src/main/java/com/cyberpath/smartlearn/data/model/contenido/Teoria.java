@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Teoria {
-    @SerializedName(value = "id", alternate = {"id_subtema"})
+    @SerializedName(value = "id", alternate = {"id_teoria"})
     private Integer id;
 
     private String contenido;

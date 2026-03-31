@@ -71,7 +71,7 @@ public class ConfiguracionFragment extends Fragment {
         Integer idUsuario = UsuarioCst.obtenerIdUsuarioActual(requireContext());
         if (idUsuario == null) return;
 
-        RetrofitClient.getApiService().getConfiguracionById(idUsuario).enqueue(new Callback<Configuracion>() {
+        RetrofitClient.getApiService().getConfiguracionByUsuarioId(idUsuario).enqueue(new Callback<Configuracion>() {
             @Override
             public void onResponse(Call<Configuracion> call, Response<Configuracion> response) {
                 if (response.isSuccessful() && response.body() != null) {
@@ -133,7 +133,7 @@ public class ConfiguracionFragment extends Fragment {
         if (configuracionActual == null) {
             api.saveConfiguracion(configuracion).enqueue(callback);
         } else {
-            api.updateConfiguracion(idUsuario, configuracion).enqueue(callback);
+            api.updateConfiguracionByUsuarioId(idUsuario, configuracion).enqueue(callback);
         }
     }
 

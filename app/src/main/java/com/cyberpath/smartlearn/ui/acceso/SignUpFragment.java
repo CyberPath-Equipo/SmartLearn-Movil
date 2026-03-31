@@ -118,7 +118,7 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
 
             @Override
             public void onFailure(Call<List<Rol>> call, Throwable t) {
-                Log.w(TAG, "No se pudieron cargar roles remotos, se usarán valores por defecto", t);
+                Log.w(TAG, "No se pudieron cargar los roles desde el servidor", t);
                 rolesCargados = false;
                 btnRegistro.setEnabled(false);
                 Toast.makeText(requireContext(), "No se pudieron cargar los roles. Revisa la conexión e intenta de nuevo.", Toast.LENGTH_SHORT).show();
@@ -151,7 +151,6 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
         nuevoUsuario.setIdRol(idRol);
         nuevoUsuario.setActivo(true);
         nuevoUsuario.setVerificado(false);
-        nuevoUsuario.setCreadoEn("2024-01-01T00:00:00Z");
 
         Log.d(TAG, "Registrando usuario: " + nombre + ", correo: " + correo + ", rol: " + idRol);
         loading.setVisibility(View.VISIBLE);
@@ -249,8 +248,16 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
 
     private Integer obtenerIdRol() {
         if (radioAlumno.isChecked()) {
+            if (idRolAlumno == null) {
+                Toast.makeText(requireContext(), "El rol de Alumno no está disponible. Intenta más tarde.", Toast.LENGTH_SHORT).show();
+                return null;
+            }
             return idRolAlumno;
         } else if (radioDocente.isChecked()) {
+            if (idRolDocente == null) {
+                Toast.makeText(requireContext(), "El rol de Docente no está disponible. Intenta más tarde.", Toast.LENGTH_SHORT).show();
+                return null;
+            }
             return idRolDocente;
         } else {
             Toast.makeText(requireContext(), "Selecciona tipo de usuario", Toast.LENGTH_SHORT).show();

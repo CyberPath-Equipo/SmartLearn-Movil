@@ -202,7 +202,7 @@ public class MateriasFragment extends Fragment {
         });
     }
 
-    public void cargarMaterias(Integer idUsuario) {
+    private void cargarMaterias(Integer idUsuario) {
         if (idUsuario == null) {
             Toast.makeText(getContext(), "No se encontró usuario activo", Toast.LENGTH_SHORT).show();
             return;

@@ -188,13 +188,13 @@ public interface ApiService {
     Call<List<Configuracion>> getConfiguraciones();
 
     @GET("/smartlearn/api/configuracion/{id}")
-    Call<Configuracion> getConfiguracionById(@Path("id") Integer idConfiguracion);
+    Call<Configuracion> getConfiguracionByUsuarioId(@Path("id") Integer idUsuario);
 
     @POST("/smartlearn/api/configuracion")
     Call<Configuracion> saveConfiguracion(@Body Configuracion configuracion);
 
     @PUT("/smartlearn/api/configuracion/{id}")
-    Call<Configuracion> updateConfiguracion(@Path("id") int idConfiguracion, @Body Configuracion configuracion);
+    Call<Configuracion> updateConfiguracionByUsuarioId(@Path("id") int idUsuario, @Body Configuracion configuracion);
 
     @DELETE("/smartlearn/api/configuracion/{id}")
     Call<Void> deleteConfiguracion(@Path("id") int idConfiguracion);
