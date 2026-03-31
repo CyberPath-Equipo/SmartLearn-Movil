@@ -9,14 +9,16 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.event.workflow_run.conclusion == 'failure' }}
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout UI-refactor
+        uses: actions/checkout@v4
         with:
           ref: UI-refactor
           token: ${{ secrets.GITHUB_TOKEN }}
       
-      - name: 🚀 Auto-fix: Nueva branch + PR
+      - name: Auto-fix: Nueva branch + PR
         run: |
           BRANCH="copilot-fix-$(date +%s)"
+          echo "🎯 Creando branch: $BRANCH"
           
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -26,13 +28,11 @@ jobs:
           git commit -m "🤖 Copilot UI-refactor fixes" || echo "No changes"
           
           git push -u origin "$BRANCH"
+          echo "✅ Push exitoso!"
           
-          # Crear PR
           gh pr create \
             --title "🤖 Copilot: UI-Refactor Updates" \
-            --body "Automated fixes from Copilot agent
-
-Ready for review!" \
+            --body "Automated fixes from Copilot agent. Ready for review!" \
             --base UI-refactor \
             --head "$BRANCH"
         env:
