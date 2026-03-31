@@ -27,7 +27,6 @@ import com.cyberpath.smartlearn.data.model.ejercicio.Ejercicio;
 import com.cyberpath.smartlearn.data.model.ejercicio.IntentoEjercicio;
 import com.cyberpath.smartlearn.data.model.ejercicio.Opcion;
 import com.cyberpath.smartlearn.data.model.ejercicio.Pregunta;
-import com.cyberpath.smartlearn.data.model.relaciones.UsuarioEjercicio;
 import com.cyberpath.smartlearn.data.model.usuario.Usuario;
 import com.cyberpath.smartlearn.util.constants.UsuarioCst;
 import com.cyberpath.smartlearn.util.preferences.PreferencesManager;
@@ -348,9 +347,10 @@ public class EjercicioFragment extends Fragment {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
         String fechaActual = sdf.format(new Date());
         nuevoIntento.setFecha(fechaActual);
+        nuevoIntento.setEstado("completado");
 
         ApiService api = RetrofitClient.getApiService();
-        api.save(nuevoIntento).enqueue(new Callback<IntentoEjercicio>() {
+        api.saveIntentoEjercicio(nuevoIntento).enqueue(new Callback<IntentoEjercicio>() {
             @Override
             public void onResponse(Call<IntentoEjercicio> call, Response<IntentoEjercicio> response) {
                 if (response.isSuccessful()) {
@@ -392,29 +392,9 @@ public class EjercicioFragment extends Fragment {
     }
 
     private void actualizarEjercicio() {
-        UsuarioEjercicio ejercicioHecho = new UsuarioEjercicio();
-        ejercicioHecho.setIdEjercicio(ejercicio.getId());
-        ejercicioHecho.setIdUsuario(usuarioActual.getId());
-        ejercicioHecho.setHecho(true);
-
-        ApiService api = RetrofitClient.getApiService();
-        Call<UsuarioEjercicio> call = api.save(ejercicioHecho);
-
-        call.enqueue(new Callback<UsuarioEjercicio>() {
-            @Override
-            public void onResponse(Call<UsuarioEjercicio> call, Response<UsuarioEjercicio> response) {
-                if (response.isSuccessful()) {
-                    Log.d("Añadir Intento", "válido");
-                } else {
-                    Toast.makeText(getContext(), "Error al guardar intento.", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<UsuarioEjercicio> call, Throwable t) {
-                Toast.makeText(getContext(), "Error de conexión: " + t.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        });
+        // Con el nuevo esquema, la finalización se registra en tbl_intento_ejercicio.
+        // Dejamos el estado local para la UI actual sin usar una tabla intermedia eliminada.
+        ejercicio.setHecho(true);
     }
 
     // ----------------------------

@@ -3,6 +3,8 @@ package com.cyberpath.smartlearn.data.model.contenido;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.annotations.SerializedName;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,9 +25,21 @@ public class Tema implements Parcelable {
             return new Tema[size];
         }
     };
+
+    @SerializedName(value = "id", alternate = {"id_tema"})
     private Integer id;
     private String nombre;
+
+    @SerializedName(value = "idMateria", alternate = {"id_materia"})
     private Integer idMateria;
+
+    private Integer orden;
+
+    @SerializedName(value = "createdAt", alternate = {"created_at"})
+    private String createdAt;
+
+    @SerializedName(value = "updatedAt", alternate = {"updated_at"})
+    private String updatedAt;
 
     // Constructor que lee desde Parcel
     protected Tema(Parcel in) {
@@ -42,11 +56,18 @@ public class Tema implements Parcelable {
         } else {
             idMateria = in.readInt();
         }
+
+        if (in.readByte() == 0) {
+            orden = null;
+        } else {
+            orden = in.readInt();
+        }
+        createdAt = in.readString();
+        updatedAt = in.readString();
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        // id
         if (id == null) {
             dest.writeByte((byte) 0);
         } else {
@@ -54,16 +75,23 @@ public class Tema implements Parcelable {
             dest.writeInt(id);
         }
 
-        // nombre
         dest.writeString(nombre);
 
-        // idMateria
         if (idMateria == null) {
             dest.writeByte((byte) 0);
         } else {
             dest.writeByte((byte) 1);
             dest.writeInt(idMateria);
         }
+
+        if (orden == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeInt(orden);
+        }
+        dest.writeString(createdAt);
+        dest.writeString(updatedAt);
     }
 
     @Override

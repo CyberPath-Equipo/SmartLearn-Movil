@@ -101,8 +101,8 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                     PreferencesManager.setUsuarioRegistrado(requireContext(), true);
                     PreferencesManager.setIdUsuario(requireContext(), idUsuario);
 
-                    // Asignar constantes
-                    UsuarioCst.asignarConstantesUsuario(idUsuario);
+                    // Asignar usuario actual directamente desde el login para evitar condiciones de carrera.
+                    UsuarioCst.USUARIO_ACTUAL = usuarioLogueado;
 
                     Log.d("LoginFragment", "Login exitoso. ID de usuario guardado: " + idUsuario);
                     Toast.makeText(getContext(), "Login exitoso", Toast.LENGTH_SHORT).show();

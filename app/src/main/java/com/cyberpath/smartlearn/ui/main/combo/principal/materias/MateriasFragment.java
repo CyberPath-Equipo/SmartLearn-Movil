@@ -131,7 +131,8 @@ public class MateriasFragment extends Fragment {
         });
 
         if (!datosCargados) {
-            cargarMaterias(usuarioActual != null ? usuarioActual.getId() : null);
+            Integer idUsuario = UsuarioCst.obtenerIdUsuarioActual(requireContext());
+            cargarMaterias(idUsuario);
         } else {
             actualizarListaMaterias();
             navAccesibilidadMaterias.iniciarNavegacion();
@@ -201,17 +202,17 @@ public class MateriasFragment extends Fragment {
         });
     }
 
-    private void cargarMaterias(Integer idUsuario) {
+    public void cargarMaterias(Integer idUsuario) {
+        if (idUsuario == null) {
+            Toast.makeText(getContext(), "No se encontró usuario activo", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (cargandoMateriasUsuario) return;
         cargandoMateriasUsuario = true;
+
         ApiService apiService = RetrofitClient.getApiService();
         Call<List<Materia>> call = apiService.getMateriasByUsuario(idUsuario);
 
-        if (idUsuario == null) {
-            listaMaterias.clear();
-            cargandoMateriasUsuario = false;
-            actualizarListaMaterias();
-            return;
-        }
 
         call.enqueue(new Callback<List<Materia>>() {
             @Override
@@ -395,7 +396,8 @@ public class MateriasFragment extends Fragment {
             callback.accept(false, materia);
             return;
         }
-        if (usuarioActual == null || usuarioActual.getId() == null) {
+        Integer idUsuario = UsuarioCst.obtenerIdUsuarioActual(requireContext());
+        if (idUsuario == null) {
             callback.accept(false, materia);
             return;
         }

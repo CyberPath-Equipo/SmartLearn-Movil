@@ -52,7 +52,7 @@ public class TeoriaFragment extends Fragment {
 
     private void asignarTeoria() {
         ApiService apiService = RetrofitClient.getApiService();
-        Call<Teoria> call = apiService.getTeoriaById(subtema.getId());
+        Call<Teoria> call = apiService.getTeoriaBySubtema(subtema.getId());
         call.enqueue(new Callback<Teoria>() {
             @Override
             public void onResponse(Call<Teoria> call, Response<Teoria> response) {
@@ -65,6 +65,8 @@ public class TeoriaFragment extends Fragment {
                     } else {
                         tvContenidoTeoria.setText(contenido);
                     }
+                } else if (response.code() == 204) {
+                    tvContenidoTeoria.setText("Aún no hay teoría disponible para este subtema.");
                 } else {
                     Toast.makeText(requireContext(), "Error al cargar la teoría", Toast.LENGTH_SHORT).show();
                 }

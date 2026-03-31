@@ -122,7 +122,8 @@ public class AgregarMateriaFragment extends Fragment {
         });
 
         if (!datosCargados) {
-            cargarMateriasUsuario(usuarioActual != null ? usuarioActual.getId() : null);
+            Integer idUsuario = UsuarioCst.obtenerIdUsuarioActual(requireContext());
+            cargarMateriasUsuario(idUsuario);
             cargarAllMaterias();
         } else {
             actualizarListaDisponibles();
@@ -310,19 +311,20 @@ public class AgregarMateriaFragment extends Fragment {
             Toast.makeText(getContext(), "Materia inválida", Toast.LENGTH_SHORT).show();
             return;
         }
-        if (usuarioActual == null || usuarioActual.getId() == null) {
+        Integer idUsuario = UsuarioCst.obtenerIdUsuarioActual(requireContext());
+        if (idUsuario == null) {
             Toast.makeText(getContext(), "Error: usuario no identificado", Toast.LENGTH_SHORT).show();
             return;
         }
 
         UsuarioMateria inscripcion = new UsuarioMateria();
         inscripcion.setIdMateria(materia.getId());
-        inscripcion.setIdUsuario(usuarioActual.getId());
+        inscripcion.setIdUsuario(idUsuario);
 
         Toast.makeText(getContext(), "Inscribiendo...", Toast.LENGTH_SHORT).show();
 
         ApiService api = RetrofitClient.getApiService();
-        Call<UsuarioMateria> call = api.save(inscripcion);
+        Call<UsuarioMateria> call = api.saveUsuarioMateria(inscripcion);
         call.enqueue(new Callback<UsuarioMateria>() {
             @Override
             public void onResponse(Call<UsuarioMateria> call, Response<UsuarioMateria> response) {
@@ -360,17 +362,18 @@ public class AgregarMateriaFragment extends Fragment {
             callback.accept(false, materia);
             return;
         }
-        if (usuarioActual == null || usuarioActual.getId() == null) {
+        Integer idUsuario = UsuarioCst.obtenerIdUsuarioActual(requireContext());
+        if (idUsuario == null) {
             callback.accept(false, materia);
             return;
         }
 
         UsuarioMateria inscripcion = new UsuarioMateria();
         inscripcion.setIdMateria(materia.getId());
-        inscripcion.setIdUsuario(usuarioActual.getId());
+        inscripcion.setIdUsuario(idUsuario);
 
         ApiService api = RetrofitClient.getApiService();
-        Call<UsuarioMateria> call = api.save(inscripcion);
+        Call<UsuarioMateria> call = api.saveUsuarioMateria(inscripcion);
         call.enqueue(new Callback<UsuarioMateria>() {
             @Override
             public void onResponse(Call<UsuarioMateria> call, Response<UsuarioMateria> response) {

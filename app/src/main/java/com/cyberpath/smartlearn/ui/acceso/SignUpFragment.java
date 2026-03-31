@@ -20,9 +20,14 @@ import androidx.navigation.Navigation;
 import com.cyberpath.smartlearn.R;
 import com.cyberpath.smartlearn.data.api.ApiService;
 import com.cyberpath.smartlearn.data.api.RetrofitClient;
+import com.cyberpath.smartlearn.data.model.usuario.Configuracion;
+import com.cyberpath.smartlearn.data.model.usuario.Rol;
 import com.cyberpath.smartlearn.data.model.usuario.Usuario;
 import com.cyberpath.smartlearn.util.constants.UsuarioCst;
 import com.cyberpath.smartlearn.util.preferences.PreferencesManager;
+
+import java.util.List;
+import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -37,6 +42,9 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
     private RadioButton radioActiva, radioInactiva, radioAlumno, radioDocente;
     private RadioGroup grupoAccesibilidad, grupoTipoUsuario;
     private ProgressBar loading;
+    private Integer idRolAlumno;
+    private Integer idRolDocente;
+    private boolean rolesCargados = false;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -68,6 +76,9 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
 
         btnRegresar.setOnClickListener(this);
         btnRegistro.setOnClickListener(this);
+        btnRegistro.setEnabled(false);
+
+        cargarRoles();
     }
 
     @Override
@@ -79,6 +90,42 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
         }
     }
 
+    private void cargarRoles() {
+        ApiService api = RetrofitClient.getApiService();
+        api.getRoles().enqueue(new Callback<List<Rol>>() {
+            @Override
+            public void onResponse(Call<List<Rol>> call, Response<List<Rol>> response) {
+                if (!response.isSuccessful() || response.body() == null) {
+                    Toast.makeText(requireContext(), "No se pudieron cargar los roles. Intenta nuevamente.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                for (Rol rol : response.body()) {
+                    if (rol == null || rol.getTipo() == null || rol.getId() == null) continue;
+                    String tipo = rol.getTipo().trim().toLowerCase(Locale.ROOT);
+                    if (tipo.contains("alumno") || tipo.contains("estudiante")) {
+                        idRolAlumno = rol.getId();
+                    } else if (tipo.contains("docente") || tipo.contains("profesor")) {
+                        idRolDocente = rol.getId();
+                    }
+                }
+
+                rolesCargados = idRolAlumno != null || idRolDocente != null;
+                btnRegistro.setEnabled(rolesCargados);
+                if (!rolesCargados) {
+                    Toast.makeText(requireContext(), "No se encontraron roles válidos para el registro.", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Rol>> call, Throwable t) {
+                Log.w(TAG, "No se pudieron cargar roles remotos, se usarán valores por defecto", t);
+                rolesCargados = false;
+                btnRegistro.setEnabled(false);
+                Toast.makeText(requireContext(), "No se pudieron cargar los roles. Revisa la conexión e intenta de nuevo.", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
     private void registrarUsuario() {
         String nombre = etNombre.getText().toString().trim();
         String contrasena = etContrasena.getText().toString().trim();
@@ -87,23 +134,31 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
         if (!validarCampos(nombre, contrasena, correo)) {
             return;
         }
+        if (!rolesCargados) {
+            Toast.makeText(requireContext(), "Aún no se han cargado los roles. Espera un momento e intenta de nuevo.", Toast.LENGTH_SHORT).show();
+            return;
+        }
         Boolean modoAudio = obtenerModoAccesibilidad();
         if (modoAudio == null) return;
         Integer idRol = obtenerIdRol();
         if (idRol == null) return;
 
         Usuario nuevoUsuario = new Usuario();
+        nuevoUsuario.setNombreCompleto(nombre);
         nuevoUsuario.setNombreCuenta(nombre);
         nuevoUsuario.setContrasena(contrasena);
         nuevoUsuario.setCorreo(correo);
         nuevoUsuario.setIdRol(idRol);
+        nuevoUsuario.setActivo(true);
+        nuevoUsuario.setVerificado(false);
+        nuevoUsuario.setCreadoEn("2024-01-01T00:00:00Z");
 
         Log.d(TAG, "Registrando usuario: " + nombre + ", correo: " + correo + ", rol: " + idRol);
         loading.setVisibility(View.VISIBLE);
         btnRegistro.setEnabled(false);
 
         ApiService api = RetrofitClient.getApiService();
-        api.save(nuevoUsuario).enqueue(new Callback<Usuario>() {
+        api.registerUsuario(nuevoUsuario).enqueue(new Callback<Usuario>() {
             @Override
             public void onResponse(Call<Usuario> call, Response<Usuario> response) {
                 loading.setVisibility(View.GONE);
@@ -118,7 +173,8 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
                     PreferencesManager.setModoAudio(requireContext(), modoAudio);
                     PreferencesManager.setIdSubtemaUltimaConexion(requireContext(), -1);
 
-                    UsuarioCst.asignarConstantesUsuario(idUsuario);
+                    UsuarioCst.USUARIO_ACTUAL = usuarioRegistrado;
+                    guardarConfiguracionInicial(idUsuario, modoAudio);
 
                     Log.d(TAG, "Registro exitoso. ID de usuario guardado: " + idUsuario);
                     Toast.makeText(requireContext(), "Registro exitoso", Toast.LENGTH_SHORT).show();
@@ -142,9 +198,39 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
         });
     }
 
+    private void guardarConfiguracionInicial(int idUsuario, boolean modoAudio) {
+        Configuracion configuracion = new Configuracion();
+        configuracion.setIdUsuario(idUsuario);
+        configuracion.setCuentaCreada(true);
+        configuracion.setModoAudio(modoAudio);
+        configuracion.setModoOffline(false);
+        configuracion.setNotificacionesActivadas(true);
+        configuracion.setTamanoFuente(Configuracion.TamanoFuente.MEDIO);
+
+        RetrofitClient.getApiService().saveConfiguracion(configuracion).enqueue(new Callback<Configuracion>() {
+            @Override
+            public void onResponse(Call<Configuracion> call, Response<Configuracion> response) {
+                Log.d(TAG, "Configuración inicial sincronizada: " + response.code());
+            }
+
+            @Override
+            public void onFailure(Call<Configuracion> call, Throwable t) {
+                Log.w(TAG, "No se pudo sincronizar configuración inicial", t);
+            }
+        });
+    }
+
     private boolean validarCampos(String nombre, String contrasena, String correo) {
         if (nombre.isEmpty() || contrasena.isEmpty() || correo.isEmpty()) {
             Toast.makeText(requireContext(), "Completa todos los campos", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if (!android.util.Patterns.EMAIL_ADDRESS.matcher(correo).matches()) {
+            Toast.makeText(requireContext(), "Ingresa un correo válido", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if (contrasena.length() < 6) {
+            Toast.makeText(requireContext(), "La contraseña debe tener al menos 6 caracteres", Toast.LENGTH_SHORT).show();
             return false;
         }
         return true;
@@ -163,9 +249,9 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
 
     private Integer obtenerIdRol() {
         if (radioAlumno.isChecked()) {
-            return 1;
+            return idRolAlumno;
         } else if (radioDocente.isChecked()) {
-            return 2;
+            return idRolDocente;
         } else {
             Toast.makeText(requireContext(), "Selecciona tipo de usuario", Toast.LENGTH_SHORT).show();
             return null;

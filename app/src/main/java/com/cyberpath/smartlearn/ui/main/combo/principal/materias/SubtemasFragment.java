@@ -198,18 +198,38 @@ public class SubtemasFragment extends Fragment {
         Calendar tiempo = Calendar.getInstance();
         SimpleDateFormat formatoTiempo = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String fecha = formatoTiempo.format(tiempo.getTime());
-        Integer idUsuario = UsuarioCst.USUARIO_ACTUAL.getId();
+        Integer idUsuario = UsuarioCst.obtenerIdUsuarioActual(requireContext());
+        if (idUsuario == null) return;
 
         ultimaConexion.setUltimaConexion(fecha);
+        ultimaConexion.setIdUsuario(idUsuario);
         ultimaConexion.setIdSubtema(subtema.getId());
 
-        Call<UltimaConexion> call = apiService.update(idUsuario, ultimaConexion);
-        call.enqueue(new Callback<UltimaConexion>() {
+        Call<UltimaConexion> createCall = apiService.saveUltimaConexion(ultimaConexion);
+        createCall.enqueue(new Callback<UltimaConexion>() {
             @Override
             public void onResponse(Call<UltimaConexion> call, Response<UltimaConexion> response) {
-                if (response.isSuccessful() && response.body() != null) {
+                if (response.isSuccessful()) {
                     PreferencesManager.setIdSubtemaUltimaConexion(requireContext(), subtema.getId());
+                    return;
                 }
+                // Si ya existe (409 u otro estado de conflicto), intentar update por id_usuario.
+                Call<UltimaConexion> updateCall = apiService.updateUltimaConexion(idUsuario, ultimaConexion);
+                updateCall.enqueue(new Callback<UltimaConexion>() {
+                    @Override
+                    public void onResponse(Call<UltimaConexion> call, Response<UltimaConexion> response) {
+                        if (response.isSuccessful()) {
+                            PreferencesManager.setIdSubtemaUltimaConexion(requireContext(), subtema.getId());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<UltimaConexion> call, Throwable t) {
+                        requireActivity().runOnUiThread(() ->
+                                Toast.makeText(getContext(), "Error de conexión: " + t.getMessage(), Toast.LENGTH_SHORT).show()
+                        );
+                    }
+                });
             }
 
             @Override
