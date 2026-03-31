@@ -16,11 +16,10 @@ public class SalidaAudio implements TextToSpeech.OnInitListener {
     private static final String TAG = "SalidaAudio";
     private static SalidaAudio instancia;
     private final Context context;
+    private final Handler mainHandler = new Handler(Looper.getMainLooper());
     private TextToSpeech tts;
     private boolean estaInicializado = false;
     private Runnable onSpeechDone;
-
-    private final Handler mainHandler = new Handler(Looper.getMainLooper());
 
     private SalidaAudio(Context context) {
         this.context = context.getApplicationContext();

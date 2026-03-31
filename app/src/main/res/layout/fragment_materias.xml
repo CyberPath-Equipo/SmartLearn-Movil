@@ -4,32 +4,26 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ui.main.combo.principal.materias.MateriasFragment">
+    android:background="?attr/android:colorBackground"
+    tools:context=".ui.main.combo.principal.materia.MateriasFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/bg_esquinas_redondeadas_fondo"
+        android:backgroundTint="?attr/colorSurface"
         android:orientation="vertical"
         android:padding="10dp">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/tv_nombre_usuario"
             android:gravity="center"
-            android:text="Inicio"
-            android:textSize="22sp"
-            android:textColor="@color/acento"
+            android:text="Hola, "
+            android:textAppearance="?attr/textAppearanceHeadlineMedium"
+            android:textColor="?attr/colorOnSurface"
             android:textStyle="bold"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="Materias Inscritas:"
-            android:textColor="@color/acento"
-            android:textSize="16sp"
-            android:textStyle="bold" />
 
         <SearchView
             android:id="@+id/searchViewMaterias"
@@ -41,6 +35,25 @@
             android:hint="Buscar materia por nombre..."
             android:iconifiedByDefault="false"
             android:queryHint="Escribe el nombre de la materia" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_esquinas_redondeadas_fondo"
+        android:backgroundTint="?attr/colorSurface"
+        android:orientation="vertical"
+        android:layout_marginTop="20dp"
+        android:padding="10dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Materias Inscritas:"
+            android:textColor="?attr/colorOnSurface"
+            android:textAppearance="?attr/textAppearanceTitleLarge"
+            android:textStyle="bold" />
 
         <TextView
             android:layout_width="match_parent"
@@ -48,8 +61,8 @@
             android:gravity="center"
             android:layout_marginTop="8dp"
             android:text="Desliza para explorar más materias ➡"
-            android:textColor="@color/acento"
-            android:textSize="14sp"
+            android:textColor="?attr/colorOnSurface"
+            android:textAppearance="?attr/textAppearanceBodyLarge"
             android:textStyle="italic" />
 
         <androidx.viewpager2.widget.ViewPager2
@@ -78,7 +91,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="O continúa donde lo dejaste: "
-                android:textColor="#B0FFFFFF"
+                android:textColor="?attr/colorSurface"
                 android:textSize="14sp" />
 
             <TextView
@@ -86,8 +99,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Último subtema"
-                android:textColor="@android:color/white"
-                android:textSize="18sp"
+                android:textColor="?attr/colorSurface"
+                android:textAppearance="?attr/textAppearanceBodyMedium"
                 android:textStyle="bold" />
         </LinearLayout>
     </LinearLayout>

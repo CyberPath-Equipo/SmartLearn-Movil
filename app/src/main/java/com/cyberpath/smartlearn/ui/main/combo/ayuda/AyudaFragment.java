@@ -39,10 +39,8 @@ public class AyudaFragment extends Fragment {
         view.findViewById(R.id.layout_correo).setOnClickListener(v ->
                 enviarCorreo("cyberpath_contacto@gmail.com"));
 
-        // Botón para simular envío del cuestionario
         Button btnEnviarFeedback = view.findViewById(R.id.btn_enviar_feedback);
         btnEnviarFeedback.setOnClickListener(v -> {
-            // Simular envío: mostrar Toast
             Toast.makeText(requireContext(), "Gracias por tu feedback. Enviado exitosamente!", Toast.LENGTH_SHORT).show();
         });
     }

@@ -1,9 +1,6 @@
 package com.cyberpath.smartlearn.ui.carga;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.animation.Animation;
@@ -12,20 +9,21 @@ import android.widget.ImageView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.cyberpath.smartlearn.R;
 import com.cyberpath.smartlearn.ui.acceso.AccesoActivity;
+import com.cyberpath.smartlearn.ui.main.MainActivity;
 import com.cyberpath.smartlearn.util.accesibilidad.EntradaAudio;
 import com.cyberpath.smartlearn.util.accesibilidad.SalidaAudio;
+import com.cyberpath.smartlearn.util.network.NetworkUtils;
+import com.cyberpath.smartlearn.util.notificaciones.AlarmaProgramador;
+import com.cyberpath.smartlearn.util.notificaciones.NotificacionHelper;
 
 public class CargaActivity extends AppCompatActivity {
-
-    private static final int duracion = 2500;
+    private static final int duracion = 2000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,13 +49,17 @@ public class CargaActivity extends AppCompatActivity {
         logo.startAnimation(rotate);
 
         new Handler().postDelayed(() -> {
-            Intent intent = new Intent(this, AccesoActivity.class);
+            SalidaAudio.iniciarInstancia(this.getApplicationContext());
+            EntradaAudio.iniciarInstancia(this.getApplicationContext());
+            Intent intent;
+            if (NetworkUtils.isInternetAvailable(this)) {
+                intent = new Intent(this, AccesoActivity.class);
+            } else {
+                intent = new Intent(this, MainActivity.class);
+            }
             startActivity(intent);
             finish();
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         }, duracion);
-
-
-
     }
 }

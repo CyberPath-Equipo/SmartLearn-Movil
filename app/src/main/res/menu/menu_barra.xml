@@ -6,7 +6,7 @@
         android:id="@+id/materiasFragment"
         android:icon="@drawable/ic_menu_principal"
         android:title="Principal"
-        app:action="@id/materiasFragment" />
+        app:showAsAction="never" />
 
     <item
         android:id="@+id/agregarMateriaFragment"
@@ -37,5 +37,10 @@
         android:icon="@drawable/ic_ayuda"
         android:title="Ayuda"
         app:action="@id/ayudaFragment" />
+
+    <item
+        android:id="@+id/cerrarSesion"
+        android:icon="@drawable/ic_cerrar_sesion"
+        android:title="Cerrar Sesión" />
 
 </menu>

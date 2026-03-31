@@ -4,12 +4,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ui.main.combo.principal.materias.SubtemasFragment">
+    android:background="?attr/android:colorBackground"
+    tools:context=".ui.main.combo.principal.subtema.SubtemasFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/bg_esquinas_redondeadas_fondo"
+        android:backgroundTint="?attr/colorSurface"
         android:orientation="vertical"
         android:padding="10dp">
 
@@ -18,8 +20,8 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="Subtemas"
-            android:textColor="@color/acento"
-            android:textSize="22sp"
+            android:textColor="?attr/colorTertiary"
+            android:textAppearance="?attr/textAppearanceHeadlineMedium"
             android:textStyle="bold" />
 
         <TextView
@@ -28,8 +30,8 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="Tema: ''Algún Subtema''"
-            android:textColor="@color/acento"
-            android:textSize="16sp"
+            android:textColor="?attr/colorTertiary"
+            android:textAppearance="?attr/textAppearanceBodyLarge"
             android:textStyle="bold" />
 
         <TextView
@@ -38,8 +40,8 @@
             android:gravity="center"
             android:layout_marginTop="8dp"
             android:text="Desliza para explorar más subtemas ➡"
-            android:textColor="@color/acento"
-            android:textSize="14sp"
+            android:textColor="?attr/colorTertiary"
+            android:textAppearance="?attr/textAppearanceBodyLarge"
             android:textStyle="italic" />
 
         <androidx.viewpager2.widget.ViewPager2

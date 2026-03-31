@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:background="@android:color/white"
+        android:background="?attr/colorSurface"
         android:gravity="center"
         android:orientation="vertical"
         android:padding="24dp">
@@ -24,8 +24,8 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="8dp"
             android:text="Inscribir materia"
-            android:textColor="@color/black"
-            android:textSize="22sp"
+            android:textColor="?attr/colorOnSurface"
+            android:textAppearance="?attr/textAppearanceHeadlineMedium"
             android:textStyle="bold" />
 
         <TextView
@@ -34,9 +34,9 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
             android:gravity="center"
-            android:text="¿Deseas inscribirte en: Cálculo II?"
-            android:textColor="@color/black"
-            android:textSize="17sp" />
+            android:text="¿Deseas inscribirte en: Cálculo ?"
+            android:textColor="?attr/colorOnSurface"
+            android:textAppearance="?attr/textAppearanceTitleLarge" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -49,21 +49,23 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="12dp"
-                android:backgroundTint="@color/acento"
+                android:backgroundTint="?attr/colorTertiary"
                 android:contentDescription="Botón para iniciar sesión"
                 android:text="Cancelar"
-                android:textColor="@color/black"
-                android:textStyle="bold" />
+                android:textColor="?attr/colorOnPrimary"
+                android:textStyle="bold"
+                android:textAppearance="?attr/textAppearanceBodyLarge"/>
 
             <Button
                 android:id="@+id/btnAceptar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/secundario"
+                android:backgroundTint="?attr/colorSecondary"
                 android:contentDescription="Botón para iniciar sesión"
                 android:text="Aceptar"
-                android:textColor="@color/black"
-                android:textStyle="bold" />
+                android:textColor="?attr/colorOnPrimary"
+                android:textStyle="bold"
+                android:textAppearance="?attr/textAppearanceBodyLarge"/>
         </LinearLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

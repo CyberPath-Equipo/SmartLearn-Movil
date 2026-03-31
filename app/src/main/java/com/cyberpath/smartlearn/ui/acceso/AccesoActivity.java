@@ -19,6 +19,9 @@ import com.cyberpath.smartlearn.util.accesibilidad.SalidaAudio;
 import com.cyberpath.smartlearn.util.notificaciones.AlarmaProgramador;
 import com.cyberpath.smartlearn.util.notificaciones.NotificacionHelper;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class AccesoActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,31 +34,34 @@ public class AccesoActivity extends AppCompatActivity {
             return insets;
         });
 
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            List<String> permisos = new ArrayList<>();
+
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
                     != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.POST_NOTIFICATIONS}, 100);
+                permisos.add(Manifest.permission.POST_NOTIFICATIONS);
             }
+
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO)
                     != PackageManager.PERMISSION_GRANTED) {
+                permisos.add(Manifest.permission.RECORD_AUDIO);
+            }
+
+            if (!permisos.isEmpty()) {
                 ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.RECORD_AUDIO}, 100);
+                        permisos.toArray(new String[0]),
+                        100);
             }
         }
-
-        SalidaAudio.iniciarInstancia(this.getApplicationContext());
-        EntradaAudio.iniciarInstancia(this.getApplicationContext());
-
         NotificacionHelper.crearCanal(this);
         AlarmaProgramador.programarRecordatorioDiario(this);
+        SalidaAudio.iniciarInstancia(this.getApplicationContext());
+        EntradaAudio.iniciarInstancia(this.getApplicationContext());
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        // Liberar recursos de TTS / STT cuando la Activity termine
         SalidaAudio instSalida = SalidaAudio.obtenerInstancia();
         if (instSalida != null) instSalida.liberar();
         EntradaAudio instEntrada = EntradaAudio.obtenerInstancia();

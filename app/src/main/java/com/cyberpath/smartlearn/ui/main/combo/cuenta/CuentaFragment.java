@@ -1,27 +1,36 @@
 package com.cyberpath.smartlearn.ui.main.combo.cuenta;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import com.cyberpath.smartlearn.R;
 import com.cyberpath.smartlearn.data.model.usuario.Usuario;
+import com.cyberpath.smartlearn.logic.main.combo.cuenta.CuentaLogic;
+import com.cyberpath.smartlearn.ui.acceso.AccesoActivity;
 import com.cyberpath.smartlearn.util.constants.UsuarioCst;
+import com.cyberpath.smartlearn.util.preferences.PreferencesManager;
 
 public class CuentaFragment extends Fragment {
 
-    private final Usuario usuarioActual = UsuarioCst.USUARIO_ACTUAL;
+    private CuentaLogic cuentaLogic;
     private NavController navController;
     private TextView textoNombre, textoCorreo;
+
+    public CuentaFragment() {
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -35,32 +44,103 @@ public class CuentaFragment extends Fragment {
 
         navController = Navigation.findNavController(view);
 
+        cuentaLogic = new CuentaLogic(this);
+
         textoNombre = view.findViewById(R.id.tv_nombre_actual);
-        textoNombre.setText(usuarioActual.getNombreCuenta());
         textoCorreo = view.findViewById(R.id.tv_correo_actual);
-        textoCorreo.setText(usuarioActual.getCorreo());
+
+        Usuario usuarioActual = UsuarioCst.USUARIO_ACTUAL;
+        if (usuarioActual != null) {
+            textoNombre.setText(usuarioActual.getNombreCuenta());
+            textoCorreo.setText(usuarioActual.getCorreo());
+        }
 
         LinearLayout btnCambiarNombre = view.findViewById(R.id.btn_cambiar_nombre);
-        btnCambiarNombre.setOnClickListener(v -> {
-            Bundle args = new Bundle();
-            args.putString("tipoEdicion", "nombre");
-            navController.navigate(R.id.action_cuentaFragment_to_editarCuentaFragment, args);
-        });
+        btnCambiarNombre.setOnClickListener(v -> navegarAEdicion("nombre"));
 
         LinearLayout btnCambiarCorreo = view.findViewById(R.id.btn_cambiar_correo);
-        btnCambiarCorreo.setOnClickListener(v -> {
-            Bundle args = new Bundle();
-            args.putString("tipoEdicion", "correo");
-            navController.navigate(R.id.action_cuentaFragment_to_editarCuentaFragment, args);
-        });
+        btnCambiarCorreo.setOnClickListener(v -> navegarAEdicion("correo"));
 
         LinearLayout btnCambiarContrasena = view.findViewById(R.id.btn_cambiar_contrasena);
-        btnCambiarContrasena.setOnClickListener(v -> {
-            Bundle args = new Bundle();
-            args.putString("tipoEdicion", "contrasena");
-            navController.navigate(R.id.action_cuentaFragment_to_editarCuentaFragment, args);
+        btnCambiarContrasena.setOnClickListener(v -> navegarAEdicion("contrasena"));
+
+        Button btnEliminarCuenta = view.findViewById(R.id.btn_eliminar_cuenta);
+        if (btnEliminarCuenta != null) {
+            btnEliminarCuenta.setOnClickListener(v -> mostrarDialogoEliminarCuenta());
+        }
+    }
+
+    private void navegarAEdicion(String tipoEdicion) {
+        Bundle args = new Bundle();
+        args.putString("tipoEdicion", tipoEdicion);
+        navController.navigate(R.id.action_cuentaFragment_to_editarCuentaFragment, args);
+    }
+
+    private void mostrarDialogoEliminarCuenta() {
+        View vista = LayoutInflater.from(requireContext())
+                .inflate(R.layout.dialogo_eliminar_cuenta, null);
+
+        com.google.android.material.textfield.TextInputEditText etContrasena =
+                vista.findViewById(R.id.etContrasena);
+        Button btnCancelar = vista.findViewById(R.id.btnCancelar);
+        Button btnAceptar = vista.findViewById(R.id.btnAceptar);
+
+        AlertDialog dialog = new AlertDialog.Builder(requireContext())
+                .setView(vista)
+                .setCancelable(true)
+                .create();
+
+        btnCancelar.setOnClickListener(v -> dialog.dismiss());
+
+        btnAceptar.setOnClickListener(v -> {
+            String contrasena = etContrasena.getText() != null ?
+                    etContrasena.getText().toString().trim() : "";
+
+            if (contrasena.isEmpty()) {
+                showToast("Ingresa tu contraseña");
+                return;
+            }
+
+            dialog.dismiss();
+            cuentaLogic.eliminarCuenta(contrasena);
         });
 
-        // view.findViewById(R.id.btn_eliminar_cuenta).setOnClickListener(v -> { /* Lógica para eliminar */ });
+        dialog.show();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        cuentaLogic = null;
+    }
+
+    public void showToast(String mensaje) {
+        if (getContext() != null) {
+            android.widget.Toast.makeText(getContext(), mensaje,
+                    android.widget.Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void actualizarDatosUsuario() {
+        Usuario usuarioActual = UsuarioCst.USUARIO_ACTUAL;
+        if (usuarioActual != null && textoNombre != null && textoCorreo != null) {
+            textoNombre.setText(usuarioActual.getNombreCuenta());
+            textoCorreo.setText(usuarioActual.getCorreo());
+        }
+    }
+
+    public void onCuentaEliminada() {
+        PreferencesManager.setUsuarioRegistrado(requireContext(), false);
+        PreferencesManager.setIdUsuario(requireContext(), -1);
+
+        UsuarioCst.USUARIO_ACTUAL = null;
+
+        Intent intent = new Intent(requireContext(), AccesoActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+
+        if (getActivity() != null) {
+            getActivity().finish();
+        }
     }
 }

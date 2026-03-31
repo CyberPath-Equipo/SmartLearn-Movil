@@ -16,23 +16,19 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import com.cyberpath.smartlearn.R;
-import com.cyberpath.smartlearn.data.api.ApiService;
-import com.cyberpath.smartlearn.data.api.RetrofitClient;
-import com.cyberpath.smartlearn.data.model.usuario.Usuario;
-import com.cyberpath.smartlearn.util.constants.UsuarioCst;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import com.cyberpath.smartlearn.logic.main.combo.cuenta.CuentaLogic;
 
 public class EditarCuentaFragment extends Fragment {
 
-    private final Usuario usuarioActual = UsuarioCst.USUARIO_ACTUAL;
+    private CuentaLogic cuentaLogic;
     private NavController navController;
     private String tipoEdicion;
     private EditText etNuevoValor, etNuevoValorConfirmacion, etContrasenaActual;
     private TextView tvTitulo;
     private Button btnGuardar, btnCancelar;
+
+    public EditarCuentaFragment() {
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -45,6 +41,9 @@ public class EditarCuentaFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         navController = Navigation.findNavController(view);
+
+        cuentaLogic = new CuentaLogic(this);
+
         tvTitulo = view.findViewById(R.id.tv_titulo_editar);
         etNuevoValor = view.findViewById(R.id.et_nuevo_valor);
         etNuevoValorConfirmacion = view.findViewById(R.id.et_nuevo_valor_confirmacion);
@@ -58,9 +57,15 @@ public class EditarCuentaFragment extends Fragment {
 
         configurarUI();
 
-        btnCancelar.setOnClickListener(v -> navController.navigate(R.id.action_editarCuentaFragment_to_cuentaFragment));
+        btnCancelar.setOnClickListener(v -> navegarAtras());
 
-        btnGuardar.setOnClickListener(v -> guardarCambios());
+        btnGuardar.setOnClickListener(v -> {
+            String nuevoValor = etNuevoValor.getText().toString().trim();
+            String confirmacion = etNuevoValorConfirmacion.getText().toString().trim();
+            String contrasenaActual = etContrasenaActual.getText().toString().trim();
+
+            cuentaLogic.validarYGuardarCambios(tipoEdicion, nuevoValor, confirmacion, contrasenaActual);
+        });
     }
 
     private void configurarUI() {
@@ -84,60 +89,38 @@ public class EditarCuentaFragment extends Fragment {
         }
     }
 
-    private void guardarCambios() {
-        String nuevoValor = etNuevoValor.getText().toString().trim();
-        String confirmacion = etNuevoValorConfirmacion.getText().toString().trim();
-        String contrasenaActual = etContrasenaActual.getText().toString().trim();
-
-        if (nuevoValor.isEmpty() || contrasenaActual.isEmpty()) {
-            Toast.makeText(getContext(), "Completa todos los campos", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        if (!contrasenaActual.equals(usuarioActual.getContrasena())) {
-            Toast.makeText(getContext(), "Contraseña actual incorrecta", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        if (tipoEdicion.equals("contrasena") && !nuevoValor.equals(confirmacion)) {
-            Toast.makeText(getContext(), "Las contraseñas no coinciden", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        switch (tipoEdicion) {
-            case "nombre":
-                usuarioActual.setNombreCuenta(nuevoValor);
-                break;
-            case "correo":
-                usuarioActual.setCorreo(nuevoValor);
-                break;
-            case "contrasena":
-                usuarioActual.setContrasena(nuevoValor);
-                break;
-        }
-
-        actualizarUsuarioAPI(usuarioActual);
+    private void navegarAtras() {
+        navController.navigate(R.id.action_editarCuentaFragment_to_cuentaFragment);
     }
 
-    private void actualizarUsuarioAPI(Usuario usuario) {
-        ApiService api = RetrofitClient.getApiService();
-        Call<Usuario> call = api.update(usuario.getId(), usuario);
-        call.enqueue(new Callback<Usuario>() {
-            @Override
-            public void onResponse(Call<Usuario> call, Response<Usuario> response) {
-                if (response.isSuccessful()) {
-                    Toast.makeText(getContext(), "Cambios guardados", Toast.LENGTH_SHORT).show();
-                    navController.navigate(R.id.action_editarCuentaFragment_to_cuentaFragment);
-                } else {
-                    Toast.makeText(getContext(), "Error al guardar", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Usuario> call, Throwable t) {
-                Toast.makeText(getContext(), "Error de conexión", Toast.LENGTH_SHORT).show();
-            }
-        });
+    public void showToast(String mensaje) {
+        if (getContext() != null) {
+            Toast.makeText(getContext(), mensaje, Toast.LENGTH_SHORT).show();
+        }
     }
 
+    public void showToastLong(String mensaje) {
+        if (getContext() != null) {
+            Toast.makeText(getContext(), mensaje, Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public void onCambiosGuardados() {
+        Toast.makeText(getContext(), "Cambios guardados", Toast.LENGTH_SHORT).show();
+        navegarAtras();
+    }
+
+    public void onErrorGuardar() {
+        Toast.makeText(getContext(), "Error al guardar", Toast.LENGTH_SHORT).show();
+    }
+
+    public void onErrorConexion() {
+        Toast.makeText(getContext(), "Error de conexión", Toast.LENGTH_SHORT).show();
+    }
+
+    public void navigateToCuentaFragment() {
+        if (navController != null) {
+            navController.navigate(R.id.action_editarCuentaFragment_to_cuentaFragment);
+        }
+    }
 }
