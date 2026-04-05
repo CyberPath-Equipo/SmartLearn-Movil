@@ -62,11 +62,9 @@ public class TeoriaLogic {
 
                 if (response.isSuccessful() && response.body() != null) {
                     teoriaActual = response.body();
-                    //guardarEnLocal(teoriaActual);
 
                     mostrarContenido(teoriaActual);
                 } else {
-                    fragment.mostrarError("Error al cargar la teoría");
                     cargarTeoriaLocal();
                 }
             }

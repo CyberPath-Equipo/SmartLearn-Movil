@@ -79,11 +79,11 @@
     <!-- ============================= -->
 
     <style name="TextAppearance.SmartLearn.Headline" parent="TextAppearance.Material3.HeadlineMedium"> <!-- Subtemas -->
-        <item name="android:textSize">24sp</item>
+        <item name="android:textSize">22sp</item>
     </style>
 
     <style name="TextAppearance.SmartLearn.Subtitle" parent="TextAppearance.Material3.TitleLarge"> <!-- Secciones -->
-        <item name="android:textSize">20sp</item>
+        <item name="android:textSize">18sp</item>
     </style>
 
     <style name="TextAppearance.SmartLearn.Body" parent="TextAppearance.Material3.BodyLarge"> <!-- Parrafos -->
@@ -91,7 +91,7 @@
     </style>
 
     <style name="TextAppearance.SmartLearn.BodyReading" parent="TextAppearance.Material3.BodyMedium"> <!-- Contenido denso (Teoría) -->
-        <item name="android:textSize">17sp</item>
+        <item name="android:textSize">14sp</item>
         <item name="android:lineSpacingExtra">10dp</item>
     </style>
 

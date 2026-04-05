@@ -11,7 +11,7 @@
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardBackgroundColor="@color/white"
+        android:background="@drawable/bg_esquinas_redondeadas_fondo"
         app:cardCornerRadius="20dp"
         app:cardElevation="2dp"
         app:strokeWidth="0dp">
@@ -27,15 +27,16 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="5dp">
 
                 <TextView
                     android:id="@+id/tv_nombre_usuario"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="¡Hola, Usuario!"
-                    android:textColor="#565656"
-                    android:textSize="20sp"
+                    android:textColor="?attr/colorTertiary"
+                    android:textAppearance="?attr/textAppearanceHeadlineMedium"
                     android:textStyle="bold" />
 
                 <ImageView
@@ -61,7 +62,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        app:cardBackgroundColor="@color/white"
+        android:background="@drawable/bg_esquinas_redondeadas_fondo"
         app:cardCornerRadius="20dp"
         app:cardElevation="2dp"
         app:strokeWidth="0dp">
@@ -76,8 +77,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Materias Inscritas:"
-                android:textColor="#565656"
-                android:textSize="16sp"
+                android:textAlignment="center"
+                android:textAppearance="?attr/textAppearanceTitleLarge"
+                android:textColor="?attr/colorTertiary"
                 android:textStyle="bold" />
 
             <TextView
@@ -85,55 +87,55 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:text="Desliza para explorar más materias"
-                android:textColor="#565656"
-                android:textSize="13sp" />
+                android:textAppearance="?attr/textAppearanceBodyMedium"
+                android:textColor="?attr/colorTertiary" />
 
             <androidx.viewpager2.widget.ViewPager2
                 android:id="@+id/viewPagerMaterias"
                 android:layout_width="match_parent"
                 android:layout_height="350dp"
                 android:layout_marginTop="16dp"
-                android:clipToPadding="false"
-                android:paddingStart="32dp"
-                android:paddingEnd="32dp"
                 android:layout_marginBottom="8dp"
-                android:clipChildren="false" />
+                android:clipChildren="false"
+                android:clipToPadding="false"
+                android:paddingStart="36dp"
+                android:paddingEnd="40dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
+                android:layout_marginTop="10dp"
                 android:gravity="center"
-                android:layout_marginTop="10dp">
+                android:orientation="horizontal">
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:id="@+id/btn_prev_materia"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
+                    android:contentDescription="Materia anterior"
                     android:src="@drawable/ic_arrow_back"
-                    app:fabSize="mini"
                     app:backgroundTint="@color/colorAccent"
-                    app:tint="@android:color/white"
-                    android:contentDescription="Materia anterior" />
+                    app:fabSize="mini"
+                    app:tint="@android:color/white" />
 
                 <LinearLayout
                     android:id="@+id/indicadores_container"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center" />
+                    android:gravity="center"
+                    android:orientation="horizontal" />
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:id="@+id/btn_next_materia"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
+                    android:contentDescription="Materia siguiente"
                     android:src="@drawable/ic_arrow_forward"
-                    app:fabSize="mini"
                     app:backgroundTint="@color/colorAccent"
-                    app:tint="@android:color/white"
-                    android:contentDescription="Materia siguiente" />
+                    app:fabSize="mini"
+                    app:tint="@android:color/white" />
             </LinearLayout>
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>

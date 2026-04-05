@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/android:colorBackground"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".ui.main.combo.cuenta.EditarCuentaFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -11,9 +14,8 @@
         android:background="@drawable/bg_esquinas_redondeadas_fondo"
         android:backgroundTint="?attr/colorSurface"
         android:orientation="vertical"
-        android:padding="10dp">
+        android:padding="15dp">
 
-        <!-- Título dinámico -->
         <TextView
             android:id="@+id/tv_titulo_editar"
             android:layout_width="match_parent"
@@ -33,18 +35,30 @@
             android:textColor="?attr/colorOnSurface"
             android:textAppearance="?attr/textAppearanceTitleLarge" />
 
-        <!-- Campo nuevo (nombre, correo o contraseña) -->
-        <EditText
-            android:id="@+id/et_nuevo_valor"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_nuevo_valor"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            android:background="@drawable/bg_esquinas_redondas_elementos"
-            android:hint="Nuevo valor"
-            android:padding="14dp"
-            android:textColor="?attr/colorOnSurface"
-            android:textColorHint="?attr/colorSurface"
-            android:textSize="18sp" />
+            android:layout_marginBottom="16dp"
+            app:boxBackgroundMode="outline"
+            app:boxStrokeColor="?attr/colorOnSurface"
+            app:boxStrokeWidth="2dp"
+            app:startIconDrawable="@drawable/ic_usuario"
+            app:startIconTint="?attr/colorOnSurface"
+            android:hint="Nuevo valor">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_nuevo_valor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="12dp"
+                android:paddingBottom="12dp"
+                android:textColor="?attr/colorOnSurface"
+                android:textColorHint="?attr/colorOnSurfaceVariant"
+                android:textSize="18sp"
+                android:importantForAutofill="no"
+                android:inputType="text" />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <RadioGroup
             android:id="@+id/rg_estado_accesibilidad"
@@ -73,31 +87,55 @@
                 android:textSize="18sp" />
         </RadioGroup>
 
-        <!-- Confirmar Campo nuevo (nombre, correo o contraseña) -->
-        <EditText
-            android:id="@+id/et_nuevo_valor_confirmacion"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_confirmacion"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            android:background="@drawable/bg_esquinas_redondas_elementos"
-            android:hint="Nuevo valor"
-            android:padding="14dp"
-            android:textColor="?attr/colorOnSurface"
-            android:textColorHint="?attr/colorSurface"
-            android:textSize="18sp" />
+            android:layout_marginBottom="16dp"
+            app:boxBackgroundMode="outline"
+            app:boxStrokeColor="?attr/colorOnSurface"
+            app:boxStrokeWidth="2dp"
+            app:startIconDrawable="@drawable/ic_usuario"
+            app:startIconTint="?attr/colorOnSurface"
+            android:hint="Confirmar nuevo valor">
 
-        <!-- Contraseña actual (siempre se pide por seguridad) -->
-        <EditText
-            android:id="@+id/et_contrasena_actual"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_nuevo_valor_confirmacion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="12dp"
+                android:paddingBottom="12dp"
+                android:textColor="?attr/colorOnSurface"
+                android:textColorHint="?attr/colorOnSurfaceVariant"
+                android:textSize="18sp"
+                android:inputType="text" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_contrasena"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg_esquinas_redondas_elementos"
-            android:hint="Contraseña actual (requerida)"
-            android:inputType="textPassword"
-            android:padding="14dp"
-            android:textColor="?attr/colorOnSurface"
-            android:textColorHint="?attr/colorSurface"
-            android:textSize="18sp" />
+            android:layout_marginBottom="30dp"
+            app:boxBackgroundMode="outline"
+            app:boxStrokeColor="?attr/colorOnSurface"
+            app:boxStrokeWidth="2dp"
+            app:endIconMode="password_toggle"
+            app:startIconDrawable="@drawable/ic_contrasena"
+            app:startIconTint="?attr/colorOnSurface"
+            android:hint="Contraseña actual (requerida)">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_contrasena_actual"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="12dp"
+                android:paddingBottom="12dp"
+                android:textColor="?attr/colorOnSurface"
+                android:textColorHint="?attr/colorOnSurfaceVariant"
+                android:textSize="18sp"
+                android:importantForAutofill="yes"
+                android:inputType="textPassword" />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -105,25 +143,25 @@
             android:layout_marginTop="30dp"
             android:orientation="horizontal">
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_cancelar"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:layout_weight="1"
-                android:backgroundTint="?attr/colorButtonNormal"
                 android:text="Cancelar"
+                app:backgroundTint="?attr/colorButtonNormal"
                 android:textColor="?attr/colorOnSurface"
                 android:textAppearance="?attr/textAppearanceBodyLarge" />
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_guardar_cambio"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_weight="1"
-                android:backgroundTint="?attr/colorTertiary"
                 android:text="Guardar"
+                app:backgroundTint="?attr/colorTertiary"
                 android:textColor="?attr/colorSurface"
                 android:textStyle="bold"
                 android:textAppearance="?attr/textAppearanceBodyLarge" />

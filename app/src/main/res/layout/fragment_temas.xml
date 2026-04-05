@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -13,16 +14,7 @@
         android:background="@drawable/bg_esquinas_redondeadas_fondo"
         android:backgroundTint="?attr/colorSurface"
         android:orientation="vertical"
-        android:padding="10dp">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="Temas"
-            android:textColor="?attr/colorTertiary"
-            android:textAppearance="?attr/textAppearanceHeadlineMedium"
-            android:textStyle="bold" />
+        android:padding="15dp">
 
         <TextView
             android:id="@+id/tvNombreMateria"
@@ -31,29 +23,85 @@
             android:gravity="center"
             android:text="Materia: ''Algúna Materia''"
             android:textColor="?attr/colorTertiary"
-            android:textAppearance="?attr/textAppearanceTitleLarge"
+            android:textAppearance="?attr/textAppearanceHeadlineMedium"
             android:textStyle="bold" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:layout_marginTop="8dp"
-            android:text="Desliza para explorar más temas ➡"
+            android:text="Temas Disponibles:"
+            android:textAppearance="?attr/textAppearanceTitleLarge"
             android:textColor="?attr/colorTertiary"
-            android:textAppearance="?attr/textAppearanceBodyLarge"
-            android:textStyle="italic" />
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Desliza para explorar más temas"
+            android:textColor="?attr/colorTertiary"
+            android:textAppearance="?attr/textAppearanceBodyMedium"/>
+
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/viewPagerTemas"
             android:layout_width="match_parent"
-            android:layout_height="400dp"
-            android:layout_marginTop="20dp"
+            android:layout_height="350dp"
+            android:layout_marginTop="16dp"
             android:clipToPadding="false"
-            android:paddingStart="40dp"
+            android:paddingStart="36dp"
             android:paddingEnd="40dp"
+            android:layout_marginBottom="8dp"
             android:clipChildren="false" />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginTop="10dp">
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/btn_prev_tema"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:src="@drawable/ic_arrow_back"
+                app:fabSize="mini"
+                app:backgroundTint="@color/colorAccent"
+                app:tint="@android:color/white"
+                android:contentDescription="Tema anterior" />
+
+            <LinearLayout
+                android:id="@+id/indicadores_container_temas"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/btn_next_tema"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:src="@drawable/ic_arrow_forward"
+                app:fabSize="mini"
+                app:backgroundTint="@color/colorAccent"
+                app:tint="@android:color/white"
+                android:contentDescription="Tema siguiente" />
+        </LinearLayout>
     </LinearLayout>
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_volver"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="10dp"
+        android:text="Volver"
+        android:contentDescription="Volver"
+        app:cornerRadius="10dp"
+        app:backgroundTint="?attr/colorSecondary"
+        android:textAllCaps="false" />
 </LinearLayout>

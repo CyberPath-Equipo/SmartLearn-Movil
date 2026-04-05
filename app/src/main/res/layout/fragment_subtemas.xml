@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -13,47 +14,94 @@
         android:background="@drawable/bg_esquinas_redondeadas_fondo"
         android:backgroundTint="?attr/colorSurface"
         android:orientation="vertical"
-        android:padding="10dp">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="Subtemas"
-            android:textColor="?attr/colorTertiary"
-            android:textAppearance="?attr/textAppearanceHeadlineMedium"
-            android:textStyle="bold" />
+        android:padding="15dp">
 
         <TextView
             android:id="@+id/tvNombreTema"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="Tema: ''Algún Subtema''"
+            android:text="Tema: ''Algún Tema''"
             android:textColor="?attr/colorTertiary"
-            android:textAppearance="?attr/textAppearanceBodyLarge"
+            android:textAppearance="?attr/textAppearanceHeadlineMedium"
             android:textStyle="bold" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:layout_marginTop="8dp"
-            android:text="Desliza para explorar más subtemas ➡"
+            android:text="Subtemas Disponibles"
             android:textColor="?attr/colorTertiary"
-            android:textAppearance="?attr/textAppearanceBodyLarge"
-            android:textStyle="italic" />
+            android:textAppearance="?attr/textAppearanceTitleLarge"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Desliza para explorar más subtemas"
+            android:textColor="?attr/colorTertiary"
+            android:textAppearance="?attr/textAppearanceBodyMedium"/>
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/viewPagerSubtemas"
             android:layout_width="match_parent"
-            android:layout_height="400dp"
-            android:layout_marginTop="20dp"
+            android:layout_height="350dp"
+            android:layout_marginTop="16dp"
             android:clipToPadding="false"
-            android:paddingStart="40dp"
+            android:paddingStart="36dp"
             android:paddingEnd="40dp"
+            android:layout_marginBottom="8dp"
             android:clipChildren="false" />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginTop="10dp">
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/btn_prev_subtema"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:src="@drawable/ic_arrow_back"
+                app:fabSize="mini"
+                app:backgroundTint="@color/colorAccent"
+                app:tint="@android:color/white"
+                android:contentDescription="Subtema anterior" />
+
+            <LinearLayout
+                android:id="@+id/indicadores_container_subtemas"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/btn_next_subtema"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:src="@drawable/ic_arrow_forward"
+                app:fabSize="mini"
+                app:backgroundTint="@color/colorAccent"
+                app:tint="@android:color/white"
+                android:contentDescription="Subtema siguiente" />
+        </LinearLayout>
     </LinearLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_volver"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="10dp"
+        android:text="Volver"
+        android:contentDescription="Volver"
+        app:cornerRadius="10dp"
+        app:backgroundTint="?attr/colorSecondary"
+        android:textAllCaps="false" />
 
 </LinearLayout>

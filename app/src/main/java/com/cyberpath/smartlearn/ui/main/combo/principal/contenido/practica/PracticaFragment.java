@@ -23,6 +23,7 @@ import com.cyberpath.smartlearn.logic.main.combo.principal.contenido.practica.Na
 import com.cyberpath.smartlearn.logic.main.combo.principal.contenido.practica.PracticaLogic;
 import com.cyberpath.smartlearn.util.accesibilidad.EntradaAudio;
 import com.cyberpath.smartlearn.util.accesibilidad.SalidaAudio;
+import com.google.android.material.button.MaterialButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +38,7 @@ public class PracticaFragment extends Fragment implements AdapterView.OnItemClic
     private AdaptadorPractica adaptadorEjercicios;
     private TextView tvSubtema;
     private Subtema subtema;
+    private MaterialButton btnVolver;
 
     public PracticaFragment() {
     }
@@ -77,6 +79,15 @@ public class PracticaFragment extends Fragment implements AdapterView.OnItemClic
         practicaLogic = new PracticaLogic(this, subtema);
 
         navAccesibilidad = new NavAccesibilidad(requireContext(), this, practicaLogic, listViewEjercicios, adaptadorEjercicios);
+
+        btnVolver = view.findViewById(R.id.btn_volver);
+        btnVolver.setOnClickListener(v -> {
+            boolean popped = false;
+            try {
+                popped = NavHostFragment.findNavController(this).popBackStack();
+            } catch (Exception ignored) {}
+            if (!popped) requireActivity().onBackPressed();
+        });
     }
 
     @Override
@@ -95,6 +106,7 @@ public class PracticaFragment extends Fragment implements AdapterView.OnItemClic
         adaptadorEjercicios = null;
         navAccesibilidad = null;
         practicaLogic = null;
+        btnVolver = null;
     }
 
     @Override
