@@ -43,6 +43,9 @@ public class EntradaAudio implements RecognitionListener {
 
     private EntradaAudio(Context context) {
         this.context = context.getApplicationContext();
+        if (SalidaAudio.obtenerInstancia() == null) {
+            SalidaAudio.iniciarInstancia(this.context);
+        }
         this.salidaAudio = SalidaAudio.obtenerInstancia();
         try {
             if (SpeechRecognizer.isRecognitionAvailable(this.context)) {
@@ -59,7 +62,7 @@ public class EntradaAudio implements RecognitionListener {
         }
     }
 
-    public static void iniciarInstancia(Context context) {
+    public static synchronized void iniciarInstancia(Context context) {
         if (instancia == null) {
             instancia = new EntradaAudio(context.getApplicationContext());
         }

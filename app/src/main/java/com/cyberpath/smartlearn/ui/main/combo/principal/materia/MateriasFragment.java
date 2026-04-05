@@ -3,9 +3,11 @@ package com.cyberpath.smartlearn.ui.main.combo.principal.materia;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
@@ -14,19 +16,17 @@ import android.widget.Toast;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.cyberpath.smartlearn.R;
 import com.cyberpath.smartlearn.data.model.contenido.Materia;
-import com.cyberpath.smartlearn.data.model.contenido.Subtema;
 import com.cyberpath.smartlearn.logic.main.combo.principal.materia.MateriasLogic;
 import com.cyberpath.smartlearn.logic.main.combo.principal.materia.NavAccesibilidad;
 import com.cyberpath.smartlearn.util.accesibilidad.EntradaAudio;
 import com.cyberpath.smartlearn.util.preferences.PreferencesManager;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,23 +36,24 @@ public class MateriasFragment extends Fragment {
 
     private MateriasLogic materiasLogic;
     private NavAccesibilidad navAccesibilidadMaterias;
-    private final EntradaAudio entradaAudio = EntradaAudio.obtenerInstancia();
+    private EntradaAudio entradaAudio;
     private final Handler filtroHandler = new Handler(Looper.getMainLooper());
 
     private SearchView searchViewMaterias;
     private ViewPager2 carruselMaterias;
+    private ImageView[] indicadores;
+    private LinearLayout indicadoresContainer;
+    private FloatingActionButton btnPrev;
+    private FloatingActionButton btnNext;
     private AdaptadorMaterias adapterMaterias;
     private Runnable filtroRunnable;
     private TextView nombreUsuario;
-    private TextView tvUltimoSubtema;
-    private LinearLayout btnUltimoSubtema;
 
     public MateriasFragment() {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_materias, container, false);
     }
 
@@ -67,13 +68,22 @@ public class MateriasFragment extends Fragment {
                     }
                 });
 
-        entradaAudio.detenerEscucha();
+        entradaAudio = EntradaAudio.obtenerInstancia();
+        if (entradaAudio != null) {
+            entradaAudio.detenerEscucha();
+        }
 
         nombreUsuario = view.findViewById(R.id.tv_nombre_usuario);
         searchViewMaterias = view.findViewById(R.id.searchViewMaterias);
         carruselMaterias = view.findViewById(R.id.viewPagerMaterias);
-        tvUltimoSubtema = view.findViewById(R.id.tv_ultimo_subtema);
-        btnUltimoSubtema = view.findViewById(R.id.btn_ultimo_subtema);
+        indicadoresContainer = view.findViewById(R.id.indicadores_container);
+        btnPrev = view.findViewById(R.id.btn_prev_materia);
+        btnNext = view.findViewById(R.id.btn_next_materia);
+
+        btnPrev.setScaleX(0.86f);
+        btnPrev.setScaleY(0.86f);
+        btnNext.setScaleX(0.86f);
+        btnNext.setScaleY(0.86f);
 
         String nombreUsuarioActual = PreferencesManager.getNombreUsuario(requireContext());
         nombreUsuario.setText("Hola, " + nombreUsuarioActual);
@@ -103,9 +113,28 @@ public class MateriasFragment extends Fragment {
         });
 
         materiasLogic = new MateriasLogic(this);
+        navAccesibilidadMaterias = new NavAccesibilidad(requireContext(), this, materiasLogic, carruselMaterias, adapterMaterias);
 
-        navAccesibilidadMaterias = new NavAccesibilidad(requireContext(), this,
-                materiasLogic, carruselMaterias, adapterMaterias);
+        btnPrev.setOnClickListener(v -> {
+            if (adapterMaterias == null || adapterMaterias.getRealSize() == 0) return;
+            int currentPage = carruselMaterias.getCurrentItem();
+            carruselMaterias.setCurrentItem(currentPage - 1, true);
+        });
+
+        btnNext.setOnClickListener(v -> {
+            if (adapterMaterias == null || adapterMaterias.getRealSize() == 0) return;
+            int currentPage = carruselMaterias.getCurrentItem();
+            carruselMaterias.setCurrentItem(currentPage + 1, true);
+        });
+
+        carruselMaterias.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+                actualizarIndicadores(position);
+                actualizarBotones(position);
+            }
+        });
 
         searchViewMaterias.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -124,15 +153,12 @@ public class MateriasFragment extends Fragment {
                 return true;
             }
         });
-
-        materiasLogic.cargarUltimoSubtema();
     }
 
     @Override
     public void onResume() {
         super.onResume();
         android.util.Log.d("MateriasFragment", "onResume llamado");
-
         if (materiasLogic != null) {
             materiasLogic.cargarMaterias();
         }
@@ -141,20 +167,16 @@ public class MateriasFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-
         if (filtroRunnable != null) {
             filtroHandler.removeCallbacks(filtroRunnable);
             filtroRunnable = null;
         }
-
         if (navAccesibilidadMaterias != null) {
             navAccesibilidadMaterias.detenerNavegacion();
         }
-
         if (materiasLogic != null) {
             materiasLogic.limpiarDatos();
         }
-
         searchViewMaterias = null;
         carruselMaterias = null;
         adapterMaterias = null;
@@ -162,34 +184,52 @@ public class MateriasFragment extends Fragment {
         materiasLogic = null;
     }
 
+    private void actualizarIndicadores(int posicionActualPagina) {
+        if (adapterMaterias == null) return;
+        int total = adapterMaterias.getRealSize();
+        indicadoresContainer.removeAllViews();
+        indicadores = new ImageView[total];
+        int sizePx = dpToPx(10);
+        int marginPx = dpToPx(4);
+        int posicionReal = getRealPositionFromPageIndex(posicionActualPagina);
+        for (int i = 0; i < total; i++) {
+            indicadores[i] = new ImageView(requireContext());
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(sizePx, sizePx);
+            params.setMargins(marginPx, 0, marginPx, 0);
+            indicadores[i].setLayoutParams(params);
+            indicadores[i].setImageResource(i == posicionReal ? R.drawable.ic_dot_active : R.drawable.ic_dot_inactive);
+            indicadoresContainer.addView(indicadores[i]);
+        }
+    }
+
+    private void actualizarBotones(int posicionPagina) {
+        int total = adapterMaterias != null ? adapterMaterias.getRealSize() : 0;
+        if (total == 0) {
+            btnPrev.setAlpha(0.4f);
+            btnNext.setAlpha(0.4f);
+            return;
+        }
+        int realPos = getRealPositionFromPageIndex(posicionPagina);
+        btnPrev.setAlpha(realPos > 0 ? 1.0f : 0.4f);
+        btnNext.setAlpha(realPos < total - 1 ? 1.0f : 0.4f);
+    }
+
+    private int dpToPx(int dp) {
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, getResources().getDisplayMetrics());
+    }
+
+    private int getRealPositionFromPageIndex(int pageIndex) {
+        if (adapterMaterias == null) return 0;
+        int realSize = adapterMaterias.getRealSize();
+        if (realSize == 0) return 0;
+        int realPos = pageIndex % realSize;
+        if (realPos < 0) realPos += realSize;
+        return realPos;
+    }
+
     private void onMateriaClick(Materia materia) {
         var action = MateriasFragmentDirections.actionMateriasFragmentToTemasFragment(materia);
         NavHostFragment.findNavController(this).navigate(action);
-    }
-
-    public void navegarUltimoSubtema(Subtema subtema) {
-        View vista = LayoutInflater.from(requireContext()).inflate(R.layout.dialogo_teoria_practica, null);
-        TextView tvMensaje = vista.findViewById(R.id.tv_titulo_subtema);
-        tvMensaje.setText(subtema.getNombre());
-
-        AlertDialog dialog = new MaterialAlertDialogBuilder(requireContext())
-                .setView(vista)
-                .setCancelable(true)
-                .show();
-
-        vista.findViewById(R.id.btn_teoria).setOnClickListener(v -> {
-            var action = MateriasFragmentDirections.actionMateriasFragmentToTeoriaFragment(subtema, null);
-            NavHostFragment.findNavController(this).navigate(action);
-            dialog.dismiss();
-        });
-
-        vista.findViewById(R.id.btn_practica).setOnClickListener(v -> {
-            var action = MateriasFragmentDirections.actionMateriasFragmentToPracticaFragment(subtema);
-            NavHostFragment.findNavController(this).navigate(action);
-            dialog.dismiss();
-        });
-
-        vista.findViewById(R.id.btn_cancelar).setOnClickListener(v -> dialog.dismiss());
     }
 
     public void showToast(String mensaje) {
@@ -231,18 +271,6 @@ public class MateriasFragment extends Fragment {
         int realPos = current % realSize;
         if (realPos < 0) realPos += realSize;
         return realPos;
-    }
-
-    public void setTvUltimoSubtema(String texto) {
-        if (tvUltimoSubtema != null) {
-            tvUltimoSubtema.setText(texto);
-        }
-    }
-
-    public void setOnClickBtnUltimoSubtema(View.OnClickListener listener) {
-        if (btnUltimoSubtema != null) {
-            btnUltimoSubtema.setOnClickListener(listener);
-        }
     }
 
     public void entrarMateriaDesdeAccesibilidad(Materia materia, BiConsumer<Boolean, Materia> callback) {

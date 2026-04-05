@@ -26,7 +26,7 @@ public class SalidaAudio implements TextToSpeech.OnInitListener {
         tts = new TextToSpeech(this.context, this);
     }
 
-    public static void iniciarInstancia(Context context) {
+    public static synchronized void iniciarInstancia(Context context) {
         if (instancia == null) {
             instancia = new SalidaAudio(context.getApplicationContext());
         }
@@ -38,11 +38,18 @@ public class SalidaAudio implements TextToSpeech.OnInitListener {
 
     @Override
     public void onInit(int status) {
+        TextToSpeech motorTts = tts;
+        if (motorTts == null) {
+            Log.w(TAG, "Se recibio onInit pero TextToSpeech ya fue liberado");
+            estaInicializado = false;
+            return;
+        }
+
         if (status == TextToSpeech.SUCCESS) {
-            int resultado = tts.setLanguage(new Locale("es", "MX"));
+            int resultado = motorTts.setLanguage(new Locale("es", "MX"));
 
             if (resultado == TextToSpeech.LANG_MISSING_DATA || resultado == TextToSpeech.LANG_NOT_SUPPORTED) {
-                resultado = tts.setLanguage(Locale.forLanguageTag("es_US"));
+                resultado = motorTts.setLanguage(Locale.forLanguageTag("es_US"));
             }
 
             if (resultado == TextToSpeech.LANG_MISSING_DATA || resultado == TextToSpeech.LANG_NOT_SUPPORTED) {
@@ -51,10 +58,10 @@ public class SalidaAudio implements TextToSpeech.OnInitListener {
                 Log.i(TAG, "TTS inicializado correctamente con voz en español");
             }
 
-            tts.setSpeechRate(0.95f);
-            tts.setPitch(1.0f);
+            motorTts.setSpeechRate(0.95f);
+            motorTts.setPitch(1.0f);
 
-            tts.setOnUtteranceProgressListener(new UtteranceProgressListener() {
+            motorTts.setOnUtteranceProgressListener(new UtteranceProgressListener() {
                 @Override
                 public void onStart(String utteranceId) {
                     Log.d(TAG, "Comenzó a reproducir: " + utteranceId);
@@ -152,6 +159,8 @@ public class SalidaAudio implements TextToSpeech.OnInitListener {
     }
 
     public void liberar() {
+        estaInicializado = false;
+        onSpeechDone = null;
         if (tts != null) {
             tts.stop();
             tts.shutdown();

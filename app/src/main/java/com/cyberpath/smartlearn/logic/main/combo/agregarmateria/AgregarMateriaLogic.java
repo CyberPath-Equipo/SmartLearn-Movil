@@ -33,7 +33,7 @@ import retrofit2.Response;
 public class AgregarMateriaLogic {
     private final AgregarMateriaFragment fragment;
     private final Context context;
-    private final Usuario usuarioActual;
+    private Usuario usuarioActual;
 
     private final List<Materia> listaAllMaterias = new ArrayList<>();
     private final List<Materia> listaMateriasUsuario = new ArrayList<>();
@@ -48,6 +48,8 @@ public class AgregarMateriaLogic {
     public AgregarMateriaLogic(AgregarMateriaFragment fragment) {
         this.fragment = fragment;
         this.context = fragment.requireContext();
+        // Asegurar que el usuario esté cargado
+        UsuarioCst.ensureUsuarioLoaded(context);
         this.usuarioActual = UsuarioCst.USUARIO_ACTUAL;
     }
 
@@ -207,6 +209,13 @@ public class AgregarMateriaLogic {
             fragment.showToast("Materia inválida");
             return;
         }
+
+        // Validar y recargar usuario si es necesario
+        if (usuarioActual == null || usuarioActual.getId() == null) {
+            UsuarioCst.ensureUsuarioLoaded(context);
+            usuarioActual = UsuarioCst.USUARIO_ACTUAL;
+        }
+
         if (usuarioActual == null || usuarioActual.getId() == null) {
             fragment.showToast("Error: usuario no identificado");
             return;

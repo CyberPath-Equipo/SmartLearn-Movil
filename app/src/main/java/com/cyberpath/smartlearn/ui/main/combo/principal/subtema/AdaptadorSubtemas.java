@@ -66,7 +66,7 @@ public class AdaptadorSubtemas extends RecyclerView.Adapter<AdaptadorSubtemas.Su
     @Override
     public SubtemaViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.carousel_element, parent, false);
+                .inflate(R.layout.element_carousel, parent, false);
         return new SubtemaViewHolder(view);
     }
 

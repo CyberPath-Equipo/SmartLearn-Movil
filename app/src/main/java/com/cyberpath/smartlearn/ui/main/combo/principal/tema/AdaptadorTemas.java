@@ -66,7 +66,7 @@ public class AdaptadorTemas extends RecyclerView.Adapter<AdaptadorTemas.TemaView
     @Override
     public TemaViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.carousel_element, parent, false);
+                .inflate(R.layout.element_carousel, parent, false);
         return new TemaViewHolder(view);
     }
 

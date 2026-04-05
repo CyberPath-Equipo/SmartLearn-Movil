@@ -10,8 +10,8 @@
 
     <!-- ========= COLORES LIGHT ========= -->
     <!-- ========= COLORES BASE LIGHT ========= -->
-    <color name="colorHeader">#172A3E</color>
-    <color name="colorBackground">#465767</color>
+    <color name="colorHeader">#2B5481</color>
+    <color name="colorBackground">#D7D7D7</color>
     <color name="colorSurface">#FFFFFFFF</color>
 
     <!-- ========= COLORES DE TEXTO ========= -->

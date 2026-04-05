@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 public class Usuario {
     private Integer id;
     private String nombreCuenta;
+    private String nombreCompleto;
     private String correo;
     private String contrasena;
 

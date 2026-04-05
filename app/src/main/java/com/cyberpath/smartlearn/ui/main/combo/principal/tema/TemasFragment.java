@@ -28,7 +28,7 @@ public class TemasFragment extends Fragment {
 
     private TemasLogic temasLogic;
     private NavAccesibilidad navAccesibilidad;
-    private final EntradaAudio entradaAudio = EntradaAudio.obtenerInstancia();
+    private EntradaAudio entradaAudio;
 
     private TextView textoMateria;
     private ViewPager2 viewPagerTemas;
@@ -48,7 +48,10 @@ public class TemasFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        entradaAudio.detenerEscucha();
+        entradaAudio = EntradaAudio.obtenerInstancia();
+        if (entradaAudio != null) {
+            entradaAudio.detenerEscucha();
+        }
 
         textoMateria = view.findViewById(R.id.tvNombreMateria);
 

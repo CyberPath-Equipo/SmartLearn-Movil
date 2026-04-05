@@ -46,6 +46,33 @@
             android:textColorHint="?attr/colorSurface"
             android:textSize="18sp" />
 
+        <RadioGroup
+            android:id="@+id/rg_estado_accesibilidad"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <RadioButton
+                android:id="@+id/radio_estado_activa"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Activa"
+                android:textColor="?attr/colorOnSurface"
+                android:textSize="18sp" />
+
+            <RadioButton
+                android:id="@+id/radio_estado_inactiva"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Inactiva"
+                android:textColor="?attr/colorOnSurface"
+                android:textSize="18sp" />
+        </RadioGroup>
+
         <!-- Confirmar Campo nuevo (nombre, correo o contraseña) -->
         <EditText
             android:id="@+id/et_nuevo_valor_confirmacion"

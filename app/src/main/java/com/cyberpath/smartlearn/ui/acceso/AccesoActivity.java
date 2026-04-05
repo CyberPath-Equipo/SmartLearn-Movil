@@ -1,6 +1,7 @@
 package com.cyberpath.smartlearn.ui.acceso;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -14,10 +15,10 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.cyberpath.smartlearn.R;
-import com.cyberpath.smartlearn.util.accesibilidad.EntradaAudio;
-import com.cyberpath.smartlearn.util.accesibilidad.SalidaAudio;
+import com.cyberpath.smartlearn.ui.main.MainActivity;
 import com.cyberpath.smartlearn.util.notificaciones.AlarmaProgramador;
 import com.cyberpath.smartlearn.util.notificaciones.NotificacionHelper;
+import com.cyberpath.smartlearn.util.preferences.PreferencesManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +27,15 @@ public class AccesoActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (PreferencesManager.isSesionActiva(this)) {
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
+            return;
+        }
+
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_acceso);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
@@ -55,16 +65,5 @@ public class AccesoActivity extends AppCompatActivity {
         }
         NotificacionHelper.crearCanal(this);
         AlarmaProgramador.programarRecordatorioDiario(this);
-        SalidaAudio.iniciarInstancia(this.getApplicationContext());
-        EntradaAudio.iniciarInstancia(this.getApplicationContext());
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        SalidaAudio instSalida = SalidaAudio.obtenerInstancia();
-        if (instSalida != null) instSalida.liberar();
-        EntradaAudio instEntrada = EntradaAudio.obtenerInstancia();
-        if (instEntrada != null) instEntrada.liberar();
     }
 }

@@ -9,12 +9,15 @@ public class PreferencesManager {
     private static final String PREFS_NAME = "smartlearn_prefs";
     private static final String KEY_USUARIO_REGISTRADO = "usuario_registrado";
     private static final String KEY_MODO_AUDIO = "modo_audio";
+    private static final String KEY_ACCESIBILIDAD_VISUAL = "accesibilidad_visual";
+    private static final String KEY_ACCESIBILIDAD_AUDITIVA = "accesibilidad_auditiva";
     private static final String KEY_ID_USUARIO = "id_usuario";
     private static final String KEY_TAMANO_FUENTE = "tamano_letra";
     private static final String KEY_ID_SUBTEMA_ULTIMA_CONEXION = "subtema_ultima_conexion";
     private static final String KEY_NOMBRE_USUARIO = "nombre_usuario";
     private static final String KEY_CORREO_USUARIO = "correo_usuario";
     private static final String KEY_TEMA_APP = "tema_app";
+    private static final String KEY_SESION_ACTIVA = "sesion_activa";
     public static final int THEME_LIGHT = 0;
     public static final int THEME_DARK = 1;
     public static final int THEME_ACCESSIBLE = 2;
@@ -32,11 +35,37 @@ public class PreferencesManager {
     }
 
     public static void setModoAudio(Context context, boolean activado) {
-        getPrefs(context).edit().putBoolean(KEY_MODO_AUDIO, activado).apply();
+        getPrefs(context).edit()
+                .putBoolean(KEY_MODO_AUDIO, activado)
+                .putBoolean(KEY_ACCESIBILIDAD_AUDITIVA, activado)
+                .apply();
     }
 
     public static boolean isModoAudioActivado(Context context) {
-        return getPrefs(context).getBoolean(KEY_MODO_AUDIO, false);
+        SharedPreferences prefs = getPrefs(context);
+        if (prefs.contains(KEY_ACCESIBILIDAD_AUDITIVA)) {
+            return prefs.getBoolean(KEY_ACCESIBILIDAD_AUDITIVA, false);
+        }
+        return prefs.getBoolean(KEY_MODO_AUDIO, false);
+    }
+
+    public static void setAccesibilidadVisual(Context context, boolean activado) {
+        getPrefs(context).edit().putBoolean(KEY_ACCESIBILIDAD_VISUAL, activado).apply();
+    }
+
+    public static boolean isAccesibilidadVisualActivada(Context context) {
+        return getPrefs(context).getBoolean(KEY_ACCESIBILIDAD_VISUAL, false);
+    }
+
+    public static void setAccesibilidadAuditiva(Context context, boolean activado) {
+        getPrefs(context).edit()
+                .putBoolean(KEY_ACCESIBILIDAD_AUDITIVA, activado)
+                .putBoolean(KEY_MODO_AUDIO, activado)
+                .apply();
+    }
+
+    public static boolean isAccesibilidadAuditivaActivada(Context context) {
+        return isModoAudioActivado(context);
     }
 
     public static void setIdUsuario(Context context, int id) {
@@ -85,5 +114,13 @@ public class PreferencesManager {
 
     public static int getTemaApp(Context context) {
         return getPrefs(context).getInt(KEY_TEMA_APP, THEME_LIGHT);
+    }
+
+    public static void setSesionActiva(Context context, boolean sesionActiva) {
+        getPrefs(context).edit().putBoolean(KEY_SESION_ACTIVA, sesionActiva).apply();
+    }
+
+    public static boolean isSesionActiva(Context context) {
+        return getPrefs(context).getBoolean(KEY_SESION_ACTIVA, false);
     }
 }

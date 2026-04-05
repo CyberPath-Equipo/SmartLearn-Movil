@@ -89,8 +89,20 @@ public class LoginLogic {
 
                         int idUsuario = PreferencesManager.getIdUsuario(loginFragment.requireContext());
                         if (idUsuario != -1) {
-                            UsuarioCst.asignarConstantesUsuario(loginFragment.requireContext(), idUsuario);
-                            navegacionMainActivity();
+                            PreferencesManager.setSesionActiva(loginFragment.requireContext(), true);
+                            // Usar callback para esperar a que se cargue el usuario
+                            UsuarioCst.asignarConstantesUsuario(loginFragment.requireContext(), idUsuario,
+                                    new UsuarioCst.UsuarioLoadCallback() {
+                                        @Override
+                                        public void onUsuarioLoaded(Usuario usuario) {
+                                            navegacionMainActivity();
+                                        }
+
+                                        @Override
+                                        public void onError(String mensaje) {
+                                            Log.e(TAG, "Error al cargar usuario tras biometría: " + mensaje);
+                                        }
+                                    });
                         } else {
                             Toast.makeText(loginFragment.getContext(), "Error: No hay usuario guardado para biometría. Usa login manual.", Toast.LENGTH_SHORT).show();
                         }
@@ -136,12 +148,25 @@ public class LoginLogic {
                     int idUsuario = usuarioLogueado.getId();
 
                     PreferencesManager.setUsuarioRegistrado(loginFragment.requireContext(), true);
-
-                    UsuarioCst.asignarConstantesUsuario(loginFragment.requireContext(), idUsuario);
+                    PreferencesManager.setSesionActiva(loginFragment.requireContext(), true);
 
                     Log.d(TAG, "Login exitoso. ID de usuario guardado: " + idUsuario);
                     Toast.makeText(loginFragment.getContext(), "Login exitoso", Toast.LENGTH_SHORT).show();
-                    navegacionMainActivity();
+
+                    // Usar callback para esperar a que se cargue el usuario antes de navegar
+                    UsuarioCst.asignarConstantesUsuario(loginFragment.requireContext(), idUsuario,
+                            new UsuarioCst.UsuarioLoadCallback() {
+                                @Override
+                                public void onUsuarioLoaded(Usuario usuario) {
+                                    navegacionMainActivity();
+                                }
+
+                                @Override
+                                public void onError(String mensaje) {
+                                    Log.e(TAG, "Error al cargar usuario: " + mensaje);
+                                    Toast.makeText(loginFragment.getContext(), "Error al cargar datos de usuario", Toast.LENGTH_SHORT).show();
+                                }
+                            });
                 } else if (response.code() == 401) {
                     Toast.makeText(loginFragment.getContext(), "Usuario o contraseña incorrectos", Toast.LENGTH_SHORT).show();
                 } else {
@@ -159,6 +184,7 @@ public class LoginLogic {
     public void navegacionMainActivity() {
         //Log.d(TAG, "Usuario " + UsuarioCst.USUARIO_ACTUAL.getId());
         Intent intent = new Intent(loginFragment.requireContext(), MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         loginFragment.startActivity(intent);
     }
 }

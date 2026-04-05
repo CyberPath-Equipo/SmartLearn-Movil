@@ -27,7 +27,7 @@ public class CuentaFragment extends Fragment {
 
     private CuentaLogic cuentaLogic;
     private NavController navController;
-    private TextView textoNombre, textoCorreo;
+    private TextView textoNombre, textoNombreCompleto, textoCorreo, textoAccesibilidadVisual, textoAccesibilidadAuditiva;
 
     public CuentaFragment() {
     }
@@ -47,22 +47,52 @@ public class CuentaFragment extends Fragment {
         cuentaLogic = new CuentaLogic(this);
 
         textoNombre = view.findViewById(R.id.tv_nombre_actual);
+        textoNombreCompleto = view.findViewById(R.id.tv_nombre_completo_actual);
         textoCorreo = view.findViewById(R.id.tv_correo_actual);
+        textoAccesibilidadVisual = view.findViewById(R.id.tv_accesibilidad_visual_actual);
+        textoAccesibilidadAuditiva = view.findViewById(R.id.tv_accesibilidad_auditiva_actual);
+
+        // Asegurar que el usuario está cargado
+        if (!UsuarioCst.ensureUsuarioLoaded(requireContext())) {
+            // Si aún así no hay usuario, mostrar error y cargar desde preferencias como fallback
+            Usuario usuarioFallback = UsuarioCst.reconstructFromPreferences(requireContext());
+            if (usuarioFallback != null) {
+                UsuarioCst.USUARIO_ACTUAL = usuarioFallback;
+            }
+        }
 
         Usuario usuarioActual = UsuarioCst.USUARIO_ACTUAL;
         if (usuarioActual != null) {
             textoNombre.setText(usuarioActual.getNombreCuenta());
+            textoNombreCompleto.setText(usuarioActual.getNombreCompleto() != null ? usuarioActual.getNombreCompleto() : usuarioActual.getNombreCuenta());
             textoCorreo.setText(usuarioActual.getCorreo());
+        } else {
+            // Último recurso: mostrar datos desde preferencias directamente
+            String nombreCuenta = PreferencesManager.getNombreUsuario(requireContext());
+            String correo = PreferencesManager.getCorreoUsuario(requireContext());
+            textoNombre.setText(nombreCuenta.isEmpty() ? "No disponible" : nombreCuenta);
+            textoCorreo.setText(correo.isEmpty() ? "No disponible" : correo);
+            textoNombreCompleto.setText("No disponible");
         }
+        actualizarEstadosAccesibilidad();
 
         LinearLayout btnCambiarNombre = view.findViewById(R.id.btn_cambiar_nombre);
         btnCambiarNombre.setOnClickListener(v -> navegarAEdicion("nombre"));
+
+        LinearLayout btnCambiarNombreCompleto = view.findViewById(R.id.btn_cambiar_nombre_completo);
+        btnCambiarNombreCompleto.setOnClickListener(v -> navegarAEdicion("nombreCompleto"));
 
         LinearLayout btnCambiarCorreo = view.findViewById(R.id.btn_cambiar_correo);
         btnCambiarCorreo.setOnClickListener(v -> navegarAEdicion("correo"));
 
         LinearLayout btnCambiarContrasena = view.findViewById(R.id.btn_cambiar_contrasena);
         btnCambiarContrasena.setOnClickListener(v -> navegarAEdicion("contrasena"));
+
+        LinearLayout btnAccesibilidadVisual = view.findViewById(R.id.btn_accesibilidad_visual);
+        btnAccesibilidadVisual.setOnClickListener(v -> navegarAEdicion("accesibilidadVisual"));
+
+        LinearLayout btnAccesibilidadAuditiva = view.findViewById(R.id.btn_accesibilidad_auditiva);
+        btnAccesibilidadAuditiva.setOnClickListener(v -> navegarAEdicion("accesibilidadAuditiva"));
 
         Button btnEliminarCuenta = view.findViewById(R.id.btn_eliminar_cuenta);
         if (btnEliminarCuenta != null) {
@@ -123,14 +153,30 @@ public class CuentaFragment extends Fragment {
 
     public void actualizarDatosUsuario() {
         Usuario usuarioActual = UsuarioCst.USUARIO_ACTUAL;
-        if (usuarioActual != null && textoNombre != null && textoCorreo != null) {
+        if (usuarioActual != null && textoNombre != null && textoNombreCompleto != null && textoCorreo != null) {
             textoNombre.setText(usuarioActual.getNombreCuenta());
+            textoNombreCompleto.setText(usuarioActual.getNombreCompleto() != null ? usuarioActual.getNombreCompleto() : usuarioActual.getNombreCuenta());
             textoCorreo.setText(usuarioActual.getCorreo());
+        }
+        actualizarEstadosAccesibilidad();
+    }
+
+    private void actualizarEstadosAccesibilidad() {
+        if (textoAccesibilidadVisual != null) {
+            textoAccesibilidadVisual.setText(
+                    PreferencesManager.isAccesibilidadVisualActivada(requireContext()) ? "Activa" : "Inactiva"
+            );
+        }
+        if (textoAccesibilidadAuditiva != null) {
+            textoAccesibilidadAuditiva.setText(
+                    PreferencesManager.isAccesibilidadAuditivaActivada(requireContext()) ? "Activa" : "Inactiva"
+            );
         }
     }
 
     public void onCuentaEliminada() {
         PreferencesManager.setUsuarioRegistrado(requireContext(), false);
+        PreferencesManager.setSesionActiva(requireContext(), false);
         PreferencesManager.setIdUsuario(requireContext(), -1);
 
         UsuarioCst.USUARIO_ACTUAL = null;

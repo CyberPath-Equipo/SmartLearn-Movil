@@ -76,6 +76,33 @@
                     app:boxBackgroundMode="outline"
                     app:boxStrokeColor="@color/brandSmartLearn"
                     app:boxStrokeWidth="@dimen/cardview_default_elevation"
+                    app:startIconDrawable="@drawable/ic_usuario"
+                    app:startIconTint="@color/brandSmartLearn">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_nombre_completo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="Campo para ingresar el nombre completo"
+                        android:hint="Nombre completo"
+                        android:importantForAutofill="yes"
+                        android:inputType="textPersonName"
+                        android:paddingStart="40dp"
+                        android:paddingEnd="16dp"
+                        android:paddingTop="14dp"
+                        android:paddingBottom="14dp"
+                        android:textColor="#2A2A2A"
+                        android:textColorHint="#717171"
+                        android:textSize="18sp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="12dp"
+                    android:layout_marginBottom="12dp"
+                    app:boxBackgroundMode="outline"
+                    app:boxStrokeColor="@color/brandSmartLearn"
+                    app:boxStrokeWidth="@dimen/cardview_default_elevation"
                     app:endIconMode="password_toggle"
                     app:startIconDrawable="@drawable/ic_contrasena"
                     app:startIconTint="@color/brandSmartLearn">
@@ -134,7 +161,7 @@
                     android:textSize="20sp" />
 
                 <RadioGroup
-                    android:id="@+id/grupo_accesibilidad"
+                    android:id="@+id/grupo_accesibilidad_visual"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="40dp"
@@ -142,7 +169,7 @@
                     android:orientation="horizontal">
 
                     <RadioButton
-                        android:id="@+id/radio_activa"
+                        android:id="@+id/radio_visual_activa"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -151,7 +178,44 @@
                         android:textSize="18sp" />
 
                     <RadioButton
-                        android:id="@+id/radio_inactiva"
+                        android:id="@+id/radio_visual_inactiva"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Inactiva"
+                        android:textColor="@color/brandSmartLearn"
+                        android:textSize="18sp" />
+                </RadioGroup>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center"
+                    android:text="Accesibilidad para\n Discapacidad Auditiva"
+                    android:textColor="@color/brandSmartLearn"
+                    android:textSize="20sp" />
+
+                <RadioGroup
+                    android:id="@+id/grupo_accesibilidad_auditiva"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="40dp"
+                    android:layout_marginBottom="12dp"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/radio_auditiva_activa"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Activa"
+                        android:textColor="@color/brandSmartLearn"
+                        android:textSize="18sp" />
+
+                    <RadioButton
+                        android:id="@+id/radio_auditiva_inactiva"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"

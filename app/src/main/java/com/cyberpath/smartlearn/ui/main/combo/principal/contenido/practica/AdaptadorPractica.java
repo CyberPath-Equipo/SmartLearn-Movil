@@ -54,7 +54,7 @@ public class AdaptadorPractica extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
-            convertView = inflater.inflate(R.layout.listview_element, parent, false);
+            convertView = inflater.inflate(R.layout.element_listview, parent, false);
         }
 
         TextView textView = convertView.findViewById(R.id.textview);

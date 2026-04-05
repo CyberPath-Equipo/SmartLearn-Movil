@@ -14,7 +14,9 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 import com.cyberpath.smartlearn.R;
+import com.cyberpath.smartlearn.data.model.usuario.Usuario;
 import com.cyberpath.smartlearn.logic.acceso.LoginLogic;
+import com.cyberpath.smartlearn.util.constants.UsuarioCst;
 import com.cyberpath.smartlearn.util.preferences.PreferencesManager;
 
 public class LoginFragment extends Fragment implements View.OnClickListener {
@@ -24,6 +26,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     private EditText etUsuario, etContrasena;
 
     private LoginLogic loginLogic;
+    private boolean biometriaSolicitada;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -51,7 +54,35 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         etContrasena = view.findViewById(R.id.et_contrasena);
 
         boolean usuarioRegistrado = PreferencesManager.isUsuarioRegistrado(requireContext());
-        if (usuarioRegistrado) {
+        boolean sesionActiva = PreferencesManager.isSesionActiva(requireContext());
+
+        if (sesionActiva) {
+            Log.d(TAG, "Sesion activa detectada. Cargando usuario y redirigiendo a MainActivity.");
+            // Cargar usuario con callback antes de navegar
+            int idUsuario = PreferencesManager.getIdUsuario(requireContext());
+            if (idUsuario != -1) {
+                UsuarioCst.asignarConstantesUsuario(requireContext(), idUsuario,
+                        new UsuarioCst.UsuarioLoadCallback() {
+                            @Override
+                            public void onUsuarioLoaded(Usuario usuario) {
+                                loginLogic.navegacionMainActivity();
+                            }
+
+                            @Override
+                            public void onError(String mensaje) {
+                                // Si falla al cargar, usar fallback de preferencias
+                                UsuarioCst.ensureUsuarioLoaded(requireContext());
+                                loginLogic.navegacionMainActivity();
+                            }
+                        });
+            } else {
+                loginLogic.navegacionMainActivity();
+            }
+            return;
+        }
+
+        if (usuarioRegistrado && !biometriaSolicitada) {
+            biometriaSolicitada = true;
             Log.d(TAG, "Usuario registrado encontrado. Intentando biometría...");
             view.post(() -> loginLogic.accesoBiometrico());
         } else {

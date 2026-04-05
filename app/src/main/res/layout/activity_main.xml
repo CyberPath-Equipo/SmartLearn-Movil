@@ -16,9 +16,9 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="125dp"
-            android:background="@drawable/bg_esquinas_rectas"
-            android:backgroundTint="?attr/colorPrimary"
-            android:layout_marginTop="-20dp"/>
+            android:layout_marginTop="-10dp"
+            android:background="@color/colorHeader"
+            android:backgroundTint="?attr/colorPrimary" />
 
         <include
             android:id="@+id/header_fijo"
@@ -27,14 +27,14 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="10dp"
             android:layout_marginTop="-70dp"
-            android:layout_marginBottom="40dp" />
+            android:layout_marginBottom="30dp" />
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/nav_host_fragment"
             android:name="androidx.navigation.fragment.NavHostFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="10dp"
+            android:layout_margin="8dp"
             app:defaultNavHost="true"
             app:navGraph="@navigation/navegador_principal" />
     </LinearLayout>
@@ -44,7 +44,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="?attr/android:colorBackground"
+        android:background="@color/colorHeader"
         app:headerLayout="@layout/header_barra"
         app:itemIconTint="?attr/colorOnBackground"
         app:itemTextColor="?attr/colorOnBackground"

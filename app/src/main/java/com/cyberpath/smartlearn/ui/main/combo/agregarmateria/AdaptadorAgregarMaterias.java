@@ -59,7 +59,7 @@ public class AdaptadorAgregarMaterias extends RecyclerView.Adapter<AdaptadorAgre
     @Override
     public MateriaViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.carousel_element, parent, false);
+                .inflate(R.layout.element_carousel, parent, false);
         return new MateriaViewHolder(view);
     }
 

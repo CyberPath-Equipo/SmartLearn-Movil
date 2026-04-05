@@ -9,6 +9,7 @@ import com.cyberpath.smartlearn.data.model.contenido.Tema;
 import com.cyberpath.smartlearn.data.model.usuario.UltimaConexion;
 import com.cyberpath.smartlearn.data.remote.api.ApiService;
 import com.cyberpath.smartlearn.data.remote.api.RetrofitClient;
+import com.cyberpath.smartlearn.ui.main.MainActivity;
 import com.cyberpath.smartlearn.ui.main.combo.principal.subtema.SubtemasFragment;
 import com.cyberpath.smartlearn.util.constants.UsuarioCst;
 import com.cyberpath.smartlearn.util.network.NetworkUtils;
@@ -131,37 +132,45 @@ public class SubtemasLogic {
 
     public void guardarUltimaConexion(Subtema subtema) {
         if (subtema == null || subtema.getId() == null) return;
+        PreferencesManager.setIdSubtemaUltimaConexion(context, subtema.getId());
 
-        if (modoOffline) {
-            PreferencesManager.setIdSubtemaUltimaConexion(context, subtema.getId());
-            return;
-        }
+        if(!modoOffline){
+            UltimaConexion ultimaConexion = new UltimaConexion();
+            ApiService apiService = RetrofitClient.getApiService();
 
-        UltimaConexion ultimaConexion = new UltimaConexion();
-        ApiService apiService = RetrofitClient.getApiService();
+            Calendar tiempo = Calendar.getInstance();
+            SimpleDateFormat formatoTiempo = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String fecha = formatoTiempo.format(tiempo.getTime());
+            ultimaConexion.setUltimaConexion(fecha);
+            Integer idUsuario = UsuarioCst.USUARIO_ACTUAL.getId();
 
-        Calendar tiempo = Calendar.getInstance();
-        SimpleDateFormat formatoTiempo = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String fecha = formatoTiempo.format(tiempo.getTime());
-        Integer idUsuario = UsuarioCst.USUARIO_ACTUAL.getId();
+            ultimaConexion.setUltimaConexion(fecha);
+            ultimaConexion.setIdSubtema(subtema.getId());
 
-        ultimaConexion.setUltimaConexion(fecha);
-        ultimaConexion.setIdSubtema(subtema.getId());
-
-        Call<UltimaConexion> call = apiService.update(idUsuario, ultimaConexion);
-        call.enqueue(new Callback<UltimaConexion>() {
-            @Override
-            public void onResponse(Call<UltimaConexion> call, Response<UltimaConexion> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    PreferencesManager.setIdSubtemaUltimaConexion(context, subtema.getId());
+            Call<UltimaConexion> call = apiService.update(UsuarioCst.USUARIO_ACTUAL.getId(), ultimaConexion);
+            call.enqueue(new Callback<UltimaConexion>() {
+                @Override
+                public void onResponse(Call<UltimaConexion> call, Response<UltimaConexion> response) {
+                    if (response.isSuccessful()) {
+                        notifyMainActivity(subtema);   // ← NUEVO
+                    }
                 }
-            }
 
-            @Override
-            public void onFailure(Call<UltimaConexion> call, Throwable t) {
-                PreferencesManager.setIdSubtemaUltimaConexion(context, subtema.getId());
-            }
-        });
+                @Override
+                public void onFailure(Call<UltimaConexion> call, Throwable t) {
+                    notifyMainActivity(subtema);   // ← NUEVO (aunque falle el servidor, actualizamos UI)
+                }
+            });
+        } else {
+            notifyMainActivity(subtema);   // ← NUEVO
+        }
+    }
+
+    private void notifyMainActivity(Subtema subtema) {
+        if (context instanceof MainActivity) {
+            MainActivity mainActivity = (MainActivity) context;
+            mainActivity.actualizarUltimoSubtemaMenu(subtema.getNombre(), subtema);
+        }
     }
 
     public void limpiarDatos() {

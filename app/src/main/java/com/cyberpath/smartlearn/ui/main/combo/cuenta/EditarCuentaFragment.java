@@ -1,11 +1,14 @@
 package com.cyberpath.smartlearn.ui.main.combo.cuenta;
 
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,6 +20,7 @@ import androidx.navigation.Navigation;
 
 import com.cyberpath.smartlearn.R;
 import com.cyberpath.smartlearn.logic.main.combo.cuenta.CuentaLogic;
+import com.cyberpath.smartlearn.util.preferences.PreferencesManager;
 
 public class EditarCuentaFragment extends Fragment {
 
@@ -24,6 +28,8 @@ public class EditarCuentaFragment extends Fragment {
     private NavController navController;
     private String tipoEdicion;
     private EditText etNuevoValor, etNuevoValorConfirmacion, etContrasenaActual;
+    private RadioGroup rgEstadoAccesibilidad;
+    private RadioButton radioEstadoActiva, radioEstadoInactiva;
     private TextView tvTitulo;
     private Button btnGuardar, btnCancelar;
 
@@ -48,6 +54,9 @@ public class EditarCuentaFragment extends Fragment {
         etNuevoValor = view.findViewById(R.id.et_nuevo_valor);
         etNuevoValorConfirmacion = view.findViewById(R.id.et_nuevo_valor_confirmacion);
         etContrasenaActual = view.findViewById(R.id.et_contrasena_actual);
+        rgEstadoAccesibilidad = view.findViewById(R.id.rg_estado_accesibilidad);
+        radioEstadoActiva = view.findViewById(R.id.radio_estado_activa);
+        radioEstadoInactiva = view.findViewById(R.id.radio_estado_inactiva);
         btnGuardar = view.findViewById(R.id.btn_guardar_cambio);
         btnCancelar = view.findViewById(R.id.btn_cancelar);
 
@@ -60,7 +69,12 @@ public class EditarCuentaFragment extends Fragment {
         btnCancelar.setOnClickListener(v -> navegarAtras());
 
         btnGuardar.setOnClickListener(v -> {
-            String nuevoValor = etNuevoValor.getText().toString().trim();
+            String nuevoValor;
+            if (esEdicionAccesibilidad()) {
+                nuevoValor = radioEstadoActiva.isChecked() ? "activa" : radioEstadoInactiva.isChecked() ? "inactiva" : "";
+            } else {
+                nuevoValor = etNuevoValor.getText().toString().trim();
+            }
             String confirmacion = etNuevoValorConfirmacion.getText().toString().trim();
             String contrasenaActual = etContrasenaActual.getText().toString().trim();
 
@@ -69,24 +83,56 @@ public class EditarCuentaFragment extends Fragment {
     }
 
     private void configurarUI() {
+        rgEstadoAccesibilidad.setVisibility(View.GONE);
+        etNuevoValor.setVisibility(View.VISIBLE);
+        etNuevoValor.setInputType(InputType.TYPE_CLASS_TEXT);
+
         switch (tipoEdicion) {
             case "nombre":
                 tvTitulo.setText("Cambiar Nombre de Usuario");
                 etNuevoValor.setHint("Nuevo nombre");
                 etNuevoValorConfirmacion.setVisibility(View.GONE);
                 break;
+            case "nombreCompleto":
+                tvTitulo.setText("Cambiar Nombre Completo");
+                etNuevoValor.setHint("Nuevo nombre completo");
+                etNuevoValorConfirmacion.setVisibility(View.GONE);
+                break;
             case "correo":
                 tvTitulo.setText("Cambiar Correo Electrónico");
                 etNuevoValor.setHint("Nuevo correo");
+                etNuevoValor.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
                 etNuevoValorConfirmacion.setVisibility(View.GONE);
                 break;
             case "contrasena":
                 tvTitulo.setText("Cambiar Contraseña");
                 etNuevoValor.setHint("Nueva contraseña");
+                etNuevoValor.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
                 etNuevoValorConfirmacion.setHint("Confirmar nueva contraseña");
+                etNuevoValorConfirmacion.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
                 etNuevoValorConfirmacion.setVisibility(View.VISIBLE);
                 break;
+            case "accesibilidadVisual":
+                tvTitulo.setText("Accesibilidad Visual");
+                etNuevoValor.setVisibility(View.GONE);
+                etNuevoValorConfirmacion.setVisibility(View.GONE);
+                rgEstadoAccesibilidad.setVisibility(View.VISIBLE);
+                radioEstadoActiva.setChecked(PreferencesManager.isAccesibilidadVisualActivada(requireContext()));
+                radioEstadoInactiva.setChecked(!PreferencesManager.isAccesibilidadVisualActivada(requireContext()));
+                break;
+            case "accesibilidadAuditiva":
+                tvTitulo.setText("Accesibilidad Auditiva");
+                etNuevoValor.setVisibility(View.GONE);
+                etNuevoValorConfirmacion.setVisibility(View.GONE);
+                rgEstadoAccesibilidad.setVisibility(View.VISIBLE);
+                radioEstadoActiva.setChecked(PreferencesManager.isAccesibilidadAuditivaActivada(requireContext()));
+                radioEstadoInactiva.setChecked(!PreferencesManager.isAccesibilidadAuditivaActivada(requireContext()));
+                break;
         }
+    }
+
+    private boolean esEdicionAccesibilidad() {
+        return "accesibilidadVisual".equals(tipoEdicion) || "accesibilidadAuditiva".equals(tipoEdicion);
     }
 
     private void navegarAtras() {

@@ -37,7 +37,7 @@ public class AgregarMateriaFragment extends Fragment {
     private NavAccesibilidad navAccesibilidad;
 
     private AgregarMateriaLogic agregarMateriaLogic;
-    private EntradaAudio entradaAudio = EntradaAudio.obtenerInstancia();
+    private EntradaAudio entradaAudio;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -54,7 +54,10 @@ public class AgregarMateriaFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        entradaAudio.detenerEscucha();
+        entradaAudio = EntradaAudio.obtenerInstancia();
+        if (entradaAudio != null) {
+            entradaAudio.detenerEscucha();
+        }
 
         adapterMaterias = new AdaptadorAgregarMaterias(new ArrayList<>(), this::mostrarDialogoInscribir);
 

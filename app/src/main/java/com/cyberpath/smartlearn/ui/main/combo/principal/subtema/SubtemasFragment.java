@@ -32,7 +32,7 @@ import java.util.function.BiConsumer;
 public class SubtemasFragment extends Fragment {
     private SubtemasLogic subtemasLogic;
     private NavAccesibilidad navAccesibilidad;
-    private final EntradaAudio entradaAudio = EntradaAudio.obtenerInstancia();
+    private EntradaAudio entradaAudio;
     private final Handler mainHandler = new Handler(Looper.getMainLooper());
 
     private ViewPager2 viewPagerSubtemas;
@@ -53,7 +53,10 @@ public class SubtemasFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        entradaAudio.detenerEscucha();
+        entradaAudio = EntradaAudio.obtenerInstancia();
+        if (entradaAudio != null) {
+            entradaAudio.detenerEscucha();
+        }
 
         textoTema = view.findViewById(R.id.tvNombreTema);
 

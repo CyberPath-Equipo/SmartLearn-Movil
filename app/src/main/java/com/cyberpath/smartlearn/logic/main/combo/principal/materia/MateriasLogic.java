@@ -5,14 +5,12 @@ import android.util.Log;
 
 import com.cyberpath.smartlearn.data.local.database.repository.MateriasRepository;
 import com.cyberpath.smartlearn.data.model.contenido.Materia;
-import com.cyberpath.smartlearn.data.model.contenido.Subtema;
 import com.cyberpath.smartlearn.data.model.usuario.Usuario;
 import com.cyberpath.smartlearn.data.remote.api.ApiService;
 import com.cyberpath.smartlearn.data.remote.api.RetrofitClient;
 import com.cyberpath.smartlearn.ui.main.combo.principal.materia.MateriasFragment;
 import com.cyberpath.smartlearn.util.constants.UsuarioCst;
 import com.cyberpath.smartlearn.util.network.NetworkUtils;
-import com.cyberpath.smartlearn.util.preferences.PreferencesManager;
 
 import java.text.Normalizer;
 import java.util.ArrayList;
@@ -48,6 +46,7 @@ public class MateriasLogic {
     public MateriasLogic(MateriasFragment fragment) {
         this.fragment = fragment;
         this.context = fragment.requireContext();
+        UsuarioCst.ensureUsuarioLoaded(context);
         this.usuarioActual = UsuarioCst.USUARIO_ACTUAL;
         this.materiasRepository = new MateriasRepository(context);
     }
@@ -72,45 +71,6 @@ public class MateriasLogic {
         listaMaterias.clear();
         listaMateriasFiltrada.clear();
         progresoEnProceso.clear();
-    }
-
-    public void cargarUltimoSubtema() {
-        int idUltimoSubtema = PreferencesManager.getIdSubtemaUltimaConexion(context);
-
-        if (idUltimoSubtema == -1) {
-            fragment.setTvUltimoSubtema("Es tu primera vez, no tienes un historial");
-            return;
-        }
-
-        if (modoOffline) {
-            fragment.setTvUltimoSubtema("Último acceso no disponible (modo offline)");
-            return;
-        }
-
-        ApiService apiService = RetrofitClient.getApiService();
-        Call<Subtema> call = apiService.getSubtemaById(idUltimoSubtema);
-
-        call.enqueue(new Callback<Subtema>() {
-            @Override
-            public void onResponse(Call<Subtema> call, Response<Subtema> response) {
-                if (fragment == null || !fragment.isAdded()) return;
-
-                if (response.isSuccessful() && response.body() != null) {
-                    Subtema subtema = response.body();
-                    fragment.setTvUltimoSubtema(subtema.getNombre());
-                    fragment.setOnClickBtnUltimoSubtema(v -> fragment.navegarUltimoSubtema(subtema));
-                } else {
-                    fragment.setTvUltimoSubtema("Error al cargar el subtema");
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Subtema> call, Throwable t) {
-                if (fragment == null || !fragment.isAdded()) return;
-                fragment.setTvUltimoSubtema("Error de conexión, intenta más tarde");
-                fragment.showToast("Error de conexión: " + t.getMessage());
-            }
-        });
     }
 
     private void cargarMateriasAPI(Integer idUsuario) {

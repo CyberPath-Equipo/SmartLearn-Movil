@@ -16,4 +16,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
+    <!-- Strings para el menú lateral -->
+    <string name="titulo_ultimo_subtema">Continúa donde lo dejaste \n (Último subtema)</string>
+
 </resources>

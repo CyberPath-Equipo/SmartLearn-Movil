@@ -39,8 +39,15 @@
         app:action="@id/ayudaFragment" />
 
     <item
+        android:id="@+id/ultimoSubtema"
+        android:title=""
+        android:icon="@drawable/ic_ultimo_subtema"
+        app:actionLayout="@layout/element_ultimo_subtema" />
+
+    <item
+        android:iconTint="@android:color/holo_red_dark"
         android:id="@+id/cerrarSesion"
-        android:icon="@drawable/ic_cerrar_sesion"
+        android:icon="@drawable/ic_ayuda"
         android:title="Cerrar Sesión" />
 
 </menu>
