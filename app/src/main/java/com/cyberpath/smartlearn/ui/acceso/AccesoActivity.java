@@ -62,9 +62,5 @@ public class AccesoActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        SalidaAudio instSalida = SalidaAudio.obtenerInstancia();
-        if (instSalida != null) instSalida.liberar();
-        EntradaAudio instEntrada = EntradaAudio.obtenerInstancia();
-        if (instEntrada != null) instEntrada.liberar();
     }
 }

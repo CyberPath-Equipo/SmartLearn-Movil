@@ -47,6 +47,9 @@ public interface ApiService {
     @POST("/smartlearn/api/usuario/login")
     Call<Usuario> login(@Body Usuario loginRequest);
 
+    @POST("/smartlearn/api/usuario/validar-contrasena")
+    Call<Void> validarContrasena(@Body Usuario validarRequest);
+
     @PUT("/smartlearn/api/usuario/{id}")
     Call<Usuario> updateUsuario(@Path("id") int id, @Body Usuario usuario);
 

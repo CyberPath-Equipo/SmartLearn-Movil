@@ -21,6 +21,7 @@ public class CuentaLogic {
 
     private final Fragment cuentaFragment;
     private final Context context;
+    ApiService api = RetrofitClient.getApiService();
 
     public CuentaLogic(Fragment cuentaFragment) {
         this.cuentaFragment = cuentaFragment;
@@ -36,15 +37,31 @@ public class CuentaLogic {
         }
 
         Usuario usuarioActual = UsuarioCst.USUARIO_ACTUAL;
+        Usuario usuarioNuevo = new Usuario();
+        usuarioNuevo.setContrasena(contrasenaActual);
+        usuarioNuevo.setNombreCuenta(usuarioActual.getNombreCuenta());
         if (usuarioActual == null) {
             showToast("Error: usuario no identificado");
             return;
         }
 
-        if (!contrasenaActual.equals(usuarioActual.getContrasena())) {
-            showToast("Contraseña actual incorrecta");
-            return;
-        }
+        api.validarContrasena(usuarioNuevo).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    showToast("Contraseñas validadas");
+                } else if (response.code() == 401) {
+                    showToast("Contraseña actual incorrecta");
+                } else {
+                    showToast("Error en la validación");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                showToast("Error de conexión");
+            }
+        });
 
         switch (tipoEdicion) {
             case "nombre":

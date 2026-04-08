@@ -32,6 +32,7 @@ public class SignupLogic {
                                  boolean radioAuditivaActivaChecked, boolean radioAuditivaInactivaChecked,
                                  boolean radioAlumnoChecked, boolean radioDocenteChecked) {
         if (!validarCampos(nombreUsuario, nombreCompleto, contrasena, correo)) {
+            Log.e(TAG, "Validación de campos fallida");
             return;
         }
 
