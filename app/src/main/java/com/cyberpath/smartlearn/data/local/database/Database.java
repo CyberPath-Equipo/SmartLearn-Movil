@@ -6,7 +6,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class Database extends SQLiteOpenHelper {
 
-    // Singleton - única instancia para toda la app
     private static Database instancia;
     private static final String DATABASE_NAME = "smartlearn.db";
     private static final int DATABASE_VERSION = 2;
