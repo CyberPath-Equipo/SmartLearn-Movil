@@ -24,7 +24,6 @@
             android:orientation="vertical"
             android:padding="10dp">
 
-            <!-- Título -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -44,7 +43,6 @@
                 android:textAppearance="?attr/textAppearanceTitleLarge"
                 android:textStyle="bold" />
 
-            <!-- Item: cambiar nombre -->
             <LinearLayout
                 android:id="@+id/btn_cambiar_nombre"
                 android:layout_width="match_parent"
@@ -88,7 +86,6 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <!-- Item: cambiar nombre completo -->
             <LinearLayout
                 android:id="@+id/btn_cambiar_nombre_completo"
                 android:layout_width="match_parent"
@@ -132,7 +129,6 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <!-- Item: correo -->
             <LinearLayout
                 android:id="@+id/btn_cambiar_correo"
                 android:layout_width="match_parent"
@@ -177,7 +173,6 @@
 
             </LinearLayout>
 
-            <!-- Item: contraseña -->
             <LinearLayout
                 android:id="@+id/btn_cambiar_contrasena"
                 android:layout_width="match_parent"
@@ -266,7 +261,6 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <!-- Accesibilidad auditiva -->
             <LinearLayout
                 android:id="@+id/btn_accesibilidad_auditiva"
                 android:visibility="gone"
