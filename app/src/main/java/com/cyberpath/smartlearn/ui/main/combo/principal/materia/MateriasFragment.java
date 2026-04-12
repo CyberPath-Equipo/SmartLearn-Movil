@@ -24,7 +24,7 @@ import com.cyberpath.smartlearn.R;
 import com.cyberpath.smartlearn.data.model.contenido.Materia;
 import com.cyberpath.smartlearn.logic.main.combo.principal.materia.MateriasLogic;
 import com.cyberpath.smartlearn.logic.main.combo.principal.materia.NavAccesibilidad;
-import com.cyberpath.smartlearn.util.accesibilidad.EntradaAudio;
+import com.cyberpath.smartlearn.util.accesibilidad.visual.EntradaAudio;
 import com.cyberpath.smartlearn.util.preferences.PreferencesManager;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 

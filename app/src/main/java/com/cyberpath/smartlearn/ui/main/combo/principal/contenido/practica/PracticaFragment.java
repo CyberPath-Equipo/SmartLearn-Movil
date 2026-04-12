@@ -21,8 +21,8 @@ import com.cyberpath.smartlearn.data.model.contenido.Subtema;
 import com.cyberpath.smartlearn.data.model.ejercicio.Ejercicio;
 import com.cyberpath.smartlearn.logic.main.combo.principal.contenido.practica.NavAccesibilidad;
 import com.cyberpath.smartlearn.logic.main.combo.principal.contenido.practica.PracticaLogic;
-import com.cyberpath.smartlearn.util.accesibilidad.EntradaAudio;
-import com.cyberpath.smartlearn.util.accesibilidad.SalidaAudio;
+import com.cyberpath.smartlearn.util.accesibilidad.visual.EntradaAudio;
+import com.cyberpath.smartlearn.util.accesibilidad.visual.SalidaAudio;
 import com.google.android.material.button.MaterialButton;
 
 import java.util.ArrayList;

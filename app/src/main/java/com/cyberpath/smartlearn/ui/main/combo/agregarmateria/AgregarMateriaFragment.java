@@ -22,7 +22,7 @@ import com.cyberpath.smartlearn.R;
 import com.cyberpath.smartlearn.data.model.contenido.Materia;
 import com.cyberpath.smartlearn.logic.main.combo.agregarmateria.AgregarMateriaLogic;
 import com.cyberpath.smartlearn.logic.main.combo.agregarmateria.NavAccesibilidad;
-import com.cyberpath.smartlearn.util.accesibilidad.EntradaAudio;
+import com.cyberpath.smartlearn.util.accesibilidad.visual.EntradaAudio;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.ArrayList;

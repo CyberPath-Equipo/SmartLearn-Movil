@@ -8,6 +8,8 @@ import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -15,10 +17,12 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.media3.ui.PlayerView;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.cyberpath.smartlearn.R;
 import com.cyberpath.smartlearn.data.model.contenido.Subtema;
+import com.cyberpath.smartlearn.logic.main.combo.principal.contenido.teoria.NavAccesibilidad;
 import com.cyberpath.smartlearn.logic.main.combo.principal.contenido.teoria.TeoriaLogic;
 import com.google.android.material.button.MaterialButton;
 
@@ -32,6 +36,10 @@ public class TeoriaFragment extends Fragment {
     private TeoriaLogic teoriaLogic;
     private View contentContainer;
     private ScrollView scrollTeoria;
+    private NavAccesibilidad navAccesibilidad;
+    private ImageView imageViewLSM;
+    private PlayerView playerViewLSM;
+    private FrameLayout containerReproductorLSM;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -51,6 +59,9 @@ public class TeoriaFragment extends Fragment {
         btnVolver = view.findViewById(R.id.btn_volver);
         contentContainer = view.findViewById(R.id.content_container);
         scrollTeoria = view.findViewById(R.id.scroll_teoria);
+        imageViewLSM = view.findViewById(R.id.image_view_lsm);
+        playerViewLSM = view.findViewById(R.id.player_view_lsm);
+        containerReproductorLSM = view.findViewById(R.id.container_reproductor_lsm);
 
         if (subtema != null && subtema.getNombre() != null) {
             tvTituloSubtema.setText(subtema.getNombre());
@@ -59,6 +70,10 @@ public class TeoriaFragment extends Fragment {
         }
 
         btnVolver.setOnClickListener(v -> {
+            if (navAccesibilidad != null) {
+                navAccesibilidad.detenerReproduccion();
+            }
+            
             boolean popped = false;
             try {
                 popped = NavHostFragment.findNavController(this).popBackStack();
@@ -72,7 +87,16 @@ public class TeoriaFragment extends Fragment {
 
         scrollTeoria.setClipToPadding(false);
 
-        teoriaLogic = new TeoriaLogic(this, subtema, preguntas);
+        navAccesibilidad = new NavAccesibilidad(requireContext(), this);
+        
+        if (navAccesibilidad.isAccesibilidadAuditivaActivada()) {
+            navAccesibilidad.setTargetViews(imageViewLSM, playerViewLSM);
+            if (containerReproductorLSM != null) {
+                containerReproductorLSM.setVisibility(View.VISIBLE);
+            }
+        }
+
+        teoriaLogic = new TeoriaLogic(this, subtema, preguntas, navAccesibilidad);
 
         view.post(this::adjustBottomSpacing);
     }
@@ -170,5 +194,13 @@ public class TeoriaFragment extends Fragment {
 
     private int dpToPx(int dp) {
         return (int) (dp * getResources().getDisplayMetrics().density + 0.5f);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (navAccesibilidad != null) {
+            navAccesibilidad.release();
+        }
     }
 }

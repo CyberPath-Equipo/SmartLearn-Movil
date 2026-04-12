@@ -9,8 +9,8 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.cyberpath.smartlearn.data.model.contenido.Subtema;
 import com.cyberpath.smartlearn.ui.main.combo.principal.subtema.AdaptadorSubtemas;
 import com.cyberpath.smartlearn.ui.main.combo.principal.subtema.SubtemasFragment;
-import com.cyberpath.smartlearn.util.accesibilidad.EntradaAudio;
-import com.cyberpath.smartlearn.util.accesibilidad.SalidaAudio;
+import com.cyberpath.smartlearn.util.accesibilidad.visual.EntradaAudio;
+import com.cyberpath.smartlearn.util.accesibilidad.visual.SalidaAudio;
 
 import java.util.List;
 

@@ -16,8 +16,8 @@ import androidx.core.view.WindowInsetsCompat;
 import com.cyberpath.smartlearn.R;
 import com.cyberpath.smartlearn.ui.acceso.AccesoActivity;
 import com.cyberpath.smartlearn.ui.main.MainActivity;
-import com.cyberpath.smartlearn.util.accesibilidad.EntradaAudio;
-import com.cyberpath.smartlearn.util.accesibilidad.SalidaAudio;
+import com.cyberpath.smartlearn.util.accesibilidad.visual.EntradaAudio;
+import com.cyberpath.smartlearn.util.accesibilidad.visual.SalidaAudio;
 import com.cyberpath.smartlearn.util.network.NetworkUtils;
 
 public class CargaActivity extends AppCompatActivity {

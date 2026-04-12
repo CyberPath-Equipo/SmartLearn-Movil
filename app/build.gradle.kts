@@ -2,10 +2,8 @@ plugins {
     alias(libs.plugins.android.application)
 }
 
-// ← AQUÍ VA EL BLOQUE buildscript (OBLIGATORIO para classpath)
 buildscript {
     dependencies {
-        // Esta es la línea mágica que hace que Safe Args funcione con Java + Kotlin DSL
         classpath("androidx.navigation:navigation-safe-args-gradle-plugin:2.7.7")
     }
 }
@@ -47,6 +45,8 @@ dependencies {
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.constraintlayout)
+    implementation(libs.media3.ui)
+    implementation(libs.media3.exoplayer)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
@@ -73,6 +73,10 @@ dependencies {
 
     compileOnly("org.projectlombok:lombok:1.18.34")
     annotationProcessor("org.projectlombok:lombok:1.18.34")
+
+    implementation("com.google.code.gson:gson:2.10.1")
+    implementation("com.github.bumptech.glide:glide:4.15.1")
+    annotationProcessor("com.github.bumptech.glide:compiler:4.15.1")
 }
 
 apply(plugin = "androidx.navigation.safeargs")

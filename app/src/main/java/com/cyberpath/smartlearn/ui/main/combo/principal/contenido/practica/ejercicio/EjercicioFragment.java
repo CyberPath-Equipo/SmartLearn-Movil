@@ -25,8 +25,8 @@ import com.cyberpath.smartlearn.data.model.ejercicio.Opcion;
 import com.cyberpath.smartlearn.data.model.ejercicio.Pregunta;
 import com.cyberpath.smartlearn.logic.main.combo.principal.contenido.practica.ejercicio.EjercicioLogic;
 import com.cyberpath.smartlearn.logic.main.combo.principal.contenido.practica.ejercicio.NavAccesibilidad;
-import com.cyberpath.smartlearn.util.accesibilidad.EntradaAudio;
-import com.cyberpath.smartlearn.util.accesibilidad.SalidaAudio;
+import com.cyberpath.smartlearn.util.accesibilidad.visual.EntradaAudio;
+import com.cyberpath.smartlearn.util.accesibilidad.visual.SalidaAudio;
 
 import java.util.ArrayList;
 import java.util.List;

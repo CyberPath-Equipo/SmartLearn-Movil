@@ -8,8 +8,8 @@ import android.widget.ListView;
 import com.cyberpath.smartlearn.data.model.ejercicio.Ejercicio;
 import com.cyberpath.smartlearn.ui.main.combo.principal.contenido.practica.AdaptadorPractica;
 import com.cyberpath.smartlearn.ui.main.combo.principal.contenido.practica.PracticaFragment;
-import com.cyberpath.smartlearn.util.accesibilidad.EntradaAudio;
-import com.cyberpath.smartlearn.util.accesibilidad.SalidaAudio;
+import com.cyberpath.smartlearn.util.accesibilidad.visual.EntradaAudio;
+import com.cyberpath.smartlearn.util.accesibilidad.visual.SalidaAudio;
 
 import java.util.List;
 

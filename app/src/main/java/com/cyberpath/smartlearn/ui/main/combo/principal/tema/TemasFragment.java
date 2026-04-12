@@ -21,7 +21,7 @@ import com.cyberpath.smartlearn.data.model.contenido.Materia;
 import com.cyberpath.smartlearn.data.model.contenido.Tema;
 import com.cyberpath.smartlearn.logic.main.combo.principal.tema.NavAccesibilidad;
 import com.cyberpath.smartlearn.logic.main.combo.principal.tema.TemasLogic;
-import com.cyberpath.smartlearn.util.accesibilidad.EntradaAudio;
+import com.cyberpath.smartlearn.util.accesibilidad.visual.EntradaAudio;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 

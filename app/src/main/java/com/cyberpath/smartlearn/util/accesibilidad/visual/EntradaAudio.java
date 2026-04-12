@@ -1,4 +1,4 @@
-package com.cyberpath.smartlearn.util.accesibilidad;
+package com.cyberpath.smartlearn.util.accesibilidad.visual;
 
 import android.Manifest;
 import android.content.Context;
