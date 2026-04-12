@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#122757"
+    android:clipChildren="false"
+    android:padding="25dp"
+    tools:context=".ui.acceso.LoginFragment">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|center_horizontal"
+        android:layout_marginTop="25dp"
+        android:src="@drawable/img_logo_principal_texto" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="180dp"
+        android:background="@drawable/bg_acceso"
+        android:elevation="12dp"
+        android:orientation="vertical"
+        android:padding="6dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="16dp"
+            android:gravity="center"
+            android:text="Inicio de Sesión"
+            android:textColor="@color/brandSmartLearn"
+            android:textSize="36sp"
+            android:textStyle="bold" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="12dp"
+            android:layout_marginBottom="12dp"
+            app:boxBackgroundMode="outline"
+            app:boxStrokeColor="@color/brandSmartLearn"
+            app:boxStrokeWidth="@dimen/cardview_default_elevation"
+            app:startIconDrawable="@drawable/ic_usuario"
+            app:startIconTint="@color/brandSmartLearn">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_nombre_usuario"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/entrada_usuario"
+                android:inputType="textEmailAddress"
+                android:paddingStart="40dp"
+                android:paddingTop="14dp"
+                android:paddingEnd="16dp"
+                android:paddingBottom="14dp"
+                android:textColor="#2A2A2A"
+                android:textColorHint="#717171"
+                android:textSize="18sp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="12dp"
+            android:layout_marginBottom="20dp"
+            app:boxBackgroundMode="outline"
+            app:boxStrokeColor="@color/brandSmartLearn"
+            app:boxStrokeWidth="@dimen/cardview_default_elevation"
+            app:endIconMode="password_toggle"
+            app:startIconDrawable="@drawable/ic_contrasena"
+            app:startIconTint="@color/brandSmartLearn">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_contrasena"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:contentDescription="Campo para ingresar tu contraseña"
+                android:hint="@string/entrada_contrasena"
+                android:importantForAutofill="yes"
+                android:inputType="textPassword"
+                android:paddingStart="40dp"
+                android:paddingTop="14dp"
+                android:paddingEnd="16dp"
+                android:paddingBottom="14dp"
+                android:textColor="#2A2A2A"
+                android:textColorHint="#717171"
+                android:textSize="18sp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_login"
+            style="@style/Widget.Material3.Button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="12dp"
+            android:layout_marginBottom="10dp"
+            android:elevation="8dp"
+            android:text="@string/action_sign_in"
+            android:textColor="?attr/colorSurface"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:backgroundTint="?attr/colorSecondary"
+            app:cornerRadius="12dp"
+            app:strokeColor="@color/brandSmartLearn"
+            app:strokeWidth="2dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_registro"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="12dp"
+            android:text="@string/action_registro"
+            android:textColor="?attr/colorSurface"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:backgroundTint="?attr/colorTertiary"
+            app:cornerRadius="12dp"
+            app:strokeColor="@color/brandSmartLearn"
+            app:strokeWidth="2dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="125dp"
+        android:elevation="20dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="82dp"
+            android:layout_height="82dp"
+            android:background="@drawable/bg_redondo_blanco"
+            android:padding="4dp"
+            android:src="@drawable/img_logo_empresa_redondo" />
+
+        <ImageView
+            android:layout_width="82dp"
+            android:layout_height="82dp"
+            android:layout_marginStart="-22dp"
+            android:background="@drawable/bg_redondo_blanco"
+            android:padding="4dp"
+            android:src="@drawable/img_logo_sl_redondo" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="28dp"
+        android:alpha="0.75"
+        android:text="Desarrollado por CyberPath S.A. de C.V."
+        android:textColor="#FFFFFF"
+        android:textSize="15sp" />
+
+</FrameLayout>

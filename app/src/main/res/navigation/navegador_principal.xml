@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navegador_materias"
+    app:startDestination="@id/materiasFragment">
+
+    <!-- 2. Agregar Materia -->
+    <fragment
+        android:id="@+id/agregarMateriaFragment"
+        android:name="com.cyberpath.smartlearn.ui.main.combo.agregarmateria.AgregarMateriaFragment"
+        android:label="Agregar Materia"
+        tools:layout="@layout/fragment_agregar_materia" />
+
+    <!-- 1. Materias -->
+    <action
+        android:id="@+id/action_global_materias"
+        app:destination="@id/materiasFragment"
+        app:popUpTo="@id/materiasFragment"
+        app:popUpToInclusive="true" />
+
+    <fragment
+        android:id="@+id/materiasFragment"
+        android:name="com.cyberpath.smartlearn.ui.main.combo.principal.materia.MateriasFragment"
+        android:label="Materias"
+        tools:layout="@layout/fragment_materias">
+
+        <action
+            android:id="@+id/action_materiasFragment_to_temasFragment"
+            app:destination="@id/temasFragment">
+            <argument
+                android:name="materia"
+                app:argType="com.cyberpath.smartlearn.data.model.contenido.Materia" />
+        </action>
+
+        <action
+            android:id="@+id/action_materiasFragment_to_teoriaFragment"
+            app:destination="@id/teoriaFragment">
+            <argument
+                android:name="subtema"
+                app:argType="com.cyberpath.smartlearn.data.model.contenido.Subtema" />
+        </action>
+        <action
+            android:id="@+id/action_materiasFragment_to_practicaFragment"
+            app:destination="@id/practicaFragment">
+            <argument
+                android:name="subtema"
+                app:argType="com.cyberpath.smartlearn.data.model.contenido.Subtema" />
+        </action>
+
+    </fragment>
+
+    <!-- 2. Temas -->
+    <fragment
+        android:id="@+id/temasFragment"
+        android:name="com.cyberpath.smartlearn.ui.main.combo.principal.tema.TemasFragment"
+        android:label="Temas"
+        tools:layout="@layout/fragment_temas">
+
+        <action
+            android:id="@+id/action_temasFragment_to_materiasFragment"
+            app:destination="@id/materiasFragment"
+            app:popUpTo="@id/materiasFragment"
+            app:popUpToInclusive="false" />
+        <argument
+            android:name="materia"
+            app:argType="com.cyberpath.smartlearn.data.model.contenido.Materia" />
+
+        <action
+            android:id="@+id/action_temasFragment_to_subtemasFragment"
+            app:destination="@id/subtemasFragment">
+            <argument
+                android:name="tema"
+                app:argType="com.cyberpath.smartlearn.data.model.contenido.Tema" />
+        </action>
+
+    </fragment>
+
+    <!-- 3. Subtemas -->
+    <fragment
+        android:id="@+id/subtemasFragment"
+        android:name="com.cyberpath.smartlearn.ui.main.combo.principal.subtema.SubtemasFragment"
+        android:label="Subtemas"
+        tools:layout="@layout/fragment_subtemas">
+
+        <action
+            android:id="@+id/action_subtemasFragment_to_temasFragment"
+            app:destination="@id/temasFragment"
+            app:popUpTo="@id/temasFragment"
+            app:popUpToInclusive="false" />
+        <argument
+            android:name="tema"
+            app:argType="com.cyberpath.smartlearn.data.model.contenido.Tema" />
+
+        <action
+            android:id="@+id/action_subtemasFragment_to_teoriaFragment"
+            app:destination="@id/teoriaFragment">
+            <argument
+                android:name="subtema"
+                app:argType="com.cyberpath.smartlearn.data.model.contenido.Subtema" />
+        </action>
+        <action
+            android:id="@+id/action_subtemasFragment_to_practicaFragment"
+            app:destination="@id/practicaFragment">
+            <argument
+                android:name="subtema"
+                app:argType="com.cyberpath.smartlearn.data.model.contenido.Subtema" />
+        </action>
+
+    </fragment>
+
+    <!-- 1. Teoria -->
+    <fragment
+        android:id="@+id/teoriaFragment"
+        android:name="com.cyberpath.smartlearn.ui.main.combo.principal.contenido.teoria.TeoriaFragment"
+        android:label="fragment_teoria"
+        tools:layout="@layout/fragment_teoria">
+        <action
+            android:id="@+id/action_teoriaFragment_to_subtemasFragment"
+            app:destination="@id/subtemasFragment"
+            app:popUpTo="@id/subtemasFragment"
+            app:popUpToInclusive="false" />
+        <argument
+            android:name="subtema"
+            app:argType="com.cyberpath.smartlearn.data.model.contenido.Subtema" />
+        <argument
+            android:name="preguntas"
+            app:argType="java.util.ArrayList"
+            app:nullable="true" />
+    </fragment>
+
+    <!-- 2. Practica -->
+    <fragment
+        android:id="@+id/practicaFragment"
+        android:name="com.cyberpath.smartlearn.ui.main.combo.principal.contenido.practica.PracticaFragment"
+        android:label="fragment_practica"
+        tools:layout="@layout/fragment_practica">
+
+        <action
+            android:id="@+id/action_practicaFragment_to_subtemasFragment"
+            app:destination="@id/subtemasFragment"
+            app:popUpTo="@id/subtemasFragment"
+            app:popUpToInclusive="false" />
+
+        <argument
+            android:name="subtema"
+            app:argType="com.cyberpath.smartlearn.data.model.contenido.Subtema" />
+
+        <action
+            android:id="@+id/action_practicaFragment_to_ejercicioFragment"
+            app:destination="@id/ejercicioFragment">
+            <argument
+                android:name="ejercicio"
+                app:argType="com.cyberpath.smartlearn.data.model.ejercicio.Ejercicio" />
+        </action>
+
+    </fragment>
+
+    <!-- 1. Ejercicio -->
+    <fragment
+        android:id="@+id/ejercicioFragment"
+        android:name="com.cyberpath.smartlearn.ui.main.combo.principal.contenido.practica.ejercicio.EjercicioFragment"
+        android:label="Práctica"
+        tools:layout="@layout/fragment_ejercicio">
+        <argument
+            android:name="ejercicio"
+            app:argType="com.cyberpath.smartlearn.data.model.ejercicio.Ejercicio" />
+
+        <action
+            android:id="@+id/action_ejercicioFragment_to_practicaFragment"
+            app:destination="@id/practicaFragment"
+            app:popUpTo="@id/practicaFragment"
+            app:popUpToInclusive="false" />
+
+        <action
+            android:id="@+id/action_ejercicioFragment_to_teoriaFragment"
+            app:destination="@id/teoriaFragment">
+            <argument
+                android:name="subtema"
+                app:argType="com.cyberpath.smartlearn.data.model.contenido.Subtema" />
+        </action>
+    </fragment>
+
+    <!-- 3. Configuración -->
+    <fragment
+        android:id="@+id/configuracionFragment"
+        android:name="com.cyberpath.smartlearn.ui.main.combo.configuracion.ConfiguracionFragment"
+        android:label="Configuración"
+        tools:layout="@layout/fragment_configuracion" />
+
+    <!-- 4. Accesibilidad -->
+    <fragment
+        android:id="@+id/accesibilidadFragment"
+        android:name="com.cyberpath.smartlearn.ui.main.combo.accesibilidad.AccesibilidadFragment"
+        android:label="Accesibilidad"
+        tools:layout="@layout/fragment_accesibilidad" />
+
+    <!-- 5. Cuenta -->
+    <fragment
+        android:id="@+id/cuentaFragment"
+        android:name="com.cyberpath.smartlearn.ui.main.combo.cuenta.CuentaFragment"
+        android:label="Cuenta"
+        tools:layout="@layout/fragment_cuenta">
+
+        <action
+            android:id="@+id/action_cuentaFragment_to_editarCuentaFragment"
+            app:destination="@id/editarCuentaFragment">
+            <argument
+                android:name="tipoEdicion"
+                android:defaultValue="nombre"
+                app:argType="string" />
+        </action>
+
+    </fragment>
+
+    <!-- 1. Editar Cuenta -->
+    <fragment
+        android:id="@+id/editarCuentaFragment"
+        android:name="com.cyberpath.smartlearn.ui.main.combo.cuenta.EditarCuentaFragment"
+        android:label="EditarCuenta"
+        tools:layout="@layout/fragment_editar_cuenta">
+        <action
+            android:id="@+id/action_editarCuentaFragment_to_cuentaFragment"
+            app:destination="@id/cuentaFragment" />
+    </fragment>
+
+    <!-- 6. Ayuda -->
+    <fragment
+        android:id="@+id/ayudaFragment"
+        android:name="com.cyberpath.smartlearn.ui.main.combo.ayuda.AyudaFragment"
+        android:label="Ayuda"
+        tools:layout="@layout/fragment_ayuda" />
+
+</navigation>

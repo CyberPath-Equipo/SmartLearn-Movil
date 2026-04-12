@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- ========= COLORES DARK ========= -->
+    <!-- ========= COLORES BASE LIGHT ========= -->
+    <color name="colorHeader">#121E2C</color>
+    <color name="colorBackground">#0F1722</color>
+    <color name="colorSurface">#1B2A38</color>
+
+    <!-- ========= COLORES DE TEXTO ========= -->
+    <color name="colorOnSurfacePrimary">#C4C4C4</color>
+    <color name="colorOnSurface">#FFFFFF</color>
+    <color name="colorOnBackground">#E6EDF3</color>
+
+    <!-- ========= COLORES DE ACCIÓN ========= -->
+    <color name="colorSecondary">#3FAF7A</color>
+    <color name="colorAccent">#2E8CA0</color>
+</resources>

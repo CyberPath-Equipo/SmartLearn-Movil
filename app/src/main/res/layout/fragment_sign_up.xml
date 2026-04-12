@@ -1,0 +1,342 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#122757"
+    android:clipChildren="false"
+    android:padding="25dp"
+    tools:context=".ui.acceso.SignUpFragment">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|center_horizontal"
+        android:layout_marginTop="25dp"
+        android:src="@drawable/img_logo_principal_texto" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="180dp"
+        android:background="@drawable/bg_acceso"
+        android:elevation="12dp"
+        android:orientation="vertical"
+        android:padding="6dp">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginBottom="16dp"
+                    android:gravity="center"
+                    android:text="Registro de Usuarios"
+                    android:textColor="@color/brandSmartLearn"
+                    android:textSize="36sp"
+                    android:textStyle="bold" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="12dp"
+                    android:layout_marginBottom="12dp"
+                    app:boxBackgroundMode="outline"
+                    app:boxStrokeColor="@color/brandSmartLearn"
+                    app:boxStrokeWidth="@dimen/cardview_default_elevation"
+                    app:startIconDrawable="@drawable/ic_usuario"
+                    app:startIconTint="@color/brandSmartLearn">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_nombre"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="Campo para ingresar un nombre de usuario"
+                        android:hint="@string/entrada_usuario"
+                        android:importantForAutofill="yes"
+                        android:inputType="textPersonName"
+                        android:paddingStart="40dp"
+                        android:paddingTop="14dp"
+                        android:paddingEnd="16dp"
+                        android:paddingBottom="14dp"
+                        android:textColor="#2A2A2A"
+                        android:textColorHint="#717171"
+                        android:textSize="18sp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="12dp"
+                    android:layout_marginBottom="12dp"
+                    app:boxBackgroundMode="outline"
+                    app:boxStrokeColor="@color/brandSmartLearn"
+                    app:boxStrokeWidth="@dimen/cardview_default_elevation"
+                    app:startIconDrawable="@drawable/ic_usuario"
+                    app:startIconTint="@color/brandSmartLearn">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_nombre_completo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="Campo para ingresar el nombre completo"
+                        android:hint="Nombre completo"
+                        android:importantForAutofill="yes"
+                        android:inputType="textPersonName"
+                        android:paddingStart="40dp"
+                        android:paddingTop="14dp"
+                        android:paddingEnd="16dp"
+                        android:paddingBottom="14dp"
+                        android:textColor="#2A2A2A"
+                        android:textColorHint="#717171"
+                        android:textSize="18sp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="12dp"
+                    android:layout_marginBottom="12dp"
+                    app:boxBackgroundMode="outline"
+                    app:boxStrokeColor="@color/brandSmartLearn"
+                    app:boxStrokeWidth="@dimen/cardview_default_elevation"
+                    app:endIconMode="password_toggle"
+                    app:startIconDrawable="@drawable/ic_contrasena"
+                    app:startIconTint="@color/brandSmartLearn">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_contraseña"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="Campo para ingresar una contraseña"
+                        android:hint="@string/entrada_contrasena"
+                        android:importantForAutofill="yes"
+                        android:inputType="textPassword"
+                        android:paddingStart="40dp"
+                        android:paddingTop="14dp"
+                        android:paddingEnd="16dp"
+                        android:paddingBottom="14dp"
+                        android:textColor="#2A2A2A"
+                        android:textColorHint="#717171"
+                        android:textSize="18sp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="12dp"
+                    android:layout_marginBottom="12dp"
+                    app:boxBackgroundMode="outline"
+                    app:boxStrokeColor="@color/brandSmartLearn"
+                    app:boxStrokeWidth="@dimen/cardview_default_elevation"
+                    app:startIconDrawable="@drawable/ic_correo"
+                    app:startIconTint="@color/brandSmartLearn">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_correo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="Campo para ingresar el correo de contacto"
+                        android:hint="@string/entrada_correo"
+                        android:importantForAutofill="yes"
+                        android:inputType="textEmailAddress"
+                        android:paddingStart="40dp"
+                        android:paddingTop="14dp"
+                        android:paddingEnd="16dp"
+                        android:paddingBottom="14dp"
+                        android:textColor="#2A2A2A"
+                        android:textColorHint="#717171"
+                        android:textSize="18sp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="15dp"
+                    android:gravity="center"
+                    android:text="Accesibilidad para\n Discapacidad Visual"
+                    android:textColor="@color/brandSmartLearn"
+                    android:textSize="20sp" />
+
+                <RadioGroup
+                    android:id="@+id/grupo_accesibilidad_visual"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="40dp"
+                    android:layout_marginBottom="12dp"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/radio_visual_activa"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Activa"
+                        android:textColor="@color/brandSmartLearn"
+                        android:textSize="18sp" />
+
+                    <RadioButton
+                        android:id="@+id/radio_visual_inactiva"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Inactiva"
+                        android:textColor="@color/brandSmartLearn"
+                        android:textSize="18sp" />
+                </RadioGroup>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center"
+                    android:text="Accesibilidad para\n Discapacidad Auditiva"
+                    android:textColor="@color/brandSmartLearn"
+                    android:textSize="20sp" />
+
+                <RadioGroup
+                    android:id="@+id/grupo_accesibilidad_auditiva"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="40dp"
+                    android:layout_marginBottom="12dp"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/radio_auditiva_activa"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Activa"
+                        android:textColor="@color/brandSmartLearn"
+                        android:textSize="18sp" />
+
+                    <RadioButton
+                        android:id="@+id/radio_auditiva_inactiva"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Inactiva"
+                        android:textColor="@color/brandSmartLearn"
+                        android:textSize="18sp" />
+                </RadioGroup>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center"
+                    android:text="Tipo de Usuario"
+                    android:textColor="@color/brandSmartLearn"
+                    android:textSize="20sp" />
+
+                <RadioGroup
+                    android:id="@+id/grupo_tipo_usuario"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="40dp"
+                    android:layout_marginBottom="20dp"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/radio_alumno"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Alumno"
+                        android:textColor="@color/brandSmartLearn"
+                        android:textSize="18sp" />
+
+                    <RadioButton
+                        android:id="@+id/radio_docente"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Docente"
+                        android:textColor="@color/brandSmartLearn"
+                        android:textSize="18sp" />
+                </RadioGroup>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_registro"
+                    style="@style/Widget.Material3.Button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="12dp"
+                    android:layout_marginBottom="10dp"
+                    android:contentDescription="Botón para registrar al nuevo usuario"
+                    android:text="Registrar"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:backgroundTint="?attr/colorSecondary"
+                    app:cornerRadius="12dp"
+                    app:strokeColor="@color/brandSmartLearn"
+                    app:strokeWidth="2dp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_regresar"
+                    style="@style/Widget.Material3.Button.OutlinedButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="12dp"
+                    android:layout_marginBottom="10dp"
+                    android:contentDescription="Botón para regresar a la pantalla anterior"
+                    android:text="Regresar"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:backgroundTint="?attr/colorTertiary"
+                    app:cornerRadius="12dp"
+                    app:strokeColor="@color/brandSmartLearn"
+                    app:strokeWidth="2dp" />
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="125dp"
+        android:elevation="20dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="82dp"
+            android:layout_height="82dp"
+            android:background="@drawable/bg_redondo_blanco"
+            android:padding="4dp"
+            android:src="@drawable/img_logo_empresa_redondo" />
+
+        <ImageView
+            android:layout_width="82dp"
+            android:layout_height="82dp"
+            android:layout_marginStart="-22dp"
+            android:background="@drawable/bg_redondo_blanco"
+            android:padding="4dp"
+            android:src="@drawable/img_logo_sl_redondo" />
+    </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/loading"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:contentDescription="Indicador de carga mientras se realiza el registro"
+        android:visibility="gone" />
+</FrameLayout>

@@ -1,0 +1,120 @@
+<resources>
+
+    <style name="Base.Theme.SmartLearn" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="fontFamily">@font/space_grotesk</item>
+        <item name="android:statusBarColor">@color/black</item>
+        <item name="android:windowLightStatusBar">false</item>
+
+        <!-- Colores -->
+        <item name="colorPrimary">@color/colorHeader</item>
+        <item name="colorOnPrimary">@color/colorOnBackground</item>
+
+        <item name="android:colorBackground">@color/colorBackground</item>
+        <item name="colorOnBackground">@color/colorOnBackground</item>
+
+        <item name="colorSurface">@color/colorSurface</item>
+        <item name="colorOnSurface">@color/colorOnSurface</item>
+
+        <item name="colorSecondary">@color/colorSecondary</item>
+        <item name="colorTertiary">@color/colorAccent</item>
+        <item name="colorButtonNormal">#BEBFC3</item>
+        <item name="colorError">#88FF4444</item>
+
+        <!-- Texto -->
+        <item name="textAppearanceHeadlineMedium">@style/TextAppearance.SmartLearn.Headline</item>
+
+        <item name="textAppearanceTitleLarge">
+            @style/TextAppearance.SmartLearn.Subtitle
+        </item>
+
+        <item name="textAppearanceBodyLarge">
+            @style/TextAppearance.SmartLearn.Body
+        </item>
+
+        <item name="textAppearanceBodyMedium">
+            @style/TextAppearance.SmartLearn.BodyReading
+        </item>
+    </style>
+
+    <style name="Theme.SmartLearn.Accessible" parent="Theme.Material3.DayNight.NoActionBar">
+
+        <item name="colorPrimary">@color/accessible_primary</item>
+        <item name="colorOnPrimary">@color/accessible_on_primary</item>
+
+        <item name="colorSecondary">@color/accessible_secondary</item>
+
+        <item name="colorTertiary">@color/accessible_tertiary</item>
+
+        <item name="android:colorBackground">@color/accessible_background</item>
+        <item name="colorOnBackground">@color/accessible_on_background</item>
+
+        <item name="colorSurface">@color/accessible_surface</item>
+        <item name="colorOnSurface">@color/accessible_on_surface</item>
+
+        <item name="android:statusBarColor">@color/accessible_background</item>
+        <item name="android:navigationBarColor">@color/accessible_background</item>
+        <item name="colorButtonNormal">@color/accessible_tertiary</item>
+        <item name="colorError">#E90808</item>
+
+        <!-- Texto -->
+        <item name="textAppearanceHeadlineMedium">
+            @style/TextAppearance.SmartLearn.Accessible.Headline
+        </item>
+
+        <item name="textAppearanceTitleLarge">
+            @style/TextAppearance.SmartLearn.Accessible.Subtitle
+        </item>
+
+        <item name="textAppearanceBodyLarge">
+            @style/TextAppearance.SmartLearn.Accessible.Body
+        </item>
+
+        <item name="textAppearanceBodyMedium">
+            @style/TextAppearance.SmartLearn.Accessible.BodyReading
+        </item>
+
+    </style>
+
+    <!-- ============================= -->
+    <!--        Tipografía (Base)      -->
+    <!-- ============================= -->
+
+    <style name="TextAppearance.SmartLearn.Headline" parent="TextAppearance.Material3.HeadlineMedium"> <!-- Subtemas -->
+        <item name="android:textSize">22sp</item>
+    </style>
+
+    <style name="TextAppearance.SmartLearn.Subtitle" parent="TextAppearance.Material3.TitleLarge"> <!-- Secciones -->
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="TextAppearance.SmartLearn.Body" parent="TextAppearance.Material3.BodyLarge"> <!-- Parrafos -->
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="TextAppearance.SmartLearn.BodyReading" parent="TextAppearance.Material3.BodyMedium"> <!-- Contenido denso (Teoría) -->
+        <item name="android:textSize">14sp</item>
+        <item name="android:lineSpacingExtra">10dp</item>
+    </style>
+
+    <!-- ============================= -->
+    <!--     Tipografía (Accesible)    -->
+    <!-- ============================= -->
+
+    <style name="TextAppearance.SmartLearn.Accessible.Headline" parent="TextAppearance.Material3.HeadlineMedium">
+        <item name="android:textSize">28sp</item>
+    </style>
+
+    <style name="TextAppearance.SmartLearn.Accessible.Subtitle" parent="TextAppearance.Material3.TitleLarge">
+        <item name="android:textSize">24sp</item>
+    </style>
+
+    <style name="TextAppearance.SmartLearn.Accessible.Body" parent="TextAppearance.Material3.BodyLarge">
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="TextAppearance.SmartLearn.Accessible.BodyReading" parent="TextAppearance.Material3.BodyMedium">
+        <item name="android:textSize">19sp</item>
+        <item name="android:lineSpacingExtra">6dp</item>
+    </style>
+
+</resources>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Smart Learn</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="entrada_usuario">Nombre de Usuario</string>
+    <string name="entrada_contrasena">Contraseña</string>
+    <string name="entrada_correo">Correo</string>
+    <string name="action_sign_in">Iniciar Sesión</string>
+    <string name="action_registro">Registro de usuarios</string>
+    <string name="welcome">"Welcome !"</string>
+    <string name="invalid_username">El nombre de usuario no es valido</string>
+    <string name="invalid_password">La contraseña debería tener más de 5 caracteres</string>
+    <string name="login_failed">Inicio de sesión fallido</string>
+
+    <string name="accesibilidad"><b>Activa:</b> Navegación con guía de audio y comandos de voz.\n\n<b>Inactiva:</b> Se desactivan todas las funciones de accesiblidad.</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- Strings para el menú lateral -->
+    <string name="titulo_ultimo_subtema">Continúa donde lo dejaste \n (Último subtema)</string>
+
+</resources>

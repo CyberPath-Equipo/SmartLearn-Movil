@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <!-- ========= COLORES DE MARCA ========= -->
+    <color name="brandSmartLearn">#193881</color>
+    <color name="brandCyberPath">#020136</color>
+
+
+    <!-- ========= COLORES LIGHT ========= -->
+    <!-- ========= COLORES BASE LIGHT ========= -->
+    <color name="colorHeader">#2B5481</color>
+    <color name="colorBackground">#D7D7D7</color>
+    <color name="colorSurface">#FFFFFFFF</color>
+
+    <!-- ========= COLORES DE TEXTO ========= -->
+    <color name="colorOnSurfacePrimary">#030034</color>
+    <color name="colorOnSurface">#FF000000</color>
+    <color name="colorOnBackground">#FFFFFFFF</color>
+
+    <!-- ========= COLORES DE ACCIÓN ========= -->
+    <color name="colorSecondary">#359762</color>
+    <color name="colorAccent">#015B6A</color>
+
+    <!-- ========= COLORES ACCESSIBLE ========= -->
+    <color name="accessible_background">#000000</color>
+    <color name="accessible_surface">#121212</color>
+
+    <color name="accessible_on_background">#FFFFFF</color>
+    <color name="accessible_on_surface">#FFFFFF</color>
+
+    <color name="accessible_primary">#42A5F5</color>
+    <color name="accessible_on_primary">#000000</color>
+
+    <color name="accessible_secondary">#FFD600</color>
+    <color name="accessible_on_secondary">#000000</color>
+
+    <color name="accessible_tertiary">#FF6F00</color>
+    <color name="accessible_on_tertiary">#000000</color>
+
+</resources>
