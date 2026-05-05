@@ -18,6 +18,7 @@ public class PreferencesManager {
     // -----------------------
     private static final String PREFS_NAME = "smartlearn_prefs";
     private static final String KEY_USUARIO_REGISTRADO = "usuario_registrado";
+    private static final String KEY_TOKEN = "token";
     private static final String KEY_SESION_ACTIVA = "sesion_activa";
     private static final String KEY_ID_USUARIO = "id_usuario";
     private static final String KEY_NOMBRE_USUARIO = "nombre_usuario";
@@ -134,5 +135,13 @@ public class PreferencesManager {
 
     public static int getIdSubtemaUltimaConexion(Context context) {
         return getPrefs(context).getInt(KEY_ID_SUBTEMA_ULTIMA_CONEXION, -1);
+    }
+
+    public static void setToken(Context context, String token) {
+        getPrefs(context).edit().putString(KEY_TOKEN, token).apply();
+    }
+
+    public static String getToken(Context context) {
+        return getPrefs(context).getString(KEY_TOKEN, "");
     }
 }

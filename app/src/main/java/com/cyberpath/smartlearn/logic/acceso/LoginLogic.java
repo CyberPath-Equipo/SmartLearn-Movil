@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.biometric.BiometricPrompt;
 import androidx.core.content.ContextCompat;
 
+import com.cyberpath.smartlearn.data.model.usuario.LoginResponse;
 import com.cyberpath.smartlearn.data.model.usuario.Usuario;
 import com.cyberpath.smartlearn.data.remote.api.ApiService;
 import com.cyberpath.smartlearn.data.remote.api.RetrofitClient;
@@ -140,13 +141,22 @@ public class LoginLogic {
         loginRequest.setNombreCuenta(nombreCuenta);
         loginRequest.setContrasena(contrasena);
 
-        api.login(loginRequest).enqueue(new Callback<Usuario>() {
+        api.login(loginRequest).enqueue(new Callback<LoginResponse>() {
             @Override
-            public void onResponse(Call<Usuario> call, Response<Usuario> response) {
+            public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    Usuario usuarioLogueado = response.body();
-                    int idUsuario = usuarioLogueado.getId();
+                    LoginResponse lr = response.body();
 
+                    String token = lr.getToken();
+                    Integer idUsuarioObj = lr.getIdUsuario();
+                    if (idUsuarioObj == null) {
+                        Toast.makeText(loginFragment.getContext(), "Respuesta inválida del servidor (id nulo)", Toast.LENGTH_LONG).show();
+                        return;
+                    }
+                    int idUsuario = idUsuarioObj;
+
+                    PreferencesManager.setToken(loginFragment.requireContext(), token);
+                    PreferencesManager.setIdUsuario(loginFragment.requireContext(), idUsuario);
                     PreferencesManager.setUsuarioRegistrado(loginFragment.requireContext(), true);
                     PreferencesManager.setSesionActiva(loginFragment.requireContext(), true);
 
@@ -175,7 +185,7 @@ public class LoginLogic {
             }
 
             @Override
-            public void onFailure(Call<Usuario> call, Throwable t) {
+            public void onFailure(Call<LoginResponse> call, Throwable t) {
                 Toast.makeText(loginFragment.getContext(), "Error de red: " + t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });

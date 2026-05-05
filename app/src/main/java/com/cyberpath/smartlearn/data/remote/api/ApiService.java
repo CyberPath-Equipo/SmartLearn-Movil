@@ -10,6 +10,7 @@ import com.cyberpath.smartlearn.data.model.ejercicio.Opcion;
 import com.cyberpath.smartlearn.data.model.ejercicio.Pregunta;
 import com.cyberpath.smartlearn.data.model.relaciones.UsuarioEjercicio;
 import com.cyberpath.smartlearn.data.model.relaciones.UsuarioMateria;
+import com.cyberpath.smartlearn.data.model.usuario.LoginResponse;
 import com.cyberpath.smartlearn.data.model.usuario.UltimaConexion;
 import com.cyberpath.smartlearn.data.model.usuario.Usuario;
 
@@ -48,7 +49,7 @@ public interface ApiService {
     Call<Void> validarContrasena(@Body Usuario validarRequest);
 
     @POST("/smartlearn/api/usuario/login")
-    Call<Usuario> login(@Body Usuario loginRequest);
+    Call<LoginResponse> login(@Body Usuario loginRequest);
 
     @PUT("/smartlearn/api/usuario/{id}")
     Call<Usuario> updateUsuario(@Path("id") int id, @Body Usuario usuario);
