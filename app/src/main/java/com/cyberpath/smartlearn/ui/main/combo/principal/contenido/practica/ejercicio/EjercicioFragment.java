@@ -1,15 +1,15 @@
 package com.cyberpath.smartlearn.ui.main.combo.principal.contenido.practica.ejercicio;
 
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,7 +38,7 @@ import lombok.Setter;
 public class EjercicioFragment extends Fragment {
 
     private final Handler mainHandler = new Handler(Looper.getMainLooper());
-    private final List<RadioButton> currentOptionButtons = new ArrayList<>();
+    private final List<Button> currentOptionButtons = new ArrayList<>();
     private EjercicioLogic ejercicioLogic;
     private NavAccesibilidad navAccesibilidad;
     private Ejercicio ejercicio;
@@ -47,11 +47,14 @@ public class EjercicioFragment extends Fragment {
     private Subtema subtema;
     private ArrayList<String> listaPreguntas;
     private TextView tvQuestion;
-    private RadioGroup rgOptions;
+    private LinearLayout llOptions;
     private Button btnCheck;
     private LinearLayout layoutQuiz, layoutResultado, layoutRetroalimentacion;
     private TextView tvResultadoTitulo, tvPuntaje, tvPorcentaje;
     private Button btnVolver, btnRetroalimentacion;
+
+    // estado de selección local (un solo índice seleccionado, -1 = none)
+    private int selectedOptionIndex = -1;
 
     public EjercicioFragment() {
     }
@@ -71,7 +74,7 @@ public class EjercicioFragment extends Fragment {
         }
 
         tvQuestion = view.findViewById(R.id.tv_question);
-        rgOptions = view.findViewById(R.id.rg_options);
+        llOptions = view.findViewById(R.id.ll_options);
         btnCheck = view.findViewById(R.id.btn_check);
 
         layoutQuiz = view.findViewById(R.id.layout_quiz);
@@ -85,7 +88,12 @@ public class EjercicioFragment extends Fragment {
 
         listaPreguntas = new ArrayList<>();
 
-        btnCheck.setOnClickListener(v -> ejercicioLogic.verificarRespuesta());
+        // Al presionar "Verificar" delegamos al logic (que ahora debe consultar la opción seleccionada a través del fragment)
+        btnCheck.setOnClickListener(v -> {
+            if (ejercicioLogic != null) {
+                ejercicioLogic.verificarRespuesta();
+            }
+        });
         btnVolver.setOnClickListener(v -> NavHostFragment.findNavController(this).popBackStack());
 
         btnRetroalimentacion.setOnClickListener(v -> {
@@ -158,24 +166,97 @@ public class EjercicioFragment extends Fragment {
         }
     }
 
+    /**
+     * Crea botones para cada opción. La selección queda local (selectedOptionIndex) hasta que el usuario
+     * presione "Verificar".
+     */
     public void mostrarOpciones(List<Opcion> opciones) {
-        if (rgOptions == null) return;
+        if (llOptions == null) return;
 
-        rgOptions.removeAllViews();
+        llOptions.removeAllViews();
         currentOptionButtons.clear();
+        selectedOptionIndex = -1;
 
         if (opciones == null || opciones.isEmpty()) return;
 
         for (int i = 0; i < opciones.size(); i++) {
             Opcion opcion = opciones.get(i);
-            RadioButton rb = new RadioButton(getContext());
-            rb.setId(View.generateViewId());
-            rb.setText(opcion.getTexto());
-            rb.setTag(opcion);
-            rb.setTextSize(16);
-            rgOptions.addView(rb);
-            currentOptionButtons.add(rb);
+            Button btn = new Button(getContext());
+            btn.setId(View.generateViewId());
+            btn.setText(opcion.getTexto());
+            btn.setTag(opcion);
+            btn.setAllCaps(false);
+            btn.setTextSize(16);
+
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT
+            );
+            // margen entre botones
+            final int marginPx = (int) (8 * getResources().getDisplayMetrics().density);
+            lp.setMargins(0, 0, 0, marginPx);
+            btn.setLayoutParams(lp);
+
+            final int index = i;
+            btn.setOnClickListener(v -> {
+                // selección (solo un botón seleccionado a la vez)
+                if (selectedOptionIndex == index) {
+                    selectedOptionIndex = -1; // deseleccionar si toca el mismo nuevamente
+                } else {
+                    selectedOptionIndex = index;
+                }
+                updateOptionSelectionUI();
+            });
+
+            // estilos iniciales (no seleccionado)
+            btn.setBackgroundTintList(
+                    ColorStateList.valueOf(requireContext().getColor(R.color.colorAccent))
+            );
+
+            btn.setTextColor(
+                    requireContext().getColor(R.color.colorSurface)
+            );
+
+            llOptions.addView(btn);
+            currentOptionButtons.add(btn);
         }
+    }
+
+    private void updateOptionSelectionUI() {
+        for (int i = 0; i < currentOptionButtons.size(); i++) {
+            Button b = currentOptionButtons.get(i);
+            if (i == selectedOptionIndex) {
+                b.setBackgroundTintList(
+                        ColorStateList.valueOf(requireContext().getColor(R.color.colorSecondary))
+                );
+
+                b.setTextColor(
+                        requireContext().getColor(R.color.colorSurface)
+                );
+            } else {
+                b.setBackgroundTintList(
+                        ColorStateList.valueOf(requireContext().getColor(R.color.colorAccent))
+                );
+                b.setTextColor(
+                        requireContext().getColor(R.color.colorSurface)
+                );
+            }
+        }
+    }
+
+    private int getColorAttr(int attrRes) {
+        TypedValue tv = new TypedValue();
+        if (requireContext().getTheme().resolveAttribute(attrRes, tv, true)) {
+            // si es color directo en theme
+            if (tv.type >= TypedValue.TYPE_FIRST_COLOR_INT && tv.type <= TypedValue.TYPE_LAST_COLOR_INT) {
+                return tv.data;
+            } else {
+                // si es referencia a recurso
+                return requireContext().getResources().getColor(tv.resourceId, requireContext().getTheme());
+            }
+        }
+        // fallback
+        return requireContext().getResources().getColor(android.R.color.black);
     }
 
     public void setBtnCheckEnabled(boolean enabled) {
@@ -184,10 +265,9 @@ public class EjercicioFragment extends Fragment {
         }
     }
 
-    public void clearRadioGroup() {
-        if (rgOptions != null) {
-            rgOptions.clearCheck();
-        }
+    public void clearOptionsSelection() {
+        selectedOptionIndex = -1;
+        updateOptionSelectionUI();
     }
 
     public void mostrarLayoutQuiz(boolean mostrar) {
@@ -254,29 +334,44 @@ public class EjercicioFragment extends Fragment {
         return ejercicioLogic != null ? ejercicioLogic.getNumeroOpcionesPreguntaActual() : 0;
     }
 
+    /**
+     * Selecciona la opción con índice idx (se usa para accesibilidad/automatización).
+     */
     public void seleccionarOpcionPorIndice(int idx) {
         mainHandler.post(() -> {
             if (idx < 0 || idx >= currentOptionButtons.size()) return;
-            RadioButton rb = currentOptionButtons.get(idx);
-            if (rb != null) {
-                rb.setChecked(true);
-            }
+            selectedOptionIndex = idx;
+            updateOptionSelectionUI();
         });
     }
 
     public String getTextoOpcionActual(int idx) {
-        return ejercicioLogic != null ? ejercicioLogic.getTextoOpcionActual(idx) : "";
+        if (idx < 0 || idx >= currentOptionButtons.size()) return "";
+        return currentOptionButtons.get(idx).getText().toString();
     }
 
     public boolean hayOpcionSeleccionada() {
-        return rgOptions != null && rgOptions.getCheckedRadioButtonId() != -1;
+        return selectedOptionIndex != -1;
     }
 
-    public int getSelectedRadioButtonId() {
-        return rgOptions != null ? rgOptions.getCheckedRadioButtonId() : -1;
+    /**
+     * Devuelve el índice de la opción seleccionada, o -1 si ninguna.
+     */
+    public int getSelectedOptionIndex() {
+        return selectedOptionIndex;
     }
 
-    public RadioButton findViewById(int id) {
+    /**
+     * Devuelve la Opcion (modelo) seleccionada, o null si ninguna.
+     */
+    public Opcion getSelectedOpcion() {
+        if (selectedOptionIndex < 0 || selectedOptionIndex >= currentOptionButtons.size()) return null;
+        Object tag = currentOptionButtons.get(selectedOptionIndex).getTag();
+        if (tag instanceof Opcion) return (Opcion) tag;
+        return null;
+    }
+
+    public Button findViewById(int id) {
         return requireView().findViewById(id);
     }
 
@@ -321,6 +416,8 @@ public class EjercicioFragment extends Fragment {
     }
 
     public void mostrarSiguientePregunta() {
-        ejercicioLogic.mostrarSiguientePregunta();
+        if (ejercicioLogic != null) {
+            ejercicioLogic.mostrarSiguientePregunta();
+        }
     }
 }

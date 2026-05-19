@@ -12,11 +12,30 @@
     <string name="invalid_password">La contraseña debería tener más de 5 caracteres</string>
     <string name="login_failed">Inicio de sesión fallido</string>
 
-    <string name="accesibilidad"><b>Activa:</b> Navegación con guía de audio y comandos de voz.\n\n<b>Inactiva:</b> Se desactivan todas las funciones de accesiblidad.</string>
+    <string name="accesibilidad"><b>Activa:</b> Navegación con guía de audio y mandos de voz.\n\n<b>Inactiva:</b> Se desactivan todas las funciones de accesibilidad.</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <!-- Strings para el menú lateral -->
     <string name="titulo_ultimo_subtema">Continúa donde lo dejaste \n (Último subtema)</string>
+
+    <!-- Strings 2FA -->
+    <string name="two_factor_title">Verificación 2FA</string>
+    <string name="two_factor_setup_title">Configura tu verificación 2FA</string>
+    <string name="two_factor_totp_subtitle">Ingresa el código de tu app autenticadora.</string>
+    <string name="two_factor_sms_subtitle">Ingresa el código enviado por SMS.</string>
+    <string name="two_factor_setup_subtitle">Escanea o copia el enlace en tu app autenticadora y confirma el código.</string>
+    <string name="two_factor_setup_help">Agrega esta cuenta en Google Authenticator, Authy o una app compatible usando el enlace siguiente.</string>
+    <string name="two_factor_setup_uri_label">Enlace de aprovisionamiento:</string>
+    <string name="two_factor_setup_uri_not_available">No disponible</string>
+    <string name="two_factor_email_title">Verifica tu correo</string>
+    <string name="two_factor_email_subtitle">Ingresa el código enviado a tu correo.</string>
+    <string name="two_factor_email_help">Se envió un código al correo %1$s. Revisa tu bandeja de entrada o spam.</string>
+    <string name="two_factor_email_verify_button">Verificar correo</string>
+    <string name="two_factor_code_hint">Código de verificación</string>
+    <string name="two_factor_remember_device">Recordar este dispositivo por 30 días</string>
+    <string name="two_factor_verify_button">Verificar código</string>
+    <string name="two_factor_confirm_setup_button">Confirmar configuración</string>
+    <string name="two_factor_resend_button">Reenviar código</string>
 
 </resources>

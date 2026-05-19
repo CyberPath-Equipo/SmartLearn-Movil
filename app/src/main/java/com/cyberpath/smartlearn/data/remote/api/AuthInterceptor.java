@@ -29,6 +29,11 @@ public class AuthInterceptor implements Interceptor {
             b.header("Authorization", "Bearer " + token);
         }
 
+        String trustedDeviceToken = PreferencesManager.getTrustedDeviceToken(ctx);
+        if (trustedDeviceToken != null && !trustedDeviceToken.isEmpty()) {
+            b.header("X-Trusted-Device-Token", trustedDeviceToken);
+        }
+
         Request r = b.build();
         return chain.proceed(r);
     }

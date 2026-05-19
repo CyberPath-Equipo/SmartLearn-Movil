@@ -14,7 +14,7 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 
 import com.cyberpath.smartlearn.R;
-import com.cyberpath.smartlearn.data.model.usuario.Configuracion;
+import com.cyberpath.smartlearn.data.model.usuario.propiedades.Configuracion;
 import com.cyberpath.smartlearn.util.preferences.PreferencesManager;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 

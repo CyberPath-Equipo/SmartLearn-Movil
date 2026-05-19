@@ -1,5 +1,6 @@
 package com.cyberpath.smartlearn.logic.acceso;
 
+import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -8,11 +9,11 @@ import android.widget.Toast;
 import androidx.navigation.Navigation;
 
 import com.cyberpath.smartlearn.R;
+import com.cyberpath.smartlearn.data.model.usuario.acceso.RegistroPendienteResponse;
 import com.cyberpath.smartlearn.data.model.usuario.Usuario;
 import com.cyberpath.smartlearn.data.remote.api.ApiService;
 import com.cyberpath.smartlearn.data.remote.api.RetrofitClient;
 import com.cyberpath.smartlearn.ui.acceso.SignUpFragment;
-import com.cyberpath.smartlearn.util.constants.UsuarioCst;
 import com.cyberpath.smartlearn.util.preferences.PreferencesManager;
 import com.cyberpath.smartlearn.util.validation.InputValidator;
 
@@ -66,46 +67,31 @@ public class SignupLogic {
         mostrarLoading(true);
 
         ApiService api = RetrofitClient.getApiService();
-        api.saveUsuarioEjercicio(nuevoUsuario).enqueue(new Callback<Usuario>() {
+        api.saveUsuarioEjercicio(nuevoUsuario).enqueue(new Callback<RegistroPendienteResponse>() {
             @Override
-            public void onResponse(Call<Usuario> call, Response<Usuario> response) {
+            public void onResponse(Call<RegistroPendienteResponse> call, Response<RegistroPendienteResponse> response) {
                 if (!signUpFragment.isAdded()) {
                     return;
                 }
                 mostrarLoading(false);
 
                 if (response.isSuccessful() && response.body() != null) {
-                    Usuario usuarioRegistrado = response.body();
-                    int idUsuario = usuarioRegistrado.getId();
+                    RegistroPendienteResponse registro = response.body();
+                    if (Boolean.TRUE.equals(registro.getRequiresVerification()) || registro.getTransactionId() != null) {
+                        prepararRegistroPendiente(registro, nombreUsuario, correo);
+                        abrirVerificacionCorreo(registro, nombreUsuario, correo);
+                        return;
+                    }
 
-                    PreferencesManager.setUsuarioRegistrado(signUpFragment.requireContext(), true);
-                    PreferencesManager.setSesionActiva(signUpFragment.requireContext(), true);
-                    PreferencesManager.setIdUsuario(signUpFragment.requireContext(), idUsuario);
-                    PreferencesManager.setAccesibilidadVisualActivada(signUpFragment.requireContext(), accesibilidadVisual);
-                    PreferencesManager.setAccesibilidadAuditivaActivada(signUpFragment.requireContext(), accesibilidadAuditiva);
-                    PreferencesManager.setIdSubtemaUltimaConexion(signUpFragment.requireContext(), -1);
-                    PreferencesManager.setTemaApp(
-                            signUpFragment.requireContext(),
-                            accesibilidadVisual ? PreferencesManager.THEME_ACCESSIBLE : PreferencesManager.THEME_LIGHT
-                    );
+                    Toast.makeText(signUpFragment.requireContext(),
+                            registro.getMessage() != null ? registro.getMessage() : "Registro completado",
+                            Toast.LENGTH_LONG).show();
+                    Navigation.findNavController(signUpFragment.requireView()).navigate(R.id.loginFragment);
+                    return;
+                }
 
-                    Log.d(TAG, "Registro exitoso. ID de usuario guardado: " + idUsuario);
-                    Toast.makeText(signUpFragment.requireContext(), "Registro exitoso", Toast.LENGTH_SHORT).show();
-
-
-                    UsuarioCst.asignarConstantesUsuario(signUpFragment.requireContext(), idUsuario,
-                            new UsuarioCst.UsuarioLoadCallback() {
-                                @Override
-                                public void onUsuarioLoaded(Usuario usuario) {
-                                    Navigation.findNavController(signUpFragment.requireView()).navigate(R.id.loginFragment);
-                                }
-
-                                @Override
-                                public void onError(String mensaje) {
-                                    Log.e(TAG, "Error al cargar usuario tras registro: " + mensaje);
-                                    Navigation.findNavController(signUpFragment.requireView()).navigate(R.id.loginFragment);
-                                }
-                            });
+                if (response.code() == 202) {
+                    Toast.makeText(signUpFragment.requireContext(), "Registro pendiente de verificación", Toast.LENGTH_SHORT).show();
                 } else {
                     String error = "Error " + response.code() + ": " + response.message();
                     Toast.makeText(signUpFragment.requireContext(), error, Toast.LENGTH_LONG).show();
@@ -114,7 +100,7 @@ public class SignupLogic {
             }
 
             @Override
-            public void onFailure(Call<Usuario> call, Throwable t) {
+            public void onFailure(Call<RegistroPendienteResponse> call, Throwable t) {
                 if (!signUpFragment.isAdded()) {
                     return;
                 }
@@ -182,5 +168,32 @@ public class SignupLogic {
 
         loading.setVisibility(mostrar ? View.VISIBLE : View.GONE);
         btnRegistro.setEnabled(!mostrar);
+    }
+
+    private void prepararRegistroPendiente(RegistroPendienteResponse registro, String nombreUsuario, String correo) {
+        PreferencesManager.setRegistroPendiente(signUpFragment.requireContext(), true);
+        PreferencesManager.setRegistroTransactionId(signUpFragment.requireContext(), registro.getTransactionId());
+        PreferencesManager.setRegistroCorreo(signUpFragment.requireContext(), registro.getCorreo() != null ? registro.getCorreo() : correo);
+        PreferencesManager.setRegistroNombreCuenta(signUpFragment.requireContext(), registro.getNombreCuenta() != null ? registro.getNombreCuenta() : nombreUsuario);
+        PreferencesManager.setUsuarioRegistrado(signUpFragment.requireContext(), false);
+        PreferencesManager.setSesionActiva(signUpFragment.requireContext(), false);
+    }
+
+    private void abrirVerificacionCorreo(RegistroPendienteResponse registro, String nombreUsuario, String correo) {
+        if (registro.getTransactionId() == null || registro.getTransactionId().trim().isEmpty()) {
+            Toast.makeText(signUpFragment.requireContext(), "No se pudo iniciar la verificación por correo", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        Bundle args = new Bundle();
+        args.putString("transactionId", registro.getTransactionId());
+        args.putString("channel", "EMAIL");
+        args.putString("flowMode", "EMAIL_VERIFY");
+        args.putString("nombreCuenta", registro.getNombreCuenta() != null ? registro.getNombreCuenta() : nombreUsuario);
+        args.putString("correo", registro.getCorreo() != null ? registro.getCorreo() : correo);
+
+        Toast.makeText(signUpFragment.requireContext(), "Se envió un código de verificación al correo", Toast.LENGTH_SHORT).show();
+        Navigation.findNavController(signUpFragment.requireView())
+                .navigate(R.id.action_signUpFragment_to_twoFactorFragment, args);
     }
 }

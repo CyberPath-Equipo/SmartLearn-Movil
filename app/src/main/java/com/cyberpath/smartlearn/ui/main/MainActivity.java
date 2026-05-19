@@ -98,8 +98,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
 
             if (id == R.id.cerrarSesion) {
-                PreferencesManager.setSesionActiva(MainActivity.this, false);
-                PreferencesManager.setIdUsuario(MainActivity.this, -1);
+                PreferencesManager.clearSesion(MainActivity.this);
                 UsuarioCst.USUARIO_ACTUAL = null;
                 Intent intent = new Intent(MainActivity.this, AccesoActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -197,7 +196,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         int idUsuario = PreferencesManager.getIdUsuario(this);
         if (idUsuario <= 0) {
             Log.w(TAG, "No hay usuario en preferencias. Redirigiendo a AccesoActivity.");
-            PreferencesManager.setSesionActiva(this, false);
+            PreferencesManager.clearSesion(this);
             Intent intent = new Intent(this, AccesoActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
@@ -218,7 +217,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         Log.e(TAG, "Error al cargar usuario desde API: " + mensaje);
                         if (!UsuarioCst.ensureUsuarioLoaded(MainActivity.this)) {
                             Log.w(TAG, "No se pudo cargar usuario desde preferencias. Redirigiendo a AccesoActivity.");
-                            PreferencesManager.setSesionActiva(MainActivity.this, false);
+                            PreferencesManager.clearSesion(MainActivity.this);
                             Intent intent = new Intent(MainActivity.this, AccesoActivity.class);
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             startActivity(intent);

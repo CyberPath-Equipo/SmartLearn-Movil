@@ -3,7 +3,7 @@ package com.cyberpath.smartlearn.util.preferences;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.cyberpath.smartlearn.data.model.usuario.Configuracion;
+import com.cyberpath.smartlearn.data.model.usuario.propiedades.Configuracion;
 
 public class PreferencesManager {
 
@@ -19,8 +19,13 @@ public class PreferencesManager {
     private static final String PREFS_NAME = "smartlearn_prefs";
     private static final String KEY_USUARIO_REGISTRADO = "usuario_registrado";
     private static final String KEY_TOKEN = "token";
+    private static final String KEY_TRUSTED_DEVICE_TOKEN = "trusted_device_token";
     private static final String KEY_SESION_ACTIVA = "sesion_activa";
     private static final String KEY_ID_USUARIO = "id_usuario";
+    private static final String KEY_REGISTRO_PENDIENTE = "registro_pendiente";
+    private static final String KEY_REGISTRO_TRANSACTION_ID = "registro_transaction_id";
+    private static final String KEY_REGISTRO_CORREO = "registro_correo";
+    private static final String KEY_REGISTRO_NOMBRE_CUENTA = "registro_nombre_cuenta";
     private static final String KEY_NOMBRE_USUARIO = "nombre_usuario";
     private static final String KEY_CORREO_USUARIO = "correo_usuario";
     private static final String KEY_ACCESIBILIDAD_VISUAL = "accesibilidad_visual";
@@ -61,6 +66,47 @@ public class PreferencesManager {
 
     public static int getIdUsuario(Context context) {
         return getPrefs(context).getInt(KEY_ID_USUARIO, -1);
+    }
+
+    public static void setRegistroPendiente(Context context, boolean pendiente) {
+        getPrefs(context).edit().putBoolean(KEY_REGISTRO_PENDIENTE, pendiente).apply();
+    }
+
+    public static boolean isRegistroPendiente(Context context) {
+        return getPrefs(context).getBoolean(KEY_REGISTRO_PENDIENTE, false);
+    }
+
+    public static void setRegistroTransactionId(Context context, String transactionId) {
+        getPrefs(context).edit().putString(KEY_REGISTRO_TRANSACTION_ID, transactionId == null ? "" : transactionId).apply();
+    }
+
+    public static String getRegistroTransactionId(Context context) {
+        return getPrefs(context).getString(KEY_REGISTRO_TRANSACTION_ID, "");
+    }
+
+    public static void setRegistroCorreo(Context context, String correo) {
+        getPrefs(context).edit().putString(KEY_REGISTRO_CORREO, correo == null ? "" : correo).apply();
+    }
+
+    public static String getRegistroCorreo(Context context) {
+        return getPrefs(context).getString(KEY_REGISTRO_CORREO, "");
+    }
+
+    public static void setRegistroNombreCuenta(Context context, String nombreCuenta) {
+        getPrefs(context).edit().putString(KEY_REGISTRO_NOMBRE_CUENTA, nombreCuenta == null ? "" : nombreCuenta).apply();
+    }
+
+    public static String getRegistroNombreCuenta(Context context) {
+        return getPrefs(context).getString(KEY_REGISTRO_NOMBRE_CUENTA, "");
+    }
+
+    public static void clearRegistroPendiente(Context context) {
+        getPrefs(context).edit()
+                .putBoolean(KEY_REGISTRO_PENDIENTE, false)
+                .putString(KEY_REGISTRO_TRANSACTION_ID, "")
+                .putString(KEY_REGISTRO_CORREO, "")
+                .putString(KEY_REGISTRO_NOMBRE_CUENTA, "")
+                .apply();
     }
 
     // -----------------------
@@ -143,5 +189,26 @@ public class PreferencesManager {
 
     public static String getToken(Context context) {
         return getPrefs(context).getString(KEY_TOKEN, "");
+    }
+
+    public static void setTrustedDeviceToken(Context context, String token) {
+        getPrefs(context).edit().putString(KEY_TRUSTED_DEVICE_TOKEN, token).apply();
+    }
+
+    public static String getTrustedDeviceToken(Context context) {
+        return getPrefs(context).getString(KEY_TRUSTED_DEVICE_TOKEN, "");
+    }
+
+    public static void clearSesion(Context context) {
+        getPrefs(context).edit()
+                .putBoolean(KEY_SESION_ACTIVA, false)
+                .putString(KEY_TOKEN, "")
+                .putInt(KEY_ID_USUARIO, -1)
+                .putString(KEY_TRUSTED_DEVICE_TOKEN, "")
+                .putBoolean(KEY_REGISTRO_PENDIENTE, false)
+                .putString(KEY_REGISTRO_TRANSACTION_ID, "")
+                .putString(KEY_REGISTRO_CORREO, "")
+                .putString(KEY_REGISTRO_NOMBRE_CUENTA, "")
+                .apply();
     }
 }

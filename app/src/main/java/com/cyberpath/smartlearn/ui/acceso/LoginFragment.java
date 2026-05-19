@@ -27,6 +27,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 
     private LoginLogic loginLogic;
     private boolean biometriaSolicitada;
+    private boolean verificacionRegistroSolicitada;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -55,6 +56,18 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 
         boolean usuarioRegistrado = PreferencesManager.isUsuarioRegistrado(requireContext());
         boolean sesionActiva = PreferencesManager.isSesionActiva(requireContext());
+
+        if (PreferencesManager.isRegistroPendiente(requireContext()) && !verificacionRegistroSolicitada) {
+            verificacionRegistroSolicitada = true;
+            Bundle args = new Bundle();
+            args.putString("transactionId", PreferencesManager.getRegistroTransactionId(requireContext()));
+            args.putString("channel", "EMAIL");
+            args.putString("flowMode", "EMAIL_VERIFY");
+            args.putString("nombreCuenta", PreferencesManager.getRegistroNombreCuenta(requireContext()));
+            args.putString("correo", PreferencesManager.getRegistroCorreo(requireContext()));
+            Navigation.findNavController(requireView()).navigate(R.id.action_loginFragment_to_twoFactorFragment, args);
+            return;
+        }
 
         if (sesionActiva) {
             Log.d(TAG, "Sesion activa detectada. Cargando usuario y redirigiendo a MainActivity.");

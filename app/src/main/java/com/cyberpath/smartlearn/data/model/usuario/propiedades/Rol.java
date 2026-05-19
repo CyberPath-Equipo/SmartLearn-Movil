@@ -1,4 +1,4 @@
-package com.cyberpath.smartlearn.data.model.usuario;
+package com.cyberpath.smartlearn.data.model.usuario.propiedades;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

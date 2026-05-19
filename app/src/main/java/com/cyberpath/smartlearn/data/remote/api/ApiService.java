@@ -10,8 +10,17 @@ import com.cyberpath.smartlearn.data.model.ejercicio.Opcion;
 import com.cyberpath.smartlearn.data.model.ejercicio.Pregunta;
 import com.cyberpath.smartlearn.data.model.relaciones.UsuarioEjercicio;
 import com.cyberpath.smartlearn.data.model.relaciones.UsuarioMateria;
-import com.cyberpath.smartlearn.data.model.usuario.LoginResponse;
-import com.cyberpath.smartlearn.data.model.usuario.UltimaConexion;
+import com.cyberpath.smartlearn.data.model.usuario.acceso.LoginResponse;
+import com.cyberpath.smartlearn.data.model.usuario.acceso.RegistroPendienteResponse;
+import com.cyberpath.smartlearn.data.model.usuario.acceso.RegistroReenvioRequest;
+import com.cyberpath.smartlearn.data.model.usuario.acceso.RegistroVerificacionRequest;
+import com.cyberpath.smartlearn.data.model.usuario.acceso.RegistroVerificacionResponse;
+import com.cyberpath.smartlearn.data.model.usuario.autenticacion.TwoFactorConfirmSetupRequest;
+import com.cyberpath.smartlearn.data.model.usuario.autenticacion.TwoFactorSetupRequest;
+import com.cyberpath.smartlearn.data.model.usuario.autenticacion.TwoFactorSetupResponse;
+import com.cyberpath.smartlearn.data.model.usuario.autenticacion.TwoFactorResendRequest;
+import com.cyberpath.smartlearn.data.model.usuario.autenticacion.TwoFactorVerifyRequest;
+import com.cyberpath.smartlearn.data.model.usuario.propiedades.UltimaConexion;
 import com.cyberpath.smartlearn.data.model.usuario.Usuario;
 
 import java.util.List;
@@ -43,13 +52,31 @@ public interface ApiService {
                                                           @Path("idMateria") int idMateria);
 
     @POST("/smartlearn/api/usuario/registro")
-    Call<Usuario> saveUsuarioEjercicio(@Body Usuario usuario);
+    Call<RegistroPendienteResponse> saveUsuarioEjercicio(@Body Usuario usuario);
+
+    @POST("/smartlearn/api/usuario/registro/verificar")
+    Call<RegistroVerificacionResponse> verificarRegistro(@Body RegistroVerificacionRequest request);
+
+    @POST("/smartlearn/api/usuario/registro/reenviar")
+    Call<RegistroVerificacionResponse> reenviarCodigoRegistro(@Body RegistroReenvioRequest request);
 
     @POST("/smartlearn/api/usuario/validar-contrasena")
     Call<Void> validarContrasena(@Body Usuario validarRequest);
 
     @POST("/smartlearn/api/usuario/login")
     Call<LoginResponse> login(@Body Usuario loginRequest);
+
+    @POST("/smartlearn/api/usuario/2fa/verify")
+    Call<LoginResponse> verifyTwoFactor(@Body TwoFactorVerifyRequest verifyRequest);
+
+    @POST("/smartlearn/api/usuario/2fa/setup")
+    Call<TwoFactorSetupResponse> setupTwoFactor(@Body TwoFactorSetupRequest setupRequest);
+
+    @POST("/smartlearn/api/usuario/2fa/confirm-setup")
+    Call<Void> confirmTwoFactorSetup(@Body TwoFactorConfirmSetupRequest confirmSetupRequest);
+
+    @POST("/smartlearn/api/usuario/2fa/resend")
+    Call<Void> resendTwoFactorCode(@Body TwoFactorResendRequest resendRequest);
 
     @PUT("/smartlearn/api/usuario/{id}")
     Call<Usuario> updateUsuario(@Path("id") int id, @Body Usuario usuario);

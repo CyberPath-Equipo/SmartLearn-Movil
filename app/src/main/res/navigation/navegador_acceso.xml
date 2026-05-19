@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_loginFragment_to_signUpFragment"
             app:destination="@id/signUpFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_twoFactorFragment"
+            app:destination="@id/twoFactorFragment" />
     </fragment>
     <fragment
         android:id="@+id/signUpFragment"
@@ -22,5 +25,42 @@
         <action
             android:id="@+id/action_signUpFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_signUpFragment_to_twoFactorFragment"
+            app:destination="@id/twoFactorFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/twoFactorFragment"
+        android:name="com.cyberpath.smartlearn.ui.acceso.TwoFactorFragment"
+        android:label="fragment_two_factor"
+        tools:layout="@layout/fragment_two_factor">
+        <argument
+            android:name="transactionId"
+            app:argType="string" />
+        <argument
+            android:name="channel"
+            app:argType="string"
+            android:defaultValue="TOTP" />
+        <argument
+            android:name="idUsuario"
+            app:argType="integer"
+            android:defaultValue="-1" />
+        <argument
+            android:name="nombreCuenta"
+            app:argType="string"
+            android:defaultValue="" />
+        <argument
+            android:name="flowMode"
+            app:argType="string"
+            android:defaultValue="LOGIN" />
+        <argument
+            android:name="provisioningUri"
+            app:argType="string"
+            android:defaultValue="" />
+        <argument
+            android:name="tempSecret"
+            app:argType="string"
+            android:defaultValue="" />
     </fragment>
 </navigation>

@@ -19,6 +19,8 @@ public class Usuario {
     private Boolean verificado;
     private String creadoEn;
     private String actualizadoEn;
+    private String trustedDeviceToken;
+    private String deviceInfo;
 
     private Integer idRol;
     private Integer idConfiguracion;

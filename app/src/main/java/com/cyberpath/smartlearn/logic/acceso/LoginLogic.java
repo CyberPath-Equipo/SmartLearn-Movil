@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -12,8 +13,10 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.biometric.BiometricPrompt;
 import androidx.core.content.ContextCompat;
+import androidx.navigation.Navigation;
 
-import com.cyberpath.smartlearn.data.model.usuario.LoginResponse;
+import com.cyberpath.smartlearn.R;
+import com.cyberpath.smartlearn.data.model.usuario.acceso.LoginResponse;
 import com.cyberpath.smartlearn.data.model.usuario.Usuario;
 import com.cyberpath.smartlearn.data.remote.api.ApiService;
 import com.cyberpath.smartlearn.data.remote.api.RetrofitClient;
@@ -29,7 +32,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class LoginLogic {
-    private static final String TAG = "LogicLogic";
+    private static final String TAG = "LoginLogic";
 
     private final LoginFragment loginFragment;
     private final ActivityResultLauncher<String> biometricPermissionLauncher;
@@ -140,6 +143,8 @@ public class LoginLogic {
         Usuario loginRequest = new Usuario();
         loginRequest.setNombreCuenta(nombreCuenta);
         loginRequest.setContrasena(contrasena);
+        loginRequest.setTrustedDeviceToken(PreferencesManager.getTrustedDeviceToken(loginFragment.requireContext()));
+        loginRequest.setDeviceInfo(buildDeviceInfo());
 
         api.login(loginRequest).enqueue(new Callback<LoginResponse>() {
             @Override
@@ -147,15 +152,26 @@ public class LoginLogic {
                 if (response.isSuccessful() && response.body() != null) {
                     LoginResponse lr = response.body();
 
+                    if (Boolean.TRUE.equals(lr.getRequires2fa())) {
+                        if (lr.getIdUsuario() != null) {
+                            PreferencesManager.setIdUsuario(loginFragment.requireContext(), lr.getIdUsuario());
+                        }
+                        navegarTwoFactor(lr);
+                        return;
+                    }
+
                     String token = lr.getToken();
                     Integer idUsuarioObj = lr.getIdUsuario();
-                    if (idUsuarioObj == null) {
-                        Toast.makeText(loginFragment.getContext(), "Respuesta inválida del servidor (id nulo)", Toast.LENGTH_LONG).show();
+                    if (token == null || token.isEmpty() || idUsuarioObj == null) {
+                        Toast.makeText(loginFragment.getContext(), "Respuesta inválida del servidor", Toast.LENGTH_LONG).show();
                         return;
                     }
                     int idUsuario = idUsuarioObj;
 
                     PreferencesManager.setToken(loginFragment.requireContext(), token);
+                    if (lr.getTrustedDeviceToken() != null) {
+                        PreferencesManager.setTrustedDeviceToken(loginFragment.requireContext(), lr.getTrustedDeviceToken());
+                    }
                     PreferencesManager.setIdUsuario(loginFragment.requireContext(), idUsuario);
                     PreferencesManager.setUsuarioRegistrado(loginFragment.requireContext(), true);
                     PreferencesManager.setSesionActiva(loginFragment.requireContext(), true);
@@ -196,5 +212,29 @@ public class LoginLogic {
         Intent intent = new Intent(loginFragment.requireContext(), MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         loginFragment.startActivity(intent);
+    }
+
+    private void navegarTwoFactor(LoginResponse loginResponse) {
+        String transactionId = loginResponse.getTwoFactorTransactionId();
+        if (transactionId == null || transactionId.trim().isEmpty()) {
+            Toast.makeText(loginFragment.getContext(), "No se pudo iniciar la verificación 2FA", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        Bundle args = new Bundle();
+        args.putString("transactionId", transactionId);
+        args.putString("channel", loginResponse.getTwoFactorChannel());
+        if (loginResponse.getIdUsuario() != null) {
+            args.putInt("idUsuario", loginResponse.getIdUsuario());
+        }
+        args.putString("nombreCuenta", loginResponse.getNombreCuenta());
+
+        Toast.makeText(loginFragment.getContext(), "Se requiere código de verificación", Toast.LENGTH_SHORT).show();
+        Navigation.findNavController(loginFragment.requireView())
+                .navigate(R.id.action_loginFragment_to_twoFactorFragment, args);
+    }
+
+    private String buildDeviceInfo() {
+        return Build.MANUFACTURER + " " + Build.MODEL + ";Android " + Build.VERSION.RELEASE;
     }
 }

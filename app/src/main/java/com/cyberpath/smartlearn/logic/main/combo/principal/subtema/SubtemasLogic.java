@@ -6,7 +6,7 @@ import android.util.Log;
 import com.cyberpath.smartlearn.data.local.database.repository.SubtemasRepository;
 import com.cyberpath.smartlearn.data.model.contenido.Subtema;
 import com.cyberpath.smartlearn.data.model.contenido.Tema;
-import com.cyberpath.smartlearn.data.model.usuario.UltimaConexion;
+import com.cyberpath.smartlearn.data.model.usuario.propiedades.UltimaConexion;
 import com.cyberpath.smartlearn.data.remote.api.ApiService;
 import com.cyberpath.smartlearn.data.remote.api.RetrofitClient;
 import com.cyberpath.smartlearn.ui.main.MainActivity;
