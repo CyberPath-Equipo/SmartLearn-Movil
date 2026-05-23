@@ -136,10 +136,12 @@ public class MateriasRepository {
 
     public void guardarMaterias(List<Materia> materias) {
         SQLiteDatabase db = null;
+        boolean inTransaction = false;
 
         try {
             db = database.getWritableDatabase();
             db.beginTransaction();
+            inTransaction = true;
 
             for (Materia materia : materias) {
                 ContentValues values = new ContentValues();
@@ -154,9 +156,12 @@ public class MateriasRepository {
             }
 
             db.setTransactionSuccessful();
-            db.endTransaction();
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            if (db != null && inTransaction) {
+                db.endTransaction();
+            }
         }
     }
 
@@ -185,8 +190,14 @@ public class MateriasRepository {
             String queryCompletados = "SELECT COUNT(*) FROM tbl_ejercicio e " +
                     "INNER JOIN tbl_subtema s ON e.id_subtema = s.id_subtema " +
                     "INNER JOIN tbl_tema t ON s.id_tema = t.id_tema " +
-                    "WHERE t.id_materia = ? AND e.hecho = 1";
-            Cursor cursorCompletados = db.rawQuery(queryCompletados, new String[]{String.valueOf(idMateria)});
+                    "WHERE t.id_materia = ? AND (" +
+                    "e.hecho = 1 OR EXISTS (" +
+                    "SELECT 1 FROM tbl_usuario_ejercicio_local ue " +
+                    "WHERE ue.id_ejercicio = e.id_ejercicio " +
+                    "AND ue.id_usuario = ? " +
+                    "AND ue.hecho = 1" +
+                    "))";
+            Cursor cursorCompletados = db.rawQuery(queryCompletados, new String[]{String.valueOf(idMateria), String.valueOf(idUsuario)});
             int ejerciciosCompletados = 0;
 
             if (cursorCompletados.moveToFirst()) {

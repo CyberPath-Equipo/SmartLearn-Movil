@@ -21,22 +21,23 @@
         <item name="colorError">#88FF4444</item>
 
         <!-- Texto -->
-        <item name="textAppearanceHeadlineMedium">@style/TextAppearance.SmartLearn.Headline</item>
+        <item name="textAppearanceHeadlineMedium">@style/TextAppearance.SmartLearn.Medium.Headline</item>
 
         <item name="textAppearanceTitleLarge">
-            @style/TextAppearance.SmartLearn.Subtitle
+            @style/TextAppearance.SmartLearn.Medium.Subtitle
         </item>
 
         <item name="textAppearanceBodyLarge">
-            @style/TextAppearance.SmartLearn.Body
+            @style/TextAppearance.SmartLearn.Medium.Body
         </item>
 
         <item name="textAppearanceBodyMedium">
-            @style/TextAppearance.SmartLearn.BodyReading
+            @style/TextAppearance.SmartLearn.Medium.BodyReading
         </item>
     </style>
 
     <style name="Theme.SmartLearn.Accessible" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="fontFamily">@font/space_grotesk</item>
 
         <item name="colorPrimary">@color/accessible_primary</item>
         <item name="colorOnPrimary">@color/accessible_on_primary</item>
@@ -58,63 +59,173 @@
 
         <!-- Texto -->
         <item name="textAppearanceHeadlineMedium">
-            @style/TextAppearance.SmartLearn.Accessible.Headline
+            @style/TextAppearance.SmartLearn.Accessible.Medium.Headline
         </item>
 
         <item name="textAppearanceTitleLarge">
-            @style/TextAppearance.SmartLearn.Accessible.Subtitle
+            @style/TextAppearance.SmartLearn.Accessible.Medium.Subtitle
         </item>
 
         <item name="textAppearanceBodyLarge">
-            @style/TextAppearance.SmartLearn.Accessible.Body
+            @style/TextAppearance.SmartLearn.Accessible.Medium.Body
         </item>
 
         <item name="textAppearanceBodyMedium">
-            @style/TextAppearance.SmartLearn.Accessible.BodyReading
+            @style/TextAppearance.SmartLearn.Accessible.Medium.BodyReading
         </item>
 
+    </style>
+
+    <style name="Base.Theme.SmartLearn.Text.Small" parent="Base.Theme.SmartLearn">
+        <item name="textAppearanceHeadlineMedium">@style/TextAppearance.SmartLearn.Small.Headline</item>
+        <item name="textAppearanceTitleLarge">@style/TextAppearance.SmartLearn.Small.Subtitle</item>
+        <item name="textAppearanceBodyLarge">@style/TextAppearance.SmartLearn.Small.Body</item>
+        <item name="textAppearanceBodyMedium">@style/TextAppearance.SmartLearn.Small.BodyReading</item>
+    </style>
+
+    <style name="Base.Theme.SmartLearn.Text.Medium" parent="Base.Theme.SmartLearn">
+        <item name="textAppearanceHeadlineMedium">@style/TextAppearance.SmartLearn.Medium.Headline</item>
+        <item name="textAppearanceTitleLarge">@style/TextAppearance.SmartLearn.Medium.Subtitle</item>
+        <item name="textAppearanceBodyLarge">@style/TextAppearance.SmartLearn.Medium.Body</item>
+        <item name="textAppearanceBodyMedium">@style/TextAppearance.SmartLearn.Medium.BodyReading</item>
+    </style>
+
+    <style name="Base.Theme.SmartLearn.Text.Large" parent="Base.Theme.SmartLearn">
+        <item name="textAppearanceHeadlineMedium">@style/TextAppearance.SmartLearn.Large.Headline</item>
+        <item name="textAppearanceTitleLarge">@style/TextAppearance.SmartLearn.Large.Subtitle</item>
+        <item name="textAppearanceBodyLarge">@style/TextAppearance.SmartLearn.Large.Body</item>
+        <item name="textAppearanceBodyMedium">@style/TextAppearance.SmartLearn.Large.BodyReading</item>
+    </style>
+
+    <style name="Theme.SmartLearn.Accessible.Text.Small" parent="Theme.SmartLearn.Accessible">
+        <item name="textAppearanceHeadlineMedium">@style/TextAppearance.SmartLearn.Accessible.Small.Headline</item>
+        <item name="textAppearanceTitleLarge">@style/TextAppearance.SmartLearn.Accessible.Small.Subtitle</item>
+        <item name="textAppearanceBodyLarge">@style/TextAppearance.SmartLearn.Accessible.Small.Body</item>
+        <item name="textAppearanceBodyMedium">@style/TextAppearance.SmartLearn.Accessible.Small.BodyReading</item>
+    </style>
+
+    <style name="Theme.SmartLearn.Accessible.Text.Medium" parent="Theme.SmartLearn.Accessible">
+        <item name="textAppearanceHeadlineMedium">@style/TextAppearance.SmartLearn.Accessible.Medium.Headline</item>
+        <item name="textAppearanceTitleLarge">@style/TextAppearance.SmartLearn.Accessible.Medium.Subtitle</item>
+        <item name="textAppearanceBodyLarge">@style/TextAppearance.SmartLearn.Accessible.Medium.Body</item>
+        <item name="textAppearanceBodyMedium">@style/TextAppearance.SmartLearn.Accessible.Medium.BodyReading</item>
+    </style>
+
+    <style name="Theme.SmartLearn.Accessible.Text.Large" parent="Theme.SmartLearn.Accessible">
+        <item name="textAppearanceHeadlineMedium">@style/TextAppearance.SmartLearn.Accessible.Large.Headline</item>
+        <item name="textAppearanceTitleLarge">@style/TextAppearance.SmartLearn.Accessible.Large.Subtitle</item>
+        <item name="textAppearanceBodyLarge">@style/TextAppearance.SmartLearn.Accessible.Large.Body</item>
+        <item name="textAppearanceBodyMedium">@style/TextAppearance.SmartLearn.Accessible.Large.BodyReading</item>
     </style>
 
     <!-- ============================= -->
     <!--        Tipografía (Base)      -->
     <!-- ============================= -->
 
-    <style name="TextAppearance.SmartLearn.Headline" parent="TextAppearance.Material3.HeadlineMedium"> <!-- Subtemas -->
-        <item name="android:textSize">22sp</item>
+    <style name="TextAppearance.SmartLearn.Small.Headline" parent="TextAppearance.Material3.HeadlineMedium"> <!-- Subtemas -->
+        <item name="android:textSize">20sp</item>
     </style>
 
-    <style name="TextAppearance.SmartLearn.Subtitle" parent="TextAppearance.Material3.TitleLarge"> <!-- Secciones -->
-        <item name="android:textSize">18sp</item>
-    </style>
-
-    <style name="TextAppearance.SmartLearn.Body" parent="TextAppearance.Material3.BodyLarge"> <!-- Parrafos -->
+    <style name="TextAppearance.SmartLearn.Small.Subtitle" parent="TextAppearance.Material3.TitleLarge"> <!-- Secciones -->
         <item name="android:textSize">16sp</item>
     </style>
 
-    <style name="TextAppearance.SmartLearn.BodyReading" parent="TextAppearance.Material3.BodyMedium"> <!-- Contenido denso (Teoría) -->
+    <style name="TextAppearance.SmartLearn.Small.Body" parent="TextAppearance.Material3.BodyLarge"> <!-- Parrafos -->
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="TextAppearance.SmartLearn.Small.BodyReading" parent="TextAppearance.Material3.BodyMedium"> <!-- Contenido denso (Teoría) -->
+        <item name="android:textSize">12sp</item>
+        <item name="android:lineSpacingExtra">8dp</item>
+    </style>
+
+    <style name="TextAppearance.SmartLearn.Medium.Headline" parent="TextAppearance.Material3.HeadlineMedium">
+        <item name="android:textSize">22sp</item>
+    </style>
+
+    <style name="TextAppearance.SmartLearn.Medium.Subtitle" parent="TextAppearance.Material3.TitleLarge">
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="TextAppearance.SmartLearn.Medium.Body" parent="TextAppearance.Material3.BodyLarge">
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="TextAppearance.SmartLearn.Medium.BodyReading" parent="TextAppearance.Material3.BodyMedium">
         <item name="android:textSize">14sp</item>
         <item name="android:lineSpacingExtra">10dp</item>
+    </style>
+
+    <style name="TextAppearance.SmartLearn.Large.Headline" parent="TextAppearance.Material3.HeadlineMedium">
+        <item name="android:textSize">26sp</item>
+    </style>
+
+    <style name="TextAppearance.SmartLearn.Large.Subtitle" parent="TextAppearance.Material3.TitleLarge">
+        <item name="android:textSize">22sp</item>
+    </style>
+
+    <style name="TextAppearance.SmartLearn.Large.Body" parent="TextAppearance.Material3.BodyLarge">
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="TextAppearance.SmartLearn.Large.BodyReading" parent="TextAppearance.Material3.BodyMedium">
+        <item name="android:textSize">16sp</item>
+        <item name="android:lineSpacingExtra">12dp</item>
     </style>
 
     <!-- ============================= -->
     <!--     Tipografía (Accesible)    -->
     <!-- ============================= -->
 
-    <style name="TextAppearance.SmartLearn.Accessible.Headline" parent="TextAppearance.Material3.HeadlineMedium">
-        <item name="android:textSize">28sp</item>
-    </style>
-
-    <style name="TextAppearance.SmartLearn.Accessible.Subtitle" parent="TextAppearance.Material3.TitleLarge">
+    <style name="TextAppearance.SmartLearn.Accessible.Small.Headline" parent="TextAppearance.Material3.HeadlineMedium">
         <item name="android:textSize">24sp</item>
     </style>
 
-    <style name="TextAppearance.SmartLearn.Accessible.Body" parent="TextAppearance.Material3.BodyLarge">
+    <style name="TextAppearance.SmartLearn.Accessible.Small.Subtitle" parent="TextAppearance.Material3.TitleLarge">
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="TextAppearance.SmartLearn.Accessible.Small.Body" parent="TextAppearance.Material3.BodyLarge">
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="TextAppearance.SmartLearn.Accessible.Small.BodyReading" parent="TextAppearance.Material3.BodyMedium">
+        <item name="android:textSize">17sp</item>
+        <item name="android:lineSpacingExtra">5dp</item>
+    </style>
+
+    <style name="TextAppearance.SmartLearn.Accessible.Medium.Headline" parent="TextAppearance.Material3.HeadlineMedium">
+        <item name="android:textSize">28sp</item>
+    </style>
+
+    <style name="TextAppearance.SmartLearn.Accessible.Medium.Subtitle" parent="TextAppearance.Material3.TitleLarge">
+        <item name="android:textSize">24sp</item>
+    </style>
+
+    <style name="TextAppearance.SmartLearn.Accessible.Medium.Body" parent="TextAppearance.Material3.BodyLarge">
         <item name="android:textSize">18sp</item>
     </style>
 
-    <style name="TextAppearance.SmartLearn.Accessible.BodyReading" parent="TextAppearance.Material3.BodyMedium">
+    <style name="TextAppearance.SmartLearn.Accessible.Medium.BodyReading" parent="TextAppearance.Material3.BodyMedium">
         <item name="android:textSize">19sp</item>
         <item name="android:lineSpacingExtra">6dp</item>
+    </style>
+
+    <style name="TextAppearance.SmartLearn.Accessible.Large.Headline" parent="TextAppearance.Material3.HeadlineMedium">
+        <item name="android:textSize">32sp</item>
+    </style>
+
+    <style name="TextAppearance.SmartLearn.Accessible.Large.Subtitle" parent="TextAppearance.Material3.TitleLarge">
+        <item name="android:textSize">28sp</item>
+    </style>
+
+    <style name="TextAppearance.SmartLearn.Accessible.Large.Body" parent="TextAppearance.Material3.BodyLarge">
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="TextAppearance.SmartLearn.Accessible.Large.BodyReading" parent="TextAppearance.Material3.BodyMedium">
+        <item name="android:textSize">21sp</item>
+        <item name="android:lineSpacingExtra">7dp</item>
     </style>
 
 </resources>

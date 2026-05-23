@@ -117,6 +117,12 @@ public class NavAccesibilidad {
         });
     }
 
+    private void pararTodo() {
+        try { entradaAudio.detenerEscucha(); } catch (Exception ignored) {}
+        try { salidaAudio.detener(); } catch (Exception ignored) {}
+        navegacionActiva = false;
+    }
+
     private void escucharComandos() {
         if (!navegacionActiva) return;
 
@@ -162,10 +168,8 @@ public class NavAccesibilidad {
                     break;
 
                 case "regresar":
-                    salidaAudio.hablar("Regresando a la sección de subtemas.", false, () -> {
-                        fragment.simularRegresar();
-                        detenerNavegacion();
-                    });
+                    pararTodo();
+                    fragment.simularRegresar();
                     break;
 
                 case "salir":
@@ -191,19 +195,16 @@ public class NavAccesibilidad {
         Ejercicio ejercicio = listaEjercicios.get(posicionActual);
         String nombre = ejercicio.getNombre() != null ? ejercicio.getNombre() : "este ejercicio";
 
-        salidaAudio.hablar("¿Deseas abrir " + nombre + "? Di sí o no.", true, () -> {
+        salidaAudio.hablar("Deseas abrir " + nombre + "? Di sí o no.", true, () -> {
             entradaAudio.confirmarAfirmacion(esSi -> {
                 if (!navegacionActiva) return;
 
                 if (esSi) {
+                    pararTodo();
                     fragment.entrarEjercicioDesdeAccesibilidad(ejercicio, (exito, ej) -> {
                         mainHandler.post(() -> {
-                            if (!navegacionActiva) return;
-                            if (exito) {
-                                salidaAudio.hablar("Abriendo " +
-                                                (ej.getNombre() != null ? ej.getNombre() : "el ejercicio") + ".",
-                                        false, this::detenerNavegacion);
-                            } else {
+                            if (!exito) {
+                                navegacionActiva = true;
                                 salidaAudio.hablar("No fue posible abrir el ejercicio. Intenta más tarde.",
                                         true, this::escucharComandos);
                             }

@@ -27,7 +27,8 @@
                 android:gravity="center"
                 android:text="Ayuda y Soporte"
                 android:textAppearance="?attr/textAppearanceHeadlineMedium"
-                android:textColor="?attr/colorOnSurface" />
+                android:textColor="?attr/colorOnSurface"
+                android:textStyle="bold"  />
 
             <TextView
                 android:layout_width="match_parent"
@@ -36,7 +37,8 @@
                 android:gravity="center"
                 android:text="Estamos aquí para ayudarte"
                 android:textAppearance="?attr/textAppearanceTitleLarge"
-                android:textColor="?attr/colorOnSurface" />
+                android:textColor="?attr/colorOnSurface"
+                android:textStyle="bold" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -142,7 +144,7 @@
                     android:layout_weight="1"
                     android:autoLink="web"
                     android:linksClickable="true"
-                    android:text="Instagram: @cyberpath_contacto"
+                    android:text="\u0040cyberpath_contacto"
                     android:textColor="#E4405F"
                     android:textSize="15sp" />
             </LinearLayout>

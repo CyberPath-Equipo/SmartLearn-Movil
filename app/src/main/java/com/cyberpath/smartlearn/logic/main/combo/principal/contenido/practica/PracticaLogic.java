@@ -4,11 +4,13 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.AdapterView;
 
+import com.cyberpath.smartlearn.data.local.database.dao.ContenidoDAO;
 import com.cyberpath.smartlearn.data.model.contenido.Subtema;
 import com.cyberpath.smartlearn.data.model.ejercicio.Ejercicio;
 import com.cyberpath.smartlearn.data.remote.api.ApiService;
 import com.cyberpath.smartlearn.data.remote.api.RetrofitClient;
 import com.cyberpath.smartlearn.ui.main.combo.principal.contenido.practica.PracticaFragment;
+import com.cyberpath.smartlearn.util.network.NetworkUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +25,7 @@ public class PracticaLogic {
     private final PracticaFragment fragment;
     private final Context context;
     private final Subtema subtema;
+    private final ContenidoDAO contenidoDAO;
 
     @Getter
     private final List<Ejercicio> listaEjercicios = new ArrayList<>();
@@ -31,6 +34,7 @@ public class PracticaLogic {
         this.fragment = fragment;
         this.context = fragment.requireContext();
         this.subtema = subtema;
+        this.contenidoDAO = new ContenidoDAO(context);
 
         cargarEjercicios();
     }
@@ -38,6 +42,11 @@ public class PracticaLogic {
     public void cargarEjercicios() {
         if (subtema == null || subtema.getId() == null) {
             fragment.showToast("Subtema no identificado");
+            return;
+        }
+
+        if (!NetworkUtils.isInternetAvailable(context)) {
+            cargarEjerciciosLocal();
             return;
         }
 
@@ -52,6 +61,7 @@ public class PracticaLogic {
                 if (response.isSuccessful() && response.body() != null) {
                     listaEjercicios.clear();
                     listaEjercicios.addAll(response.body());
+                    guardarEnLocal(listaEjercicios);
 
                     fragment.actualizarAdapter(listaEjercicios);
 
@@ -64,17 +74,50 @@ public class PracticaLogic {
 
                     fragment.iniciarNavegacionPorVoz();
                 } else {
-                    fragment.showToast("Error al cargar ejercicios");
+                    cargarEjerciciosLocal();
                 }
             }
 
             @Override
             public void onFailure(Call<List<Ejercicio>> call, Throwable t) {
                 if (fragment == null || !fragment.isAdded()) return;
-                fragment.showToast("Error de conexión: " + t.getMessage());
                 Log.d("PRACTICA ERROR: ", "Error de conexión: " + t.getMessage());
+                cargarEjerciciosLocal();
             }
         });
+    }
+
+    private void cargarEjerciciosLocal() {
+        try {
+            List<Ejercicio> ejerciciosLocales = contenidoDAO.obtenerEjerciciosPorSubtema(subtema.getId());
+            listaEjercicios.clear();
+            listaEjercicios.addAll(ejerciciosLocales);
+            fragment.actualizarAdapter(listaEjercicios);
+
+            if (listaEjercicios.isEmpty()) {
+                fragment.showToast("No hay ejercicios disponibles sin conexión");
+            } else {
+                fragment.showToast("Modo offline - Ejercicios locales");
+                fragment.seleccionarItemListView(0);
+                fragment.iniciarNavegacionPorVoz();
+            }
+        } catch (Exception e) {
+            Log.e("PracticaLogic", "Error al cargar ejercicios locales", e);
+            fragment.showToast("Error al cargar ejercicios locales");
+        }
+    }
+
+    private void guardarEnLocal(List<Ejercicio> ejercicios) {
+        try {
+            for (Ejercicio ejercicio : ejercicios) {
+                if (ejercicio.getIdSubtema() == null) {
+                    ejercicio.setIdSubtema(subtema.getId());
+                }
+                contenidoDAO.insertarEjercicio(ejercicio);
+            }
+        } catch (Exception e) {
+            Log.e("PracticaLogic", "Error al guardar ejercicios en local", e);
+        }
     }
 
     public void limpiarDatos() {

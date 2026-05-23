@@ -23,6 +23,7 @@ import com.cyberpath.smartlearn.logic.main.combo.principal.contenido.practica.Na
 import com.cyberpath.smartlearn.logic.main.combo.principal.contenido.practica.PracticaLogic;
 import com.cyberpath.smartlearn.util.accesibilidad.visual.EntradaAudio;
 import com.cyberpath.smartlearn.util.accesibilidad.visual.SalidaAudio;
+import com.cyberpath.smartlearn.util.preferences.PreferencesManager;
 import com.google.android.material.button.MaterialButton;
 
 import java.util.ArrayList;
@@ -110,12 +111,18 @@ public class PracticaFragment extends Fragment implements AdapterView.OnItemClic
     }
 
     @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Ejercicio ejercicio = practicaLogic.getEjercicioPorPosicion(position);
-        if (ejercicio != null) {
-            var action = PracticaFragmentDirections
-                    .actionPracticaFragmentToEjercicioFragment(ejercicio);
-            NavHostFragment.findNavController(this).navigate(action);
+    public void onPause() {
+        super.onPause();
+        if (navAccesibilidad != null) {
+            navAccesibilidad.detenerNavegacion();
+        }
+        try {
+            EntradaAudio.obtenerInstancia().detenerEscucha();
+        } catch (Exception ignored) {
+        }
+        try {
+            SalidaAudio.obtenerInstancia().detener();
+        } catch (Exception ignored) {
         }
     }
 
@@ -156,6 +163,9 @@ public class PracticaFragment extends Fragment implements AdapterView.OnItemClic
     }
 
     public void iniciarNavegacionPorVoz() {
+        if (!PreferencesManager.isAsistenciaVozActivada(requireContext())) {
+            return;
+        }
         if (navAccesibilidad != null) {
             navAccesibilidad.iniciarNavegacion();
         }
@@ -164,6 +174,16 @@ public class PracticaFragment extends Fragment implements AdapterView.OnItemClic
     public int getPosicionActualListView() {
         if (listViewEjercicios == null) return 0;
         return listViewEjercicios.getSelectedItemPosition();
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        if (practicaLogic == null) return;
+        Ejercicio ejercicio = practicaLogic.getEjercicioPorPosicion(position);
+        if (ejercicio == null) return;
+
+        var action = PracticaFragmentDirections.actionPracticaFragmentToEjercicioFragment(ejercicio);
+        NavHostFragment.findNavController(this).navigate(action);
     }
 
     public void entrarEjercicioDesdeAccesibilidad(Ejercicio ejercicio, BiConsumer<Boolean, Ejercicio> callback) {

@@ -51,10 +51,12 @@ public class SubtemasRepository {
 
     public void guardarSubtemas(List<Subtema> subtemas) {
         SQLiteDatabase db = null;
+        boolean inTransaction = false;
 
         try {
             db = database.getWritableDatabase();
             db.beginTransaction();
+            inTransaction = true;
 
             for (Subtema subtema : subtemas) {
                 ContentValues values = new ContentValues();
@@ -69,9 +71,12 @@ public class SubtemasRepository {
             }
 
             db.setTransactionSuccessful();
-            db.endTransaction();
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            if (db != null && inTransaction) {
+                db.endTransaction();
+            }
         }
     }
 

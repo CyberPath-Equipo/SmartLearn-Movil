@@ -2,6 +2,7 @@ package com.cyberpath.smartlearn.logic;
 
 import android.util.Log;
 
+import com.cyberpath.smartlearn.data.local.database.dao.ContenidoDAO;
 import com.cyberpath.smartlearn.data.model.contenido.Subtema;
 import com.cyberpath.smartlearn.data.remote.api.ApiService;
 import com.cyberpath.smartlearn.data.remote.api.RetrofitClient;
@@ -23,6 +24,7 @@ public class MainLogic {
 
     public void cargarUltimoSubtema() {
         int idUltimoSubtema = PreferencesManager.getIdSubtemaUltimaConexion(activity);
+        ContenidoDAO contenidoDAO = new ContenidoDAO(activity);
 
         if (idUltimoSubtema == -1) {
             activity.actualizarUltimoSubtemaMenu("Es tu primera vez, no tienes un historial", null);
@@ -31,7 +33,12 @@ public class MainLogic {
 
         modoOffline = !NetworkUtils.isInternetAvailable(activity);
         if (modoOffline) {
-            activity.actualizarUltimoSubtemaMenu("Último acceso no disponible (modo offline)", null);
+            Subtema subtemaLocal = contenidoDAO.obtenerSubtemaPorId(idUltimoSubtema);
+            if (subtemaLocal != null) {
+                activity.actualizarUltimoSubtemaMenu(subtemaLocal.getNombre(), subtemaLocal);
+            } else {
+                activity.actualizarUltimoSubtemaMenu("Último acceso no disponible (modo offline)", null);
+            }
             return;
         }
 

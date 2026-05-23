@@ -2,6 +2,8 @@ package com.cyberpath.smartlearn.data.remote.api;
 
 import android.content.Context;
 
+import java.util.concurrent.TimeUnit;
+
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -21,6 +23,10 @@ public class RetrofitClient {
     }
 
     public static ApiService getApiService() {
+        if (appContext == null) {
+            throw new IllegalStateException("RetrofitClient no inicializado. Llama init(context) en Application.");
+        }
+
         if (apiService == null) {
             synchronized (RetrofitClient.class) {
                 if (apiService == null) {
@@ -36,9 +42,12 @@ public class RetrofitClient {
                     OkHttpClient client = new OkHttpClient.Builder()
                             .addInterceptor(authInterceptor)
                             .addInterceptor(logging)
+                            .connectTimeout(15, TimeUnit.SECONDS)
+                            .readTimeout(20, TimeUnit.SECONDS)
+                            .writeTimeout(20, TimeUnit.SECONDS)
                             .build();
 
-                    Retrofit retrofit = new Retrofit.Builder()
+                    retrofit = new Retrofit.Builder()
                             .baseUrl(BASE_URL)
                             .client(client)
                             .addConverterFactory(GsonConverterFactory.create())

@@ -70,6 +70,7 @@ public class SubtemasLogic {
                 if (response.isSuccessful() && response.body() != null) {
                     listaSubtemas.clear();
                     listaSubtemas.addAll(response.body());
+                    guardarEnLocal(listaSubtemas);
 
 
                     fragment.actualizarAdapter(listaSubtemas);
@@ -141,7 +142,12 @@ public class SubtemasLogic {
             SimpleDateFormat formatoTiempo = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             String fecha = formatoTiempo.format(tiempo.getTime());
             ultimaConexion.setUltimaConexion(fecha);
-            Integer idUsuario = UsuarioCst.USUARIO_ACTUAL.getId();
+            Integer idUsuario = UsuarioCst.USUARIO_ACTUAL != null ? UsuarioCst.USUARIO_ACTUAL.getId() : null;
+
+            if (idUsuario == null) {
+                notifyMainActivity(subtema);
+                return;
+            }
 
             ultimaConexion.setUltimaConexion(fecha);
             ultimaConexion.setIdSubtema(subtema.getId());

@@ -19,6 +19,7 @@ import com.cyberpath.smartlearn.ui.main.MainActivity;
 import com.cyberpath.smartlearn.util.notificaciones.AlarmaProgramador;
 import com.cyberpath.smartlearn.util.notificaciones.NotificacionHelper;
 import com.cyberpath.smartlearn.util.preferences.PreferencesManager;
+import com.cyberpath.smartlearn.util.preferences.ThemeManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +27,7 @@ import java.util.List;
 public class AccesoActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        ThemeManager.applyTheme(this);
         super.onCreate(savedInstanceState);
 
         if (PreferencesManager.isSesionActiva(this)) {

@@ -2,8 +2,8 @@ package com.cyberpath.smartlearn.logic.main.combo.principal.contenido.practica.e
 
 import android.content.Context;
 import android.util.Log;
-import android.widget.RadioButton;
 
+import com.cyberpath.smartlearn.data.local.database.dao.ContenidoDAO;
 import com.cyberpath.smartlearn.data.model.contenido.Subtema;
 import com.cyberpath.smartlearn.data.model.ejercicio.Ejercicio;
 import com.cyberpath.smartlearn.data.model.ejercicio.IntentoEjercicio;
@@ -16,6 +16,7 @@ import com.cyberpath.smartlearn.ui.main.combo.principal.contenido.practica.ejerc
 import com.cyberpath.smartlearn.util.accesibilidad.visual.EntradaAudio;
 import com.cyberpath.smartlearn.util.accesibilidad.visual.SalidaAudio;
 import com.cyberpath.smartlearn.util.constants.UsuarioCst;
+import com.cyberpath.smartlearn.util.network.NetworkUtils;
 import com.cyberpath.smartlearn.util.preferences.PreferencesManager;
 
 import java.text.SimpleDateFormat;
@@ -45,11 +46,13 @@ public class EjercicioLogic {
     private int score = 0;
     private boolean ejercicioFinalizado = false;
     private Subtema subtema;
+    private final ContenidoDAO contenidoDAO;
 
     public EjercicioLogic(EjercicioFragment fragment, Ejercicio ejercicio) {
         this.fragment = fragment;
         this.context = fragment.requireContext();
         this.ejercicio = ejercicio;
+        this.contenidoDAO = new ContenidoDAO(context);
 
         cargarSubtema();
         cargarPreguntas();
@@ -84,6 +87,11 @@ public class EjercicioLogic {
             return;
         }
 
+        if (!NetworkUtils.isInternetAvailable(context)) {
+            cargarPreguntasLocales();
+            return;
+        }
+
         ApiService apiService = RetrofitClient.getApiService();
         Call<List<Pregunta>> call = apiService.getPreguntasByEjercicio(ejercicio.getId());
 
@@ -93,19 +101,43 @@ public class EjercicioLogic {
                 if (fragment == null || !fragment.isAdded()) return;
 
                 if (response.isSuccessful() && response.body() != null) {
+                    allPreguntas.clear();
                     allPreguntas.addAll(response.body());
                     cargarOpcionesDePreguntas();
                 } else {
-                    fragment.showToast("Error al cargar preguntas");
+                    cargarPreguntasLocales();
                 }
             }
 
             @Override
             public void onFailure(Call<List<Pregunta>> call, Throwable t) {
                 if (fragment == null || !fragment.isAdded()) return;
-                fragment.showToast("Error de conexión: " + t.getMessage());
+                cargarPreguntasLocales();
             }
         });
+    }
+
+    private void cargarPreguntasLocales() {
+        try {
+            allPreguntas.clear();
+            List<Pregunta> preguntasLocales = contenidoDAO.obtenerPreguntasPorEjercicio(ejercicio.getId());
+            for (Pregunta pregunta : preguntasLocales) {
+                pregunta.setOpciones(contenidoDAO.obtenerOpcionesPorPregunta(pregunta.getId()));
+                allPreguntas.add(pregunta);
+            }
+
+            if (allPreguntas.isEmpty()) {
+                fragment.showToast("No hay preguntas disponibles sin conexión");
+                return;
+            }
+
+            fragment.showToast("Modo offline - Preguntas locales");
+            fragment.mostrarSiguientePregunta();
+            fragment.iniciarNavegacionPorVoz();
+        } catch (Exception e) {
+            Log.e("EjercicioLogic", "Error al cargar preguntas locales", e);
+            fragment.showToast("Error al cargar preguntas locales");
+        }
     }
 
     private void cargarOpcionesDePreguntas() {
@@ -127,7 +159,9 @@ public class EjercicioLogic {
                     if (fragment == null || !fragment.isAdded()) return;
 
                     if (response.isSuccessful() && response.body() != null) {
-                        pregunta.setOpciones(response.body());
+                        List<Opcion> opciones = response.body();
+                        pregunta.setOpciones(opciones);
+                        guardarPreguntaYOpcionesLocal(pregunta, opciones);
                     }
 
                     completed[0]++;
@@ -151,6 +185,28 @@ public class EjercicioLogic {
         }
     }
 
+    private void guardarPreguntaYOpcionesLocal(Pregunta pregunta, List<Opcion> opciones) {
+        try {
+            if (pregunta.getIdEjercicio() == null) {
+                pregunta.setIdEjercicio(ejercicio.getId());
+            }
+            contenidoDAO.insertarPregunta(pregunta);
+
+            if (opciones == null) {
+                return;
+            }
+
+            for (Opcion opcion : opciones) {
+                if (opcion.getIdPregunta() == null) {
+                    opcion.setIdPregunta(pregunta.getId());
+                }
+                contenidoDAO.insertarOpcion(opcion);
+            }
+        } catch (Exception e) {
+            Log.e("EjercicioLogic", "Error guardando preguntas/opciones en local", e);
+        }
+    }
+
     public void mostrarSiguientePregunta() {
         if (currentQuestionIndex >= allPreguntas.size()) {
             mostrarPuntuacion();
@@ -171,9 +227,12 @@ public class EjercicioLogic {
             return;
         }
 
-        int selectedId = fragment.getSelectedRadioButtonId();
-        android.widget.RadioButton selectedRb = fragment.findViewById(selectedId);
-        Opcion selectedOpcion = (Opcion) selectedRb.getTag();
+        // Obtener opción seleccionada desde el fragment (nuevo comportamiento)
+        Opcion selectedOpcion = fragment.getSelectedOpcion();
+        if (selectedOpcion == null) {
+            fragment.showToast("Selecciona una opción");
+            return;
+        }
 
         if (selectedOpcion.isCorrecta()) {
             score++;
@@ -184,7 +243,7 @@ public class EjercicioLogic {
 
         preguntasContestadas.add(currentQuestionIndex);
         currentQuestionIndex++;
-        fragment.clearRadioGroup();
+        fragment.clearOptionsSelection();
         mostrarSiguientePregunta();
     }
 
@@ -194,12 +253,10 @@ public class EjercicioLogic {
             return;
         }
 
-        int selectedId = fragment.getSelectedRadioButtonId();
-        RadioButton selectedRb = fragment.findViewById(selectedId);
-        Opcion selectedOpcion = (Opcion) selectedRb.getTag();
+        Opcion selectedOpcion = fragment.getSelectedOpcion();
         Pregunta pregunta = getPreguntaActual();
 
-        if (pregunta == null) {
+        if (selectedOpcion == null || pregunta == null) {
             if (callback != null) callback.accept(false, currentQuestionIndex);
             return;
         }
@@ -238,7 +295,7 @@ public class EjercicioLogic {
         salida.hablar(feedback, false, () -> {
             preguntasContestadas.add(currentQuestionIndex);
             currentQuestionIndex++;
-            fragment.clearRadioGroup();
+            fragment.clearOptionsSelection();
 
             if (currentQuestionIndex >= allPreguntas.size()) {
                 mostrarPuntuacion();
@@ -291,12 +348,23 @@ public class EjercicioLogic {
         String fechaActual = sdf.format(new Date());
         nuevoIntento.setFecha(fechaActual);
 
+        boolean internetDisponible = NetworkUtils.isInternetAvailable(context);
+        long idIntentoLocal = contenidoDAO.guardarIntentoEjercicioLocal(idUsuario, ejercicio.getId(), porcentaje, fechaActual, !internetDisponible);
+
+        if (!internetDisponible) {
+            Log.d("EjercicioLogic", "Intento guardado en local, pendiente de sincronización");
+            return;
+        }
+
         ApiService api = RetrofitClient.getApiService();
         api.saveUsuarioEjercicio(nuevoIntento).enqueue(new Callback<IntentoEjercicio>() {
             @Override
             public void onResponse(Call<IntentoEjercicio> call, Response<IntentoEjercicio> response) {
                 if (response.isSuccessful()) {
                     Log.d("EjercicioLogic", "Intento guardado exitosamente");
+                    if (idIntentoLocal > 0) {
+                        contenidoDAO.marcarIntentoLocalSincronizado(idIntentoLocal);
+                    }
                 }
             }
 
@@ -319,6 +387,17 @@ public class EjercicioLogic {
 
         ejercicioHecho.setHecho(true);
 
+        int idUsuario = ejercicioHecho.getIdUsuario() != null
+                ? ejercicioHecho.getIdUsuario()
+                : PreferencesManager.getIdUsuario(context);
+        boolean internetDisponible = NetworkUtils.isInternetAvailable(context);
+        contenidoDAO.marcarEjercicioUsuarioLocal(idUsuario, ejercicio.getId(), true, !internetDisponible);
+
+        if (!internetDisponible) {
+            Log.d("EjercicioLogic", "Estado de ejercicio guardado localmente (offline)");
+            return;
+        }
+
         ApiService api = RetrofitClient.getApiService();
         Call<UsuarioEjercicio> call = api.saveUsuarioEjercicio(ejercicioHecho);
 
@@ -326,6 +405,7 @@ public class EjercicioLogic {
             @Override
             public void onResponse(Call<UsuarioEjercicio> call, Response<UsuarioEjercicio> response) {
                 Log.d("EjercicioLogic", "Ejercicio actualizado");
+                contenidoDAO.marcarEjercicioUsuarioLocal(idUsuario, ejercicio.getId(), true, false);
             }
 
             @Override

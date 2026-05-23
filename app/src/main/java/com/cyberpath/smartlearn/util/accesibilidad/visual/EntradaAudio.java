@@ -37,9 +37,17 @@ public class EntradaAudio implements RecognitionListener {
     private SpeechRecognizer speechRecognizer;
     private boolean estaInicializado = false;
     private volatile boolean estaEscuchando = false;
+    private volatile boolean escuchaHabilitada = false;
+    private volatile boolean detenerSolicitado = false;
     private OnConfirmacionListener confirmacionListener;
     private OnOpcionSeleccionadaListener opcionListener;
     private List<String> opcionesActuales;
+    private final Runnable reintentarEscucha = () -> {
+        if (!escuchaHabilitada || detenerSolicitado) {
+            return;
+        }
+        iniciarEscucha();
+    };
 
     private EntradaAudio(Context context) {
         this.context = context.getApplicationContext();
@@ -90,7 +98,7 @@ public class EntradaAudio implements RecognitionListener {
     }
 
     public void confirmarAfirmacion(OnConfirmacionListener listener) {
-        if (!PreferencesManager.isModoAudioActivado(context)) return;
+        if (!PreferencesManager.isAsistenciaVozActivada(context)) return;
 
         if (!isReady()) {
             Log.w(TAG, "STT no listo o falta permiso");
@@ -105,12 +113,12 @@ public class EntradaAudio implements RecognitionListener {
         this.confirmacionListener = listener;
         this.opcionListener = null;
 
-
+        habilitarEscucha();
         iniciarEscucha();
     }
 
     public void seleccionarOpcion(List<String> opciones, OnOpcionSeleccionadaListener listener) {
-        if (!PreferencesManager.isModoAudioActivado(context)) return;
+        if (!PreferencesManager.isAsistenciaVozActivada(context)) return;
 
         if (!isReady()) {
             Log.w(TAG, "STT no listo o falta permiso");
@@ -125,10 +133,25 @@ public class EntradaAudio implements RecognitionListener {
         this.opcionesActuales = normalizarLista(opciones);
         this.opcionListener = listener;
         this.confirmacionListener = null;
+        habilitarEscucha();
         iniciarEscucha();
     }
 
+    private void habilitarEscucha() {
+        detenerSolicitado = false;
+        escuchaHabilitada = true;
+        mainHandler.removeCallbacks(reintentarEscucha);
+    }
+
     private void iniciarEscucha() {
+        if (!escuchaHabilitada || detenerSolicitado) {
+            return;
+        }
+
+        if (estaEscuchando) {
+            return;
+        }
+
         if (speechRecognizer == null) {
             Log.e(TAG, "SpeechRecognizer nulo, no se puede iniciar escucha");
             return;
@@ -147,22 +170,33 @@ public class EntradaAudio implements RecognitionListener {
     }
 
     public void detenerEscucha() {
-        if (speechRecognizer != null && estaEscuchando) {
-            try {
+        detenerSolicitado = true;
+        escuchaHabilitada = false;
+        mainHandler.removeCallbacks(reintentarEscucha);
+        estaEscuchando = false;
+        confirmacionListener = null;
+        opcionListener = null;
+        opcionesActuales = null;
 
+        if (speechRecognizer != null) {
+            try {
                 mainHandler.post(() -> {
                     try {
                         speechRecognizer.stopListening();
                     } catch (Exception ex) {
                         Log.w(TAG, "stopListening ex: " + ex.getMessage());
                     }
+                    try {
+                        speechRecognizer.cancel();
+                    } catch (Exception ex) {
+                        Log.w(TAG, "cancel ex: " + ex.getMessage());
+                    }
                 });
             } catch (Exception e) {
                 Log.w(TAG, "Error al detener escucha: " + e.getMessage());
             }
-            estaEscuchando = false;
-            Log.d(TAG, "Escucha detenida");
         }
+        Log.d(TAG, "Escucha detenida");
     }
 
     public void liberar() {
@@ -194,6 +228,9 @@ public class EntradaAudio implements RecognitionListener {
     @Override
     public void onResults(Bundle results) {
         estaEscuchando = false;
+        if (!escuchaHabilitada || detenerSolicitado) {
+            return;
+        }
         ArrayList<String> matches = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
         if (matches != null && !matches.isEmpty()) {
             String resultado = normalizar(matches.get(0));
@@ -227,7 +264,11 @@ public class EntradaAudio implements RecognitionListener {
 
 
         if (salidaAudio != null) {
-            salidaAudio.hablar("No entendí. Repita por favor.", true, () -> iniciarEscucha());
+            salidaAudio.hablar("No entendí. Repita por favor.", true, () -> {
+                if (escuchaHabilitada && !detenerSolicitado) {
+                    iniciarEscucha();
+                }
+            });
         } else {
             iniciarEscucha();
         }
@@ -236,16 +277,22 @@ public class EntradaAudio implements RecognitionListener {
     @Override
     public void onError(int error) {
         estaEscuchando = false;
+        if (!escuchaHabilitada || detenerSolicitado) {
+            return;
+        }
         Log.e(TAG, "Error en STT: " + error);
         if (error == SpeechRecognizer.ERROR_INSUFFICIENT_PERMISSIONS) {
             if (salidaAudio != null)
                 salidaAudio.hablar("No tengo permiso para usar el micrófono.", true);
             opcionListener = null;
             confirmacionListener = null;
+            opcionesActuales = null;
+            escuchaHabilitada = false;
             return;
         }
 
-        mainHandler.postDelayed(this::iniciarEscucha, 400);
+        mainHandler.removeCallbacks(reintentarEscucha);
+        mainHandler.postDelayed(reintentarEscucha, 400);
     }
 
     @Override

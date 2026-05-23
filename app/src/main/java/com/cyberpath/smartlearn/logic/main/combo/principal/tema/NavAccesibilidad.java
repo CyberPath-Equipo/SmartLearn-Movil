@@ -161,10 +161,8 @@ public class NavAccesibilidad {
                     break;
 
                 case "regresar":
-                    salidaAudio.hablar("Regresando a la sección anterior.", false, () -> {
-                        fragment.simularRegresar();
-                        detenerNavegacion();
-                    });
+                    pararTodo();
+                    fragment.simularRegresar();
                     break;
 
                 case "salir":
@@ -189,19 +187,16 @@ public class NavAccesibilidad {
         Tema tema = listaTemas.get(posicionActual);
         String nombre = tema.getNombre() != null ? tema.getNombre() : "este tema";
 
-        salidaAudio.hablar("¿Deseas entrar en " + nombre + "? Di sí o no.", true, () -> {
+        salidaAudio.hablar("Deseas entrar en " + nombre + "? Di sí o no.", true, () -> {
             entradaAudio.confirmarAfirmacion(esSi -> {
                 if (!navegacionActiva) return;
 
                 if (esSi) {
+                    pararTodo();
                     fragment.entrarTemaDesdeAccesibilidad(tema, (exito, t) -> {
                         mainHandler.post(() -> {
-                            if (!navegacionActiva) return;
-                            if (exito) {
-                                salidaAudio.hablar("Entrando a " +
-                                                (t.getNombre() != null ? t.getNombre() : "el tema") + ".",
-                                        false, this::detenerNavegacion);
-                            } else {
+                            if (!exito) {
+                                navegacionActiva = true;
                                 salidaAudio.hablar("No fue posible entrar. Intenta más tarde.",
                                         true, this::escucharComandos);
                             }
@@ -223,5 +218,11 @@ public class NavAccesibilidad {
 
         int target = Math.max(0, posicionReal + 1);
         viewPagerTemas.setCurrentItem(target, smooth);
+    }
+
+    private void pararTodo() {
+        try { entradaAudio.detenerEscucha(); } catch (Exception ignored) {}
+        try { salidaAudio.detener(); } catch (Exception ignored) {}
+        navegacionActiva = false;
     }
 }

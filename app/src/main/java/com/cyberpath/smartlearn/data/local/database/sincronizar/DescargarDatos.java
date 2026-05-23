@@ -20,13 +20,12 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class DescargarDatos {
-    private final Context context;
     private final ContenidoDAO contenidoDAO;
     private final ApiService apiService;
     private DescargaCallback callback;
+    private boolean descargaActiva = false;
 
     public DescargarDatos(Context context) {
-        this.context = context;
         this.contenidoDAO = new ContenidoDAO(context);
         this.apiService = RetrofitClient.getApiService();
     }
@@ -36,7 +35,16 @@ public class DescargarDatos {
     }
 
     public void descargarMateria(Materia materia) {
+        if (materia == null || materia.getId() == null) {
+            notificarError("Materia inválida");
+            return;
+        }
+
         if (callback != null) callback.onDescargaIniciada();
+
+        descargaActiva = true;
+        contenidoDAO.beginTransaction();
+        contenidoDAO.insertarMateria(materia);
 
         obtenerTemasMateria(materia);
     }
@@ -51,11 +59,8 @@ public class DescargarDatos {
                 if (response.isSuccessful() && response.body() != null) {
                     List<Tema> temas = response.body();
 
-
-                    contenidoDAO.insertarMateria(materia);
-
                     if (temas.isEmpty()) {
-                        finalizarDescarga(materia);
+                        finalizarDescarga();
                     } else {
                         procesarTemas(materia.getId(), temas, 0);
                     }
@@ -74,7 +79,7 @@ public class DescargarDatos {
     private void procesarTemas(Integer idMateria, List<Tema> temas, int indiceActual) {
         if (temas == null || indiceActual >= temas.size()) {
             notificarProgreso(80, "Descarga completada");
-            finalizarDescarga(null);
+            finalizarDescarga();
             return;
         }
 
@@ -87,7 +92,7 @@ public class DescargarDatos {
 
 
         if (tema.getIdMateria() == null) {
-            procesarTemas(idMateria, temas, indiceActual + 1);
+            notificarError("No se pudo resolver la relación de tema con materia");
             return;
         }
 
@@ -105,16 +110,16 @@ public class DescargarDatos {
                     if (subtemas != null) {
                         procesarSubtemas(subtemas, 0, temas, indiceActual, tema.getId(), idMateria);
                     } else {
-                        procesarTemas(idMateria, temas, indiceActual + 1);
+                        notificarError("Respuesta inválida al obtener subtemas");
                     }
                 } else {
-                    procesarTemas(idMateria, temas, indiceActual + 1);
+                    notificarError("Error al obtener subtemas del tema " + tema.getNombre());
                 }
             }
 
             @Override
             public void onFailure(Call<List<Subtema>> call, Throwable t) {
-                procesarTemas(idMateria, temas, indiceActual + 1);
+                notificarError("Error de conexión al obtener subtemas: " + t.getMessage());
             }
         });
     }
@@ -130,6 +135,11 @@ public class DescargarDatos {
 
         if (subtema.getIdTema() == null) {
             subtema.setIdTema(idTemaActual);
+        }
+
+        if (subtema.getIdTema() == null || subtema.getId() == null) {
+            notificarError("Subtema inválido durante descarga");
+            return;
         }
 
         contenidoDAO.insertarSubtema(subtema);
@@ -156,7 +166,7 @@ public class DescargarDatos {
 
             @Override
             public void onFailure(Call<Teoria> call, Throwable t) {
-                obtenerEjercicios(subtema.getId(), subtemas, indiceSubtemaActual, idTemaActual, temas, indiceTemaActual, idMateria);
+                notificarError("Error de conexión al obtener teoría: " + t.getMessage());
             }
         });
     }
@@ -170,13 +180,13 @@ public class DescargarDatos {
                     List<Ejercicio> ejercicios = response.body();
                     procesarEjercicios(ejercicios, 0, idSubtema, subtemas, indiceSubtemaActual, idTemaActual, temas, indiceTemaActual, idMateria);
                 } else {
-                    procesarSubtemas(subtemas, indiceSubtemaActual + 1, temas, indiceTemaActual, idTemaActual, idMateria);
+                    notificarError("Error al obtener ejercicios del subtema");
                 }
             }
 
             @Override
             public void onFailure(Call<List<Ejercicio>> call, Throwable t) {
-                procesarSubtemas(subtemas, indiceSubtemaActual + 1, temas, indiceTemaActual, idTemaActual, idMateria);
+                notificarError("Error de conexión al obtener ejercicios: " + t.getMessage());
             }
         });
     }
@@ -194,6 +204,11 @@ public class DescargarDatos {
             ejercicio.setIdSubtema(idSubtema);
         }
 
+        if (ejercicio.getIdSubtema() == null || ejercicio.getId() == null) {
+            notificarError("Ejercicio inválido durante descarga");
+            return;
+        }
+
         contenidoDAO.insertarEjercicio(ejercicio);
 
 
@@ -205,13 +220,13 @@ public class DescargarDatos {
                     List<Pregunta> preguntas = response.body();
                     procesarPreguntas(preguntas, 0, ejercicio.getId(), ejercicios, indiceEjercicio, idSubtema, subtemas, indiceSubtemaActual, idTemaActual, temas, indiceTemaActual, idMateria);
                 } else {
-                    procesarEjercicios(ejercicios, indiceEjercicio + 1, idSubtema, subtemas, indiceSubtemaActual, idTemaActual, temas, indiceTemaActual, idMateria);
+                    notificarError("Error al obtener preguntas del ejercicio");
                 }
             }
 
             @Override
             public void onFailure(Call<List<Pregunta>> call, Throwable t) {
-                procesarEjercicios(ejercicios, indiceEjercicio + 1, idSubtema, subtemas, indiceSubtemaActual, idTemaActual, temas, indiceTemaActual, idMateria);
+                notificarError("Error de conexión al obtener preguntas: " + t.getMessage());
             }
         });
     }
@@ -229,6 +244,11 @@ public class DescargarDatos {
             pregunta.setIdEjercicio(idEjercicio);
         }
 
+        if (pregunta.getIdEjercicio() == null || pregunta.getId() == null) {
+            notificarError("Pregunta inválida durante descarga");
+            return;
+        }
+
         contenidoDAO.insertarPregunta(pregunta);
 
 
@@ -243,20 +263,31 @@ public class DescargarDatos {
                         if (opcion.getIdPregunta() == null) {
                             opcion.setIdPregunta(pregunta.getId());
                         }
+                        if (opcion.getIdPregunta() == null || opcion.getId() == null) {
+                            notificarError("Opción inválida durante descarga");
+                            return;
+                        }
                         contenidoDAO.insertarOpcion(opcion);
                     }
+                } else {
+                    notificarError("Error al obtener opciones de la pregunta");
+                    return;
                 }
                 procesarPreguntas(preguntas, indicePregunta + 1, idEjercicio, ejercicios, indiceEjercicio, idSubtema, subtemas, indiceSubtemaActual, idTemaActual, temas, indiceTemaActual, idMateria);
             }
 
             @Override
             public void onFailure(Call<List<Opcion>> call, Throwable t) {
-                procesarPreguntas(preguntas, indicePregunta + 1, idEjercicio, ejercicios, indiceEjercicio, idSubtema, subtemas, indiceSubtemaActual, idTemaActual, temas, indiceTemaActual, idMateria);
+                notificarError("Error de conexión al obtener opciones: " + t.getMessage());
             }
         });
     }
 
-    private void finalizarDescarga(Materia materia) {
+    private void finalizarDescarga() {
+        if (!descargaActiva) return;
+        descargaActiva = false;
+        contenidoDAO.setTransactionSuccessful();
+        contenidoDAO.endTransaction();
         notificarProgreso(100, "¡Descarga completada!");
         if (callback != null) callback.onDescargaCompletada();
     }
@@ -268,6 +299,9 @@ public class DescargarDatos {
     }
 
     private void notificarError(String error) {
+        if (!descargaActiva) return;
+        descargaActiva = false;
+        contenidoDAO.endTransaction();
         if (callback != null) callback.onDescargaFallida(error);
     }
 

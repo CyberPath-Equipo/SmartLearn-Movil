@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class Database extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "smartlearn.db";
-    private static final int DATABASE_VERSION = 4;
+    private static final int DATABASE_VERSION = 5;
 
     private static Database instancia;
 
@@ -131,6 +131,29 @@ public class Database extends SQLiteOpenHelper {
                 "id_tipo_recurso INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "nombre TEXT, " +
                 "descripcion TEXT);");
+
+        db.execSQL("CREATE TABLE tbl_usuario_ejercicio_local (" +
+                "id_usuario_ejercicio_local INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "id_usuario INTEGER NOT NULL, " +
+                "id_ejercicio INTEGER NOT NULL, " +
+                "hecho INTEGER DEFAULT 0, " +
+                "fecha_actualizacion TEXT DEFAULT CURRENT_TIMESTAMP, " +
+                "pendiente_sync INTEGER DEFAULT 1, " +
+                "UNIQUE (id_usuario, id_ejercicio), " +
+                "FOREIGN KEY (id_ejercicio) REFERENCES tbl_ejercicio(id_ejercicio) ON DELETE CASCADE ON UPDATE CASCADE);");
+
+        db.execSQL("CREATE TABLE tbl_intento_ejercicio_local (" +
+                "id_intento_local INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "id_usuario INTEGER NOT NULL, " +
+                "id_ejercicio INTEGER NOT NULL, " +
+                "puntaje REAL DEFAULT 0, " +
+                "fecha TEXT, " +
+                "pendiente_sync INTEGER DEFAULT 1, " +
+                "FOREIGN KEY (id_ejercicio) REFERENCES tbl_ejercicio(id_ejercicio) ON DELETE CASCADE ON UPDATE CASCADE);");
+
+        db.execSQL("CREATE INDEX idx_ue_local_usuario ON tbl_usuario_ejercicio_local(id_usuario);");
+        db.execSQL("CREATE INDEX idx_ue_local_ejercicio ON tbl_usuario_ejercicio_local(id_ejercicio);");
+        db.execSQL("CREATE INDEX idx_ie_local_sync ON tbl_intento_ejercicio_local(pendiente_sync);");
     }
 
     @Override
@@ -195,6 +218,31 @@ public class Database extends SQLiteOpenHelper {
             addColumnIfNotExists(db, "tbl_recurso_adjunto", "mime_type", "TEXT");
             addColumnIfNotExists(db, "tbl_recurso_adjunto", "tamano_bytes", "INTEGER");
             addColumnIfNotExists(db, "tbl_recurso_adjunto", "creado_en", "TEXT");
+        }
+
+        if (oldVersion < 5) {
+            db.execSQL("CREATE TABLE IF NOT EXISTS tbl_usuario_ejercicio_local (" +
+                    "id_usuario_ejercicio_local INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    "id_usuario INTEGER NOT NULL, " +
+                    "id_ejercicio INTEGER NOT NULL, " +
+                    "hecho INTEGER DEFAULT 0, " +
+                    "fecha_actualizacion TEXT DEFAULT CURRENT_TIMESTAMP, " +
+                    "pendiente_sync INTEGER DEFAULT 1, " +
+                    "UNIQUE (id_usuario, id_ejercicio), " +
+                    "FOREIGN KEY (id_ejercicio) REFERENCES tbl_ejercicio(id_ejercicio) ON DELETE CASCADE ON UPDATE CASCADE);");
+
+            db.execSQL("CREATE TABLE IF NOT EXISTS tbl_intento_ejercicio_local (" +
+                    "id_intento_local INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    "id_usuario INTEGER NOT NULL, " +
+                    "id_ejercicio INTEGER NOT NULL, " +
+                    "puntaje REAL DEFAULT 0, " +
+                    "fecha TEXT, " +
+                    "pendiente_sync INTEGER DEFAULT 1, " +
+                    "FOREIGN KEY (id_ejercicio) REFERENCES tbl_ejercicio(id_ejercicio) ON DELETE CASCADE ON UPDATE CASCADE);");
+
+            db.execSQL("CREATE INDEX IF NOT EXISTS idx_ue_local_usuario ON tbl_usuario_ejercicio_local(id_usuario);");
+            db.execSQL("CREATE INDEX IF NOT EXISTS idx_ue_local_ejercicio ON tbl_usuario_ejercicio_local(id_ejercicio);");
+            db.execSQL("CREATE INDEX IF NOT EXISTS idx_ie_local_sync ON tbl_intento_ejercicio_local(pendiente_sync);");
         }
     }
 

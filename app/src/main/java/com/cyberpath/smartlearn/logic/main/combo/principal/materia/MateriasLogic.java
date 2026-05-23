@@ -91,6 +91,7 @@ public class MateriasLogic {
                 if (response.isSuccessful() && response.body() != null) {
                     listaMaterias.clear();
                     listaMaterias.addAll(response.body());
+                    materiasRepository.guardarMaterias(listaMaterias);
                     listaMateriasFiltrada.clear();
                     listaMateriasFiltrada.addAll(listaMaterias);
 
@@ -106,6 +107,7 @@ public class MateriasLogic {
                     }
                 } else {
                     fragment.showToast("Error al cargar tus materias");
+                    cargarMateriasLocal();
                 }
 
                 cargandoMateriasUsuario = false;
@@ -114,9 +116,9 @@ public class MateriasLogic {
             @Override
             public void onFailure(Call<List<Materia>> call, Throwable t) {
                 if (fragment == null || !fragment.isAdded()) return;
-                fragment.showToast("Error de conexión (materias usuario)");
+                fragment.showToast("Sin conexión, cargando materias locales");
                 cargandoMateriasUsuario = false;
-                actualizarListaMaterias();
+                cargarMateriasLocal();
             }
         });
     }

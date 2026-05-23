@@ -39,6 +39,13 @@ android {
     buildFeatures {
         viewBinding = true
     }
+    sourceSets {
+        getByName("main") {
+            assets {
+                srcDirs("src\\main\\assets", "src\\main\\assets")
+            }
+        }
+    }
 }
 
 dependencies {
@@ -65,6 +72,9 @@ dependencies {
     implementation ("com.squareup.retrofit2:retrofit:2.9.0")
     implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation ("androidx.lifecycle:lifecycle-runtime-ktx:2.8.6")
+
+    implementation ("org.tensorflow:tensorflow-lite:2.14.0")
+    implementation ("com.google.mediapipe:tasks-audio:latest.release")
 
     implementation ("com.squareup.okhttp3:logging-interceptor:4.9.3")
 

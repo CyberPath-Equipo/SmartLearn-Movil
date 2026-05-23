@@ -19,12 +19,14 @@ import com.cyberpath.smartlearn.ui.main.MainActivity;
 import com.cyberpath.smartlearn.util.accesibilidad.visual.EntradaAudio;
 import com.cyberpath.smartlearn.util.accesibilidad.visual.SalidaAudio;
 import com.cyberpath.smartlearn.util.network.NetworkUtils;
+import com.cyberpath.smartlearn.util.preferences.ThemeManager;
 
 public class CargaActivity extends AppCompatActivity {
     private static final int duracion = 2000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        ThemeManager.applyTheme(this);
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_carga);

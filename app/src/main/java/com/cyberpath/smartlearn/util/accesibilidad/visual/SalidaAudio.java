@@ -20,6 +20,7 @@ public class SalidaAudio implements TextToSpeech.OnInitListener {
     private TextToSpeech tts;
     private boolean estaInicializado = false;
     private Runnable onSpeechDone;
+    private String utteranceActivaId;
 
     private SalidaAudio(Context context) {
         this.context = context.getApplicationContext();
@@ -70,34 +71,13 @@ public class SalidaAudio implements TextToSpeech.OnInitListener {
                 @Override
                 public void onDone(String utteranceId) {
                     Log.d(TAG, "Terminó de reproducir: " + utteranceId);
-
-                    final Runnable cb = onSpeechDone;
-                    if (cb != null) {
-                        mainHandler.post(() -> {
-                            try {
-                                cb.run();
-                            } catch (Exception e) {
-                                Log.e(TAG, "Error ejecutando onDone callback: " + e.getMessage(), e);
-                            }
-                        });
-                        onSpeechDone = null;
-                    }
+                    ejecutarCallbackSiCorresponde(utteranceId);
                 }
 
                 @Override
                 public void onError(String utteranceId) {
                     Log.e(TAG, "Error al reproducir: " + utteranceId);
-                    final Runnable cb = onSpeechDone;
-                    if (cb != null) {
-                        mainHandler.post(() -> {
-                            try {
-                                cb.run();
-                            } catch (Exception e) {
-                                Log.e(TAG, "Error ejecutando onError callback: " + e.getMessage(), e);
-                            }
-                        });
-                        onSpeechDone = null;
-                    }
+                    ejecutarCallbackSiCorresponde(utteranceId);
                 }
             });
 
@@ -116,7 +96,7 @@ public class SalidaAudio implements TextToSpeech.OnInitListener {
 
 
     public void hablar(String texto, boolean interrumpir, Runnable onDone) {
-        if (!PreferencesManager.isModoAudioActivado(context)) {
+        if (!PreferencesManager.isAsistenciaVozActivada(context)) {
             if (onDone != null) mainHandler.post(onDone);
             return;
         }
@@ -131,8 +111,9 @@ public class SalidaAudio implements TextToSpeech.OnInitListener {
             return;
         }
 
-        this.onSpeechDone = onDone;
         String utteranceId = "mensaje_" + System.currentTimeMillis();
+        this.onSpeechDone = onDone;
+        this.utteranceActivaId = utteranceId;
 
         if (interrumpir) {
             tts.speak(texto, TextToSpeech.QUEUE_FLUSH, null, utteranceId);
@@ -146,21 +127,18 @@ public class SalidaAudio implements TextToSpeech.OnInitListener {
     }
 
     public void detener() {
-        if (tts != null && tts.isSpeaking()) {
+        onSpeechDone = null;
+        utteranceActivaId = null;
+        if (tts != null) {
             tts.stop();
             Log.d(TAG, "Reproducción de audio detenida");
-
-            final Runnable cb = onSpeechDone;
-            if (cb != null) {
-                mainHandler.post(cb);
-                onSpeechDone = null;
-            }
         }
     }
 
     public void liberar() {
         estaInicializado = false;
         onSpeechDone = null;
+        utteranceActivaId = null;
         if (tts != null) {
             tts.stop();
             tts.shutdown();
@@ -177,5 +155,24 @@ public class SalidaAudio implements TextToSpeech.OnInitListener {
 
     public boolean isReady() {
         return estaInicializado && tts != null;
+    }
+
+    private void ejecutarCallbackSiCorresponde(String utteranceId) {
+        if (utteranceActivaId == null || !utteranceActivaId.equals(utteranceId)) {
+            return;
+        }
+
+        final Runnable cb = onSpeechDone;
+        onSpeechDone = null;
+        utteranceActivaId = null;
+        if (cb != null) {
+            mainHandler.post(() -> {
+                try {
+                    cb.run();
+                } catch (Exception e) {
+                    Log.e(TAG, "Error ejecutando callback de voz: " + e.getMessage(), e);
+                }
+            });
+        }
     }
 }

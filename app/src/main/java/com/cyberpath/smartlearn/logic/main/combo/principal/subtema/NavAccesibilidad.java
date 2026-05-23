@@ -115,6 +115,12 @@ public class NavAccesibilidad {
         });
     }
 
+    private void pararTodo() {
+        try { entradaAudio.detenerEscucha(); } catch (Exception ignored) {}
+        try { salidaAudio.detener(); } catch (Exception ignored) {}
+        navegacionActiva = false;
+    }
+
     private void escucharComandos() {
         if (!navegacionActiva) return;
 
@@ -160,10 +166,8 @@ public class NavAccesibilidad {
                     break;
 
                 case "regresar":
-                    salidaAudio.hablar("Regresando a la sección de temas.", false, () -> {
-                        fragment.simularRegresar();
-                        detenerNavegacion();
-                    });
+                    pararTodo();
+                    fragment.simularRegresar();
                     break;
 
                 case "salir":
@@ -188,19 +192,16 @@ public class NavAccesibilidad {
         Subtema subtema = listaSubtemas.get(posicionActual);
         String nombre = subtema.getNombre() != null ? subtema.getNombre() : "este subtema";
 
-        salidaAudio.hablar("¿Deseas entrar en " + nombre + "? Di sí o no.", true, () -> {
+        salidaAudio.hablar("Deseas entrar en " + nombre + "? Di sí o no.", true, () -> {
             entradaAudio.confirmarAfirmacion(esSi -> {
                 if (!navegacionActiva) return;
 
                 if (esSi) {
+                    pararTodo();
                     fragment.entrarSubtemaDesdeAccesibilidad(subtema, (exito, st) -> {
                         mainHandler.post(() -> {
-                            if (!navegacionActiva) return;
-                            if (exito) {
-                                salidaAudio.hablar("Abriendo " +
-                                                (st.getNombre() != null ? st.getNombre() : "el subtema") + ".",
-                                        false, this::detenerNavegacion);
-                            } else {
+                            if (!exito) {
+                                navegacionActiva = true;
                                 salidaAudio.hablar("No fue posible abrir el subtema. Intenta más tarde.",
                                         true, this::escucharComandos);
                             }

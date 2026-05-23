@@ -12,7 +12,7 @@
     <string name="invalid_password">La contraseña debería tener más de 5 caracteres</string>
     <string name="login_failed">Inicio de sesión fallido</string>
 
-    <string name="accesibilidad"><b>Activa:</b> Navegación con guía de audio y mandos de voz.\n\n<b>Inactiva:</b> Se desactivan todas las funciones de accesibilidad.</string>
+    <string name="accesibilidad"><b>Discapacidad visual activa:</b> habilita guía de audio y comandos de voz.\n\n<b>Discapacidad auditiva activa:</b> habilita apoyo visual (LSM) en contenido compatible.</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
@@ -37,5 +37,8 @@
     <string name="two_factor_verify_button">Verificar código</string>
     <string name="two_factor_confirm_setup_button">Confirmar configuración</string>
     <string name="two_factor_resend_button">Reenviar código</string>
+
+    <string name="shake_dialog_title">Ir a materias</string>
+    <string name="shake_dialog_message">¿Deseas ir a la pantalla de materias?</string>
 
 </resources>

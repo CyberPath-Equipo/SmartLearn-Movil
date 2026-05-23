@@ -128,10 +128,8 @@ public class NavAccesibilidad {
                     leerPreguntaYPreguntarOpciones();
                     break;
                 case "regresar":
-                    salidaAudio.hablar("Regresando.", false, () -> {
-                        fragment.simularRegresar();
-                        detenerNavegacion();
-                    });
+                    pararTodo();
+                    fragment.simularRegresar();
                     break;
                 case "salir":
                     salidaAudio.hablar("Saliendo del ejercicio.", false, this::detenerNavegacion);
@@ -210,10 +208,8 @@ public class NavAccesibilidad {
                     leerOpcionesYPreguntarAccion();
                     break;
                 case "regresar":
-                    salidaAudio.hablar("Regresando.", false, () -> {
-                        fragment.simularRegresar();
-                        detenerNavegacion();
-                    });
+                    pararTodo();
+                    fragment.simularRegresar();
                     break;
                 case "salir":
                     salidaAudio.hablar("Saliendo del ejercicio.", false, this::detenerNavegacion);
@@ -329,16 +325,12 @@ public class NavAccesibilidad {
 
             switch (cmd) {
                 case "lista":
-                    salidaAudio.hablar("Regresando a la lista de ejercicios.", false, () -> {
-                        fragment.simularRegresar();
-                        detenerNavegacion();
-                    });
+                    pararTodo();
+                    fragment.simularRegresar();
                     break;
                 case "teoria":
-                    salidaAudio.hablar("Abriendo la teoría.", false, () -> {
-                        fragment.irATeoriaDesdeAccesibilidad();
-                        detenerNavegacion();
-                    });
+                    pararTodo();
+                    fragment.irATeoriaDesdeAccesibilidad();
                     break;
                 case "salir":
                     salidaAudio.hablar("Saliendo.", false, this::detenerNavegacion);
@@ -347,6 +339,12 @@ public class NavAccesibilidad {
                     mainHandler.postDelayed(this::escucharResumenOpciones, 500);
             }
         });
+    }
+
+    private void pararTodo() {
+        try { entradaAudio.detenerEscucha(); } catch (Exception ignored) {}
+        try { salidaAudio.detener(); } catch (Exception ignored) {}
+        navegacionActiva = false;
     }
 
     private String numeroEnPalabras(int n) {
@@ -376,5 +374,4 @@ public class NavAccesibilidad {
         }
     }
 }
-
 

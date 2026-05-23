@@ -26,11 +26,30 @@ public class ContenidoDAO {
     }
 
     public void open() {
-        db = dbHelper.getWritableDatabase();
+        if (db == null || !db.isOpen()) {
+            db = dbHelper.getWritableDatabase();
+        }
     }
 
     public void close() {
-        dbHelper.close();
+        // No cerramos dbHelper aqui para evitar invalidar el singleton en operaciones encadenadas.
+    }
+
+    public void beginTransaction() {
+        open();
+        db.beginTransaction();
+    }
+
+    public void setTransactionSuccessful() {
+        if (db != null && db.inTransaction()) {
+            db.setTransactionSuccessful();
+        }
+    }
+
+    public void endTransaction() {
+        if (db != null && db.inTransaction()) {
+            db.endTransaction();
+        }
     }
 
     // -----------------------
@@ -217,6 +236,29 @@ public class ContenidoDAO {
         return subtemas;
     }
 
+    public Subtema obtenerSubtemaPorId(Integer idSubtema) {
+        open();
+        Cursor cursor = db.query("tbl_subtema",
+                null,
+                "id_subtema = ?",
+                new String[]{String.valueOf(idSubtema)},
+                null, null, null);
+
+        Subtema subtema = null;
+        if (cursor.moveToFirst()) {
+            subtema = new Subtema();
+            subtema.setId(cursor.getInt(cursor.getColumnIndexOrThrow("id_subtema")));
+            subtema.setIdTema(cursor.getInt(cursor.getColumnIndexOrThrow("id_tema")));
+            subtema.setNombre(cursor.getString(cursor.getColumnIndexOrThrow("nombre")));
+            subtema.setOrden(cursor.getInt(cursor.getColumnIndexOrThrow("orden")));
+            subtema.setCreatedAt(cursor.getString(cursor.getColumnIndexOrThrow("created_at")));
+            subtema.setUpdatedAt(cursor.getString(cursor.getColumnIndexOrThrow("updated_at")));
+        }
+        cursor.close();
+        close();
+        return subtema;
+    }
+
     // -----------------------
     // TEORÍA
     // -----------------------
@@ -389,11 +431,49 @@ public class ContenidoDAO {
         return opciones;
     }
 
+    public long marcarEjercicioUsuarioLocal(int idUsuario, int idEjercicio, boolean hecho, boolean pendienteSync) {
+        open();
+        ContentValues values = new ContentValues();
+        values.put("id_usuario", idUsuario);
+        values.put("id_ejercicio", idEjercicio);
+        values.put("hecho", hecho ? 1 : 0);
+        values.put("pendiente_sync", pendienteSync ? 1 : 0);
+        values.put("fecha_actualizacion", String.valueOf(System.currentTimeMillis()));
+        long resultado = db.insertWithOnConflict("tbl_usuario_ejercicio_local", null, values, SQLiteDatabase.CONFLICT_REPLACE);
+        close();
+        return resultado;
+    }
+
+    public long guardarIntentoEjercicioLocal(int idUsuario, int idEjercicio, double puntaje, String fecha, boolean pendienteSync) {
+        open();
+        ContentValues values = new ContentValues();
+        values.put("id_usuario", idUsuario);
+        values.put("id_ejercicio", idEjercicio);
+        values.put("puntaje", puntaje);
+        values.put("fecha", fecha);
+        values.put("pendiente_sync", pendienteSync ? 1 : 0);
+        long resultado = db.insert("tbl_intento_ejercicio_local", null, values);
+        close();
+        return resultado;
+    }
+
+    public void marcarIntentoLocalSincronizado(long idIntentoLocal) {
+        open();
+        ContentValues values = new ContentValues();
+        values.put("pendiente_sync", 0);
+        db.update("tbl_intento_ejercicio_local", values,
+                "id_intento_local = ?", new String[]{String.valueOf(idIntentoLocal)});
+        close();
+    }
+
     // -----------------------
     // BORRAR MATERIA DESCARGADA (BORRA EL CONTENIDO RELACIONADO)
     // -----------------------
     public boolean borrarMateriaDescargada(Integer idMateria) {
         open();
+
+        db.delete("tbl_intento_ejercicio_local", "id_ejercicio IN (SELECT id_ejercicio FROM tbl_ejercicio WHERE id_subtema IN (SELECT id_subtema FROM tbl_subtema WHERE id_tema IN (SELECT id_tema FROM tbl_tema WHERE id_materia = ?)))", new String[]{String.valueOf(idMateria)});
+        db.delete("tbl_usuario_ejercicio_local", "id_ejercicio IN (SELECT id_ejercicio FROM tbl_ejercicio WHERE id_subtema IN (SELECT id_subtema FROM tbl_subtema WHERE id_tema IN (SELECT id_tema FROM tbl_tema WHERE id_materia = ?)))", new String[]{String.valueOf(idMateria)});
 
         db.delete("tbl_opcion", "id_pregunta IN (SELECT id_pregunta FROM tbl_pregunta WHERE id_ejercicio IN (SELECT id_ejercicio FROM tbl_ejercicio WHERE id_subtema IN (SELECT id_subtema FROM tbl_subtema WHERE id_tema IN (SELECT id_tema FROM tbl_tema WHERE id_materia = ?))))", new String[]{String.valueOf(idMateria)});
         db.delete("tbl_pregunta", "id_ejercicio IN (SELECT id_ejercicio FROM tbl_ejercicio WHERE id_subtema IN (SELECT id_subtema FROM tbl_subtema WHERE id_tema IN (SELECT id_tema FROM tbl_tema WHERE id_materia = ?)))", new String[]{String.valueOf(idMateria)});

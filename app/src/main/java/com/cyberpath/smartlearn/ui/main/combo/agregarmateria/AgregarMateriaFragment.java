@@ -23,6 +23,8 @@ import com.cyberpath.smartlearn.data.model.contenido.Materia;
 import com.cyberpath.smartlearn.logic.main.combo.agregarmateria.AgregarMateriaLogic;
 import com.cyberpath.smartlearn.logic.main.combo.agregarmateria.NavAccesibilidad;
 import com.cyberpath.smartlearn.util.accesibilidad.visual.EntradaAudio;
+import com.cyberpath.smartlearn.util.accesibilidad.visual.SalidaAudio;
+import com.cyberpath.smartlearn.util.preferences.PreferencesManager;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.ArrayList;
@@ -124,6 +126,22 @@ public class AgregarMateriaFragment extends Fragment {
         agregarMateriaLogic.limpiarDatos();
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (navAccesibilidad != null) {
+            navAccesibilidad.detenerNavegacion();
+        }
+        try {
+            EntradaAudio.obtenerInstancia().detenerEscucha();
+        } catch (Exception ignored) {
+        }
+        try {
+            SalidaAudio.obtenerInstancia().detener();
+        } catch (Exception ignored) {
+        }
+    }
+
     private void mostrarDialogoInscribir(Materia materia) {
         View vista = LayoutInflater.from(requireContext()).inflate(R.layout.dialogo_aceptar_cancelar, null);
         TextView tvMensaje = vista.findViewById(R.id.tvMensaje);
@@ -190,6 +208,9 @@ public class AgregarMateriaFragment extends Fragment {
     }
 
     public void iniciarNavegacionPorVoz() {
+        if (!PreferencesManager.isAsistenciaVozActivada(requireContext())) {
+            return;
+        }
         if (navAccesibilidad != null) {
             navAccesibilidad.iniciarNavegacion();
         }

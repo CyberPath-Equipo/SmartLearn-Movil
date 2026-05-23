@@ -22,6 +22,8 @@ import com.cyberpath.smartlearn.data.model.contenido.Tema;
 import com.cyberpath.smartlearn.logic.main.combo.principal.tema.NavAccesibilidad;
 import com.cyberpath.smartlearn.logic.main.combo.principal.tema.TemasLogic;
 import com.cyberpath.smartlearn.util.accesibilidad.visual.EntradaAudio;
+import com.cyberpath.smartlearn.util.accesibilidad.visual.SalidaAudio;
+import com.cyberpath.smartlearn.util.preferences.PreferencesManager;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -93,12 +95,11 @@ public class TemasFragment extends Fragment {
     private void crearCarrusel(View view) {
         viewPagerTemas = view.findViewById(R.id.viewPagerTemas);
         adapterTemas = new AdaptadorTemas(new ArrayList<>(), this::onTemaClick);
-
         viewPagerTemas.setAdapter(adapterTemas);
+
         viewPagerTemas.setOffscreenPageLimit(3);
         viewPagerTemas.setClipToPadding(false);
         viewPagerTemas.setClipChildren(false);
-        viewPagerTemas.setPadding(80, 0, 80, 0);
 
         viewPagerTemas.setPageTransformer((page, position) -> {
             float scaleFactor = Math.max(0.85f, 1 - Math.abs(position) * 0.15f);
@@ -146,6 +147,22 @@ public class TemasFragment extends Fragment {
                 }
             }
         });
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (navAccesibilidad != null) {
+            navAccesibilidad.detenerNavegacion();
+        }
+        try {
+            EntradaAudio.obtenerInstancia().detenerEscucha();
+        } catch (Exception ignored) {
+        }
+        try {
+            SalidaAudio.obtenerInstancia().detener();
+        } catch (Exception ignored) {
+        }
     }
 
     private void crearBotonesFlotantes(View view) {
@@ -248,6 +265,9 @@ public class TemasFragment extends Fragment {
     }
 
     public void iniciarNavegacionPorVoz() {
+        if (!PreferencesManager.isAsistenciaVozActivada(requireContext())) {
+            return;
+        }
         if (navAccesibilidad != null) {
             navAccesibilidad.iniciarNavegacion();
         }

@@ -51,10 +51,12 @@ public class TemasRepository {
 
     public void guardarTemas(List<Tema> temas) {
         SQLiteDatabase db = null;
+        boolean inTransaction = false;
 
         try {
             db = database.getWritableDatabase();
             db.beginTransaction();
+            inTransaction = true;
 
             for (Tema tema : temas) {
                 ContentValues values = new ContentValues();
@@ -69,9 +71,12 @@ public class TemasRepository {
             }
 
             db.setTransactionSuccessful();
-            db.endTransaction();
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            if (db != null && inTransaction) {
+                db.endTransaction();
+            }
         }
     }
 

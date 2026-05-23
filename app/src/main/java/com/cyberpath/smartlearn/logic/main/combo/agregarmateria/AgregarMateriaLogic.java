@@ -15,6 +15,7 @@ import com.cyberpath.smartlearn.data.remote.api.ApiService;
 import com.cyberpath.smartlearn.data.remote.api.RetrofitClient;
 import com.cyberpath.smartlearn.ui.main.combo.agregarmateria.AgregarMateriaFragment;
 import com.cyberpath.smartlearn.util.constants.UsuarioCst;
+import com.cyberpath.smartlearn.util.network.NetworkUtils;
 
 import java.text.Normalizer;
 import java.util.ArrayList;
@@ -257,6 +258,19 @@ public class AgregarMateriaLogic {
     public void descargarMateria(Materia materia, ProgressBar progressBar,
                                  TextView tvProgresso, TextView tvMensajeProgreso,
                                  AlertDialog dialogo) {
+        if (!NetworkUtils.isInternetAvailable(context)) {
+            fragment.showToastLong("Se necesita conexión para descargar contenido");
+            dialogo.dismiss();
+            return;
+        }
+
+        ContenidoDAO validacionDao = new ContenidoDAO(context);
+        if (validacionDao.materiaDescargada(materia.getId())) {
+            fragment.showToast("Esta materia ya está descargada");
+            dialogo.dismiss();
+            return;
+        }
+
         DescargarDatos descarga = new DescargarDatos(context);
         descarga.setCallback(new DescargarDatos.DescargaCallback() {
             @Override

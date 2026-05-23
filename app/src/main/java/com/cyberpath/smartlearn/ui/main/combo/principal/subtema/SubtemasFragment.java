@@ -26,6 +26,7 @@ import com.cyberpath.smartlearn.logic.main.combo.principal.subtema.NavAccesibili
 import com.cyberpath.smartlearn.logic.main.combo.principal.subtema.SubtemasLogic;
 import com.cyberpath.smartlearn.util.accesibilidad.visual.EntradaAudio;
 import com.cyberpath.smartlearn.util.accesibilidad.visual.SalidaAudio;
+import com.cyberpath.smartlearn.util.preferences.PreferencesManager;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
@@ -103,10 +104,10 @@ public class SubtemasFragment extends Fragment {
         viewPagerSubtemas = view.findViewById(R.id.viewPagerSubtemas);
         adapterSubtemas = new AdaptadorSubtemas(new ArrayList<>(), this::onSubtemaClick);
         viewPagerSubtemas.setAdapter(adapterSubtemas);
+
         viewPagerSubtemas.setOffscreenPageLimit(3);
         viewPagerSubtemas.setClipToPadding(false);
         viewPagerSubtemas.setClipChildren(false);
-        viewPagerSubtemas.setPadding(80, 0, 80, 0);
 
         viewPagerSubtemas.setPageTransformer((page, position) -> {
             float scaleFactor = Math.max(0.85f, 1 - Math.abs(position) * 0.15f);
@@ -154,6 +155,22 @@ public class SubtemasFragment extends Fragment {
                 }
             }
         });
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (navAccesibilidad != null) {
+            navAccesibilidad.detenerNavegacion();
+        }
+        try {
+            EntradaAudio.obtenerInstancia().detenerEscucha();
+        } catch (Exception ignored) {
+        }
+        try {
+            SalidaAudio.obtenerInstancia().detener();
+        } catch (Exception ignored) {
+        }
     }
 
     private void crearBotonesFlotantes(View view) {
@@ -274,6 +291,9 @@ public class SubtemasFragment extends Fragment {
     }
 
     public void iniciarNavegacionPorVoz() {
+        if (!PreferencesManager.isAsistenciaVozActivada(requireContext())) {
+            return;
+        }
         if (navAccesibilidad != null) {
             navAccesibilidad.iniciarNavegacion();
         }

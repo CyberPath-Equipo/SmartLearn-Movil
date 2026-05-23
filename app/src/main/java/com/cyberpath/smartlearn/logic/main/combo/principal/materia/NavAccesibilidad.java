@@ -174,6 +174,12 @@ public class NavAccesibilidad {
         });
     }
 
+    private void pararTodo() {
+        try { entradaAudio.detenerEscucha(); } catch (Exception ignored) {}
+        try { salidaAudio.detener(); } catch (Exception ignored) {}
+        navegacionActiva = false;
+    }
+
     private void confirmarEntrada() {
         List<Materia> listaMaterias = materiasLogic.getListaMateriasFiltrada();
 
@@ -184,19 +190,16 @@ public class NavAccesibilidad {
         Materia materia = listaMaterias.get(posicionActual);
         String nombre = materia.getNombre() != null ? materia.getNombre() : "esta materia";
 
-        salidaAudio.hablar("¿Deseas entrar en " + nombre + "? Di sí o no.", true, () -> {
+        salidaAudio.hablar("Deseas entrar en " + nombre + "? Di sí o no.", true, () -> {
             entradaAudio.confirmarAfirmacion(esSi -> {
                 if (!navegacionActiva) return;
 
                 if (esSi) {
+                    pararTodo();
                     fragment.entrarMateriaDesdeAccesibilidad(materia, (exito, mat) -> {
                         mainHandler.post(() -> {
-                            if (!navegacionActiva) return;
-                            if (exito) {
-                                salidaAudio.hablar("¡Navegando hacia " +
-                                                (mat.getNombre() != null ? mat.getNombre() : "la materia") + "!",
-                                        false, this::detenerNavegacion);
-                            } else {
+                            if (!exito) {
+                                navegacionActiva = true;
                                 salidaAudio.hablar("Error al entrar. Intenta más tarde.",
                                         true, this::escucharComandosNavegacion);
                             }

@@ -215,4 +215,10 @@ public class NavAccesibilidad {
         int centered = agregarMateriaLogic.centeredPositionForIndex(posicion, realSize);
         viewPagerMaterias.setCurrentItem(centered, smooth);
     }
+
+    private void pararTodo() {
+        try { entradaAudio.detenerEscucha(); } catch (Exception ignored) {}
+        try { salidaAudio.detener(); } catch (Exception ignored) {}
+        navegacionActiva = false;
+    }
 }

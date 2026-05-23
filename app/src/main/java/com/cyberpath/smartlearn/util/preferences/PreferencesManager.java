@@ -13,6 +13,9 @@ public class PreferencesManager {
     public static final int THEME_LIGHT = 0;
     public static final int THEME_DARK = 1;
     public static final int THEME_ACCESSIBLE = 2;
+    public static final int TEXT_SIZE_SMALL = 0;
+    public static final int TEXT_SIZE_MEDIUM = 1;
+    public static final int TEXT_SIZE_LARGE = 2;
     // -----------------------
     // Constantes de keys
     // -----------------------
@@ -132,8 +135,11 @@ public class PreferencesManager {
     // Accesibilidad / Audio
     // -----------------------
     public static boolean isModoAudioActivado(Context context) {
-        SharedPreferences prefs = getPrefs(context);
-        return prefs.getBoolean(KEY_ACCESIBILIDAD_AUDITIVA, false);
+        return isAccesibilidadVisualActivada(context);
+    }
+
+    public static boolean isAsistenciaVozActivada(Context context) {
+        return isAccesibilidadVisualActivada(context);
     }
 
     public static void setAccesibilidadVisualActivada(Context context, boolean activado) {
@@ -153,26 +159,39 @@ public class PreferencesManager {
     }
 
     public static boolean isAccesibilidadAuditivaActivada(Context context) {
-        return isModoAudioActivado(context);
+        return getPrefs(context).getBoolean(KEY_ACCESIBILIDAD_AUDITIVA, false);
     }
 
     // -----------------------
     // Preferencias de interfaz
     // -----------------------
     public static void setTamanoTexto(Context context, int tamano) {
-        getPrefs(context).edit().putInt(KEY_TAMANO_FUENTE, tamano).apply();
+        getPrefs(context).edit().putInt(KEY_TAMANO_FUENTE, normalizeTamanoTexto(tamano)).apply();
     }
 
     public static int getTamanoTexto(Context context) {
-        return getPrefs(context).getInt(KEY_TAMANO_FUENTE, Configuracion.TamanoFuente.MEDIO.getValor());
+        int tamano = getPrefs(context).getInt(KEY_TAMANO_FUENTE, TEXT_SIZE_MEDIUM);
+        return normalizeTamanoTexto(tamano);
     }
 
     public static void setTemaApp(Context context, int theme) {
-        getPrefs(context).edit().putInt(KEY_TEMA_APP, theme).apply();
+        getPrefs(context).edit().putInt(KEY_TEMA_APP, normalizeTema(theme)).apply();
     }
 
     public static int getTemaApp(Context context) {
-        return getPrefs(context).getInt(KEY_TEMA_APP, THEME_LIGHT);
+        int tema = getPrefs(context).getInt(KEY_TEMA_APP, THEME_LIGHT);
+        return normalizeTema(tema);
+    }
+
+    public static int getTemaResuelto(Context context) {
+        if (isAccesibilidadVisualActivada(context)) {
+            return THEME_ACCESSIBLE;
+        }
+        int temaGuardado = getTemaApp(context);
+        if (temaGuardado == THEME_ACCESSIBLE) {
+            return THEME_LIGHT;
+        }
+        return temaGuardado;
     }
 
     public static void setIdSubtemaUltimaConexion(Context context, int id) {
@@ -210,5 +229,19 @@ public class PreferencesManager {
                 .putString(KEY_REGISTRO_CORREO, "")
                 .putString(KEY_REGISTRO_NOMBRE_CUENTA, "")
                 .apply();
+    }
+
+    private static int normalizeTema(int tema) {
+        if (tema == THEME_DARK || tema == THEME_ACCESSIBLE) {
+            return tema;
+        }
+        return THEME_LIGHT;
+    }
+
+    private static int normalizeTamanoTexto(int tamano) {
+        if (tamano == TEXT_SIZE_SMALL || tamano == TEXT_SIZE_MEDIUM || tamano == TEXT_SIZE_LARGE) {
+            return tamano;
+        }
+        return TEXT_SIZE_MEDIUM;
     }
 }

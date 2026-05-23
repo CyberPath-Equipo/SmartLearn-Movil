@@ -61,7 +61,7 @@ public class TeoriaLogic {
 
     private void cargarTeoriaAPI() {
         ApiService apiService = RetrofitClient.getApiService();
-        Call<Teoria> call = apiService.getTeoriaById(subtema.getId());
+        Call<Teoria> call = apiService.getTeoriaBySubtema(subtema.getId());
 
         call.enqueue(new Callback<Teoria>() {
             @Override
@@ -70,6 +70,10 @@ public class TeoriaLogic {
 
                 if (response.isSuccessful() && response.body() != null) {
                     teoriaActual = response.body();
+                    if (teoriaActual.getIdSubtema() == null) {
+                        teoriaActual.setIdSubtema(subtema.getId());
+                    }
+                    guardarEnLocal(teoriaActual);
 
                     mostrarContenido(teoriaActual);
                 } else {
@@ -80,7 +84,6 @@ public class TeoriaLogic {
             @Override
             public void onFailure(Call<Teoria> call, Throwable t) {
                 if (fragment == null || !fragment.isAdded()) return;
-                fragment.mostrarError("Error de red: " + t.getMessage());
                 cargarTeoriaLocal();
             }
         });

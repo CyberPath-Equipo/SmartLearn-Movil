@@ -27,6 +27,7 @@ import com.cyberpath.smartlearn.logic.main.combo.principal.contenido.practica.ej
 import com.cyberpath.smartlearn.logic.main.combo.principal.contenido.practica.ejercicio.NavAccesibilidad;
 import com.cyberpath.smartlearn.util.accesibilidad.visual.EntradaAudio;
 import com.cyberpath.smartlearn.util.accesibilidad.visual.SalidaAudio;
+import com.cyberpath.smartlearn.util.preferences.PreferencesManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -313,6 +314,9 @@ public class EjercicioFragment extends Fragment {
     }
 
     public void iniciarNavegacionPorVoz() {
+        if (!PreferencesManager.isAsistenciaVozActivada(requireContext())) {
+            return;
+        }
         if (navAccesibilidad != null) {
             mainHandler.postDelayed(() -> navAccesibilidad.iniciarNavegacion(), 200);
         }

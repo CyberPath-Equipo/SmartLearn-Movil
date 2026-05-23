@@ -25,6 +25,7 @@ import com.cyberpath.smartlearn.data.model.contenido.Materia;
 import com.cyberpath.smartlearn.logic.main.combo.principal.materia.MateriasLogic;
 import com.cyberpath.smartlearn.logic.main.combo.principal.materia.NavAccesibilidad;
 import com.cyberpath.smartlearn.util.accesibilidad.visual.EntradaAudio;
+import com.cyberpath.smartlearn.util.accesibilidad.visual.SalidaAudio;
 import com.cyberpath.smartlearn.util.preferences.PreferencesManager;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -164,23 +165,28 @@ public class MateriasFragment extends Fragment {
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        if (navAccesibilidadMaterias != null) {
+            navAccesibilidadMaterias.detenerNavegacion();
+        }
+        try {
+            EntradaAudio.obtenerInstancia().detenerEscucha();
+        } catch (Exception ignored) {
+        }
+        try {
+            SalidaAudio.obtenerInstancia().detener();
+        } catch (Exception ignored) {
+        }
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
         if (filtroRunnable != null) {
             filtroHandler.removeCallbacks(filtroRunnable);
             filtroRunnable = null;
         }
-        if (navAccesibilidadMaterias != null) {
-            navAccesibilidadMaterias.detenerNavegacion();
-        }
-        if (materiasLogic != null) {
-            materiasLogic.limpiarDatos();
-        }
-        searchViewMaterias = null;
-        carruselMaterias = null;
-        adapterMaterias = null;
-        navAccesibilidadMaterias = null;
-        materiasLogic = null;
     }
 
     private void actualizarIndicadores(int posicionActualPagina) {
@@ -257,6 +263,9 @@ public class MateriasFragment extends Fragment {
     }
 
     public void iniciarNavegacionPorVoz() {
+        if (!PreferencesManager.isAsistenciaVozActivada(requireContext())) {
+            return;
+        }
         if (navAccesibilidadMaterias != null) {
             navAccesibilidadMaterias.iniciarNavegacion();
         }
