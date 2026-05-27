@@ -16,8 +16,8 @@ import androidx.core.content.ContextCompat;
 import androidx.navigation.Navigation;
 
 import com.cyberpath.smartlearn.R;
-import com.cyberpath.smartlearn.data.model.usuario.acceso.LoginResponse;
 import com.cyberpath.smartlearn.data.model.usuario.Usuario;
+import com.cyberpath.smartlearn.data.model.usuario.acceso.LoginResponse;
 import com.cyberpath.smartlearn.data.remote.api.ApiService;
 import com.cyberpath.smartlearn.data.remote.api.RetrofitClient;
 import com.cyberpath.smartlearn.ui.acceso.LoginFragment;

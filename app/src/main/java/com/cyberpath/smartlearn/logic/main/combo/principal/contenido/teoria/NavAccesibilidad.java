@@ -20,7 +20,7 @@ public class NavAccesibilidad {
 
     private PlayerView playerView;
     private ImageView imageView;
-    private boolean accesibilidadAuditivaActivada;
+    private final boolean accesibilidadAuditivaActivada;
     //IP local - Efrén
     private String baseUrlLenguajeSenas = "http://192.168.1.110:8080/smartlearn/api/lsm/";
 
@@ -59,7 +59,8 @@ public class NavAccesibilidad {
 
     /**
      * Configura las vistas para el reproductor multimedia
-     * @param imageView ImageView para mostrar las imágenes del lenguaje de señas
+     *
+     * @param imageView  ImageView para mostrar las imágenes del lenguaje de señas
      * @param playerView PlayerView para reproducción de videos
      */
     public void setTargetViews(ImageView imageView, PlayerView playerView) {
@@ -84,8 +85,9 @@ public class NavAccesibilidad {
 
     /**
      * Reproduce el contenido de teoría en lenguaje de señas
+     *
      * @param textoTeoria Texto a traducir y reproducir
-     * @param lessonId ID de la lección para cargar el mapping correcto
+     * @param lessonId    ID de la lección para cargar el mapping correcto
      */
     public void reproducirContenido(String textoTeoria, String lessonId) {
         if (!accesibilidadAuditivaActivada || reproductorMultimedia == null || playerView == null || imageView == null) {

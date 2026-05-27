@@ -13,31 +13,19 @@ import java.util.List;
 
 public class ReproductorMultimedia {
 
-    public interface PlaybackListener {
-        @MainThread
-        void onStarted();
-        @MainThread
-        void onFinished();
-        @MainThread
-        void onError(String message);
-        @MainThread
-        void onMappingLoaded(boolean ok, @Nullable String message);
-    }
-
     private final Context ctx;
     private final TranslationEngine engine;
+    private final Handler mainHandler = new Handler(Looper.getMainLooper());
     private ReproductorContenido player;
     private ImageView imageView;
     private PlayerView playerView;
-    private final Handler mainHandler = new Handler(Looper.getMainLooper());
-
     private String lessonId = "lesson_1";
     private boolean mappingLoaded = false;
     private PlaybackListener listener;
-
     // Monitor para detectar fin de reproducción (polling ligero)
     private final Runnable monitorRunnable = new Runnable() {
         private boolean wasPlaying = false;
+
         @Override
         public void run() {
             if (player == null) return;
@@ -127,13 +115,15 @@ public class ReproductorMultimedia {
 
     private void playInternal(String text) {
         if (player == null || imageView == null || playerView == null) {
-            if (listener != null) listener.onError("Target views no configuradas. Llama setTargetViews(...) antes de play().");
+            if (listener != null)
+                listener.onError("Target views no configuradas. Llama setTargetViews(...) antes de play().");
             return;
         }
         // Translate (rápido, en memoria). Si fuera costoso, mover a background.
         List<ContenidoItem> items = engine.translate(text);
         if (items == null || items.isEmpty()) {
-            if (listener != null) listener.onError("No se encontraron signos para el texto proporcionado.");
+            if (listener != null)
+                listener.onError("No se encontraron signos para el texto proporcionado.");
             return;
         }
         player.setSequence(items);
@@ -160,5 +150,19 @@ public class ReproductorMultimedia {
             player = null;
         }
         mainHandler.removeCallbacksAndMessages(null);
+    }
+
+    public interface PlaybackListener {
+        @MainThread
+        void onStarted();
+
+        @MainThread
+        void onFinished();
+
+        @MainThread
+        void onError(String message);
+
+        @MainThread
+        void onMappingLoaded(boolean ok, @Nullable String message);
     }
 }

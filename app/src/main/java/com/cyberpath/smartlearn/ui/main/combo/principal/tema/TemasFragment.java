@@ -5,13 +5,16 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.viewpager2.widget.ViewPager2;
@@ -25,6 +28,7 @@ import com.cyberpath.smartlearn.util.accesibilidad.visual.EntradaAudio;
 import com.cyberpath.smartlearn.util.accesibilidad.visual.SalidaAudio;
 import com.cyberpath.smartlearn.util.preferences.PreferencesManager;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -46,6 +50,7 @@ public class TemasFragment extends Fragment {
     private AdaptadorTemas adapterTemas;
     private FloatingActionButton btnPrevTema;
     private FloatingActionButton btnNextTema;
+    private MaterialButton btnAccionOfflineMateria;
     private MaterialButton btnRegresar;
     private LinearLayout indicadoresContainerTemas;
     private ImageView[] indicadores;
@@ -63,6 +68,7 @@ public class TemasFragment extends Fragment {
         crearTextoMateria(view);
         crearCarrusel(view);
         crearBotonesFlotantes(view);
+        crearBotonOfflineMateria(view);
         crearBotonRegresar(view);
 
         entradaAudio = EntradaAudio.obtenerInstancia();
@@ -198,6 +204,96 @@ public class TemasFragment extends Fragment {
                 requireActivity().finish();
             }
         });
+    }
+
+    private void crearBotonOfflineMateria(View view) {
+        btnAccionOfflineMateria = view.findViewById(R.id.btn_accion_offline_materia);
+        btnAccionOfflineMateria.setOnClickListener(v -> {
+            if (temasLogic == null || materia == null) {
+                showToast("Materia inválida");
+                return;
+            }
+
+            if (temasLogic.isAccionOfflineEnProceso()) {
+                return;
+            }
+
+            if (temasLogic.isMateriaDescargada()) {
+                mostrarDialogoDesinstalacion();
+            } else {
+                mostrarDialogoDescarga();
+            }
+        });
+    }
+
+    private void mostrarDialogoDescarga() {
+        View vistaDescarga = LayoutInflater.from(requireContext()).inflate(R.layout.dialogo_descargar_materia, null);
+
+        TextView tvTituloDescarga = vistaDescarga.findViewById(R.id.tvTituloDescarga);
+        TextView tvMensajeDescarga = vistaDescarga.findViewById(R.id.tvMensajeDescarga);
+        ProgressBar progressBar = vistaDescarga.findViewById(R.id.progressBarDescarga);
+        TextView tvProgresoDescarga = vistaDescarga.findViewById(R.id.tvProgressoDescarga);
+        TextView tvMensajeProgreso = vistaDescarga.findViewById(R.id.tvMensajeProgreso);
+        Button btnNoDescargar = vistaDescarga.findViewById(R.id.btnNoDescargar);
+        Button btnDescargar = vistaDescarga.findViewById(R.id.btnDescargar);
+        LinearLayout llBotones = vistaDescarga.findViewById(R.id.llBotones);
+
+        tvTituloDescarga.setText("Descargar: " + materia.getNombre());
+
+        final AlertDialog dialogoDescarga = new MaterialAlertDialogBuilder(requireContext())
+                .setView(vistaDescarga)
+                .setCancelable(false)
+                .show();
+
+        btnNoDescargar.setOnClickListener(v -> dialogoDescarga.dismiss());
+
+        btnDescargar.setOnClickListener(v -> {
+            llBotones.setVisibility(View.GONE);
+            progressBar.setVisibility(View.VISIBLE);
+            tvProgresoDescarga.setVisibility(View.VISIBLE);
+            tvMensajeProgreso.setVisibility(View.VISIBLE);
+            tvMensajeDescarga.setText("Descargando materia completa...");
+
+            temasLogic.descargarMateriaCompleta(progressBar, tvProgresoDescarga, tvMensajeProgreso, dialogoDescarga);
+        });
+    }
+
+    private void mostrarDialogoDesinstalacion() {
+        View vista = LayoutInflater.from(requireContext()).inflate(R.layout.dialogo_aceptar_cancelar, null);
+        TextView tvTitulo = vista.findViewById(R.id.tvTitulo);
+        TextView tvMensaje = vista.findViewById(R.id.tvMensaje);
+        Button btnAceptar = vista.findViewById(R.id.btnAceptar);
+        Button btnCancelar = vista.findViewById(R.id.btnCancelar);
+
+        tvTitulo.setText("Desinstalar materia");
+        tvMensaje.setText("¿Deseas borrar la materia completa del almacenamiento local?");
+        btnAceptar.setText("Desinstalar");
+
+        final AlertDialog dialogo = new MaterialAlertDialogBuilder(requireContext())
+                .setView(vista)
+                .setCancelable(true)
+                .show();
+
+        btnAceptar.setOnClickListener(v -> {
+            dialogo.dismiss();
+            temasLogic.desinstalarMateriaCompleta();
+        });
+        btnCancelar.setOnClickListener(v -> dialogo.dismiss());
+    }
+
+    public void actualizarEstadoBotonOffline(boolean descargada, boolean enProceso) {
+        if (btnAccionOfflineMateria == null) {
+            return;
+        }
+
+        if (enProceso) {
+            btnAccionOfflineMateria.setText("Procesando...");
+            btnAccionOfflineMateria.setEnabled(false);
+            return;
+        }
+
+        btnAccionOfflineMateria.setEnabled(true);
+        btnAccionOfflineMateria.setText(descargada ? "Desinstalar" : "Descargar");
     }
 
     private void crearTextoMateria(View view) {

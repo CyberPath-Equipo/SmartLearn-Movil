@@ -19,6 +19,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.cyberpath.smartlearn.R;
+import com.cyberpath.smartlearn.data.local.database.dao.ContenidoDAO;
 import com.cyberpath.smartlearn.data.model.contenido.Subtema;
 import com.cyberpath.smartlearn.data.model.ejercicio.Ejercicio;
 import com.cyberpath.smartlearn.data.model.ejercicio.Opcion;
@@ -53,6 +54,7 @@ public class EjercicioFragment extends Fragment {
     private LinearLayout layoutQuiz, layoutResultado, layoutRetroalimentacion;
     private TextView tvResultadoTitulo, tvPuntaje, tvPorcentaje;
     private Button btnVolver, btnRetroalimentacion;
+    private long sessionStartMs = 0L;
 
     // estado de selección local (un solo índice seleccionado, -1 = none)
     private int selectedOptionIndex = -1;
@@ -122,8 +124,21 @@ public class EjercicioFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        sessionStartMs = System.currentTimeMillis();
+    }
+
+    @Override
+    public void onPause() {
+        registrarSesionPractica();
+        super.onPause();
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
+        registrarSesionPractica();
 
         if (navAccesibilidad != null) {
             navAccesibilidad.detenerNavegacion();
@@ -135,6 +150,31 @@ public class EjercicioFragment extends Fragment {
 
         navAccesibilidad = null;
         ejercicioLogic = null;
+    }
+
+    private void registrarSesionPractica() {
+        if (!isAdded() || sessionStartMs <= 0L) {
+            return;
+        }
+
+        long duracionSegundos = Math.max(0L, (System.currentTimeMillis() - sessionStartMs) / 1000L);
+        sessionStartMs = 0L;
+        if (duracionSegundos < 10L) {
+            return;
+        }
+
+        int idUsuario = PreferencesManager.getIdUsuario(requireContext());
+        if (idUsuario <= 0) {
+            return;
+        }
+
+        Integer idSubtema = null;
+        if (ejercicio != null) {
+            idSubtema = ejercicio.getIdSubtema();
+        }
+
+        ContenidoDAO dao = new ContenidoDAO(requireContext());
+        dao.registrarSesionEstudio(idUsuario, idSubtema, "PRACTICA", duracionSegundos);
     }
 
     public void simularRegresar() {
@@ -369,7 +409,8 @@ public class EjercicioFragment extends Fragment {
      * Devuelve la Opcion (modelo) seleccionada, o null si ninguna.
      */
     public Opcion getSelectedOpcion() {
-        if (selectedOptionIndex < 0 || selectedOptionIndex >= currentOptionButtons.size()) return null;
+        if (selectedOptionIndex < 0 || selectedOptionIndex >= currentOptionButtons.size())
+            return null;
         Object tag = currentOptionButtons.get(selectedOptionIndex).getTag();
         if (tag instanceof Opcion) return (Opcion) tag;
         return null;

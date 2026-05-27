@@ -40,13 +40,12 @@ public class EjercicioLogic {
     private final Ejercicio ejercicio;
     private final List<Pregunta> allPreguntas = new ArrayList<>();
     private final Set<Integer> preguntasContestadas = new HashSet<>();
-
+    private final ContenidoDAO contenidoDAO;
     @Getter
     private int currentQuestionIndex = 0;
     private int score = 0;
     private boolean ejercicioFinalizado = false;
     private Subtema subtema;
-    private final ContenidoDAO contenidoDAO;
 
     public EjercicioLogic(EjercicioFragment fragment, Ejercicio ejercicio) {
         this.fragment = fragment;

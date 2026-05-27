@@ -221,8 +221,14 @@ public class NavAccesibilidad {
     }
 
     private void pararTodo() {
-        try { entradaAudio.detenerEscucha(); } catch (Exception ignored) {}
-        try { salidaAudio.detener(); } catch (Exception ignored) {}
+        try {
+            entradaAudio.detenerEscucha();
+        } catch (Exception ignored) {
+        }
+        try {
+            salidaAudio.detener();
+        } catch (Exception ignored) {
+        }
         navegacionActiva = false;
     }
 }

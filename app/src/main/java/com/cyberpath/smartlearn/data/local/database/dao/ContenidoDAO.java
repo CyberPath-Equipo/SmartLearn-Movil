@@ -10,12 +10,16 @@ import com.cyberpath.smartlearn.data.model.contenido.Materia;
 import com.cyberpath.smartlearn.data.model.contenido.Subtema;
 import com.cyberpath.smartlearn.data.model.contenido.Tema;
 import com.cyberpath.smartlearn.data.model.contenido.Teoria;
+import com.cyberpath.smartlearn.data.model.estadisticas.DatoHistorico;
+import com.cyberpath.smartlearn.data.model.estadisticas.InteresItem;
+import com.cyberpath.smartlearn.data.model.estadisticas.ResumenEstadisticas;
 import com.cyberpath.smartlearn.data.model.ejercicio.Ejercicio;
 import com.cyberpath.smartlearn.data.model.ejercicio.Opcion;
 import com.cyberpath.smartlearn.data.model.ejercicio.Pregunta;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class ContenidoDAO {
     private final Database dbHelper;
@@ -152,6 +156,28 @@ public class ContenidoDAO {
         cursor.close();
         close();
         return materias;
+    }
+
+    public List<Integer> obtenerIdsMateriasDescargadas() {
+        open();
+        List<Integer> idsMaterias = new ArrayList<>();
+        Cursor cursor = db.query(
+                "tbl_materia_descargada",
+                new String[]{"id_materia"},
+                null,
+                null,
+                null,
+                null,
+                null
+        );
+
+        while (cursor.moveToNext()) {
+            idsMaterias.add(cursor.getInt(cursor.getColumnIndexOrThrow("id_materia")));
+        }
+
+        cursor.close();
+        close();
+        return idsMaterias;
     }
 
     // -----------------------
@@ -464,6 +490,149 @@ public class ContenidoDAO {
         db.update("tbl_intento_ejercicio_local", values,
                 "id_intento_local = ?", new String[]{String.valueOf(idIntentoLocal)});
         close();
+    }
+
+    public long registrarSesionEstudio(int idUsuario, Integer idSubtema, String tipoContenido, long duracionSegundos) {
+        open();
+        ContentValues values = new ContentValues();
+        values.put("id_usuario", idUsuario);
+        if (idSubtema != null) {
+            values.put("id_subtema", idSubtema);
+        } else {
+            values.putNull("id_subtema");
+        }
+        values.put("tipo_contenido", tipoContenido != null ? tipoContenido : "GENERAL");
+        values.put("duracion_segundos", Math.max(0, duracionSegundos));
+        long resultado = db.insert("tbl_sesion_estudio", null, values);
+        close();
+        return resultado;
+    }
+
+    public ResumenEstadisticas obtenerResumenEstadisticas(int idUsuario) {
+        open();
+        ResumenEstadisticas resumen = new ResumenEstadisticas();
+
+        Cursor cursorTotalEjercicios = db.rawQuery("SELECT COUNT(*) FROM tbl_ejercicio", null);
+        if (cursorTotalEjercicios.moveToFirst()) {
+            resumen.setEjerciciosTotales(cursorTotalEjercicios.getInt(0));
+        }
+        cursorTotalEjercicios.close();
+
+        Cursor cursorCompletados = db.rawQuery(
+                "SELECT COUNT(*) FROM tbl_usuario_ejercicio_local WHERE id_usuario = ? AND hecho = 1",
+                new String[]{String.valueOf(idUsuario)}
+        );
+        if (cursorCompletados.moveToFirst()) {
+            resumen.setEjerciciosCompletados(cursorCompletados.getInt(0));
+        }
+        cursorCompletados.close();
+
+        Cursor cursorPromedio = db.rawQuery(
+                "SELECT AVG(puntaje) FROM tbl_intento_ejercicio_local WHERE id_usuario = ?",
+                new String[]{String.valueOf(idUsuario)}
+        );
+        if (cursorPromedio.moveToFirst() && !cursorPromedio.isNull(0)) {
+            resumen.setPromedioAcierto(cursorPromedio.getDouble(0));
+        }
+        cursorPromedio.close();
+
+        Cursor cursorTiempo = db.rawQuery(
+                "SELECT IFNULL(SUM(duracion_segundos), 0), COUNT(*) FROM tbl_sesion_estudio WHERE id_usuario = ?",
+                new String[]{String.valueOf(idUsuario)}
+        );
+        if (cursorTiempo.moveToFirst()) {
+            long segundos = cursorTiempo.getLong(0);
+            resumen.setMinutosEstudio(Math.round(segundos / 60f));
+            resumen.setSesionesEstudio(cursorTiempo.getInt(1));
+        }
+        cursorTiempo.close();
+
+        Cursor cursorTiempo7Dias = db.rawQuery(
+                "SELECT IFNULL(SUM(duracion_segundos), 0) " +
+                        "FROM tbl_sesion_estudio " +
+                        "WHERE id_usuario = ? AND datetime(fecha_inicio) >= datetime('now', '-7 day')",
+                new String[]{String.valueOf(idUsuario)}
+        );
+        if (cursorTiempo7Dias.moveToFirst()) {
+            long segundos7Dias = cursorTiempo7Dias.getLong(0);
+            resumen.setMinutosUltimos7Dias(Math.round(segundos7Dias / 60f));
+        }
+        cursorTiempo7Dias.close();
+
+        close();
+        return resumen;
+    }
+
+    public List<DatoHistorico> obtenerTiempoEstudioPorDia(int idUsuario, int dias) {
+        open();
+        List<DatoHistorico> datos = new ArrayList<>();
+        Cursor cursor = db.rawQuery(
+                "SELECT substr(fecha_inicio, 1, 10) AS fecha, IFNULL(SUM(duracion_segundos), 0) / 60.0 AS minutos " +
+                        "FROM tbl_sesion_estudio " +
+                        "WHERE id_usuario = ? AND datetime(fecha_inicio) >= datetime('now', ?) " +
+                        "GROUP BY substr(fecha_inicio, 1, 10) " +
+                        "ORDER BY fecha ASC",
+                new String[]{String.valueOf(idUsuario), String.format(Locale.US, "-%d day", Math.max(1, dias))}
+        );
+
+        while (cursor.moveToNext()) {
+            String fecha = cursor.getString(0);
+            float minutos = cursor.getFloat(1);
+            datos.add(new DatoHistorico(fecha, minutos));
+        }
+        cursor.close();
+        close();
+        return datos;
+    }
+
+    public List<DatoHistorico> obtenerRendimientoHistorico(int idUsuario, int limite) {
+        open();
+        List<DatoHistorico> datos = new ArrayList<>();
+        Cursor cursor = db.rawQuery(
+                "SELECT substr(fecha, 1, 10) AS fecha, puntaje " +
+                        "FROM tbl_intento_ejercicio_local " +
+                        "WHERE id_usuario = ? " +
+                        "ORDER BY datetime(fecha) DESC " +
+                        "LIMIT ?",
+                new String[]{String.valueOf(idUsuario), String.valueOf(Math.max(1, limite))}
+        );
+
+        while (cursor.moveToNext()) {
+            String fecha = cursor.getString(0);
+            float puntaje = cursor.getFloat(1);
+            datos.add(new DatoHistorico(fecha, puntaje));
+        }
+        cursor.close();
+        close();
+        return datos;
+    }
+
+    public List<InteresItem> obtenerTopIntereses(int idUsuario, int limite) {
+        open();
+        List<InteresItem> intereses = new ArrayList<>();
+        Cursor cursor = db.rawQuery(
+                "SELECT " +
+                        "COALESCE(m.nombre, 'Materia') || ' / ' || COALESCE(t.nombre, 'Tema') || ' / ' || COALESCE(s.nombre, 'Subtema') AS ruta, " +
+                        "IFNULL(SUM(se.duracion_segundos), 0) / 60.0 AS minutos " +
+                        "FROM tbl_sesion_estudio se " +
+                        "LEFT JOIN tbl_subtema s ON s.id_subtema = se.id_subtema " +
+                        "LEFT JOIN tbl_tema t ON t.id_tema = s.id_tema " +
+                        "LEFT JOIN tbl_materia m ON m.id_materia = t.id_materia " +
+                        "WHERE se.id_usuario = ? AND se.id_subtema IS NOT NULL " +
+                        "GROUP BY se.id_subtema " +
+                        "ORDER BY minutos DESC " +
+                        "LIMIT ?",
+                new String[]{String.valueOf(idUsuario), String.valueOf(Math.max(1, limite))}
+        );
+
+        while (cursor.moveToNext()) {
+            String ruta = cursor.getString(0);
+            long minutos = Math.round(cursor.getFloat(1));
+            intereses.add(new InteresItem(ruta, minutos));
+        }
+        cursor.close();
+        close();
+        return intereses;
     }
 
     // -----------------------

@@ -94,6 +94,18 @@
     </LinearLayout>
 
     <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_accion_offline_materia"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="8dp"
+        android:contentDescription="Descargar o desinstalar materia"
+        android:text="Descargar"
+        android:textAllCaps="false"
+        app:backgroundTint="?attr/colorTertiary"
+        app:cornerRadius="10dp" />
+
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_volver"
         android:layout_width="match_parent"
         android:layout_height="56dp"

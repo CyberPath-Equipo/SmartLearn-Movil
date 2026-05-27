@@ -61,7 +61,6 @@ public class PracticaLogic {
                 if (response.isSuccessful() && response.body() != null) {
                     listaEjercicios.clear();
                     listaEjercicios.addAll(response.body());
-                    guardarEnLocal(listaEjercicios);
 
                     fragment.actualizarAdapter(listaEjercicios);
 
@@ -107,18 +106,6 @@ public class PracticaLogic {
         }
     }
 
-    private void guardarEnLocal(List<Ejercicio> ejercicios) {
-        try {
-            for (Ejercicio ejercicio : ejercicios) {
-                if (ejercicio.getIdSubtema() == null) {
-                    ejercicio.setIdSubtema(subtema.getId());
-                }
-                contenidoDAO.insertarEjercicio(ejercicio);
-            }
-        } catch (Exception e) {
-            Log.e("PracticaLogic", "Error al guardar ejercicios en local", e);
-        }
-    }
 
     public void limpiarDatos() {
         listaEjercicios.clear();

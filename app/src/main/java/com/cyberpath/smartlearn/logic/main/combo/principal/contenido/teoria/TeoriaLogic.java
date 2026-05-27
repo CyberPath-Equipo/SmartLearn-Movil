@@ -25,8 +25,8 @@ public class TeoriaLogic {
     private final Subtema subtema;
     private final TeoriaRepository teoriaRepository;
     private final NavAccesibilidad navAccesibilidad;
-    private boolean modoOffline = false;
     private final ArrayList<String> preguntas;
+    private boolean modoOffline = false;
     @Getter
     private Teoria teoriaActual;
 
@@ -73,7 +73,6 @@ public class TeoriaLogic {
                     if (teoriaActual.getIdSubtema() == null) {
                         teoriaActual.setIdSubtema(subtema.getId());
                     }
-                    guardarEnLocal(teoriaActual);
 
                     mostrarContenido(teoriaActual);
                 } else {
@@ -120,13 +119,5 @@ public class TeoriaLogic {
         }
     }
 
-    private void guardarEnLocal(Teoria teoria) {
-        try {
-            teoriaRepository.guardarTeoria(teoria);
-            Log.d("TeoriaLogic", "Teoría guardada en BD local");
-        } catch (Exception e) {
-            Log.e("TeoriaLogic", "Error al guardar teoría localmente: " + e.getMessage());
-        }
-    }
 
 }

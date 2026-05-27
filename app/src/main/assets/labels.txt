@@ -1,3 +1,35 @@
-0 Hola
-1 Ruido de fondo
-2 ¿Cómo Estás?
+afirmativo
+anterior
+asiEs
+cancelar
+cinco
+correcto
+cuatro
+deAcuerdo
+deNingunaManera
+detente
+diez
+dos
+entrar
+esoNo
+incorrecto
+inscribir
+lista
+negativo
+no
+nueve
+ocho
+ok
+opciones
+practica
+regresar
+repetir
+salir
+seis
+seleccionar
+si
+siete
+siguiente
+teoria
+tres
+uno

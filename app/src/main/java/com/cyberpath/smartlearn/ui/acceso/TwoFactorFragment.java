@@ -16,11 +16,11 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.cyberpath.smartlearn.R;
+import com.cyberpath.smartlearn.data.model.usuario.Usuario;
 import com.cyberpath.smartlearn.data.model.usuario.acceso.LoginResponse;
 import com.cyberpath.smartlearn.data.model.usuario.autenticacion.TwoFactorConfirmSetupRequest;
 import com.cyberpath.smartlearn.data.model.usuario.autenticacion.TwoFactorResendRequest;
 import com.cyberpath.smartlearn.data.model.usuario.autenticacion.TwoFactorVerifyRequest;
-import com.cyberpath.smartlearn.data.model.usuario.Usuario;
 import com.cyberpath.smartlearn.data.remote.api.ApiService;
 import com.cyberpath.smartlearn.data.remote.api.RetrofitClient;
 import com.cyberpath.smartlearn.ui.main.MainActivity;

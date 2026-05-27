@@ -3,6 +3,7 @@ package com.cyberpath.smartlearn.logic.main.combo.principal.materia;
 import android.content.Context;
 import android.util.Log;
 
+import com.cyberpath.smartlearn.data.local.database.dao.ContenidoDAO;
 import com.cyberpath.smartlearn.data.local.database.repository.MateriasRepository;
 import com.cyberpath.smartlearn.data.model.contenido.Materia;
 import com.cyberpath.smartlearn.data.model.usuario.Usuario;
@@ -30,6 +31,7 @@ public class MateriasLogic {
     private final Context context;
     private final Usuario usuarioActual;
     private final MateriasRepository materiasRepository;
+    private final ContenidoDAO contenidoDAO;
 
     private final List<Materia> listaMaterias = new ArrayList<>();
     @Getter
@@ -47,6 +49,7 @@ public class MateriasLogic {
         UsuarioCst.ensureUsuarioLoaded(context);
         this.usuarioActual = UsuarioCst.USUARIO_ACTUAL;
         this.materiasRepository = new MateriasRepository(context);
+        this.contenidoDAO = new ContenidoDAO(context);
     }
 
     public void cargarMaterias() {
@@ -127,7 +130,7 @@ public class MateriasLogic {
         cargandoMateriasUsuario = true;
 
         try {
-            List<Materia> materiasLocales = materiasRepository.obtenerTodasLasMaterias();
+            List<Materia> materiasLocales = contenidoDAO.obtenerMateriasDescargadas();
 
             listaMaterias.clear();
             listaMaterias.addAll(materiasLocales);
@@ -193,6 +196,7 @@ public class MateriasLogic {
             fragment.moverViewPager(1);
         }
     }
+
 
     private void calcularYActualizarProgreso(Materia materia, Integer idUsuario) {
         if (materia == null || materia.getId() == null) {

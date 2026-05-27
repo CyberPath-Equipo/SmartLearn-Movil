@@ -21,7 +21,8 @@
         <item name="colorError">#88FF4444</item>
 
         <!-- Texto -->
-        <item name="textAppearanceHeadlineMedium">@style/TextAppearance.SmartLearn.Medium.Headline</item>
+        <item name="textAppearanceHeadlineMedium">@style/TextAppearance.SmartLearn.Medium.Headline
+        </item>
 
         <item name="textAppearanceTitleLarge">
             @style/TextAppearance.SmartLearn.Medium.Subtitle
@@ -77,45 +78,76 @@
     </style>
 
     <style name="Base.Theme.SmartLearn.Text.Small" parent="Base.Theme.SmartLearn">
-        <item name="textAppearanceHeadlineMedium">@style/TextAppearance.SmartLearn.Small.Headline</item>
+        <item name="textAppearanceHeadlineMedium">@style/TextAppearance.SmartLearn.Small.Headline
+        </item>
         <item name="textAppearanceTitleLarge">@style/TextAppearance.SmartLearn.Small.Subtitle</item>
         <item name="textAppearanceBodyLarge">@style/TextAppearance.SmartLearn.Small.Body</item>
-        <item name="textAppearanceBodyMedium">@style/TextAppearance.SmartLearn.Small.BodyReading</item>
+        <item name="textAppearanceBodyMedium">@style/TextAppearance.SmartLearn.Small.BodyReading
+        </item>
     </style>
 
     <style name="Base.Theme.SmartLearn.Text.Medium" parent="Base.Theme.SmartLearn">
-        <item name="textAppearanceHeadlineMedium">@style/TextAppearance.SmartLearn.Medium.Headline</item>
-        <item name="textAppearanceTitleLarge">@style/TextAppearance.SmartLearn.Medium.Subtitle</item>
+        <item name="textAppearanceHeadlineMedium">@style/TextAppearance.SmartLearn.Medium.Headline
+        </item>
+        <item name="textAppearanceTitleLarge">@style/TextAppearance.SmartLearn.Medium.Subtitle
+        </item>
         <item name="textAppearanceBodyLarge">@style/TextAppearance.SmartLearn.Medium.Body</item>
-        <item name="textAppearanceBodyMedium">@style/TextAppearance.SmartLearn.Medium.BodyReading</item>
+        <item name="textAppearanceBodyMedium">@style/TextAppearance.SmartLearn.Medium.BodyReading
+        </item>
     </style>
 
     <style name="Base.Theme.SmartLearn.Text.Large" parent="Base.Theme.SmartLearn">
-        <item name="textAppearanceHeadlineMedium">@style/TextAppearance.SmartLearn.Large.Headline</item>
+        <item name="textAppearanceHeadlineMedium">@style/TextAppearance.SmartLearn.Large.Headline
+        </item>
         <item name="textAppearanceTitleLarge">@style/TextAppearance.SmartLearn.Large.Subtitle</item>
         <item name="textAppearanceBodyLarge">@style/TextAppearance.SmartLearn.Large.Body</item>
-        <item name="textAppearanceBodyMedium">@style/TextAppearance.SmartLearn.Large.BodyReading</item>
+        <item name="textAppearanceBodyMedium">@style/TextAppearance.SmartLearn.Large.BodyReading
+        </item>
     </style>
 
     <style name="Theme.SmartLearn.Accessible.Text.Small" parent="Theme.SmartLearn.Accessible">
-        <item name="textAppearanceHeadlineMedium">@style/TextAppearance.SmartLearn.Accessible.Small.Headline</item>
-        <item name="textAppearanceTitleLarge">@style/TextAppearance.SmartLearn.Accessible.Small.Subtitle</item>
-        <item name="textAppearanceBodyLarge">@style/TextAppearance.SmartLearn.Accessible.Small.Body</item>
-        <item name="textAppearanceBodyMedium">@style/TextAppearance.SmartLearn.Accessible.Small.BodyReading</item>
+        <item name="textAppearanceHeadlineMedium">
+            @style/TextAppearance.SmartLearn.Accessible.Small.Headline
+        </item>
+        <item name="textAppearanceTitleLarge">
+            @style/TextAppearance.SmartLearn.Accessible.Small.Subtitle
+        </item>
+        <item name="textAppearanceBodyLarge">
+            @style/TextAppearance.SmartLearn.Accessible.Small.Body
+        </item>
+        <item name="textAppearanceBodyMedium">
+            @style/TextAppearance.SmartLearn.Accessible.Small.BodyReading
+        </item>
     </style>
 
     <style name="Theme.SmartLearn.Accessible.Text.Medium" parent="Theme.SmartLearn.Accessible">
-        <item name="textAppearanceHeadlineMedium">@style/TextAppearance.SmartLearn.Accessible.Medium.Headline</item>
-        <item name="textAppearanceTitleLarge">@style/TextAppearance.SmartLearn.Accessible.Medium.Subtitle</item>
-        <item name="textAppearanceBodyLarge">@style/TextAppearance.SmartLearn.Accessible.Medium.Body</item>
-        <item name="textAppearanceBodyMedium">@style/TextAppearance.SmartLearn.Accessible.Medium.BodyReading</item>
+        <item name="textAppearanceHeadlineMedium">
+            @style/TextAppearance.SmartLearn.Accessible.Medium.Headline
+        </item>
+        <item name="textAppearanceTitleLarge">
+            @style/TextAppearance.SmartLearn.Accessible.Medium.Subtitle
+        </item>
+        <item name="textAppearanceBodyLarge">
+            @style/TextAppearance.SmartLearn.Accessible.Medium.Body
+        </item>
+        <item name="textAppearanceBodyMedium">
+            @style/TextAppearance.SmartLearn.Accessible.Medium.BodyReading
+        </item>
     </style>
 
     <style name="Theme.SmartLearn.Accessible.Text.Large" parent="Theme.SmartLearn.Accessible">
-        <item name="textAppearanceHeadlineMedium">@style/TextAppearance.SmartLearn.Accessible.Large.Headline</item>
-        <item name="textAppearanceTitleLarge">@style/TextAppearance.SmartLearn.Accessible.Large.Subtitle</item>
-        <item name="textAppearanceBodyLarge">@style/TextAppearance.SmartLearn.Accessible.Large.Body</item>
-        <item name="textAppearanceBodyMedium">@style/TextAppearance.SmartLearn.Accessible.Large.BodyReading</item>
+        <item name="textAppearanceHeadlineMedium">
+            @style/TextAppearance.SmartLearn.Accessible.Large.Headline
+        </item>
+        <item name="textAppearanceTitleLarge">
+            @style/TextAppearance.SmartLearn.Accessible.Large.Subtitle
+        </item>
+        <item name="textAppearanceBodyLarge">
+            @style/TextAppearance.SmartLearn.Accessible.Large.Body
+        </item>
+        <item name="textAppearanceBodyMedium">
+            @style/TextAppearance.SmartLearn.Accessible.Large.BodyReading
+        </item>
     </style>
 
     <!-- ============================= -->

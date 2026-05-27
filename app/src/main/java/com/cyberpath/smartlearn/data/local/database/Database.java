@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class Database extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "smartlearn.db";
-    private static final int DATABASE_VERSION = 5;
+    private static final int DATABASE_VERSION = 6;
 
     private static Database instancia;
 
@@ -151,9 +151,20 @@ public class Database extends SQLiteOpenHelper {
                 "pendiente_sync INTEGER DEFAULT 1, " +
                 "FOREIGN KEY (id_ejercicio) REFERENCES tbl_ejercicio(id_ejercicio) ON DELETE CASCADE ON UPDATE CASCADE);");
 
+        db.execSQL("CREATE TABLE tbl_sesion_estudio (" +
+                "id_sesion INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "id_usuario INTEGER NOT NULL, " +
+                "id_subtema INTEGER, " +
+                "tipo_contenido TEXT NOT NULL, " +
+                "duracion_segundos INTEGER DEFAULT 0, " +
+                "fecha_inicio TEXT DEFAULT CURRENT_TIMESTAMP, " +
+                "FOREIGN KEY (id_subtema) REFERENCES tbl_subtema(id_subtema) ON DELETE SET NULL ON UPDATE CASCADE);");
+
         db.execSQL("CREATE INDEX idx_ue_local_usuario ON tbl_usuario_ejercicio_local(id_usuario);");
         db.execSQL("CREATE INDEX idx_ue_local_ejercicio ON tbl_usuario_ejercicio_local(id_ejercicio);");
         db.execSQL("CREATE INDEX idx_ie_local_sync ON tbl_intento_ejercicio_local(pendiente_sync);");
+        db.execSQL("CREATE INDEX idx_sesion_usuario_fecha ON tbl_sesion_estudio(id_usuario, fecha_inicio);");
+        db.execSQL("CREATE INDEX idx_sesion_subtema ON tbl_sesion_estudio(id_subtema);");
     }
 
     @Override
@@ -243,6 +254,20 @@ public class Database extends SQLiteOpenHelper {
             db.execSQL("CREATE INDEX IF NOT EXISTS idx_ue_local_usuario ON tbl_usuario_ejercicio_local(id_usuario);");
             db.execSQL("CREATE INDEX IF NOT EXISTS idx_ue_local_ejercicio ON tbl_usuario_ejercicio_local(id_ejercicio);");
             db.execSQL("CREATE INDEX IF NOT EXISTS idx_ie_local_sync ON tbl_intento_ejercicio_local(pendiente_sync);");
+        }
+
+        if (oldVersion < 6) {
+            db.execSQL("CREATE TABLE IF NOT EXISTS tbl_sesion_estudio (" +
+                    "id_sesion INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    "id_usuario INTEGER NOT NULL, " +
+                    "id_subtema INTEGER, " +
+                    "tipo_contenido TEXT NOT NULL, " +
+                    "duracion_segundos INTEGER DEFAULT 0, " +
+                    "fecha_inicio TEXT DEFAULT CURRENT_TIMESTAMP, " +
+                    "FOREIGN KEY (id_subtema) REFERENCES tbl_subtema(id_subtema) ON DELETE SET NULL ON UPDATE CASCADE);");
+
+            db.execSQL("CREATE INDEX IF NOT EXISTS idx_sesion_usuario_fecha ON tbl_sesion_estudio(id_usuario, fecha_inicio);");
+            db.execSQL("CREATE INDEX IF NOT EXISTS idx_sesion_subtema ON tbl_sesion_estudio(id_subtema);");
         }
     }
 

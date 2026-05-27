@@ -27,6 +27,12 @@
         app:action="@id/accesibilidadFragment" />
 
     <item
+        android:id="@+id/estadisticasFragment"
+        android:icon="@drawable/ic_menu_estadisticas"
+        android:title="Estadisticas"
+        app:action="@id/estadisticasFragment" />
+
+    <item
         android:id="@+id/cuentaFragment"
         android:icon="@drawable/ic_menu_cuenta"
         android:title="Cuenta"

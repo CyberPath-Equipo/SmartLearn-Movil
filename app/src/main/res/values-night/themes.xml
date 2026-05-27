@@ -21,9 +21,12 @@
         <item name="colorError">#FF7A7A</item>
 
         <!-- Texto -->
-        <item name="textAppearanceHeadlineMedium">@style/TextAppearance.SmartLearn.Medium.Headline</item>
-        <item name="textAppearanceTitleLarge">@style/TextAppearance.SmartLearn.Medium.Subtitle</item>
+        <item name="textAppearanceHeadlineMedium">@style/TextAppearance.SmartLearn.Medium.Headline
+        </item>
+        <item name="textAppearanceTitleLarge">@style/TextAppearance.SmartLearn.Medium.Subtitle
+        </item>
         <item name="textAppearanceBodyLarge">@style/TextAppearance.SmartLearn.Medium.Body</item>
-        <item name="textAppearanceBodyMedium">@style/TextAppearance.SmartLearn.Medium.BodyReading</item>
+        <item name="textAppearanceBodyMedium">@style/TextAppearance.SmartLearn.Medium.BodyReading
+        </item>
     </style>
 </resources>

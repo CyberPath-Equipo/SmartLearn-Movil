@@ -39,15 +39,15 @@ public class EntradaAudio implements RecognitionListener {
     private volatile boolean estaEscuchando = false;
     private volatile boolean escuchaHabilitada = false;
     private volatile boolean detenerSolicitado = false;
-    private OnConfirmacionListener confirmacionListener;
-    private OnOpcionSeleccionadaListener opcionListener;
-    private List<String> opcionesActuales;
     private final Runnable reintentarEscucha = () -> {
         if (!escuchaHabilitada || detenerSolicitado) {
             return;
         }
         iniciarEscucha();
     };
+    private OnConfirmacionListener confirmacionListener;
+    private OnOpcionSeleccionadaListener opcionListener;
+    private List<String> opcionesActuales;
 
     private EntradaAudio(Context context) {
         this.context = context.getApplicationContext();

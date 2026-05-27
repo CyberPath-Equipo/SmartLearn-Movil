@@ -70,7 +70,6 @@ public class SubtemasLogic {
                 if (response.isSuccessful() && response.body() != null) {
                     listaSubtemas.clear();
                     listaSubtemas.addAll(response.body());
-                    guardarEnLocal(listaSubtemas);
 
 
                     fragment.actualizarAdapter(listaSubtemas);
@@ -121,14 +120,6 @@ public class SubtemasLogic {
         }
     }
 
-    private void guardarEnLocal(List<Subtema> subtemas) {
-        try {
-            subtemasRepository.guardarSubtemas(subtemas);
-            Log.d("SubtemasLogic", "Subtemas guardados en BD local");
-        } catch (Exception e) {
-            Log.e("SubtemasLogic", "Error al guardar subtemas localmente: " + e.getMessage());
-        }
-    }
 
     public void guardarUltimaConexion(Subtema subtema) {
         if (subtema == null || subtema.getId() == null) return;
@@ -172,8 +163,7 @@ public class SubtemasLogic {
     }
 
     private void notifyMainActivity(Subtema subtema) {
-        if (context instanceof MainActivity) {
-            MainActivity mainActivity = (MainActivity) context;
+        if (context instanceof MainActivity mainActivity) {
             mainActivity.actualizarUltimoSubtemaMenu(subtema.getNombre(), subtema);
         }
     }

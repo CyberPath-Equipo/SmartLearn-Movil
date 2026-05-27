@@ -7,15 +7,9 @@ import android.os.SystemClock;
 
 class ShakeDetector implements SensorEventListener {
     private static final float SHAKE_THRESHOLD_G = 2.4f;
-
-    interface OnShakeListener {
-        void onShake();
-    }
-
     private final long cooldownMs;
     private final OnShakeListener onShakeListener;
     private long lastShakeAt;
-
     ShakeDetector(long cooldownMs, OnShakeListener onShakeListener) {
         this.cooldownMs = cooldownMs;
         this.onShakeListener = onShakeListener;
@@ -48,6 +42,10 @@ class ShakeDetector implements SensorEventListener {
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
         // No-op
+    }
+
+    interface OnShakeListener {
+        void onShake();
     }
 
     // Isolated constant avoids pulling full SensorManager as dependency in this utility.

@@ -23,10 +23,6 @@ public class TranslationEngine {
     private final Map<String, List<String>> wordMap = new HashMap<>();
     private final Map<String, MappingResponse.GlossInfo> glossData = new HashMap<>();
 
-    public interface MappingCallback {
-        void onLoaded(boolean ok, String message);
-    }
-
     public TranslationEngine(String baseUrl) {
         // Retrofit requires baseUrl ending with '/'
         if (!baseUrl.endsWith("/")) baseUrl = baseUrl + "/";
@@ -170,5 +166,9 @@ public class TranslationEngine {
         } else {
             list.add(new ContenidoItem(ContenidoItem.Type.IMAGE, url, duration));
         }
+    }
+
+    public interface MappingCallback {
+        void onLoaded(boolean ok, String message);
     }
 }

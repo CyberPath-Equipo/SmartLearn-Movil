@@ -10,18 +10,18 @@ import com.cyberpath.smartlearn.data.model.ejercicio.Opcion;
 import com.cyberpath.smartlearn.data.model.ejercicio.Pregunta;
 import com.cyberpath.smartlearn.data.model.relaciones.UsuarioEjercicio;
 import com.cyberpath.smartlearn.data.model.relaciones.UsuarioMateria;
+import com.cyberpath.smartlearn.data.model.usuario.Usuario;
 import com.cyberpath.smartlearn.data.model.usuario.acceso.LoginResponse;
 import com.cyberpath.smartlearn.data.model.usuario.acceso.RegistroPendienteResponse;
 import com.cyberpath.smartlearn.data.model.usuario.acceso.RegistroReenvioRequest;
 import com.cyberpath.smartlearn.data.model.usuario.acceso.RegistroVerificacionRequest;
 import com.cyberpath.smartlearn.data.model.usuario.acceso.RegistroVerificacionResponse;
 import com.cyberpath.smartlearn.data.model.usuario.autenticacion.TwoFactorConfirmSetupRequest;
+import com.cyberpath.smartlearn.data.model.usuario.autenticacion.TwoFactorResendRequest;
 import com.cyberpath.smartlearn.data.model.usuario.autenticacion.TwoFactorSetupRequest;
 import com.cyberpath.smartlearn.data.model.usuario.autenticacion.TwoFactorSetupResponse;
-import com.cyberpath.smartlearn.data.model.usuario.autenticacion.TwoFactorResendRequest;
 import com.cyberpath.smartlearn.data.model.usuario.autenticacion.TwoFactorVerifyRequest;
 import com.cyberpath.smartlearn.data.model.usuario.propiedades.UltimaConexion;
-import com.cyberpath.smartlearn.data.model.usuario.Usuario;
 
 import java.util.List;
 

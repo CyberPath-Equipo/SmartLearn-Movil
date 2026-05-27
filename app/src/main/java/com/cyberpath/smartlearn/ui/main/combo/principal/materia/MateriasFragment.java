@@ -255,6 +255,7 @@ public class MateriasFragment extends Fragment {
         }
     }
 
+
     public void moverViewPager(int posicion) {
         if (carruselMaterias != null && adapterMaterias != null) {
             int centered = materiasLogic.centeredPositionForIndex(posicion, adapterMaterias.getRealSize());

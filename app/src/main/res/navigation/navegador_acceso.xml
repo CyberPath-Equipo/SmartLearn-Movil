@@ -40,27 +40,27 @@
             app:argType="string" />
         <argument
             android:name="channel"
-            app:argType="string"
-            android:defaultValue="TOTP" />
+            android:defaultValue="TOTP"
+            app:argType="string" />
         <argument
             android:name="idUsuario"
-            app:argType="integer"
-            android:defaultValue="-1" />
+            android:defaultValue="-1"
+            app:argType="integer" />
         <argument
             android:name="nombreCuenta"
-            app:argType="string"
-            android:defaultValue="" />
+            android:defaultValue=""
+            app:argType="string" />
         <argument
             android:name="flowMode"
-            app:argType="string"
-            android:defaultValue="LOGIN" />
+            android:defaultValue="LOGIN"
+            app:argType="string" />
         <argument
             android:name="provisioningUri"
-            app:argType="string"
-            android:defaultValue="" />
+            android:defaultValue=""
+            app:argType="string" />
         <argument
             android:name="tempSecret"
-            app:argType="string"
-            android:defaultValue="" />
+            android:defaultValue=""
+            app:argType="string" />
     </fragment>
 </navigation>

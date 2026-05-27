@@ -33,9 +33,6 @@
         tools:targetApi="31">
         <activity
             android:name=".util.audioRecognizer.TestAudioRecognizerActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.carga.CargaActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -49,7 +46,6 @@
         <activity
             android:name=".ui.main.MainActivity"
             android:exported="false" />
-
         <receiver
             android:name=".util.notificaciones.receiver.RecordatorioDiarioReceiver"
             android:enabled="true"
@@ -58,6 +54,9 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
+        <activity
+            android:name=".ui.carga.CargaActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

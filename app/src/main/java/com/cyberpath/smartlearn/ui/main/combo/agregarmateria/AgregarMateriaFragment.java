@@ -31,11 +31,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AgregarMateriaFragment extends Fragment {
+    private final Handler filtroHandler = new Handler(Looper.getMainLooper());
     private SearchView searchViewMaterias;
     private ViewPager2 carruselMaterias;
     private AdaptadorAgregarMaterias adapterMaterias;
     private Runnable filtroRunnable;
-    private final Handler filtroHandler = new Handler(Looper.getMainLooper());
     private NavAccesibilidad navAccesibilidad;
 
     private AgregarMateriaLogic agregarMateriaLogic;

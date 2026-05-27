@@ -3,8 +3,6 @@ package com.cyberpath.smartlearn.util.preferences;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.cyberpath.smartlearn.data.model.usuario.propiedades.Configuracion;
-
 public class PreferencesManager {
 
     // -----------------------

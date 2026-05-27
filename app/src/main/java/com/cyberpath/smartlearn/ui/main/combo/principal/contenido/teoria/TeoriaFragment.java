@@ -16,14 +16,17 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.media3.ui.PlayerView;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.cyberpath.smartlearn.R;
+import com.cyberpath.smartlearn.data.local.database.dao.ContenidoDAO;
 import com.cyberpath.smartlearn.data.model.contenido.Subtema;
 import com.cyberpath.smartlearn.logic.main.combo.principal.contenido.teoria.NavAccesibilidad;
 import com.cyberpath.smartlearn.logic.main.combo.principal.contenido.teoria.TeoriaLogic;
+import com.cyberpath.smartlearn.util.preferences.PreferencesManager;
 import com.google.android.material.button.MaterialButton;
 
 import java.util.ArrayList;
@@ -40,6 +43,7 @@ public class TeoriaFragment extends Fragment {
     private ImageView imageViewLSM;
     private PlayerView playerViewLSM;
     private FrameLayout containerReproductorLSM;
+    private long sessionStartMs = 0L;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -47,6 +51,7 @@ public class TeoriaFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_teoria, container, false);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -73,22 +78,19 @@ public class TeoriaFragment extends Fragment {
             if (navAccesibilidad != null) {
                 navAccesibilidad.detenerReproduccion();
             }
-            
+
             boolean popped = false;
             try {
                 popped = NavHostFragment.findNavController(this).popBackStack();
             } catch (Exception ignored) {
             }
 
-            if (!popped) {
-                requireActivity().onBackPressed();
-            }
         });
 
         scrollTeoria.setClipToPadding(false);
 
         navAccesibilidad = new NavAccesibilidad(requireContext(), this);
-        
+
         if (navAccesibilidad.isAccesibilidadAuditivaActivada()) {
             navAccesibilidad.setTargetViews(imageViewLSM, playerViewLSM);
             if (containerReproductorLSM != null) {
@@ -150,7 +152,8 @@ public class TeoriaFragment extends Fragment {
 
                     if (esPalabraCompleta) {
                         spannable.setSpan(
-                                new ForegroundColorSpan(getResources().getColor(R.color.colorSecondary, null)),
+                                new ForegroundColorSpan(ContextCompat.getColor(requireContext(), R.color.colorSecondary)
+                                ),
                                 start,
                                 end,
                                 Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
@@ -197,10 +200,44 @@ public class TeoriaFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        sessionStartMs = System.currentTimeMillis();
+    }
+
+    @Override
+    public void onPause() {
+        registrarSesionEstudio();
+        super.onPause();
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
+        registrarSesionEstudio();
         if (navAccesibilidad != null) {
             navAccesibilidad.release();
         }
+    }
+
+    private void registrarSesionEstudio() {
+        if (!isAdded() || sessionStartMs <= 0L) {
+            return;
+        }
+
+        long duracionSegundos = Math.max(0L, (System.currentTimeMillis() - sessionStartMs) / 1000L);
+        sessionStartMs = 0L;
+        if (duracionSegundos < 10L) {
+            return;
+        }
+
+        int idUsuario = PreferencesManager.getIdUsuario(requireContext());
+        if (idUsuario <= 0) {
+            return;
+        }
+
+        Integer idSubtema = subtema != null ? subtema.getId() : null;
+        ContenidoDAO dao = new ContenidoDAO(requireContext());
+        dao.registrarSesionEstudio(idUsuario, idSubtema, "TEORIA", duracionSegundos);
     }
 }

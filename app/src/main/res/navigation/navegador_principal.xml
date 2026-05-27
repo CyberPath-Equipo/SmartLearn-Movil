@@ -195,7 +195,14 @@
         android:label="Accesibilidad"
         tools:layout="@layout/fragment_accesibilidad" />
 
-    <!-- 5. Cuenta -->
+    <!-- 5. Estadísticas -->
+    <fragment
+        android:id="@+id/estadisticasFragment"
+        android:name="com.cyberpath.smartlearn.ui.main.combo.estadisticas.EstadisticasFragment"
+        android:label="Estadisticas"
+        tools:layout="@layout/fragment_estadisticas" />
+
+    <!-- 6. Cuenta -->
     <fragment
         android:id="@+id/cuentaFragment"
         android:name="com.cyberpath.smartlearn.ui.main.combo.cuenta.CuentaFragment"
@@ -224,7 +231,7 @@
             app:destination="@id/cuentaFragment" />
     </fragment>
 
-    <!-- 6. Ayuda -->
+    <!-- 7. Ayuda -->
     <fragment
         android:id="@+id/ayudaFragment"
         android:name="com.cyberpath.smartlearn.ui.main.combo.ayuda.AyudaFragment"

@@ -19,12 +19,12 @@ import java.util.List;
 public class ReproductorContenido {
     private final ImageView imageView;
     private final PlayerView playerView;
-    private ExoPlayer exoPlayer;
     private final Handler handler = new Handler(Looper.getMainLooper());
+    private final Context ctx;
+    private ExoPlayer exoPlayer;
     private List<ContenidoItem> items;
     private int index = 0;
     private boolean playing = false;
-    private final Context ctx;
 
     public ReproductorContenido(Context ctx, ImageView imageView, PlayerView playerView) {
         this.ctx = ctx;
@@ -38,7 +38,13 @@ public class ReproductorContenido {
         this.index = 0;
     }
 
-    private final Runnable stepImage = new Runnable() {
+    public void play() {
+        if (items == null || items.isEmpty()) return;
+        if (playing) return;
+        playing = true;
+        index = Math.max(0, index);
+        handler.post(stepImage);
+    }    private final Runnable stepImage = new Runnable() {
         @Override
         public void run() {
             if (!playing || items == null || index >= items.size()) {
@@ -53,14 +59,6 @@ public class ReproductorContenido {
             }
         }
     };
-
-    public void play() {
-        if (items == null || items.isEmpty()) return;
-        if (playing) return;
-        playing = true;
-        index = Math.max(0, index);
-        handler.post(stepImage);
-    }
 
     public void stop() {
         playing = false;
@@ -149,4 +147,6 @@ public class ReproductorContenido {
         boolean exoIsPlaying = exoPlayer != null && exoPlayer.isPlaying();
         return playing || exoIsPlaying;
     }
+
+
 }

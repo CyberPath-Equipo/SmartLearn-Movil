@@ -21,7 +21,6 @@ public class AlarmaProgramador {
         calendar.setTimeInMillis(System.currentTimeMillis() + 10_000);
 
 
-
         if (calendar.getTimeInMillis() <= System.currentTimeMillis()) {
             calendar.add(Calendar.DAY_OF_YEAR, 1);
         }

@@ -2,7 +2,13 @@ package com.cyberpath.smartlearn.logic.main.combo.principal.tema;
 
 import android.content.Context;
 import android.util.Log;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
+
+import com.cyberpath.smartlearn.data.local.database.dao.ContenidoDAO;
+import com.cyberpath.smartlearn.data.local.database.sincronizar.DescargarDatos;
 import com.cyberpath.smartlearn.data.local.database.repository.TemasRepository;
 import com.cyberpath.smartlearn.data.model.contenido.Materia;
 import com.cyberpath.smartlearn.data.model.contenido.Tema;
@@ -26,17 +32,22 @@ public class TemasLogic {
     private final Materia materia;
 
     private final TemasRepository temasRepository;
+    private final ContenidoDAO contenidoDAO;
 
     @Getter
     private final List<Tema> listaTemas = new ArrayList<>();
     private boolean modoOffline = false;
+    private boolean materiaDescargada = false;
+    private boolean accionOfflineEnProceso = false;
 
     public TemasLogic(TemasFragment fragment, Materia materia) {
         this.fragment = fragment;
         this.context = fragment.requireContext();
         this.materia = materia;
         this.temasRepository = new TemasRepository(context);
+        this.contenidoDAO = new ContenidoDAO(context);
 
+        refrescarEstadoDescarga();
         cargarTemas();
     }
 
@@ -67,7 +78,6 @@ public class TemasLogic {
                 if (response.isSuccessful() && response.body() != null) {
                     listaTemas.clear();
                     listaTemas.addAll(response.body());
-                    guardarEnLocal(listaTemas);
 
 
                     fragment.actualizarAdapter(listaTemas);
@@ -118,13 +128,135 @@ public class TemasLogic {
         }
     }
 
-    private void guardarEnLocal(List<Tema> temas) {
+    private void refrescarEstadoDescarga() {
         try {
-            temasRepository.guardarTemas(temas);
-            Log.d("TemasLogic", "Temas guardados en BD local");
+            materiaDescargada = materia != null
+                    && materia.getId() != null
+                    && contenidoDAO.materiaDescargada(materia.getId());
         } catch (Exception e) {
-            Log.e("TemasLogic", "Error al guardar temas localmente: " + e.getMessage());
+            materiaDescargada = false;
+            Log.e("TemasLogic", "Error al consultar descarga local de materia: " + e.getMessage());
         }
+
+        fragment.actualizarEstadoBotonOffline(materiaDescargada, accionOfflineEnProceso);
+    }
+
+    public void descargarMateriaCompleta(ProgressBar progressBar,
+                                         TextView tvProgreso, TextView tvMensajeProgreso,
+                                         AlertDialog dialogo) {
+        if (materia == null || materia.getId() == null) {
+            fragment.showToastLong("Materia inválida");
+            dialogo.dismiss();
+            return;
+        }
+
+        if (!NetworkUtils.isInternetAvailable(context)) {
+            fragment.showToastLong("Se necesita conexión para descargar contenido");
+            dialogo.dismiss();
+            return;
+        }
+
+        if (accionOfflineEnProceso || materiaDescargada) {
+            fragment.showToast("La materia ya está descargada o en proceso");
+            dialogo.dismiss();
+            refrescarEstadoDescarga();
+            return;
+        }
+
+        accionOfflineEnProceso = true;
+        fragment.actualizarEstadoBotonOffline(materiaDescargada, true);
+
+        DescargarDatos descarga = new DescargarDatos(context);
+        descarga.setCallback(new DescargarDatos.DescargaCallback() {
+            @Override
+            public void onDescargaIniciada() {
+                progressBar.setProgress(0);
+                tvProgreso.setText("0%");
+                tvMensajeProgreso.setText("Preparando descarga...");
+            }
+
+            @Override
+            public void onProgreso(int porcentajeActual, String mensaje) {
+                progressBar.setProgress(porcentajeActual);
+                tvProgreso.setText(porcentajeActual + "%");
+                tvMensajeProgreso.setText(mensaje);
+            }
+
+            @Override
+            public void onDescargaCompletada() {
+                contenidoDAO.registrarMateriaDescargada(materia, 0.0);
+                accionOfflineEnProceso = false;
+                materiaDescargada = true;
+                fragment.actualizarEstadoBotonOffline(materiaDescargada, false);
+                fragment.showToastLong("¡Descarga completada!");
+                dialogo.dismiss();
+            }
+
+            @Override
+            public void onDescargaFallida(String error) {
+                accionOfflineEnProceso = false;
+                refrescarEstadoDescarga();
+                fragment.showToastLong("Error en descarga: " + error);
+                dialogo.dismiss();
+            }
+        });
+
+        descarga.descargarMateria(materia);
+    }
+
+    public void desinstalarMateriaCompleta() {
+        if (materia == null || materia.getId() == null) {
+            fragment.showToastLong("Materia inválida");
+            return;
+        }
+
+        if (accionOfflineEnProceso) {
+            fragment.showToast("Hay una acción en proceso");
+            return;
+        }
+
+        if (!materiaDescargada) {
+            fragment.showToast("La materia no está descargada");
+            refrescarEstadoDescarga();
+            return;
+        }
+
+        accionOfflineEnProceso = true;
+        fragment.actualizarEstadoBotonOffline(materiaDescargada, true);
+
+        new Thread(() -> {
+            boolean eliminado;
+            try {
+                eliminado = contenidoDAO.borrarMateriaDescargada(materia.getId());
+            } catch (Exception e) {
+                Log.e("TemasLogic", "Error al desinstalar materia local: " + e.getMessage());
+                eliminado = false;
+            }
+
+            boolean finalEliminado = eliminado;
+            if (!fragment.isAdded()) {
+                return;
+            }
+
+            fragment.requireActivity().runOnUiThread(() -> {
+                accionOfflineEnProceso = false;
+                if (finalEliminado) {
+                    materiaDescargada = false;
+                    fragment.showToastLong("Materia desinstalada del almacenamiento local");
+                } else {
+                    fragment.showToastLong("No se pudo desinstalar la materia");
+                }
+                fragment.actualizarEstadoBotonOffline(materiaDescargada, false);
+            });
+        }).start();
+    }
+
+    public boolean isMateriaDescargada() {
+        return materiaDescargada;
+    }
+
+    public boolean isAccionOfflineEnProceso() {
+        return accionOfflineEnProceso;
     }
 
     public void limpiarDatos() {
