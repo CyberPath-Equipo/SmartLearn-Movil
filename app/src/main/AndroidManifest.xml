@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="com.cyberpath.smartlearn">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.USE_BIOMETRIC" />
@@ -32,7 +31,7 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".util.audioRecognizer.TestAudioRecognizerActivity"
+            android:name=".ui.acceso.AccesoActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -41,7 +40,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.acceso.AccesoActivity"
+            android:name=".util.audioRecognizer.TestAudioRecognizerActivity"
             android:exported="false" />
         <activity
             android:name=".ui.main.MainActivity"

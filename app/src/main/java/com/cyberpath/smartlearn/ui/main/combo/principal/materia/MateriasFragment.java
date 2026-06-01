@@ -7,6 +7,7 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SearchView;
@@ -159,6 +160,7 @@ public class MateriasFragment extends Fragment {
     public void onResume() {
         super.onResume();
         android.util.Log.d("MateriasFragment", "onResume llamado");
+        animarEntradaCarrusel();
         if (materiasLogic != null) {
             materiasLogic.cargarMaterias();
         }
@@ -230,6 +232,30 @@ public class MateriasFragment extends Fragment {
         int realPos = pageIndex % realSize;
         if (realPos < 0) realPos += realSize;
         return realPos;
+    }
+
+    private void animarEntradaCarrusel() {
+        View root = getView();
+        if (root == null) return;
+
+        View cardCarrusel = root.findViewById(R.id.card_carrusel_materias);
+        if (cardCarrusel == null) return;
+
+        cardCarrusel.post(() -> {
+            float inicioX = -cardCarrusel.getWidth();
+            if (inicioX == 0f) {
+                inicioX = -getResources().getDisplayMetrics().widthPixels;
+            }
+
+            cardCarrusel.setTranslationX(inicioX);
+            cardCarrusel.setAlpha(0f);
+            cardCarrusel.animate()
+                    .translationX(0f)
+                    .alpha(1f)
+                    .setDuration(650)
+                    .setInterpolator(new DecelerateInterpolator())
+                    .start();
+        });
     }
 
     private void onMateriaClick(Materia materia) {

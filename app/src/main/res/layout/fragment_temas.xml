@@ -4,17 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/android:colorBackground"
+    android:background="@color/colorBackground"
     android:orientation="vertical"
+    android:animation="@anim/fade_in"
     tools:context=".ui.main.combo.principal.tema.TemasFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/bg_esquinas_redondeadas_fondo"
-        android:backgroundTint="?attr/colorSurface"
+        android:background="@drawable/bg_card_elevated"
         android:orientation="vertical"
-        android:padding="15dp">
+        android:padding="20dp">
 
         <TextView
             android:id="@+id/tvNombreMateria"
@@ -98,22 +98,28 @@
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:layout_gravity="bottom"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
         android:layout_marginBottom="8dp"
         android:contentDescription="Descargar o desinstalar materia"
         android:text="Descargar"
         android:textAllCaps="false"
+        android:elevation="4dp"
         app:backgroundTint="?attr/colorTertiary"
-        app:cornerRadius="10dp" />
+        app:cornerRadius="12dp" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_volver"
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:layout_gravity="bottom"
-        android:layout_marginBottom="10dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="12dp"
         android:contentDescription="Volver"
         android:text="Volver"
         android:textAllCaps="false"
+        android:elevation="4dp"
         app:backgroundTint="?attr/colorSecondary"
-        app:cornerRadius="10dp" />
+        app:cornerRadius="12dp" />
 </LinearLayout>

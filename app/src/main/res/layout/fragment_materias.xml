@@ -6,14 +6,16 @@
     android:layout_height="match_parent"
     android:background="@color/colorBackground"
     android:orientation="vertical"
+    android:animation="@anim/fade_in"
     tools:context=".ui.main.combo.principal.materia.MateriasFragment">
 
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/bg_esquinas_redondeadas_fondo"
+        android:layout_margin="12dp"
+        android:background="@drawable/bg_card_elevated"
         app:cardCornerRadius="20dp"
-        app:cardElevation="2dp"
+        app:cardElevation="8dp"
         app:strokeWidth="0dp">
 
         <LinearLayout
@@ -59,12 +61,14 @@
     </com.google.android.material.card.MaterialCardView>
 
     <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card_carrusel_materias"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:background="@drawable/bg_esquinas_redondeadas_fondo"
+        android:layout_margin="12dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/bg_card_elevated"
         app:cardCornerRadius="20dp"
-        app:cardElevation="2dp"
+        app:cardElevation="8dp"
         app:strokeWidth="0dp">
 
         <LinearLayout

@@ -14,6 +14,12 @@ android {
         versionCode = 1
         versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        externalNativeBuild {
+            cmake {
+                abiFilters += "arm64-v8a"
+            }
+        }
     }
 
     buildTypes {
@@ -38,14 +44,21 @@ android {
     sourceSets {
         getByName("main") {
             assets {
-                directories.addAll(listOf("src/main/assets"))
+                // AGP 8+: utilizar 'directories'
+                directories.add(file("src/main/assets").toString())
             }
+        }
+    }
+
+    externalNativeBuild {
+        cmake {
+            path = file("src/main/cpp/CMakeLists.txt")
+            version = "4.1.2"
         }
     }
 }
 
 dependencies {
-    // Dependencias de tu catálogo (libs.versions.toml)
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.constraintlayout)
@@ -55,7 +68,7 @@ dependencies {
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
 
-    // Jetpack y componentes de UI (Actualizados a versiones compatibles)
+    // Jetpack y componentes de UI
     implementation("androidx.biometric:biometric:1.2.0-alpha02")
     implementation("androidx.navigation:navigation-fragment-ktx:2.9.6")
     implementation("androidx.navigation:navigation-ui-ktx:2.9.6")
@@ -66,7 +79,7 @@ dependencies {
     implementation("androidx.recyclerview:recyclerview:1.3.2")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.7")
 
-    // Red (Retrofit + OkHttp actualizados para evitar bugs en entornos modernos)
+    // Red
     implementation("com.squareup.retrofit2:retrofit:2.11.0")
     implementation("com.squareup.retrofit2:converter-gson:2.11.0")
     implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
@@ -80,7 +93,7 @@ dependencies {
     implementation("com.github.bumptech.glide:glide:4.16.0")
     annotationProcessor("com.github.bumptech.glide:compiler:4.16.0")
 
-    // Lombok (Librerías duplicadas eliminadas; se conserva la versión estable para Java 17)
+    // Lombok
     compileOnly("org.projectlombok:lombok:1.18.36")
     annotationProcessor("org.projectlombok:lombok:1.18.36")
     testCompileOnly("org.projectlombok:lombok:1.18.36")

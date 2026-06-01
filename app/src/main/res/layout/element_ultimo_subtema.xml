@@ -13,7 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Continúa donde lo dejaste:"
-        android:textColor="?attr/colorOnBackground"
+        android:textColor="@color/white"
         android:textSize="14sp"
         android:textStyle="italic" />
 
@@ -25,7 +25,7 @@
         android:ellipsize="end"
         android:maxLines="1"
         android:text="Cargando..."
-        android:textColor="?attr/colorOnBackground"
+        android:textColor="@color/white"
         android:textSize="16sp"
         android:textStyle="bold" />
 

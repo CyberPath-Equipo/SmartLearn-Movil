@@ -4,17 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/android:colorBackground"
+    android:background="@color/colorBackground"
     android:orientation="vertical"
+    android:animation="@anim/fade_in"
     tools:context=".ui.main.combo.configuracion.ConfiguracionFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/bg_esquinas_redondeadas_fondo"
-        android:backgroundTint="?attr/colorSurface"
+        android:background="@drawable/bg_card_elevated"
         android:orientation="vertical"
-        android:padding="10dp">
+        android:padding="16dp">
 
         <TextView
             android:layout_width="match_parent"

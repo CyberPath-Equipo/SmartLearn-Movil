@@ -2,8 +2,9 @@
 
     <style name="Base.Theme.SmartLearn" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="fontFamily">@font/space_grotesk</item>
-        <item name="android:statusBarColor">@color/black</item>
+        <item name="android:statusBarColor">@color/colorHeader</item>
         <item name="android:windowLightStatusBar">false</item>
+        <item name="android:navigationBarColor">@color/colorBackground</item>
 
         <!-- Colores -->
         <item name="colorPrimary">@color/colorHeader</item>
@@ -17,8 +18,9 @@
 
         <item name="colorSecondary">@color/colorSecondary</item>
         <item name="colorTertiary">@color/colorAccent</item>
-        <item name="colorButtonNormal">#BEBFC3</item>
-        <item name="colorError">#88FF4444</item>
+        <item name="colorButtonNormal">@color/colorSecondary</item>
+        <item name="colorError">@color/colorError</item>
+
 
         <!-- Texto -->
         <item name="textAppearanceHeadlineMedium">@style/TextAppearance.SmartLearn.Medium.Headline

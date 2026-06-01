@@ -4,9 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#122757"
+    android:background="@drawable/bg_gradient_header"
     android:clipChildren="false"
     android:padding="25dp"
+    android:animation="@anim/fade_in"
     tools:context=".ui.acceso.LoginFragment">
 
     <ImageView
@@ -20,10 +21,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="180dp"
-        android:background="@drawable/bg_acceso"
-        android:elevation="12dp"
+        android:background="@drawable/bg_card_elevated"
+        android:elevation="16dp"
         android:orientation="vertical"
-        android:padding="6dp">
+        android:padding="8dp"
+        android:animation="@anim/slide_up">
 
         <TextView
             android:layout_width="match_parent"
@@ -32,7 +34,7 @@
             android:layout_marginBottom="16dp"
             android:gravity="center"
             android:text="Inicio de Sesión"
-            android:textColor="@color/brandSmartLearn"
+            android:textColor="@color/colorHeader"
             android:textSize="36sp"
             android:textStyle="bold" />
 

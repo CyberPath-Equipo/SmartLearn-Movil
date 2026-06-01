@@ -7,36 +7,59 @@
     <color name="brandSmartLearn">#193881</color>
     <color name="brandCyberPath">#020136</color>
 
-
-    <!-- ========= COLORES LIGHT ========= -->
+    <!-- ========= COLORES LIGHT (MEJORADOS) ========= -->
     <!-- ========= COLORES BASE LIGHT ========= -->
-    <color name="colorHeader">#2B5481</color>
-    <color name="colorBackground">#D7D7D7</color>
-    <color name="colorSurface">#FFFFFFFF</color>
+    <color name="colorHeader">#1E3A8A</color>
+    <color name="colorHeaderLight">#3B82F6</color>
+    <color name="colorBackground">#F0F4F8</color>
+    <color name="colorSurface">#F7EFE5</color>
 
     <!-- ========= COLORES DE TEXTO ========= -->
     <color name="colorOnSurfacePrimary">#030034</color>
-    <color name="colorOnSurface">#FF000000</color>
+    <color name="colorOnSurface">#1F2937</color>
     <color name="colorOnBackground">#FFFFFFFF</color>
 
-    <!-- ========= COLORES DE ACCIÓN ========= -->
-    <color name="colorSecondary">#359762</color>
-    <color name="colorAccent">#015B6A</color>
+    <!-- ========= COLORES DE ACCIÓN (MEJORADOS) ========= -->
+    <color name="colorSecondary">#10B981</color>
+    <color name="colorSecondaryLight">#34D399</color>
+    <color name="colorAccent">#06B6D4</color>
+    <color name="colorAccentLight">#22D3EE</color>
 
-    <!-- ========= COLORES ACCESSIBLE ========= -->
-    <color name="accessible_background">#000000</color>
-    <color name="accessible_surface">#121212</color>
+    <!-- ========= COLORES COMPLEMENTARIOS ========= -->
+    <color name="colorWarning">#F59E0B</color>
+    <color name="colorError">#EF4444</color>
+    <color name="colorSuccess">#84CC16</color>
+    <color name="colorInfo">#3B82F6</color>
 
-    <color name="accessible_on_background">#FFFFFF</color>
-    <color name="accessible_on_surface">#FFFFFF</color>
+    <!-- ========= COLORES NEUTROS MODERNOS ========= -->
+    <color name="colorNeutral50">#F9FAFB</color>
+    <color name="colorNeutral100">#F3F4F6</color>
+    <color name="colorNeutral200">#E5E7EB</color>
+    <color name="colorNeutral300">#D1D5DB</color>
+    <color name="colorNeutral400">#9CA3AF</color>
+    <color name="colorNeutral500">#6B7280</color>
+    <color name="colorNeutral600">#4B5563</color>
 
-    <color name="accessible_primary">#42A5F5</color>
+    <!-- ========= COLORES ACCESSIBLE (MEJORADOS) ========= -->
+    <color name="accessible_background">#0F172A</color>
+    <color name="accessible_surface">#1E293B</color>
+
+    <color name="accessible_on_background">#F1F5F9</color>
+    <color name="accessible_on_surface">#F1F5F9</color>
+
+    <color name="accessible_primary">#60A5FA</color>
     <color name="accessible_on_primary">#000000</color>
 
-    <color name="accessible_secondary">#FFD600</color>
+    <color name="accessible_secondary">#FBBF24</color>
     <color name="accessible_on_secondary">#000000</color>
 
-    <color name="accessible_tertiary">#FF6F00</color>
+    <color name="accessible_tertiary">#FB923C</color>
     <color name="accessible_on_tertiary">#000000</color>
+
+    <!-- ========= COLORES PARA GRADIENTES Y DECORACIÓN ========= -->
+    <color name="gradientStart">#1E3A8A</color>
+    <color name="gradientEnd">#3B82F6</color>
+    <color name="accentGradientStart">#10B981</color>
+    <color name="accentGradientEnd">#06B6D4</color>
 
 </resources>

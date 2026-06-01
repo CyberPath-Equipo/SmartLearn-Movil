@@ -2,11 +2,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_esquinas_redondas_elementos"
-    android:backgroundTint="?attr/colorPrimary"
+    android:background="@drawable/bg_gradient_accent"
     android:gravity="center"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:animation="@anim/scale_up">
 
     <ImageView
         android:id="@+id/imageMateria"

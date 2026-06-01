@@ -1,9 +1,7 @@
 package com.cyberpath.smartlearn.util.audioRecognizer;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.pm.PackageManager;
-import android.content.res.AssetFileDescriptor;
 import android.media.AudioFormat;
 import android.media.AudioRecord;
 import android.media.MediaRecorder;
@@ -17,23 +15,23 @@ import androidx.core.app.ActivityCompat;
 
 import com.cyberpath.smartlearn.R;
 
-import org.tensorflow.lite.Interpreter;
-
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.nio.MappedByteBuffer;
-import java.nio.channels.FileChannel;
-import java.util.ArrayList;
-import java.util.List;
-
 public class TestAudioRecognizerActivity extends AppCompatActivity {
-    private static final int REQUEST_RECORD_AUDIO = 1;
-    private static final int MODEL_INPUT_SIZE = 3960; // Según tu modelo
 
-    private Interpreter interpreter = null;
-    private List<String> labels = new ArrayList<>();
+    // 1. Cargar la librería C++ compilada que creaste en CMakeLists.txt
+    static {
+        System.loadLibrary("smartlearn_audio");
+    }
+
+    // 2. Declarar la función nativa que conecta con tu archivo native-lib.cpp
+    public native String classifyAudioNative(short[] audioData);
+
+    private static final int REQUEST_RECORD_AUDIO = 1;
+
+    // 3. Tamaño del audio crudo: 1 segundo a 16000Hz = 16000 muestras.
+    // Edge Impulse procesará esto internamente para convertirlo a sus 3960 features MFE.
+    private static final int SAMPLE_RATE = 16000;
+    private static final int RAW_AUDIO_SAMPLE_COUNT = 16000;
+
     private AudioRecord audioRecord = null;
     private Thread recordingThread = null;
     private volatile boolean isRecording = false;
@@ -49,13 +47,7 @@ public class TestAudioRecognizerActivity extends AppCompatActivity {
         resultadoTextView = findViewById(R.id.resultadoTextView);
         toggleButton = findViewById(R.id.toggleButton);
 
-        // Inicializar el modelo
-        try {
-            setupClassifier(this);
-        } catch (IOException e) {
-            resultadoTextView.setText("Error cargando modelo o etiquetas");
-            e.printStackTrace();
-        }
+        // Ya no necesitas cargar TFLite ni labels.txt aquí. ¡C++ lo hace por ti!
 
         toggleButton.setOnClickListener(v -> {
             if (isRecording) {
@@ -64,24 +56,6 @@ public class TestAudioRecognizerActivity extends AppCompatActivity {
                 checkPermissionAndStart();
             }
         });
-    }
-
-    private void setupClassifier(Context context) throws IOException {
-        // Cargar etiquetas desde labels.txt
-        BufferedReader reader = new BufferedReader(new InputStreamReader(context.getAssets().open("labels.txt")));
-        String line;
-        while ((line = reader.readLine()) != null) {
-            labels.add(line.trim());
-        }
-        reader.close();
-
-        // Cargar modelo
-        AssetFileDescriptor afd = context.getAssets().openFd("model.tflite");
-        FileInputStream fis = new FileInputStream(afd.getFileDescriptor());
-        FileChannel fc = fis.getChannel();
-        MappedByteBuffer mbb = fc.map(FileChannel.MapMode.READ_ONLY, afd.getStartOffset(), afd.getDeclaredLength());
-        Interpreter.Options options = new Interpreter.Options();
-        interpreter = new Interpreter(mbb, options);
     }
 
     private void checkPermissionAndStart() {
@@ -106,39 +80,68 @@ public class TestAudioRecognizerActivity extends AppCompatActivity {
     }
 
     private void startAudioRecording() {
-        int sampleRate = 16000; // Ajústalo si tu modelo necesita otra frecuencia
-        int bufferSize = AudioRecord.getMinBufferSize(sampleRate,
+        int bufferSize = AudioRecord.getMinBufferSize(SAMPLE_RATE,
                 AudioFormat.CHANNEL_IN_MONO, AudioFormat.ENCODING_PCM_16BIT);
-        if (bufferSize < MODEL_INPUT_SIZE) bufferSize = MODEL_INPUT_SIZE;
+
+        if (bufferSize == AudioRecord.ERROR || bufferSize == AudioRecord.ERROR_BAD_VALUE) {
+            resultadoTextView.setText("No se pudo inicializar el micrófono");
+            return;
+        }
+
+        // Asegurarnos de que el buffer del sistema soporte nuestro bloque de 1 segundo
+        if (bufferSize < RAW_AUDIO_SAMPLE_COUNT) {
+            bufferSize = RAW_AUDIO_SAMPLE_COUNT;
+        }
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
 
-        audioRecord = new AudioRecord(MediaRecorder.AudioSource.MIC, sampleRate,
+        audioRecord = new AudioRecord(MediaRecorder.AudioSource.MIC, SAMPLE_RATE,
                 AudioFormat.CHANNEL_IN_MONO, AudioFormat.ENCODING_PCM_16BIT,
                 bufferSize);
+
+        if (audioRecord.getState() != AudioRecord.STATE_INITIALIZED) {
+            resultadoTextView.setText("Error al crear AudioRecord");
+            audioRecord.release();
+            audioRecord = null;
+            return;
+        }
 
         isRecording = true;
         audioRecord.startRecording();
         toggleButton.setText("Detener");
+        resultadoTextView.setText("Escuchando...");
 
         recordingThread = new Thread(() -> {
-            short[] audioBuffer = new short[MODEL_INPUT_SIZE];
+            // Buffer exacto que espera el DSP de Edge Impulse (16000 shorts)
+            short[] audioBuffer = new short[RAW_AUDIO_SAMPLE_COUNT];
+
             while (isRecording) {
                 int offset = 0;
-                while (offset < MODEL_INPUT_SIZE && isRecording) {
-                    int read = audioRecord.read(audioBuffer, offset, MODEL_INPUT_SIZE - offset);
-                    if (read > 0) offset += read;
+                // Llenar el buffer hasta tener exactamente 1 segundo de audio
+                while (offset < RAW_AUDIO_SAMPLE_COUNT && isRecording) {
+                    int read = audioRecord.read(audioBuffer, offset, RAW_AUDIO_SAMPLE_COUNT - offset);
+                    if (read > 0) {
+                        offset += read;
+                    } else {
+                        runOnUiThread(() -> resultadoTextView.setText("Error leyendo audio"));
+                        isRecording = false;
+                        break;
+                    }
                 }
+
                 if (!isRecording) break;
 
-                String resultado = classifyAudio(audioBuffer);
+                // 4. PASO MÁGICO: Enviar el audio crudo a C++.
+                // C++ hace el MFE y la inferencia TFLite, devolviendo solo el String.
+                String resultado = classifyAudioNative(audioBuffer);
+
+                // Actualizar la interfaz con el resultado
                 runOnUiThread(() -> resultadoTextView.setText("Detectado: " + resultado));
             }
         });
         recordingThread.start();
-        resultadoTextView.setText("Escuchando...");
     }
 
     private void stopAudioRecording() {
@@ -160,38 +163,9 @@ public class TestAudioRecognizerActivity extends AppCompatActivity {
         resultadoTextView.setText("Grabación detenida");
     }
 
-    public String classifyAudio(short[] audioBuffer) {
-        if (interpreter == null || labels.isEmpty()) {
-            return "Error: Modelo no cargado";
-        }
-        byte[][] input = new byte[1][3960];
-        for (int i = 0; i < 3960; i++) {
-            input[0][i] = (byte)(audioBuffer[i] >> 8);
-        }
-
-        // SALIDA: int8[1,35]
-        byte[][] outputBuffer = new byte[1][35];
-        interpreter.run(input, outputBuffer);
-
-        // Busca la clase con mayor valor
-        int maxIndex = 0;
-        int maxScore = outputBuffer[0][0];
-        for (int i = 1; i < 35; i++) {
-            if (outputBuffer[0][i] > maxScore) {
-                maxScore = outputBuffer[0][i];
-                maxIndex = i;
-            }
-        }
-        return labels.get(maxIndex);
-    }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
         stopAudioRecording();
-        if (interpreter != null) {
-            interpreter.close();
-            interpreter = null;
-        }
     }
 }

@@ -4,9 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.Toast;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,15 +13,14 @@ import androidx.fragment.app.Fragment;
 import com.cyberpath.smartlearn.R;
 import com.cyberpath.smartlearn.util.preferences.PreferencesManager;
 import com.cyberpath.smartlearn.util.preferences.ThemeManager;
+import com.google.android.material.switchmaterial.SwitchMaterial;
 
 public class AccesibilidadFragment extends Fragment {
+    private SwitchMaterial switchVisual;
+    private SwitchMaterial switchAuditiva;
 
-    private RadioGroup radioGroupVisual;
-    private RadioGroup radioGroupAuditiva;
-    private RadioButton radioVisualActiva;
-    private RadioButton radioVisualInactiva;
-    private RadioButton radioAuditivaActiva;
-    private RadioButton radioAuditivaInactiva;
+    private ImageView imgVisual;
+    private ImageView imgAuditiva;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -35,42 +32,57 @@ public class AccesibilidadFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        radioGroupVisual = view.findViewById(R.id.grupo_accesibilidad_visual);
-        radioGroupAuditiva = view.findViewById(R.id.grupo_accesibilidad_auditiva);
-        radioVisualActiva = view.findViewById(R.id.radio_visual_activa);
-        radioVisualInactiva = view.findViewById(R.id.radio_visual_inactiva);
-        radioAuditivaActiva = view.findViewById(R.id.radio_auditiva_activa);
-        radioAuditivaInactiva = view.findViewById(R.id.radio_auditiva_inactiva);
+        switchVisual = view.findViewById(R.id.switch_visual);
+        switchAuditiva = view.findViewById(R.id.switch_auditiva);
 
-        boolean accesibilidadVisualActiva = PreferencesManager.isAccesibilidadVisualActivada(requireContext());
-        boolean accesibilidadAuditivaActiva = PreferencesManager.isAccesibilidadAuditivaActivada(requireContext());
+        imgVisual = view.findViewById(R.id.img_visual);
+        imgAuditiva = view.findViewById(R.id.img_auditiva);
 
-        if (accesibilidadVisualActiva) {
-            radioVisualActiva.setChecked(true);
-        } else {
-            radioVisualInactiva.setChecked(true);
-        }
+        boolean visualActiva = PreferencesManager.isAccesibilidadVisualActivada(requireContext());
+        boolean auditivaActiva = PreferencesManager.isAccesibilidadAuditivaActivada(requireContext());
 
-        if (accesibilidadAuditivaActiva) {
-            radioAuditivaActiva.setChecked(true);
-        } else {
-            radioAuditivaInactiva.setChecked(true);
-        }
+        switchVisual.setChecked(visualActiva);
+        imgVisual.setImageResource(visualActiva ? R.drawable.ic_eye_closed : R.drawable.ic_eye);
 
-        radioGroupVisual.setOnCheckedChangeListener((group, checkedId) -> {
-            boolean activar = (checkedId == R.id.radio_visual_activa);
-            PreferencesManager.setAccesibilidadVisualActivada(requireContext(), activar);
+        switchAuditiva.setChecked(auditivaActiva);
+        imgAuditiva.setImageResource(auditivaActiva ? R.drawable.ic_volume_muted : R.drawable.ic_volume);
+
+        switchVisual.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            PreferencesManager.setAccesibilidadVisualActivada(requireContext(), isChecked);
+
+            cambiarIconoConAnimacion(imgVisual, isChecked ? R.drawable.ic_eye_closed : R.drawable.ic_eye);
+
             ThemeManager.applyTheme(requireActivity());
             requireActivity().recreate();
-            Toast.makeText(requireContext(),
-                    activar ? "Accesibilidad visual activada" : "Accesibilidad visual desactivada", Toast.LENGTH_SHORT).show();
         });
 
-        radioGroupAuditiva.setOnCheckedChangeListener((group, checkedId) -> {
-            boolean activar = (checkedId == R.id.radio_auditiva_activa);
-            PreferencesManager.setAccesibilidadAuditivaActivada(requireContext(), activar);
-            Toast.makeText(requireContext(),
-                    activar ? "Accesibilidad auditiva activada" : "Accesibilidad auditiva desactivada", Toast.LENGTH_SHORT).show();
+        switchAuditiva.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            PreferencesManager.setAccesibilidadAuditivaActivada(requireContext(), isChecked);
+
+            cambiarIconoConAnimacion(imgAuditiva, isChecked ? R.drawable.ic_volume_muted : R.drawable.ic_volume);
+
+            requireActivity().recreate();
         });
+    }
+
+    private void cambiarIconoConAnimacion(ImageView imageView, int nuevoDrawableRes) {
+        imageView.animate()
+                .scaleX(1.5f)
+                .scaleY(1.5f)
+                .alpha(0f)
+                .setDuration(200)
+                .withEndAction(() -> {
+                    imageView.setImageResource(nuevoDrawableRes);
+
+                    imageView.setScaleX(1.5f);
+                    imageView.setScaleY(1.5f);
+
+                    imageView.animate()
+                            .scaleX(1.0f)
+                            .scaleY(1.0f)
+                            .alpha(1f)
+                            .setDuration(200)
+                            .start();
+                }).start();
     }
 }

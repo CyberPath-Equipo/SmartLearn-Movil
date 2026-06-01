@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/android:colorBackground"
+    android:background="@color/colorBackground"
+    android:animation="@anim/fade_in"
     tools:context=".ui.main.combo.principal.contenido.practica.PracticaFragment">
 
     <LinearLayout
@@ -12,10 +13,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="80dp"
-        android:background="@drawable/bg_esquinas_redondeadas_fondo"
-        android:backgroundTint="?attr/colorSurface"
+        android:background="@drawable/bg_card_elevated"
         android:orientation="vertical"
-        android:padding="15dp">
+        android:padding="20dp">
 
         <TextView
             android:id="@+id/tv_subtema"
@@ -52,13 +52,14 @@
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:layout_gravity="bottom"
-        android:layout_marginStart="12dp"
-        android:layout_marginEnd="12dp"
-        android:layout_marginBottom="12dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
         android:contentDescription="Volver"
         android:text="Volver"
         android:textAllCaps="false"
+        android:elevation="4dp"
         app:backgroundTint="?attr/colorSecondary"
-        app:cornerRadius="8dp" />
+        app:cornerRadius="12dp" />
 
 </FrameLayout>

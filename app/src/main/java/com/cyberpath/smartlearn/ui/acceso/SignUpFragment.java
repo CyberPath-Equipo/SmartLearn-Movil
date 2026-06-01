@@ -49,7 +49,7 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
         btnRegistro = view.findViewById(R.id.btn_registro);
         etNombre = view.findViewById(R.id.et_nombre);
         etNombreCompleto = view.findViewById(R.id.et_nombre_completo);
-        etContrasena = view.findViewById(R.id.et_contraseña);
+        etContrasena = view.findViewById(R.id.et_contrasena);
         etCorreo = view.findViewById(R.id.et_correo);
         radioVisualActiva = view.findViewById(R.id.radio_visual_activa);
         radioVisualInactiva = view.findViewById(R.id.radio_visual_inactiva);
