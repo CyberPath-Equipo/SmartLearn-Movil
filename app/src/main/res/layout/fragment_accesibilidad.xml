@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?attr/android:colorBackground"
     android:orientation="vertical"
-    android:background="#F7EFE5"
     tools:context=".ui.main.combo.accesibilidad.AccesibilidadFragment">
 
     <ScrollView
@@ -24,20 +24,19 @@
                 android:layout_marginBottom="24dp"
                 android:text="Configuración de\naccesibilidad"
                 android:textAlignment="center"
-                android:textColor="#051E3C"
-                android:textSize="28sp"
+                android:textAppearance="?attr/textAppearanceHeadlineMedium"
+                android:textColor="?attr/colorOnBackground"
                 android:textStyle="bold" />
 
-            <!-- TARJETA: DISCAPACIDAD VISUAL -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
-                app:cardBackgroundColor="@android:color/white"
+                app:cardBackgroundColor="?attr/colorSurface"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="2dp"
-                app:strokeColor="#051E3C"
-                app:strokeWidth="2dp">
+                app:strokeColor="?attr/colorOutline"
+                app:strokeWidth="3dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -50,8 +49,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="12dp"
                         android:text="Discapacidad visual"
-                        android:textColor="#051E3C"
-                        android:textSize="20sp"
+                        android:textAppearance="?attr/textAppearanceTitleLarge"
+                        android:textColor="?attr/colorOnSurface"
                         android:textStyle="bold" />
 
                     <RelativeLayout
@@ -65,11 +64,11 @@
                             android:layout_toStartOf="@id/img_visual"
                             android:layout_marginEnd="16dp"
                             android:text="Habilitar"
-                            android:textColor="#051E3C"
-                            android:textSize="16sp"
+                            android:textColor="?attr/colorOnSurface"
+                            android:textAppearance="?attr/textAppearanceBodyLarge"
                             android:switchPadding="40dp"
-                            app:thumbTint="#051E3C"
-                            app:trackTint="#A4B7C6" />
+                            app:thumbTint="@color/switch_thumb_tint"
+                            app:trackTint="@color/switch_track_tint" />
 
                         <ImageView
                             android:id="@+id/img_visual"
@@ -78,7 +77,7 @@
                             android:layout_alignParentEnd="true"
                             android:layout_centerVertical="true"
                             android:src="@drawable/ic_eye"
-                            app:tint="#051E3C" />
+                            app:tint="?attr/colorOnSurface" />
                     </RelativeLayout>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
@@ -87,12 +86,12 @@
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="24dp"
-                app:cardBackgroundColor="@android:color/white"
+                android:layout_marginBottom="16dp"
+                app:cardBackgroundColor="?attr/colorSurface"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="2dp"
-                app:strokeColor="#051E3C"
-                app:strokeWidth="2dp">
+                app:strokeColor="?attr/colorOutline"
+                app:strokeWidth="3dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -105,8 +104,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="12dp"
                         android:text="Discapacidad auditiva"
-                        android:textColor="#051E3C"
-                        android:textSize="20sp"
+                        android:textAppearance="?attr/textAppearanceTitleLarge"
+                        android:textColor="?attr/colorOnSurface"
                         android:textStyle="bold" />
 
                     <RelativeLayout
@@ -120,11 +119,11 @@
                             android:layout_toStartOf="@id/img_auditiva"
                             android:layout_marginEnd="16dp"
                             android:text="Habilitar"
-                            android:textColor="#051E3C"
-                            android:textSize="16sp"
+                            android:textColor="?attr/colorOnSurface"
+                            android:textAppearance="?attr/textAppearanceBodyLarge"
                             android:switchPadding="40dp"
-                            app:thumbTint="#051E3C"
-                            app:trackTint="#A4B7C6" />
+                            app:thumbTint="@color/switch_thumb_tint"
+                            app:trackTint="@color/switch_track_tint" />
 
                         <ImageView
                             android:id="@+id/img_auditiva"
@@ -133,7 +132,7 @@
                             android:layout_alignParentEnd="true"
                             android:layout_centerVertical="true"
                             android:src="@drawable/ic_volume_muted"
-                            app:tint="#051E3C" />
+                            app:tint="?attr/colorOnSurface" />
                     </RelativeLayout>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
@@ -151,8 +150,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
                     android:text="Discapacidad visual activa: habilita guía de audio y comandos de voz."
-                    android:textColor="#000000"
-                    android:textSize="14sp" />
+                    android:textAppearance="?attr/textAppearanceBodyMedium"
+                    android:textColor="?attr/colorOnBackground" />
             </LinearLayout>
 
             <LinearLayout
@@ -166,8 +165,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
                     android:text="Discapacidad auditiva activa: habilita apoyo visual (LSM) en contenido compatible."
-                    android:textColor="#000000"
-                    android:textSize="14sp" />
+                    android:textAppearance="?attr/textAppearanceBodyMedium"
+                    android:textColor="?attr/colorOnBackground" />
             </LinearLayout>
 
         </LinearLayout>

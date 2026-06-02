@@ -2,8 +2,11 @@
 
     <style name="Base.Theme.SmartLearn" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="fontFamily">@font/space_grotesk</item>
+        <item name="android:fontFamily">@font/space_grotesk</item>
         <item name="android:statusBarColor">@color/black</item>
         <item name="android:windowLightStatusBar">false</item>
+        <item name="android:navigationBarColor">@color/colorBackground</item>
+        <item name="android:windowLightNavigationBar">false</item>
 
         <!-- Colores -->
         <item name="colorPrimary">@color/colorHeader</item>
@@ -16,9 +19,16 @@
         <item name="colorOnSurface">@color/colorOnSurface</item>
 
         <item name="colorSecondary">@color/colorSecondary</item>
+        <item name="colorOnSecondary">@color/black</item>
         <item name="colorTertiary">@color/colorAccent</item>
-        <item name="colorButtonNormal">#3A4752</item>
-        <item name="colorError">#FF7A7A</item>
+        <item name="colorOnTertiary">@color/black</item>
+        <item name="colorButtonNormal">@color/colorSurface</item>
+        <item name="colorError">@color/colorError</item>
+        <item name="colorSurfaceVariant">@color/colorSurface</item>
+        <item name="colorOnSurfaceVariant">@color/colorOnSurface</item>
+        <item name="colorOutline">@color/colorNeutral400</item>
+        <item name="android:textColorPrimary">@color/colorOnSurfacePrimary</item>
+        <item name="android:textColorSecondary">@color/colorOnSurface</item>
 
         <!-- Texto -->
         <item name="textAppearanceHeadlineMedium">@style/TextAppearance.SmartLearn.Medium.Headline

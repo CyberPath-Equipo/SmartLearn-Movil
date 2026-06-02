@@ -135,7 +135,7 @@
                     android:layout_width="28dp"
                     android:layout_height="28dp"
                     android:src="@drawable/ic_instagram"
-                    app:tint="#E4405F" />
+                    app:tint="@color/colorSocialInstagram" />
 
                 <TextView
                     android:layout_width="0dp"
@@ -145,7 +145,7 @@
                     android:autoLink="web"
                     android:linksClickable="true"
                     android:text="\u0040cyberpath_contacto"
-                    android:textColor="#E4405F"
+                    android:textColor="@color/colorSocialInstagram"
                     android:textSize="15sp" />
             </LinearLayout>
 
@@ -165,7 +165,7 @@
                     android:layout_width="28dp"
                     android:layout_height="28dp"
                     android:src="@drawable/ic_correo"
-                    app:tint="@color/brandSmartLearn" />
+                    app:tint="?attr/colorTertiary" />
 
                 <TextView
                     android:layout_width="0dp"
@@ -175,7 +175,7 @@
                     android:autoLink="email"
                     android:linksClickable="true"
                     android:text="cyberpath_contacto@gmail.com"
-                    android:textColorLink="@color/brandSmartLearn"
+                    android:textColorLink="?attr/colorTertiary"
                     android:textSize="15sp" />
             </LinearLayout>
 

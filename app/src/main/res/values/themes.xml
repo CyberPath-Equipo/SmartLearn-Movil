@@ -2,13 +2,15 @@
 
     <style name="Base.Theme.SmartLearn" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="fontFamily">@font/space_grotesk</item>
+        <item name="android:fontFamily">@font/space_grotesk</item>
         <item name="android:statusBarColor">@color/colorHeader</item>
         <item name="android:windowLightStatusBar">false</item>
         <item name="android:navigationBarColor">@color/colorBackground</item>
+        <item name="android:windowLightNavigationBar">true</item>
 
         <!-- Colores -->
         <item name="colorPrimary">@color/colorHeader</item>
-        <item name="colorOnPrimary">@color/colorOnBackground</item>
+        <item name="colorOnPrimary">@color/white</item>
 
         <item name="android:colorBackground">@color/colorBackground</item>
         <item name="colorOnBackground">@color/colorOnBackground</item>
@@ -17,9 +19,16 @@
         <item name="colorOnSurface">@color/colorOnSurface</item>
 
         <item name="colorSecondary">@color/colorSecondary</item>
+        <item name="colorOnSecondary">@color/black</item>
         <item name="colorTertiary">@color/colorAccent</item>
+        <item name="colorOnTertiary">@color/black</item>
         <item name="colorButtonNormal">@color/colorSecondary</item>
         <item name="colorError">@color/colorError</item>
+        <item name="colorSurfaceVariant">@color/colorNeutral100</item>
+        <item name="colorOnSurfaceVariant">@color/colorOnSurface</item>
+        <item name="colorOutline">@color/colorNeutral400</item>
+        <item name="android:textColorPrimary">@color/colorOnSurfacePrimary</item>
+        <item name="android:textColorSecondary">@color/colorOnSurface</item>
 
 
         <!-- Texto -->
@@ -41,24 +50,34 @@
 
     <style name="Theme.SmartLearn.Accessible" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="fontFamily">@font/space_grotesk</item>
+        <item name="android:fontFamily">@font/space_grotesk</item>
 
         <item name="colorPrimary">@color/accessible_primary</item>
         <item name="colorOnPrimary">@color/accessible_on_primary</item>
 
         <item name="colorSecondary">@color/accessible_secondary</item>
+        <item name="colorOnSecondary">@color/accessible_on_secondary</item>
 
         <item name="colorTertiary">@color/accessible_tertiary</item>
+        <item name="colorOnTertiary">@color/accessible_on_tertiary</item>
 
         <item name="android:colorBackground">@color/accessible_background</item>
         <item name="colorOnBackground">@color/accessible_on_background</item>
 
         <item name="colorSurface">@color/accessible_surface</item>
         <item name="colorOnSurface">@color/accessible_on_surface</item>
+        <item name="colorSurfaceVariant">@color/accessible_surface</item>
+        <item name="colorOnSurfaceVariant">@color/accessible_on_surface</item>
+        <item name="colorOutline">@color/accessible_primary</item>
 
         <item name="android:statusBarColor">@color/accessible_background</item>
         <item name="android:navigationBarColor">@color/accessible_background</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowLightNavigationBar">false</item>
         <item name="colorButtonNormal">@color/accessible_tertiary</item>
-        <item name="colorError">#E90808</item>
+        <item name="colorError">@color/colorError</item>
+        <item name="android:textColorPrimary">@color/accessible_on_surface</item>
+        <item name="android:textColorSecondary">@color/accessible_on_background</item>
 
         <!-- Texto -->
         <item name="textAppearanceHeadlineMedium">

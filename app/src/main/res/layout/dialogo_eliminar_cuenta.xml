@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:background="@android:color/white"
+        android:background="?attr/colorSurface"
         android:gravity="center"
         android:orientation="vertical"
         android:padding="24dp">
@@ -23,7 +23,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="8dp"
             android:text="Eliminar Cuenta"
-            android:textColor="#DB0000"
+            android:textColor="@color/colorDangerStrong"
             android:textSize="22sp"
             android:textStyle="bold" />
 
@@ -34,7 +34,7 @@
             android:layout_marginBottom="16dp"
             android:gravity="center"
             android:text="Para eliminar tu cuenta, ingresa tu contraseña y confirma."
-            android:textColor="@color/black"
+            android:textColor="?attr/colorOnSurface"
             android:textSize="17sp" />
 
         <com.google.android.material.textfield.TextInputLayout
@@ -64,18 +64,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="12dp"
-                android:backgroundTint="@color/colorAccent"
+                android:backgroundTint="?attr/colorTertiary"
                 android:text="Cancelar"
-                android:textColor="@color/white"
+                android:textColor="?attr/colorOnTertiary"
                 android:textStyle="bold" />
 
             <Button
                 android:id="@+id/btnAceptar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:backgroundTint="#DB0000"
+                android:backgroundTint="@color/colorDangerStrong"
                 android:text="Eliminar"
-                android:textColor="@color/white"
+                android:textColor="?attr/colorOnPrimary"
                 android:textStyle="bold" />
         </LinearLayout>
     </LinearLayout>

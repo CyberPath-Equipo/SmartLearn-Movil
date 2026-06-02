@@ -34,7 +34,7 @@
             android:layout_marginBottom="16dp"
             android:gravity="center"
             android:text="Inicio de Sesión"
-            android:textColor="@color/colorHeader"
+            android:textColor="?attr/colorPrimary"
             android:textSize="36sp"
             android:textStyle="bold" />
 
@@ -44,10 +44,10 @@
             android:layout_marginHorizontal="12dp"
             android:layout_marginBottom="12dp"
             app:boxBackgroundMode="outline"
-            app:boxStrokeColor="@color/brandSmartLearn"
+            app:boxStrokeColor="?attr/colorPrimary"
             app:boxStrokeWidth="@dimen/cardview_default_elevation"
             app:startIconDrawable="@drawable/ic_usuario"
-            app:startIconTint="@color/brandSmartLearn">
+            app:startIconTint="?attr/colorPrimary">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_nombre_usuario"
@@ -59,8 +59,8 @@
                 android:paddingTop="14dp"
                 android:paddingEnd="16dp"
                 android:paddingBottom="14dp"
-                android:textColor="#2A2A2A"
-                android:textColorHint="#717171"
+                android:textColor="?attr/colorOnSurface"
+                android:textColorHint="?attr/colorOnSurfaceVariant"
                 android:textSize="18sp" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -70,11 +70,11 @@
             android:layout_marginHorizontal="12dp"
             android:layout_marginBottom="20dp"
             app:boxBackgroundMode="outline"
-            app:boxStrokeColor="@color/brandSmartLearn"
+            app:boxStrokeColor="?attr/colorPrimary"
             app:boxStrokeWidth="@dimen/cardview_default_elevation"
             app:endIconMode="password_toggle"
             app:startIconDrawable="@drawable/ic_contrasena"
-            app:startIconTint="@color/brandSmartLearn">
+            app:startIconTint="?attr/colorPrimary">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_contrasena"
@@ -88,8 +88,8 @@
                 android:paddingTop="14dp"
                 android:paddingEnd="16dp"
                 android:paddingBottom="14dp"
-                android:textColor="#2A2A2A"
-                android:textColorHint="#717171"
+                android:textColor="?attr/colorOnSurface"
+                android:textColorHint="?attr/colorOnSurfaceVariant"
                 android:textSize="18sp" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -102,12 +102,12 @@
             android:layout_marginBottom="10dp"
             android:elevation="8dp"
             android:text="@string/action_sign_in"
-            android:textColor="?attr/colorSurface"
+            android:textColor="?attr/colorOnSecondary"
             android:textSize="18sp"
             android:textStyle="bold"
             app:backgroundTint="?attr/colorSecondary"
             app:cornerRadius="12dp"
-            app:strokeColor="@color/brandSmartLearn"
+            app:strokeColor="?attr/colorPrimary"
             app:strokeWidth="2dp" />
 
         <com.google.android.material.button.MaterialButton
@@ -117,12 +117,12 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="12dp"
             android:text="@string/action_registro"
-            android:textColor="?attr/colorSurface"
+            android:textColor="?attr/colorOnTertiary"
             android:textSize="18sp"
             android:textStyle="bold"
             app:backgroundTint="?attr/colorTertiary"
             app:cornerRadius="12dp"
-            app:strokeColor="@color/brandSmartLearn"
+            app:strokeColor="?attr/colorPrimary"
             app:strokeWidth="2dp" />
     </LinearLayout>
 
@@ -158,7 +158,7 @@
         android:layout_marginBottom="28dp"
         android:alpha="0.75"
         android:text="Desarrollado por CyberPath S.A. de C.V."
-        android:textColor="#FFFFFF"
+        android:textColor="?attr/colorOnPrimary"
         android:textSize="15sp" />
 
 </FrameLayout>

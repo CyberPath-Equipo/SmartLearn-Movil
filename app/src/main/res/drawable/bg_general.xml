@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <color android:color="?attr/android:colorBackground" />
+    </item>
+
+    <item
+        android:drawable="@drawable/patron_linea_base"
+        android:width="400sp"
+        android:height="400sp"
+        android:gravity="right"
+        android:right="250sp"
+        android:top="-55sp"/>
+
+    <item
+        android:drawable="@drawable/patron_linea_base"
+        android:width="400sp"
+        android:height="400sp"
+        android:gravity="left"
+        android:left="200sp"
+        android:top="420sp"/>
+
+</layer-list>

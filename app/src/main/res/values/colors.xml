@@ -11,13 +11,16 @@
     <!-- ========= COLORES BASE LIGHT ========= -->
     <color name="colorHeader">#1E3A8A</color>
     <color name="colorHeaderLight">#3B82F6</color>
-    <color name="colorBackground">#F0F4F8</color>
+    <color name="colorBackground">#BFE4F4</color>
     <color name="colorSurface">#F7EFE5</color>
+
+    <!-- ========= CARD ========= -->
+    <color name="cardColor">#B6D6F0</color>
 
     <!-- ========= COLORES DE TEXTO ========= -->
     <color name="colorOnSurfacePrimary">#030034</color>
     <color name="colorOnSurface">#1F2937</color>
-    <color name="colorOnBackground">#FFFFFFFF</color>
+    <color name="colorOnBackground">#0B1A2B</color>
 
     <!-- ========= COLORES DE ACCIÓN (MEJORADOS) ========= -->
     <color name="colorSecondary">#10B981</color>
@@ -28,8 +31,10 @@
     <!-- ========= COLORES COMPLEMENTARIOS ========= -->
     <color name="colorWarning">#F59E0B</color>
     <color name="colorError">#EF4444</color>
+    <color name="colorDangerStrong">#DB0000</color>
     <color name="colorSuccess">#84CC16</color>
     <color name="colorInfo">#3B82F6</color>
+    <color name="colorSocialInstagram">#E4405F</color>
 
     <!-- ========= COLORES NEUTROS MODERNOS ========= -->
     <color name="colorNeutral50">#F9FAFB</color>
@@ -62,4 +67,12 @@
     <color name="accentGradientStart">#10B981</color>
     <color name="accentGradientEnd">#06B6D4</color>
 
+    <!-- ========= SEEKBAR ========= -->
+    <color name="switch_track_tint_light">#E0E0E0</color>
+    <color name="switch_track_tint_dark">#90CAF9</color>
+
+    <color name="switch_thumb_tint_light">#BDBDBD</color>
+    <color name="switch_thumb_tint_dark">#1976D2</color>
+
+    <color name="cardview_background">#FFFFFFFF</color>
 </resources>

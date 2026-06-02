@@ -5,6 +5,7 @@
     <color name="colorHeader">#121E2C</color>
     <color name="colorBackground">#0F1722</color>
     <color name="colorSurface">#1B2A38</color>
+    <color name="cardColor">#243446</color>
 
     <!-- ========= COLORES DE TEXTO ========= -->
     <color name="colorOnSurfacePrimary">#C4C4C4</color>
@@ -14,4 +15,20 @@
     <!-- ========= COLORES DE ACCIÓN ========= -->
     <color name="colorSecondary">#3FAF7A</color>
     <color name="colorAccent">#2E8CA0</color>
+    <color name="colorAccentLight">#4AAFC4</color>
+
+    <!-- ========= COMPLEMENTARIOS DARK ========= -->
+    <color name="colorError">#FF7A7A</color>
+    <color name="colorDangerStrong">#FF6B6B</color>
+    <color name="colorSocialInstagram">#FF6C8C</color>
+    <color name="colorNeutral100">#2A3442</color>
+    <color name="colorNeutral400">#8FA1B5</color>
+
+    <!-- ========= SWITCH ========= -->
+    <color name="switch_track_tint_light">#4A5A6A</color>
+    <color name="switch_track_tint_dark">#90CAF9</color>
+    <color name="switch_thumb_tint_light">#B0BEC5</color>
+    <color name="switch_thumb_tint_dark">#42A5F5</color>
+
+    <color name="cardview_background">#696969</color>
 </resources>

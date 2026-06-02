@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#122757"
+    android:background="@drawable/bg_gradient_header"
     android:clipChildren="false"
     android:padding="25dp"
     tools:context=".ui.acceso.SignUpFragment">
@@ -41,7 +41,7 @@
                     android:layout_marginBottom="16dp"
                     android:gravity="center"
                     android:text="Registro de Usuarios"
-                    android:textColor="@color/brandSmartLearn"
+                    android:textColor="?attr/colorPrimary"
                     android:textSize="36sp"
                     android:textStyle="bold" />
 
@@ -51,10 +51,10 @@
                     android:layout_marginHorizontal="12dp"
                     android:layout_marginBottom="12dp"
                     app:boxBackgroundMode="outline"
-                    app:boxStrokeColor="@color/brandSmartLearn"
+                    app:boxStrokeColor="?attr/colorPrimary"
                     app:boxStrokeWidth="@dimen/cardview_default_elevation"
                     app:startIconDrawable="@drawable/ic_usuario"
-                    app:startIconTint="@color/brandSmartLearn">
+                    app:startIconTint="?attr/colorPrimary">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_nombre"
@@ -68,8 +68,8 @@
                         android:paddingTop="14dp"
                         android:paddingEnd="16dp"
                         android:paddingBottom="14dp"
-                        android:textColor="#2A2A2A"
-                        android:textColorHint="#717171"
+                        android:textColor="?attr/colorOnSurface"
+                        android:textColorHint="?attr/colorOnSurfaceVariant"
                         android:textSize="18sp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -79,10 +79,10 @@
                     android:layout_marginHorizontal="12dp"
                     android:layout_marginBottom="12dp"
                     app:boxBackgroundMode="outline"
-                    app:boxStrokeColor="@color/brandSmartLearn"
+                    app:boxStrokeColor="?attr/colorPrimary"
                     app:boxStrokeWidth="@dimen/cardview_default_elevation"
                     app:startIconDrawable="@drawable/ic_usuario"
-                    app:startIconTint="@color/brandSmartLearn">
+                    app:startIconTint="?attr/colorPrimary">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_nombre_completo"
@@ -96,8 +96,8 @@
                         android:paddingTop="14dp"
                         android:paddingEnd="16dp"
                         android:paddingBottom="14dp"
-                        android:textColor="#2A2A2A"
-                        android:textColorHint="#717171"
+                        android:textColor="?attr/colorOnSurface"
+                        android:textColorHint="?attr/colorOnSurfaceVariant"
                         android:textSize="18sp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -107,11 +107,11 @@
                     android:layout_marginHorizontal="12dp"
                     android:layout_marginBottom="12dp"
                     app:boxBackgroundMode="outline"
-                    app:boxStrokeColor="@color/brandSmartLearn"
+                    app:boxStrokeColor="?attr/colorPrimary"
                     app:boxStrokeWidth="@dimen/cardview_default_elevation"
                     app:endIconMode="password_toggle"
                     app:startIconDrawable="@drawable/ic_contrasena"
-                    app:startIconTint="@color/brandSmartLearn">
+                    app:startIconTint="?attr/colorPrimary">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_contrasena"
@@ -125,8 +125,8 @@
                         android:paddingTop="14dp"
                         android:paddingEnd="16dp"
                         android:paddingBottom="14dp"
-                        android:textColor="#2A2A2A"
-                        android:textColorHint="#717171"
+                        android:textColor="?attr/colorOnSurface"
+                        android:textColorHint="?attr/colorOnSurfaceVariant"
                         android:textSize="18sp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -136,10 +136,10 @@
                     android:layout_marginHorizontal="12dp"
                     android:layout_marginBottom="12dp"
                     app:boxBackgroundMode="outline"
-                    app:boxStrokeColor="@color/brandSmartLearn"
+                    app:boxStrokeColor="?attr/colorPrimary"
                     app:boxStrokeWidth="@dimen/cardview_default_elevation"
                     app:startIconDrawable="@drawable/ic_correo"
-                    app:startIconTint="@color/brandSmartLearn">
+                    app:startIconTint="?attr/colorPrimary">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_correo"
@@ -153,8 +153,8 @@
                         android:paddingTop="14dp"
                         android:paddingEnd="16dp"
                         android:paddingBottom="14dp"
-                        android:textColor="#2A2A2A"
-                        android:textColorHint="#717171"
+                        android:textColor="?attr/colorOnSurface"
+                        android:textColorHint="?attr/colorOnSurfaceVariant"
                         android:textSize="18sp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -165,7 +165,7 @@
                     android:layout_marginTop="15dp"
                     android:gravity="center"
                     android:text="Accesibilidad para\n Discapacidad Visual"
-                    android:textColor="@color/brandSmartLearn"
+                    android:textColor="?attr/colorPrimary"
                     android:textSize="20sp" />
 
                 <RadioGroup
@@ -182,7 +182,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="Activa"
-                        android:textColor="@color/brandSmartLearn"
+                        android:textColor="?attr/colorPrimary"
                         android:textSize="18sp" />
 
                     <RadioButton
@@ -191,7 +191,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="Inactiva"
-                        android:textColor="@color/brandSmartLearn"
+                        android:textColor="?attr/colorPrimary"
                         android:textSize="18sp" />
                 </RadioGroup>
 
@@ -202,7 +202,7 @@
                     android:layout_marginTop="8dp"
                     android:gravity="center"
                     android:text="Accesibilidad para\n Discapacidad Auditiva"
-                    android:textColor="@color/brandSmartLearn"
+                    android:textColor="?attr/colorPrimary"
                     android:textSize="20sp" />
 
                 <RadioGroup
@@ -219,7 +219,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="Activa"
-                        android:textColor="@color/brandSmartLearn"
+                        android:textColor="?attr/colorPrimary"
                         android:textSize="18sp" />
 
                     <RadioButton
@@ -228,7 +228,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="Inactiva"
-                        android:textColor="@color/brandSmartLearn"
+                        android:textColor="?attr/colorPrimary"
                         android:textSize="18sp" />
                 </RadioGroup>
 
@@ -239,7 +239,7 @@
                     android:layout_marginTop="8dp"
                     android:gravity="center"
                     android:text="Tipo de Usuario"
-                    android:textColor="@color/brandSmartLearn"
+                    android:textColor="?attr/colorPrimary"
                     android:textSize="20sp" />
 
                 <RadioGroup
@@ -256,7 +256,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="Alumno"
-                        android:textColor="@color/brandSmartLearn"
+                        android:textColor="?attr/colorPrimary"
                         android:textSize="18sp" />
 
                     <RadioButton
@@ -265,7 +265,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="Docente"
-                        android:textColor="@color/brandSmartLearn"
+                        android:textColor="?attr/colorPrimary"
                         android:textSize="18sp" />
                 </RadioGroup>
 
@@ -278,12 +278,12 @@
                     android:layout_marginBottom="10dp"
                     android:contentDescription="Botón para registrar al nuevo usuario"
                     android:text="Registrar"
-                    android:textColor="@color/white"
+                    android:textColor="?attr/colorOnSecondary"
                     android:textSize="18sp"
                     android:textStyle="bold"
                     app:backgroundTint="?attr/colorSecondary"
                     app:cornerRadius="12dp"
-                    app:strokeColor="@color/brandSmartLearn"
+                    app:strokeColor="?attr/colorPrimary"
                     app:strokeWidth="2dp" />
 
                 <com.google.android.material.button.MaterialButton
@@ -295,12 +295,12 @@
                     android:layout_marginBottom="10dp"
                     android:contentDescription="Botón para regresar a la pantalla anterior"
                     android:text="Regresar"
-                    android:textColor="@color/white"
+                    android:textColor="?attr/colorOnTertiary"
                     android:textSize="18sp"
                     android:textStyle="bold"
                     app:backgroundTint="?attr/colorTertiary"
                     app:cornerRadius="12dp"
-                    app:strokeColor="@color/brandSmartLearn"
+                    app:strokeColor="?attr/colorPrimary"
                     app:strokeWidth="2dp" />
             </LinearLayout>
         </ScrollView>

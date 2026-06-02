@@ -62,7 +62,7 @@
         android:layout_marginTop="6dp"
         android:gravity="center"
         android:text="Progreso: 0%"
-        android:textColor="@color/colorOnBackground"
+        android:textColor="?attr/colorOnPrimary"
         android:textSize="13sp"
         android:visibility="gone" />
 
