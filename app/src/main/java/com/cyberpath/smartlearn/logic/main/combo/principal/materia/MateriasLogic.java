@@ -54,7 +54,7 @@ public class MateriasLogic {
 
     public void cargarMaterias() {
         if (!datosCargados) {
-            if (NetworkUtils.isInternetAvailable(context)) {
+            if (!NetworkUtils.shouldUseOfflineMode(context)) {
                 modoOffline = false;
                 cargarMateriasAPI(usuarioActual != null ? usuarioActual.getId() : null);
             } else {
@@ -201,6 +201,15 @@ public class MateriasLogic {
     private void calcularYActualizarProgreso(Materia materia, Integer idUsuario) {
         if (materia == null || materia.getId() == null) {
             decrementarProgresosPendientes();
+            return;
+        }
+        if (idUsuario == null) {
+            materia.setProgreso(0);
+            decrementarProgresosPendientes();
+            return;
+        }
+        if (NetworkUtils.shouldUseOfflineMode(context)) {
+            calcularProgresoLocal(materia, idUsuario);
             return;
         }
         if (progresoEnProceso.getOrDefault(materia.getId(), false)) {

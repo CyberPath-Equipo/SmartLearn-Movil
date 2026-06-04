@@ -4,38 +4,57 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/android:colorBackground"
     android:orientation="vertical"
     tools:context=".ui.main.combo.accesibilidad.AccesibilidadFragment">
 
-    <ScrollView
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="20dp">
+        android:layout_height="wrap_content"
+        app:cardBackgroundColor="#CCFFFFFF"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="6dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:background="@drawable/bg_card_elevated"
+            android:padding="16dp">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="24dp"
                 android:text="Configuración de\naccesibilidad"
                 android:textAlignment="center"
                 android:textAppearance="?attr/textAppearanceHeadlineMedium"
-                android:textColor="?attr/colorOnBackground"
+                android:textColor="?attr/colorOnSurface"
                 android:textStyle="bold" />
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        app:cardBackgroundColor="#CCFFFFFF"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="6dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/bg_card_elevated"
+            android:padding="16dp">
 
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
-                app:cardBackgroundColor="?attr/colorSurface"
+                app:cardBackgroundColor="@color/cardColor"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="2dp"
-                app:strokeColor="?attr/colorOutline"
+                app:strokeColor="@color/colorSurface"
                 app:strokeWidth="3dp">
 
                 <LinearLayout
@@ -53,44 +72,52 @@
                         android:textColor="?attr/colorOnSurface"
                         android:textStyle="bold" />
 
-                    <RelativeLayout
+                    <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
                         <com.google.android.material.switchmaterial.SwitchMaterial
                             android:id="@+id/switch_visual"
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_toStartOf="@id/img_visual"
-                            android:layout_marginEnd="16dp"
                             android:text="Habilitar"
-                            android:textColor="?attr/colorOnSurface"
-                            android:textAppearance="?attr/textAppearanceBodyLarge"
-                            android:switchPadding="40dp"
+                            android:scaleX="1.4"
+                            android:scaleY="1.45"
+                            android:transformPivotX="0dp"
+                            android:transformPivotY="8dp"
+                            android:switchPadding="68dp"
+                            app:switchPadding="50dp"
+                            app:thumbRadius="12dp"
+                            app:trackHeight="26dp"
                             app:thumbTint="@color/switch_thumb_tint"
-                            app:trackTint="@color/switch_track_tint" />
+                            app:trackTint="@color/switch_track_tint"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintVertical_bias="0.45" />
 
                         <ImageView
                             android:id="@+id/img_visual"
                             android:layout_width="36dp"
                             android:layout_height="36dp"
-                            android:layout_alignParentEnd="true"
-                            android:layout_centerVertical="true"
                             android:src="@drawable/ic_eye"
-                            app:tint="?attr/colorOnSurface" />
-                    </RelativeLayout>
+                            app:tint="?attr/colorOnSurface"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- TARJETA: DISCAPACIDAD AUDITIVA -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
-                app:cardBackgroundColor="?attr/colorSurface"
+                app:cardBackgroundColor="@color/cardColor"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="2dp"
-                app:strokeColor="?attr/colorOutline"
+                app:strokeColor="@color/colorSurface"
                 app:strokeWidth="3dp">
 
                 <LinearLayout
@@ -108,57 +135,58 @@
                         android:textColor="?attr/colorOnSurface"
                         android:textStyle="bold" />
 
-                    <RelativeLayout
+                    <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
                         <com.google.android.material.switchmaterial.SwitchMaterial
                             android:id="@+id/switch_auditiva"
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_toStartOf="@id/img_auditiva"
-                            android:layout_marginEnd="16dp"
                             android:text="Habilitar"
-                            android:textColor="?attr/colorOnSurface"
-                            android:textAppearance="?attr/textAppearanceBodyLarge"
-                            android:switchPadding="40dp"
+                            android:scaleX="1.4"
+                            android:scaleY="1.45"
+                            android:transformPivotX="0dp"
+                            android:transformPivotY="8dp"
+                            android:switchPadding="68dp"
+                            app:switchPadding="50dp"
+                            app:thumbRadius="12dp"
+                            app:trackHeight="26dp"
                             app:thumbTint="@color/switch_thumb_tint"
-                            app:trackTint="@color/switch_track_tint" />
+                            app:trackTint="@color/switch_track_tint"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintVertical_bias="0.45" />
 
                         <ImageView
                             android:id="@+id/img_auditiva"
                             android:layout_width="36dp"
                             android:layout_height="36dp"
-                            android:layout_alignParentEnd="true"
-                            android:layout_centerVertical="true"
                             android:src="@drawable/ic_volume_muted"
-                            app:tint="?attr/colorOnSurface" />
-                    </RelativeLayout>
+                            app:tint="?attr/colorOnSurface"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- SECCIÓN DE DESCRIPCIONES INFERIORES -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:layout_marginTop="16dp"
+                android:orientation="vertical">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
+                    android:layout_marginBottom="8dp"
                     android:text="Discapacidad visual activa: habilita guía de audio y comandos de voz."
                     android:textAppearance="?attr/textAppearanceBodyMedium"
                     android:textColor="?attr/colorOnBackground" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -170,5 +198,5 @@
             </LinearLayout>
 
         </LinearLayout>
-    </ScrollView>
+    </com.google.android.material.card.MaterialCardView>
 </LinearLayout>

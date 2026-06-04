@@ -60,6 +60,11 @@ public class EjercicioLogic {
     private void cargarSubtema() {
         if (ejercicio == null || ejercicio.getIdSubtema() == null) return;
 
+        if (NetworkUtils.shouldUseOfflineMode(context)) {
+            cargarSubtemaLocal();
+            return;
+        }
+
         ApiService apiService = RetrofitClient.getApiService();
         Call<Subtema> call = apiService.getSubtemaById(ejercicio.getIdSubtema());
 
@@ -71,13 +76,27 @@ public class EjercicioLogic {
                 if (response.isSuccessful() && response.body() != null) {
                     subtema = response.body();
                     fragment.setSubtema(subtema);
+                } else {
+                    cargarSubtemaLocal();
                 }
             }
 
             @Override
             public void onFailure(Call<Subtema> call, Throwable t) {
+                cargarSubtemaLocal();
             }
         });
+    }
+
+    private void cargarSubtemaLocal() {
+        try {
+            subtema = contenidoDAO.obtenerSubtemaPorId(ejercicio.getIdSubtema());
+            if (subtema != null && fragment != null && fragment.isAdded()) {
+                fragment.setSubtema(subtema);
+            }
+        } catch (Exception e) {
+            Log.e("EjercicioLogic", "No se pudo cargar subtema local", e);
+        }
     }
 
     private void cargarPreguntas() {
@@ -86,7 +105,7 @@ public class EjercicioLogic {
             return;
         }
 
-        if (!NetworkUtils.isInternetAvailable(context)) {
+        if (NetworkUtils.shouldUseOfflineMode(context)) {
             cargarPreguntasLocales();
             return;
         }
@@ -102,7 +121,16 @@ public class EjercicioLogic {
                 if (response.isSuccessful() && response.body() != null) {
                     allPreguntas.clear();
                     allPreguntas.addAll(response.body());
-                    cargarOpcionesDePreguntas();
+
+                    if (preguntasConOpcionesCompletas(allPreguntas)) {
+                        for (Pregunta pregunta : allPreguntas) {
+                            guardarPreguntaYOpcionesLocal(pregunta, pregunta.getOpciones());
+                        }
+                        fragment.mostrarSiguientePregunta();
+                        fragment.iniciarNavegacionPorVoz();
+                    } else {
+                        cargarOpcionesDePreguntas();
+                    }
                 } else {
                     cargarPreguntasLocales();
                 }
@@ -121,12 +149,15 @@ public class EjercicioLogic {
             allPreguntas.clear();
             List<Pregunta> preguntasLocales = contenidoDAO.obtenerPreguntasPorEjercicio(ejercicio.getId());
             for (Pregunta pregunta : preguntasLocales) {
-                pregunta.setOpciones(contenidoDAO.obtenerOpcionesPorPregunta(pregunta.getId()));
-                allPreguntas.add(pregunta);
+                List<Opcion> opcionesLocales = contenidoDAO.obtenerOpcionesPorPregunta(pregunta.getId());
+                pregunta.setOpciones(opcionesLocales);
+                if (opcionesLocales != null && !opcionesLocales.isEmpty()) {
+                    allPreguntas.add(pregunta);
+                }
             }
 
             if (allPreguntas.isEmpty()) {
-                fragment.showToast("No hay preguntas disponibles sin conexión");
+                fragment.showToast("No hay ejercicios offline completos. Vuelve a descargar la materia.");
                 return;
             }
 
@@ -159,8 +190,12 @@ public class EjercicioLogic {
 
                     if (response.isSuccessful() && response.body() != null) {
                         List<Opcion> opciones = response.body();
-                        pregunta.setOpciones(opciones);
-                        guardarPreguntaYOpcionesLocal(pregunta, opciones);
+                        if (opciones != null && !opciones.isEmpty()) {
+                            pregunta.setOpciones(opciones);
+                            guardarPreguntaYOpcionesLocal(pregunta, opciones);
+                        } else if (pregunta.getOpciones() != null && !pregunta.getOpciones().isEmpty()) {
+                            guardarPreguntaYOpcionesLocal(pregunta, pregunta.getOpciones());
+                        }
                     }
 
                     completed[0]++;
@@ -199,11 +234,26 @@ public class EjercicioLogic {
                 if (opcion.getIdPregunta() == null) {
                     opcion.setIdPregunta(pregunta.getId());
                 }
+                if (opcion.getIdPregunta() == null) {
+                    continue;
+                }
                 contenidoDAO.insertarOpcion(opcion);
             }
         } catch (Exception e) {
             Log.e("EjercicioLogic", "Error guardando preguntas/opciones en local", e);
         }
+    }
+
+    private boolean preguntasConOpcionesCompletas(List<Pregunta> preguntas) {
+        if (preguntas == null || preguntas.isEmpty()) {
+            return false;
+        }
+        for (Pregunta pregunta : preguntas) {
+            if (pregunta == null || pregunta.getOpciones() == null || pregunta.getOpciones().isEmpty()) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public void mostrarSiguientePregunta() {
@@ -235,15 +285,18 @@ public class EjercicioLogic {
 
         if (selectedOpcion.isCorrecta()) {
             score++;
-            fragment.showToast("¡Correcto!");
-        } else {
-            fragment.showToast("Incorrecto");
         }
 
-        preguntasContestadas.add(currentQuestionIndex);
-        currentQuestionIndex++;
-        fragment.clearOptionsSelection();
-        mostrarSiguientePregunta();
+        fragment.setBtnCheckEnabled(false);
+        final boolean correcta = selectedOpcion.isCorrecta();
+        fragment.animarResultadoVerificacion(correcta, () -> {
+            fragment.showToast(correcta ? "¡Correcto!" : "Incorrecto");
+            preguntasContestadas.add(currentQuestionIndex);
+            currentQuestionIndex++;
+            fragment.clearOptionsSelection();
+            fragment.setBtnCheckEnabled(true);
+            mostrarSiguientePregunta();
+        });
     }
 
     public void comprobarRespuestaDesdeAccesibilidad(BiConsumer<Boolean, Integer> callback) {
@@ -330,6 +383,7 @@ public class EjercicioLogic {
 
         actualizarEjercicio();
         ejercicioFinalizado = true;
+        fragment.animarResumenResultado();
     }
 
     private void agregarIntento() {

@@ -78,6 +78,9 @@ dependencies {
     implementation("com.google.android.material:material:1.12.0")
     implementation("androidx.recyclerview:recyclerview:1.3.2")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.7")
+    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
+    implementation("com.github.blackfizz:eazegraph:1.2.2@aar")
+    implementation("com.nineoldandroids:library:2.4.0")
 
     // Red
     implementation("com.squareup.retrofit2:retrofit:2.11.0")

@@ -33,6 +33,7 @@ public class Tema implements Parcelable {
     @SerializedName("updatedAt")
     private String updatedAt;
     private Integer idMateria;
+    private String slugMateria;
 
 
     protected Tema(Parcel in) {
@@ -58,6 +59,8 @@ public class Tema implements Parcelable {
         } else {
             idMateria = in.readInt();
         }
+
+        slugMateria = in.readString();
     }
 
     @Override
@@ -90,6 +93,8 @@ public class Tema implements Parcelable {
             dest.writeByte((byte) 1);
             dest.writeInt(idMateria);
         }
+
+        dest.writeString(slugMateria);
     }
 
     @Override

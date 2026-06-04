@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.cyberpath.smartlearn.R;
 import com.cyberpath.smartlearn.data.model.contenido.Materia;
 
@@ -49,16 +50,11 @@ public class AdaptadorMaterias extends RecyclerView.Adapter<AdaptadorMaterias.Ma
         return m != null && m.getId() != null ? m.getId().longValue() : realPos;
     }
 
-    @Override
-    public int getItemViewType(int position) {
-        return 0;
-    }
-
     @NonNull
     @Override
     public MateriaViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.element_carousel, parent, false);
+                .inflate(R.layout.element_carousel_materias, parent, false);
         return new MateriaViewHolder(view);
     }
 
@@ -91,6 +87,9 @@ public class AdaptadorMaterias extends RecyclerView.Adapter<AdaptadorMaterias.Ma
             holder.progressBar.setProgress(materia.getProgreso());
             holder.tvProgreso.setText("Progreso: " + materia.getProgreso() + "%");
 
+            // Cargar imagen desde slug usando Glide
+            cargarImagenDesdeSlug(holder.imageMateria, materia.getSlug());
+
             holder.itemView.setOnClickListener(v -> {
                 if (listener != null) {
                     listener.onMateriaClick(materia);
@@ -101,10 +100,9 @@ public class AdaptadorMaterias extends RecyclerView.Adapter<AdaptadorMaterias.Ma
             holder.tvDescripcion.setText("Descripción no disponible");
             holder.progressBar.setVisibility(View.GONE);
             holder.tvProgreso.setVisibility(View.GONE);
+            holder.imageMateria.setImageResource(R.drawable.ic_launcher_foreground);
             holder.itemView.setOnClickListener(null);
         }
-
-        holder.imageMateria.setImageResource(R.drawable.ic_launcher_foreground);
     }
 
     @Override
@@ -113,6 +111,23 @@ public class AdaptadorMaterias extends RecyclerView.Adapter<AdaptadorMaterias.Ma
         if (realSize == 0) return 0;
         if (realSize == 1) return 1;
         return Integer.MAX_VALUE;
+    }
+
+    /**
+     * Carga una imagen desde una URL usando Glide.
+     * Si la URL no existe o está vacía, carga la imagen por defecto.
+     */
+    private void cargarImagenDesdeSlug(ImageView imageView, String slugUrl) {
+        if (slugUrl != null && !slugUrl.isEmpty()) {
+            Glide.with(imageView.getContext())
+                    .load(slugUrl)
+                    .placeholder(R.drawable.ic_launcher_foreground)
+                    .error(R.drawable.ic_launcher_foreground)
+                    .centerCrop()
+                    .into(imageView);
+        } else {
+            imageView.setImageResource(R.drawable.ic_launcher_foreground);
+        }
     }
 
     public interface OnMateriaClickListener {

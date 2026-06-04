@@ -100,7 +100,7 @@ public class TemasFragment extends Fragment {
 
     private void crearCarrusel(View view) {
         viewPagerTemas = view.findViewById(R.id.viewPagerTemas);
-        adapterTemas = new AdaptadorTemas(new ArrayList<>(), this::onTemaClick);
+        adapterTemas = new AdaptadorTemas(new ArrayList<>(), this::onTemaClick, materia);
         viewPagerTemas.setAdapter(adapterTemas);
 
         viewPagerTemas.setOffscreenPageLimit(3);
@@ -305,6 +305,9 @@ public class TemasFragment extends Fragment {
     }
 
     private void onTemaClick(Tema tema) {
+        if (tema != null && materia != null) {
+            tema.setSlugMateria(materia.getSlug());
+        }
         var action = TemasFragmentDirections.actionTemasFragmentToSubtemasFragment(tema);
         NavHostFragment.findNavController(this).navigate(action);
     }
@@ -376,6 +379,9 @@ public class TemasFragment extends Fragment {
 
     public void entrarTemaDesdeAccesibilidad(Tema tema, BiConsumer<Boolean, Tema> callback) {
         try {
+            if (tema != null && materia != null) {
+                tema.setSlugMateria(materia.getSlug());
+            }
             var action = TemasFragmentDirections.actionTemasFragmentToSubtemasFragment(tema);
             NavHostFragment.findNavController(this).navigate(action);
             callback.accept(true, tema);

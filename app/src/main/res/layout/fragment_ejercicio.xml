@@ -50,6 +50,17 @@
             app:cornerRadius="12dp"
             android:elevation="4dp" />
 
+        <TextView
+            android:id="@+id/tv_feedback_fx"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="16dp"
+            android:alpha="0"
+            android:text=""
+            android:textSize="46sp"
+            android:visibility="gone" />
+
     </LinearLayout>
 
     <LinearLayout

@@ -37,6 +37,11 @@ import com.cyberpath.smartlearn.util.preferences.ThemeManager;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.navigation.NavigationView;
 
+import java.text.Normalizer;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Locale;
+
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private static final String TAG = "MainActivity";
     private static final long SHAKE_COOLDOWN_MS = 1800L;
@@ -50,6 +55,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ShakeDetector shakeDetector;
     private AlertDialog dialogoShake;
     private NavController.OnDestinationChangedListener audioCleanupListener;
+    private boolean flujoVozShakeActivo;
+
+    private static final List<ModuloVoz> MODULOS_VOZ = Arrays.asList(
+            new ModuloVoz(R.id.materiasFragment, "principal", Arrays.asList("principal", "materias", "inicio")),
+            new ModuloVoz(R.id.agregarMateriaFragment, "agregar materia", Arrays.asList("agregar materia", "crear materia", "nueva materia")),
+            new ModuloVoz(R.id.configuracionFragment, "configuracion", Arrays.asList("configuracion", "configurar", "ajustes")),
+            new ModuloVoz(R.id.accesibilidadFragment, "accesibilidad", Arrays.asList("accesibilidad", "accesible")),
+            new ModuloVoz(R.id.estadisticasFragment, "estadisticas", Arrays.asList("estadisticas", "progreso", "avance")),
+            new ModuloVoz(R.id.cuentaFragment, "cuenta", Arrays.asList("cuenta", "perfil", "usuario")),
+            new ModuloVoz(R.id.ayudaFragment, "ayuda", Arrays.asList("ayuda", "soporte"))
+    );
 
     private TextView tvUltimoSubtemaMenu;
     private MenuItem ultimoSubtemaItem;
@@ -89,9 +105,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         if (ultimoSubtemaItem != null && ultimoSubtemaItem.getActionView() != null) {
             View actionView = ultimoSubtemaItem.getActionView();
+
+            if (actionView.getParent() instanceof View) {
+                View padre = (View) actionView.getParent();
+                android.view.ViewGroup.LayoutParams params = padre.getLayoutParams();
+                params.width = android.view.ViewGroup.LayoutParams.MATCH_PARENT;
+                padre.setLayoutParams(params);
+            }
+
             tvUltimoSubtemaMenu = actionView.findViewById(R.id.tv_ultimo_subtema_menu);
 
-            actionView.setOnClickListener(v -> {
+            View contenedorClic = actionView.findViewById(R.id.container_item_estandar);
+            View vistaDestino = (contenedorClic != null) ? contenedorClic : actionView;
+
+            vistaDestino.setOnClickListener(v -> {
                 if (ultimoSubtema != null) {
                     mostrarDialogoUltimoSubtema();
                 } else {
@@ -100,6 +127,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 drawerLayout.closeDrawer(GravityCompat.START);
             });
         }
+
+        prepararItemMenu(R.id.materiasFragment, R.drawable.ic_menu_principal, "Principal");
+        prepararItemMenu(R.id.agregarMateriaFragment, R.drawable.ic_menu_agregar, "Agregar Materia");
+        prepararItemMenu(R.id.configuracionFragment, R.drawable.ic_menu_configuracion, "Configuración");
+        prepararItemMenu(R.id.accesibilidadFragment, R.drawable.ic_menu_accesibilidad, "Accesibilidad");
+        prepararItemMenu(R.id.estadisticasFragment, R.drawable.ic_menu_estadisticas, "Estadísticas");
+        prepararItemMenu(R.id.cuentaFragment, R.drawable.ic_menu_cuenta, "Cuenta");
+        prepararItemMenu(R.id.ayudaFragment, R.drawable.ic_ayuda, "Ayuda");
+        prepararItemMenu(R.id.cerrarSesion, R.drawable.ic_salir, "Cerrar Sesión");
 
         navigationView.setNavigationItemSelectedListener(item -> {
             int id = item.getItemId();
@@ -142,7 +178,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             return;
         }
 
-        shakeDetector = new ShakeDetector(SHAKE_COOLDOWN_MS, this::mostrarDialogoIrMaterias);
+        shakeDetector = new ShakeDetector(SHAKE_COOLDOWN_MS, this::manejarShake);
+    }
+
+    private void manejarShake() {
+        if (PreferencesManager.isAccesibilidadVisualActivada(this)) {
+            iniciarFlujoVozShake();
+            return;
+        }
+        mostrarDialogoIrMaterias();
     }
 
     private void mostrarDialogoIrMaterias() {
@@ -174,6 +218,232 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         vista.findViewById(R.id.btnCancelar).setOnClickListener(v -> dialogoShake.dismiss());
 
         dialogoShake.setOnDismissListener(dialog -> dialogoShake = null);
+    }
+
+    private void iniciarFlujoVozShake() {
+        if (isFinishing() || isDestroyed() || flujoVozShakeActivo) {
+            return;
+        }
+
+        EntradaAudio entradaAudio = EntradaAudio.obtenerInstancia();
+        SalidaAudio salidaAudio = SalidaAudio.obtenerInstancia();
+        if (entradaAudio == null || salidaAudio == null) {
+            mostrarDialogoIrMaterias();
+            return;
+        }
+
+        if (!entradaAudio.isSpeechRecognizerReady()) {
+            salidaAudio.hablar("Para moverte por voz necesito el reconocimiento de Android y permiso de microfono.", true);
+            mostrarDialogoIrMaterias();
+            return;
+        }
+
+        if (dialogoShake != null && dialogoShake.isShowing()) {
+            dialogoShake.dismiss();
+        }
+
+        flujoVozShakeActivo = true;
+        detenerAudioAccesibilidad();
+        salidaAudio.hablar("Quieres moverte a otro modulo o permanecer ahi?", true, this::escucharDecisionMovimiento);
+    }
+
+    private void escucharDecisionMovimiento() {
+        if (!flujoVozShakeActivo) {
+            return;
+        }
+
+        EntradaAudio entradaAudio = EntradaAudio.obtenerInstancia();
+        if (entradaAudio == null) {
+            finalizarFlujoVozShake();
+            return;
+        }
+
+        entradaAudio.escucharTextoLibreAndroid(this::procesarDecisionMovimiento);
+    }
+
+    private void procesarDecisionMovimiento(String textoReconocido) {
+        if (!flujoVozShakeActivo) {
+            return;
+        }
+
+        String texto = normalizarTextoVoz(textoReconocido);
+        SalidaAudio salidaAudio = SalidaAudio.obtenerInstancia();
+        if (salidaAudio == null) {
+            finalizarFlujoVozShake();
+            return;
+        }
+
+        if (contieneAlgunTermino(texto, "mover", "moverte", "moverse", "cambiar", "ir", "si", "si claro", "claro")) {
+            anunciarModulosYEscucharSeleccion();
+            return;
+        }
+
+        if (contieneAlgunTermino(texto, "permanecer", "quedar", "quedarme", "aqui", "aqui mismo", "no")) {
+            salidaAudio.hablar("Perfecto, permanecemos en este modulo.", true, this::finalizarFlujoVozShake);
+            return;
+        }
+
+        salidaAudio.hablar("No te entendi. Di moverte o permanecer.", true, this::escucharDecisionMovimiento);
+    }
+
+    private void anunciarModulosYEscucharSeleccion() {
+        if (!flujoVozShakeActivo) {
+            return;
+        }
+
+        SalidaAudio salidaAudio = SalidaAudio.obtenerInstancia();
+        if (salidaAudio == null) {
+            finalizarFlujoVozShake();
+            return;
+        }
+
+        StringBuilder lista = new StringBuilder();
+        for (int i = 0; i < MODULOS_VOZ.size(); i++) {
+            if (i > 0) {
+                lista.append(", ");
+            }
+            lista.append(MODULOS_VOZ.get(i).nombreVisible);
+        }
+
+        String mensaje = "Los modulos disponibles son: " + lista + ". A que modulo te quieres mover? O decir repetir la lista.";
+        salidaAudio.hablar(mensaje, true, this::escucharSeleccionModulo);
+    }
+
+    private void escucharSeleccionModulo() {
+        if (!flujoVozShakeActivo) {
+            return;
+        }
+
+        EntradaAudio entradaAudio = EntradaAudio.obtenerInstancia();
+        if (entradaAudio == null) {
+            finalizarFlujoVozShake();
+            return;
+        }
+
+        entradaAudio.escucharTextoLibreAndroid(this::procesarSeleccionModulo);
+    }
+
+    private void procesarSeleccionModulo(String textoReconocido) {
+        if (!flujoVozShakeActivo) {
+            return;
+        }
+
+        String texto = normalizarTextoVoz(textoReconocido);
+        SalidaAudio salidaAudio = SalidaAudio.obtenerInstancia();
+        if (salidaAudio == null) {
+            finalizarFlujoVozShake();
+            return;
+        }
+
+        if (contieneAlgunTermino(texto, "repetir", "repite", "otra vez", "repetir lista")) {
+            anunciarModulosYEscucharSeleccion();
+            return;
+        }
+
+        ModuloVoz moduloVoz = resolverModuloPorTexto(texto);
+        if (moduloVoz == null) {
+            salidaAudio.hablar("No reconoci ese modulo. Di el nombre del modulo o repetir la lista.", true, this::escucharSeleccionModulo);
+            return;
+        }
+
+        salidaAudio.hablar("Perfecto, te muevo a " + moduloVoz.nombreVisible + ".", true, () -> {
+            boolean navego = navegarAModulo(moduloVoz.idItemMenu);
+            if (!navego) {
+                showToast("No se pudo navegar a " + moduloVoz.nombreVisible);
+            }
+            finalizarFlujoVozShake();
+        });
+    }
+
+    private boolean navegarAModulo(int idItemMenu) {
+        if (navigationView == null) {
+            return false;
+        }
+
+        boolean handled = navigationView.getMenu().performIdentifierAction(idItemMenu, 0);
+        if (handled) {
+            return true;
+        }
+
+        if (navController == null) {
+            return false;
+        }
+
+        try {
+            if (idItemMenu == R.id.materiasFragment) {
+                navigateToMateriasSafely();
+            } else {
+                navController.navigate(idItemMenu);
+            }
+            return true;
+        } catch (Exception e) {
+            Log.w(TAG, "No se pudo navegar al modulo por voz", e);
+            return false;
+        }
+    }
+
+    private ModuloVoz resolverModuloPorTexto(String textoNormalizado) {
+        for (ModuloVoz modulo : MODULOS_VOZ) {
+            String nombreToken = tokenizarTexto(modulo.nombreVisible);
+            if (textoNormalizado.contains(modulo.nombreVisible) || textoNormalizado.contains(nombreToken)) {
+                return modulo;
+            }
+
+            for (String alias : modulo.aliases) {
+                String aliasNormalizado = normalizarTextoVoz(alias);
+                String aliasToken = tokenizarTexto(aliasNormalizado);
+                if (textoNormalizado.contains(aliasNormalizado) || textoNormalizado.contains(aliasToken)) {
+                    return modulo;
+                }
+            }
+        }
+        return null;
+    }
+
+    private boolean contieneAlgunTermino(String texto, String... terminos) {
+        String tokenTexto = tokenizarTexto(texto);
+        if (tokenTexto.isEmpty()) {
+            return false;
+        }
+        for (String termino : terminos) {
+            String terminoNormalizado = normalizarTextoVoz(termino);
+            String terminoToken = tokenizarTexto(terminoNormalizado);
+            if (terminoToken.isEmpty()) {
+                continue;
+            }
+            if (texto.contains(terminoNormalizado)
+                    || tokenTexto.contains(terminoToken)
+                    || terminoToken.contains(tokenTexto)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private String normalizarTextoVoz(String texto) {
+        if (texto == null) {
+            return "";
+        }
+
+        String normalizado = Normalizer.normalize(texto.toLowerCase(Locale.ROOT), Normalizer.Form.NFD);
+        normalizado = normalizado.replaceAll("\\p{M}+", "");
+        normalizado = normalizado.replaceAll("[^a-z0-9\\s]", " ");
+        return normalizado.replaceAll("\\s+", " ").trim();
+    }
+
+    private String tokenizarTexto(String texto) {
+        return normalizarTextoVoz(texto).replace(" ", "");
+    }
+
+    private void finalizarFlujoVozShake() {
+        flujoVozShakeActivo = false;
+        try {
+            EntradaAudio entradaAudio = EntradaAudio.obtenerInstancia();
+            if (entradaAudio != null) {
+                entradaAudio.detenerEscucha();
+            }
+        } catch (Exception ignored) {
+        }
     }
 
     private void navigateToMateriasSafely() {
@@ -331,6 +601,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (sensorManager != null && shakeDetector != null) {
             sensorManager.unregisterListener(shakeDetector);
         }
+        finalizarFlujoVozShake();
         super.onPause();
     }
 
@@ -361,6 +632,45 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 salidaAudio.detener();
             }
         } catch (Exception ignored) {
+        }
+    }
+
+    private void prepararItemMenu(int idItem, int idIcono, String titulo) {
+        MenuItem item = navigationView.getMenu().findItem(idItem);
+        if (item != null && item.getActionView() != null) {
+            View actionView = item.getActionView();
+
+            if (actionView.getParent() instanceof View) {
+                View padre = (View) actionView.getParent();
+                android.view.ViewGroup.LayoutParams params = padre.getLayoutParams();
+                params.width = android.view.ViewGroup.LayoutParams.MATCH_PARENT;
+                padre.setLayoutParams(params);
+            }
+
+            ImageView icono = actionView.findViewById(R.id.img_menu_icono);
+            TextView texto = actionView.findViewById(R.id.tv_menu_texto);
+
+            if (icono != null) icono.setImageResource(idIcono);
+            if (texto != null) texto.setText(titulo);
+
+            View contenedorClic = actionView.findViewById(R.id.container_item_estandar);
+            if (contenedorClic != null) {
+                contenedorClic.setOnClickListener(v -> {
+                    navigationView.getMenu().performIdentifierAction(idItem, 0);
+                });
+            }
+        }
+    }
+
+    private static final class ModuloVoz {
+        private final int idItemMenu;
+        private final String nombreVisible;
+        private final List<String> aliases;
+
+        private ModuloVoz(int idItemMenu, String nombreVisible, List<String> aliases) {
+            this.idItemMenu = idItemMenu;
+            this.nombreVisible = nombreVisible;
+            this.aliases = aliases;
         }
     }
 }

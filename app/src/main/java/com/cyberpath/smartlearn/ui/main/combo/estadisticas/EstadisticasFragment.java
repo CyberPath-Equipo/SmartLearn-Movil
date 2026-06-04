@@ -1,12 +1,12 @@
 package com.cyberpath.smartlearn.ui.main.combo.estadisticas;
 
 import android.os.Bundle;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,23 +21,35 @@ import com.cyberpath.smartlearn.data.model.estadisticas.InteresItem;
 import com.cyberpath.smartlearn.data.model.estadisticas.ResumenEstadisticas;
 import com.cyberpath.smartlearn.logic.main.combo.estadisticas.EstadisticasLogic;
 import com.cyberpath.smartlearn.util.preferences.PreferencesManager;
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.charts.ScatterChart;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.ScatterData;
+import com.github.mikephil.charting.data.ScatterDataSet;
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
+import com.github.mikephil.charting.formatter.ValueFormatter;
+import org.eazegraph.lib.models.PieModel;
 
 import java.text.DecimalFormat;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
 public class EstadisticasFragment extends Fragment {
 
-    private PastelChartView pieEjercicios;
-    private PastelChartView piePromedio;
+    private org.eazegraph.lib.charts.PieChart pieEjercicios;
+    private org.eazegraph.lib.charts.PieChart piePromedio;
     private TextView tvEjerciciosPieLabel;
     private TextView tvPromedioPieLabel;
     private TextView tvTiempoTotal;
     private TextView tvSesiones;
     private TextView tvAnalisis;
-    private LinearLayout chartTiempo;
-    private LinearLayout chartRendimiento;
+    private BarChart chartTiempo;
+    private ScatterChart chartRendimiento;
     private LinearLayout listIntereses;
     private View loadingView;
     private View contentView;
@@ -70,6 +82,11 @@ public class EstadisticasFragment extends Fragment {
         contentView = view.findViewById(R.id.layout_content);
         Button btnActualizar = view.findViewById(R.id.btn_actualizar_estadisticas);
 
+        configurarPieChart(pieEjercicios);
+        configurarPieChart(piePromedio);
+        configurarBarChart(chartTiempo);
+        configurarScatterChart(chartRendimiento);
+
         btnActualizar.setOnClickListener(v -> cargarEstadisticas());
         cargarEstadisticas();
     }
@@ -98,8 +115,8 @@ public class EstadisticasFragment extends Fragment {
                 loadingView.setVisibility(View.GONE);
                 contentView.setVisibility(View.VISIBLE);
                 renderResumen(resumen);
-                renderChart(chartTiempo, tiempo, "min", 1f);
-                renderChart(chartRendimiento, rendimiento, "%", 100f);
+                renderTiempoChart(tiempo);
+                renderRendimientoScatter(rendimiento);
                 renderIntereses(intereses);
                 renderAnalisis(resumen, intereses);
             });
@@ -116,20 +133,23 @@ public class EstadisticasFragment extends Fragment {
         float margenMejora = Math.max(0f, 100f - promedio);
         DecimalFormat decimal = new DecimalFormat("0.0");
 
-        pieEjercicios.setCenterColor(ContextCompat.getColor(requireContext(), R.color.colorSurface));
-        piePromedio.setCenterColor(ContextCompat.getColor(requireContext(), R.color.colorSurface));
+        renderPieData(
+                pieEjercicios,
+                progreso,
+                pendiente,
+                "Completado",
+                "Pendiente",
+                new int[]{0xFF3A86FF, 0xFFE7ECF4}
+        );
 
-        pieEjercicios.setSlices(Arrays.asList(
-                new PastelChartView.Slice(progreso, 0xFF3A86FF),
-                new PastelChartView.Slice(pendiente, 0xFFE6E6E6)
-        ));
-        pieEjercicios.setCenterText(PastelChartView.formatPercent(progreso) + "\nCompleto");
-
-        piePromedio.setSlices(Arrays.asList(
-                new PastelChartView.Slice(promedio, 0xFF2FBF71),
-                new PastelChartView.Slice(margenMejora, 0xFFF5D547)
-        ));
-        piePromedio.setCenterText(PastelChartView.formatPercent(promedio) + "\nPromedio");
+        renderPieData(
+                piePromedio,
+                promedio,
+                margenMejora,
+                "Acierto",
+                "Margen",
+                new int[]{0xFF2FBF71, 0xFFF5D547}
+        );
 
         tvEjerciciosPieLabel.setText(String.format(Locale.getDefault(),
                 "Ejercicios: %d de %d", completados, total));
@@ -140,42 +160,159 @@ public class EstadisticasFragment extends Fragment {
         tvSesiones.setText(String.format(Locale.getDefault(), "%d sesiones registradas", resumen.getSesionesEstudio()));
     }
 
-    private void renderChart(LinearLayout container, List<DatoHistorico> datos, String sufijo, float escalaMaxima) {
-        container.removeAllViews();
-
+    private void renderTiempoChart(List<DatoHistorico> datos) {
         if (datos == null || datos.isEmpty()) {
-            TextView empty = new TextView(requireContext());
-            empty.setText("Sin datos aún. Estudia un poco y vuelve a consultar.");
-            container.addView(empty);
+            chartTiempo.clear();
+            chartTiempo.setNoDataText("Sin datos aún. Estudia un poco y vuelve a consultar.");
+            chartTiempo.invalidate();
             return;
         }
 
-        float maxDato = 0f;
-        for (DatoHistorico dato : datos) {
+        List<BarEntry> entries = new java.util.ArrayList<>();
+        List<String> labels = new java.util.ArrayList<>();
+        float maxDato = 1f;
+
+        for (int i = 0; i < datos.size(); i++) {
+            DatoHistorico dato = datos.get(i);
+            entries.add(new BarEntry(i, dato.getValor()));
+            labels.add(dato.getEtiqueta());
             maxDato = Math.max(maxDato, dato.getValor());
         }
 
-        if (escalaMaxima > 0f) {
-            maxDato = Math.max(maxDato, escalaMaxima);
-        }
+        BarDataSet dataSet = new BarDataSet(entries, "Minutos por dia");
+        dataSet.setColor(0xFF3A86FF);
+        dataSet.setValueTextColor(Color.DKGRAY);
+        dataSet.setValueTextSize(10f);
 
-        for (DatoHistorico dato : datos) {
-            View row = LayoutInflater.from(requireContext()).inflate(R.layout.element_stat_bar, container, false);
-            TextView tvLabel = row.findViewById(R.id.tv_bar_label);
-            TextView tvValue = row.findViewById(R.id.tv_bar_value);
-            ProgressBar progressBar = row.findViewById(R.id.progress_bar_value);
+        BarData data = new BarData(dataSet);
+        data.setBarWidth(0.58f);
+        data.setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getBarLabel(BarEntry barEntry) {
+                return String.format(Locale.getDefault(), "%.0f", barEntry.getY());
+            }
+        });
 
-            int progress = maxDato <= 0f ? 0 : Math.round((dato.getValor() / maxDato) * 100f);
-            progressBar.setProgress(Math.max(0, Math.min(100, progress)));
-
-            tvLabel.setText(dato.getEtiqueta());
-            tvValue.setText(String.format(Locale.getDefault(), "%.1f %s", dato.getValor(), sufijo));
-            progressBar.setContentDescription(String.format(Locale.getDefault(),
-                    "%s con %.1f %s", dato.getEtiqueta(), dato.getValor(), sufijo));
-
-            container.addView(row);
-        }
+        chartTiempo.setData(data);
+        chartTiempo.getXAxis().setValueFormatter(new IndexAxisValueFormatter(labels));
+        chartTiempo.getAxisLeft().setAxisMaximum(maxDato * 1.2f);
+        chartTiempo.animateY(450);
+        chartTiempo.invalidate();
     }
+
+    private void renderRendimientoScatter(List<DatoHistorico> datos) {
+        if (datos == null || datos.isEmpty()) {
+            chartRendimiento.clear();
+            chartRendimiento.setNoDataText("Sin evaluaciones suficientes para mostrar tendencia.");
+            chartRendimiento.invalidate();
+            return;
+        }
+
+        List<com.github.mikephil.charting.data.Entry> entries = new java.util.ArrayList<>();
+        List<String> labels = new java.util.ArrayList<>();
+
+        for (int i = 0; i < datos.size(); i++) {
+            DatoHistorico dato = datos.get(i);
+            entries.add(new com.github.mikephil.charting.data.Entry(i, dato.getValor()));
+            labels.add(dato.getEtiqueta());
+        }
+
+        ScatterDataSet dataSet = new ScatterDataSet(entries, "Acierto en evaluaciones");
+        dataSet.setScatterShape(ScatterChart.ScatterShape.CIRCLE);
+        dataSet.setScatterShapeSize(11f);
+        dataSet.setColor(0xFF2FBF71);
+        dataSet.setValueTextColor(Color.DKGRAY);
+        dataSet.setValueTextSize(10f);
+        dataSet.setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getPointLabel(com.github.mikephil.charting.data.Entry entry) {
+                return String.format(Locale.getDefault(), "%.0f%%", entry.getY());
+            }
+        });
+
+        ScatterData data = new ScatterData(dataSet);
+        chartRendimiento.setData(data);
+        chartRendimiento.getXAxis().setValueFormatter(new IndexAxisValueFormatter(labels));
+        chartRendimiento.animateY(450);
+        chartRendimiento.invalidate();
+    }
+
+    private void configurarPieChart(org.eazegraph.lib.charts.PieChart chart) {
+        chart.setUsePieRotation(false);
+        chart.setInnerPadding(24f);
+        chart.setInnerPaddingColor(ContextCompat.getColor(requireContext(), R.color.cardColor));
+    }
+
+    private void renderPieData(org.eazegraph.lib.charts.PieChart chart,
+                               float valueA,
+                               float valueB,
+                               String labelA,
+                               String labelB,
+                               int[] colors) {
+        chart.clearChart();
+
+        if ((valueA + valueB) <= 0f) {
+            chart.addPieSlice(new PieModel("Sin datos", 100f, 0xFFDDDDDD));
+        } else {
+            if (valueA > 0f) {
+                chart.addPieSlice(new PieModel(labelA, valueA, colors[0]));
+            }
+            if (valueB > 0f) {
+                chart.addPieSlice(new PieModel(labelB, valueB, colors[1]));
+            }
+        }
+
+        chart.startAnimation();
+    }
+
+    private void configurarBarChart(BarChart chart) {
+        chart.getDescription().setEnabled(false);
+        chart.setDrawGridBackground(false);
+        chart.setFitBars(true);
+        chart.setNoDataText("Sin datos disponibles");
+        chart.setNoDataTextColor(ContextCompat.getColor(requireContext(), R.color.colorNeutral600));
+
+        XAxis xAxis = chart.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setGranularity(1f);
+        xAxis.setDrawGridLines(false);
+        xAxis.setLabelRotationAngle(-20f);
+        xAxis.setTextColor(ContextCompat.getColor(requireContext(), R.color.colorNeutral600));
+
+        YAxis left = chart.getAxisLeft();
+        left.setAxisMinimum(0f);
+        left.setDrawGridLines(true);
+        left.setTextColor(ContextCompat.getColor(requireContext(), R.color.colorNeutral600));
+
+        chart.getAxisRight().setEnabled(false);
+        chart.getLegend().setEnabled(false);
+    }
+
+    private void configurarScatterChart(ScatterChart chart) {
+        chart.getDescription().setEnabled(false);
+        chart.setDrawGridBackground(false);
+        chart.setNoDataText("Sin datos disponibles");
+        chart.setNoDataTextColor(ContextCompat.getColor(requireContext(), R.color.colorNeutral600));
+
+        XAxis xAxis = chart.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setGranularity(1f);
+        xAxis.setDrawGridLines(false);
+        xAxis.setLabelRotationAngle(-20f);
+        xAxis.setTextColor(ContextCompat.getColor(requireContext(), R.color.colorNeutral600));
+
+        YAxis left = chart.getAxisLeft();
+        left.setAxisMinimum(0f);
+        left.setAxisMaximum(100f);
+        left.setDrawGridLines(true);
+        left.setTextColor(ContextCompat.getColor(requireContext(), R.color.colorNeutral600));
+
+        chart.getAxisRight().setEnabled(false);
+
+        Legend legend = chart.getLegend();
+        legend.setTextColor(ContextCompat.getColor(requireContext(), R.color.colorNeutral600));
+    }
+
 
     private void renderIntereses(List<InteresItem> intereses) {
         listIntereses.removeAllViews();

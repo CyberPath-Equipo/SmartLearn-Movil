@@ -9,15 +9,14 @@
         android:width="400sp"
         android:height="400sp"
         android:gravity="right"
-        android:right="250sp"
-        android:top="-55sp"/>
+        android:right="230sp"
+        android:top="40sp"/>
 
     <item
         android:drawable="@drawable/patron_linea_base"
         android:width="400sp"
         android:height="400sp"
         android:gravity="left"
-        android:left="200sp"
+        android:left="220sp"
         android:top="420sp"/>
-
 </layer-list>

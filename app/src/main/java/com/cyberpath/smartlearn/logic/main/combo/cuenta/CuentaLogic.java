@@ -10,6 +10,7 @@ import com.cyberpath.smartlearn.data.remote.api.RetrofitClient;
 import com.cyberpath.smartlearn.ui.main.combo.cuenta.CuentaFragment;
 import com.cyberpath.smartlearn.ui.main.combo.cuenta.EditarCuentaFragment;
 import com.cyberpath.smartlearn.util.constants.UsuarioCst;
+import com.cyberpath.smartlearn.util.network.NetworkUtils;
 import com.cyberpath.smartlearn.util.preferences.PreferencesManager;
 import com.cyberpath.smartlearn.util.preferences.ThemeManager;
 import com.cyberpath.smartlearn.util.validation.ValidationUtils;
@@ -38,13 +39,18 @@ public class CuentaLogic {
         }
 
         Usuario usuarioActual = UsuarioCst.USUARIO_ACTUAL;
-        Usuario usuarioNuevo = new Usuario();
-        usuarioNuevo.setContrasena(contrasenaActual);
-        usuarioNuevo.setNombreCuenta(usuarioActual.getNombreCuenta());
         if (usuarioActual == null) {
             showToast("Error: usuario no identificado");
             return;
         }
+        if (NetworkUtils.shouldUseOfflineMode(context)) {
+            showToast("Sin internet, no se pueden guardar cambios de cuenta");
+            return;
+        }
+
+        Usuario usuarioNuevo = new Usuario();
+        usuarioNuevo.setContrasena(contrasenaActual);
+        usuarioNuevo.setNombreCuenta(usuarioActual.getNombreCuenta());
 
         api.validarContrasena(usuarioNuevo).enqueue(new Callback<Void>() {
             @Override
@@ -54,7 +60,6 @@ public class CuentaLogic {
                 } else if (response.code() == 401) {
                     showToast("Contraseña actual incorrecta");
                 } else {
-                    showToast("Error en la validación");
                 }
             }
 
@@ -129,6 +134,15 @@ public class CuentaLogic {
     }
 
     private void actualizarUsuarioAPI(Usuario usuario) {
+        if (NetworkUtils.shouldUseOfflineMode(context)) {
+            if (cuentaFragment instanceof EditarCuentaFragment) {
+                ((EditarCuentaFragment) cuentaFragment).onErrorConexion();
+            } else {
+                showToast("Sin internet, intenta de nuevo cuando tengas conexión");
+            }
+            return;
+        }
+
         ApiService api = RetrofitClient.getApiService();
         Call<Usuario> call = api.updateUsuario(usuario.getId(), usuario);
 
@@ -165,6 +179,7 @@ public class CuentaLogic {
 
     public void actualizarDatosUsuario(Integer idUsuario) {
         if (idUsuario == null) return;
+        if (NetworkUtils.shouldUseOfflineMode(context)) return;
 
         ApiService api = RetrofitClient.getApiService();
         Call<Usuario> call = api.getUsuarioById(idUsuario);
@@ -203,6 +218,11 @@ public class CuentaLogic {
 
         if (!contrasenaIngresada.equals(usuarioActual.getContrasena())) {
             showToast("Contraseña incorrecta");
+            return;
+        }
+
+        if (NetworkUtils.shouldUseOfflineMode(context)) {
+            showToast("Sin internet, no se puede eliminar la cuenta");
             return;
         }
 

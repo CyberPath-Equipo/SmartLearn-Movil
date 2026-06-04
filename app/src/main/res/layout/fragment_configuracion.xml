@@ -4,109 +4,201 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/android:colorBackground"
     android:orientation="vertical"
-    android:padding="20dp"
     android:animation="@anim/fade_in"
     tools:context=".ui.main.combo.configuracion.ConfiguracionFragment">
 
-    <LinearLayout
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/bg_tarjeta_configuracion"
-        android:elevation="4dp"
-        android:orientation="vertical"
-        android:padding="24dp">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="Configuración"
-            android:textAppearance="?attr/textAppearanceHeadlineSmall"
-            android:textColor="?attr/colorOnSurface"
-            android:textStyle="bold" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="24dp"
-            android:gravity="center"
-            android:text="Ajusta las opciones según tus necesidades"
-            android:textAppearance="?attr/textAppearanceBodyMedium"
-            android:textColor="?attr/colorOnSurface"/>
+        app:cardBackgroundColor="#CCFFFFFF"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="6dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:background="@drawable/bg_card_elevated"
+            android:padding="16dp">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Tamaño de fuente"
-                android:textAppearance="?attr/textAppearanceTitleMedium"
+                android:text="Configuración"
+                android:textAlignment="center"
+                android:textAppearance="?attr/textAppearanceHeadlineMedium"
                 android:textColor="?attr/colorOnSurface"
                 android:textStyle="bold" />
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
 
-            <SeekBar
-                android:id="@+id/seekbar_tamano_fuente"
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        app:cardBackgroundColor="#CCFFFFFF"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="6dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/bg_card_elevated"
+            android:padding="16dp">
+
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:max="2"
-                android:progress="1"
-                android:progressDrawable="@drawable/seekbar_track"
-                android:thumb="@drawable/seekbar_thumb" />
-        </LinearLayout>
+                android:layout_marginBottom="16dp"
+                app:cardBackgroundColor="@color/cardColor"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp"
+                app:strokeColor="@color/colorSurface"
+                app:strokeWidth="3dp">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
 
-            <TextView
-                android:layout_width="0dp"
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="12dp"
+                        android:text="Tamaño de fuente"
+                        android:textAppearance="?attr/textAppearanceTitleLarge"
+                        android:textColor="?attr/colorOnSurface"
+                        android:textStyle="bold" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <SeekBar
+                            android:id="@+id/seekbar_tamano_fuente"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:max="2"
+                            android:progress="1"
+                            android:progressDrawable="@drawable/seekbar_track"
+                            android:thumb="@drawable/seekbar_thumb"
+                            android:layout_marginEnd="16dp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toStartOf="@id/img_fuente"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent" />
+
+                        <ImageView
+                            android:id="@+id/img_fuente"
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:src="@drawable/ic_text_format"
+                            app:tint="?attr/colorOnSurface"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            tools:ignore="ContentDescription" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Modo oscuro"
-                android:textAppearance="?attr/textAppearanceTitleMedium"
-                android:textColor="?attr/colorOnSurface"
-                android:textStyle="bold" />
+                android:layout_marginBottom="16dp"
+                app:cardBackgroundColor="@color/cardColor"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp"
+                app:strokeColor="@color/colorSurface"
+                app:strokeWidth="3dp">
 
-            <com.google.android.material.switchmaterial.SwitchMaterial
-                android:id="@+id/switch_modo_oscuro"
-                android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="12dp"
+                        android:text="Modo oscuro"
+                        android:textAppearance="?attr/textAppearanceTitleLarge"
+                        android:textColor="?attr/colorOnSurface"
+                        android:textStyle="bold" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <com.google.android.material.switchmaterial.SwitchMaterial
+                            android:id="@+id/switch_modo_oscuro"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Habilitar"
+                            android:scaleX="1.4"
+                            android:scaleY="1.45"
+                            android:transformPivotX="0dp"
+                            android:transformPivotY="8dp"
+                            android:switchPadding="68dp"
+                            app:switchPadding="50dp"
+                            app:thumbRadius="12dp"
+                            app:trackHeight="26dp"
+                            app:thumbTint="@color/switch_thumb_tint"
+                            app:trackTint="@color/switch_track_tint"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintVertical_bias="0.45" />
+
+                        <ImageView
+                            android:id="@+id/img_modo_oscuro"
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:src="@drawable/ic_dark_mode"
+                            app:tint="?attr/colorOnSurface"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            tools:ignore="ContentDescription" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:thumbTint="@color/switch_thumb_tint"
-                app:trackTint="@color/switch_track_tint" />
+                android:layout_marginTop="16dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginBottom="24dp"
+                    android:text="Ajusta las opciones según tus necesidades para personalizar tu experiencia."
+                    android:textAppearance="?attr/textAppearanceBodyMedium"
+                    android:textColor="?attr/colorOnBackground" />
+
+                <Button
+                    android:id="@+id/btn_guardar_preferencias"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="12dp"
+                    android:backgroundTint="@color/colorSecondary"
+                    android:text="Guardar"
+                    android:textAppearance="?attr/textAppearanceTitleMedium"
+                    android:textColor="?attr/colorOnTertiary"
+                    android:textStyle="bold"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"/>
+            </LinearLayout>
+
         </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/btn_guardar_preferencias"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:backgroundTint="?attr/colorTertiary"
-                android:text="Guardar"
-                android:textAppearance="?attr/textAppearanceTitleMedium"
-                android:textColor="?attr/colorOnTertiary"
-                android:textStyle="bold"
-                android:insetTop="0dp"
-                android:insetBottom="0dp"/>
-
-        </LinearLayout>
-
-    </LinearLayout>
-
+    </com.google.android.material.card.MaterialCardView>
 </LinearLayout>

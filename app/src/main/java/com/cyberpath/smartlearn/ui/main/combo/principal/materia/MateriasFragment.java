@@ -87,7 +87,7 @@ public class MateriasFragment extends Fragment {
         btnNext.setScaleY(0.86f);
 
         String nombreUsuarioActual = PreferencesManager.getNombreUsuario(requireContext());
-        nombreUsuario.setText("Hola, " + nombreUsuarioActual);
+        nombreUsuario.setText(obtenerSaludoAleatorio(nombreUsuarioActual));
 
         adapterMaterias = new AdaptadorMaterias(new ArrayList<>(), this::onMateriaClick);
         carruselMaterias.setAdapter(adapterMaterias);
@@ -318,5 +318,17 @@ public class MateriasFragment extends Fragment {
         if (adapterMaterias != null) {
             adapterMaterias.notifyDataSetChanged();
         }
+    }
+
+    private String obtenerSaludoAleatorio(String nombre) {
+        String[] saludos = {
+                "¡Hola, %s!",
+                "¡Bienvenido, %s!",
+                "¿Qué tal, %s?"
+        };
+
+        int indiceAleatorio = new java.util.Random().nextInt(saludos.length);
+
+        return String.format(saludos[indiceAleatorio], nombre);
     }
 }

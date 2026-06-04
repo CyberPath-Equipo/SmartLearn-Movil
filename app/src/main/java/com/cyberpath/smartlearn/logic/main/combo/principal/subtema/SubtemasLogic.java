@@ -125,7 +125,7 @@ public class SubtemasLogic {
         if (subtema == null || subtema.getId() == null) return;
         PreferencesManager.setIdSubtemaUltimaConexion(context, subtema.getId());
 
-        if (!modoOffline) {
+        if (!modoOffline && !NetworkUtils.shouldUseOfflineMode(context)) {
             UltimaConexion ultimaConexion = new UltimaConexion();
             ApiService apiService = RetrofitClient.getApiService();
 

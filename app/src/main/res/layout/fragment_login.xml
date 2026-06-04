@@ -34,7 +34,7 @@
             android:layout_marginBottom="16dp"
             android:gravity="center"
             android:text="Inicio de Sesión"
-            android:textColor="?attr/colorPrimary"
+            android:textColor="@color/colorOnSurface"
             android:textSize="36sp"
             android:textStyle="bold" />
 
@@ -44,10 +44,10 @@
             android:layout_marginHorizontal="12dp"
             android:layout_marginBottom="12dp"
             app:boxBackgroundMode="outline"
-            app:boxStrokeColor="?attr/colorPrimary"
+            app:boxStrokeColor="@color/colorOnSurface"
             app:boxStrokeWidth="@dimen/cardview_default_elevation"
             app:startIconDrawable="@drawable/ic_usuario"
-            app:startIconTint="?attr/colorPrimary">
+            app:startIconTint="@color/colorOnSurface">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_nombre_usuario"
@@ -59,8 +59,8 @@
                 android:paddingTop="14dp"
                 android:paddingEnd="16dp"
                 android:paddingBottom="14dp"
-                android:textColor="?attr/colorOnSurface"
-                android:textColorHint="?attr/colorOnSurfaceVariant"
+                android:textColor="@color/colorOnSurface"
+                android:textColorHint="@color/colorOnSurface"
                 android:textSize="18sp" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -70,11 +70,11 @@
             android:layout_marginHorizontal="12dp"
             android:layout_marginBottom="20dp"
             app:boxBackgroundMode="outline"
-            app:boxStrokeColor="?attr/colorPrimary"
+            app:boxStrokeColor="@color/colorOnSurface"
             app:boxStrokeWidth="@dimen/cardview_default_elevation"
             app:endIconMode="password_toggle"
             app:startIconDrawable="@drawable/ic_contrasena"
-            app:startIconTint="?attr/colorPrimary">
+            app:startIconTint="@color/colorOnSurface">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_contrasena"
@@ -88,8 +88,8 @@
                 android:paddingTop="14dp"
                 android:paddingEnd="16dp"
                 android:paddingBottom="14dp"
-                android:textColor="?attr/colorOnSurface"
-                android:textColorHint="?attr/colorOnSurfaceVariant"
+                android:textColor="@color/colorOnSurface"
+                android:textColorHint="@color/colorOnSurface"
                 android:textSize="18sp" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -102,27 +102,29 @@
             android:layout_marginBottom="10dp"
             android:elevation="8dp"
             android:text="@string/action_sign_in"
-            android:textColor="?attr/colorOnSecondary"
+            android:textColor="@color/colorSurfaceBackward"
             android:textSize="18sp"
             android:textStyle="bold"
-            app:backgroundTint="?attr/colorSecondary"
+            app:backgroundTint="@color/colorSecondary"
             app:cornerRadius="12dp"
-            app:strokeColor="?attr/colorPrimary"
+            app:strokeColor="@color/white"
             app:strokeWidth="2dp" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_registro"
-            style="@style/Widget.Material3.Button.OutlinedButton"
+            style="@style/Widget.Material3.Button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="12dp"
+            android:layout_marginBottom="10dp"
+            android:elevation="8dp"
             android:text="@string/action_registro"
-            android:textColor="?attr/colorOnTertiary"
+            android:textColor="@color/colorSurfaceBackward"
             android:textSize="18sp"
             android:textStyle="bold"
-            app:backgroundTint="?attr/colorTertiary"
+            app:backgroundTint="@color/colorAccent"
             app:cornerRadius="12dp"
-            app:strokeColor="?attr/colorPrimary"
+            app:strokeColor="@color/white"
             app:strokeWidth="2dp" />
     </LinearLayout>
 

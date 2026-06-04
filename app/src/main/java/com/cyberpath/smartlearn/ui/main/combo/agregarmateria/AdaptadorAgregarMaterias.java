@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.cyberpath.smartlearn.R;
 import com.cyberpath.smartlearn.data.model.contenido.Materia;
 
@@ -55,7 +56,7 @@ public class AdaptadorAgregarMaterias extends RecyclerView.Adapter<AdaptadorAgre
     @Override
     public MateriaViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.element_carousel, parent, false);
+                .inflate(R.layout.element_carousel_materias, parent, false);
         return new MateriaViewHolder(view);
     }
 
@@ -80,12 +81,12 @@ public class AdaptadorAgregarMaterias extends RecyclerView.Adapter<AdaptadorAgre
             holder.tvNombre.setText(materia.getNombre() != null ? materia.getNombre() : "");
             holder.tvDescripcion.setText(materia.getDescripcion() != null ?
                     materia.getDescripcion() : "Descripción no disponible");
+            cargarImagenDesdeSlug(holder.imageMateria, materia.getSlug());
         } else {
             holder.tvNombre.setText("");
             holder.tvDescripcion.setText("Descripción no disponible");
+            holder.imageMateria.setImageResource(R.drawable.ic_launcher_foreground);
         }
-
-        holder.imageMateria.setImageResource(R.drawable.ic_launcher_foreground);
 
         holder.itemView.setOnClickListener(v -> {
             if (listener != null && materia != null) {
@@ -104,6 +105,19 @@ public class AdaptadorAgregarMaterias extends RecyclerView.Adapter<AdaptadorAgre
 
     public interface OnMateriaClickListener {
         void onMateriaClick(Materia materia);
+    }
+
+    private void cargarImagenDesdeSlug(ImageView imageView, String slugUrl) {
+        if (slugUrl != null && !slugUrl.isEmpty()) {
+            Glide.with(imageView.getContext())
+                    .load(slugUrl)
+                    .placeholder(R.drawable.ic_launcher_foreground)
+                    .error(R.drawable.ic_launcher_foreground)
+                    .centerCrop()
+                    .into(imageView);
+        } else {
+            imageView.setImageResource(R.drawable.ic_launcher_foreground);
+        }
     }
 
     public static class MateriaViewHolder extends RecyclerView.ViewHolder {

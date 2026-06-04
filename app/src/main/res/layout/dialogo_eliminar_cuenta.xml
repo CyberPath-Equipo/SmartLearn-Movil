@@ -73,7 +73,7 @@
                 android:id="@+id/btnAceptar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/colorDangerStrong"
+                android:backgroundTint="?attr/colorSecondary"
                 android:text="Eliminar"
                 android:textColor="?attr/colorOnPrimary"
                 android:textStyle="bold" />

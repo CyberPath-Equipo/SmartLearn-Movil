@@ -15,6 +15,8 @@ import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
 import android.util.Log;
 
+import androidx.annotation.RequiresPermission;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.cyberpath.smartlearn.util.audioRecognizer.EdgeImpulseAudioClassifier;
@@ -71,8 +73,10 @@ public class EntradaAudio implements RecognitionListener {
 
     private OnConfirmacionListener confirmacionListener;
     private OnOpcionSeleccionadaListener opcionListener;
+    private OnTextoReconocidoListener textoReconocidoListener;
     private List<String> opcionesActuales;
     private List<String> opcionesActualesTokenizadas;
+    private boolean escucharSoloAndroid;
 
     private EntradaAudio(Context context) {
         this.context = context.getApplicationContext();
@@ -132,6 +136,10 @@ public class EntradaAudio implements RecognitionListener {
         return modeloDisponible() || (estaInicializado && speechRecognizer != null);
     }
 
+    public boolean isSpeechRecognizerReady() {
+        return hasRecordPermission() && estaInicializado && speechRecognizer != null;
+    }
+
     public void confirmarAfirmacion(OnConfirmacionListener listener) {
         if (!PreferencesManager.isAsistenciaVozActivada(context)) return;
 
@@ -150,8 +158,10 @@ public class EntradaAudio implements RecognitionListener {
 
         this.confirmacionListener = listener;
         this.opcionListener = null;
+        this.textoReconocidoListener = null;
         this.opcionesActuales = null;
         this.opcionesActualesTokenizadas = null;
+        this.escucharSoloAndroid = false;
 
         habilitarEscucha();
         iniciarEscuchaHibrida();
@@ -177,9 +187,38 @@ public class EntradaAudio implements RecognitionListener {
         this.opcionesActualesTokenizadas = tokenizarLista(opciones);
         this.opcionListener = listener;
         this.confirmacionListener = null;
+        this.textoReconocidoListener = null;
+        this.escucharSoloAndroid = false;
 
         habilitarEscucha();
         iniciarEscuchaHibrida();
+    }
+
+    public void escucharTextoLibreAndroid(OnTextoReconocidoListener listener) {
+        if (!PreferencesManager.isAsistenciaVozActivada(context)) return;
+
+        if (!isSpeechRecognizerReady()) {
+            Log.w(TAG, "SpeechRecognizer no listo o falta permiso");
+            if (salidaAudio != null) {
+                salidaAudio.hablar("Reconocimiento de voz de Android no disponible o falta permiso.", true);
+            }
+            return;
+        }
+
+        if (estaEscuchando) {
+            Log.w(TAG, "Reconocimiento ya está escuchando");
+            return;
+        }
+
+        this.confirmacionListener = null;
+        this.opcionListener = null;
+        this.opcionesActuales = null;
+        this.opcionesActualesTokenizadas = null;
+        this.textoReconocidoListener = listener;
+        this.escucharSoloAndroid = true;
+
+        habilitarEscucha();
+        iniciarEscucha();
     }
 
     private void habilitarEscucha() {
@@ -200,18 +239,33 @@ public class EntradaAudio implements RecognitionListener {
         iniciarEscucha();
     }
 
-    private void iniciarEscuchaConModelo() {
-        if (!escuchaHabilitada || detenerSolicitado || estaEscuchando) {
-            return;
-        }
+     private void iniciarEscuchaConModelo() {
+         if (!escuchaHabilitada || detenerSolicitado || estaEscuchando) {
+             return;
+         }
 
-        estaEscuchando = true;
-        modelThread = new Thread(() -> {
-            String etiquetaDetectada = capturarYClasificarConModelo();
-            mainHandler.post(() -> procesarResultadoModelo(etiquetaDetectada));
-        }, "EI-Model-Recognizer");
-        modelThread.start();
-    }
+         estaEscuchando = true;
+         modelThread = new Thread(() -> {
+             try {
+                 if (ActivityCompat.checkSelfPermission(context, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+                     // TODO: Consider calling
+                     //    ActivityCompat#requestPermissions
+                     // here to request the missing permissions, and then overriding
+                     //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                     //                                          int[] grantResults)
+                     // to handle the case where the user grants the permission. See the documentation
+                     // for ActivityCompat#requestPermissions for more details.
+                     return;
+                 }
+                 String etiquetaDetectada = capturarYClasificarConModelo();
+                 mainHandler.post(() -> procesarResultadoModelo(etiquetaDetectada));
+             } catch (Exception e) {
+                 Log.e(TAG, "Error no capturado en thread de modelo", e);
+                 mainHandler.post(() -> procesarResultadoModelo(null));
+             }
+         }, "EI-Model-Recognizer");
+         modelThread.start();
+     }
 
     private void iniciarEscucha() {
         if (!escuchaHabilitada || detenerSolicitado) {
@@ -248,8 +302,10 @@ public class EntradaAudio implements RecognitionListener {
         estaEscuchando = false;
         confirmacionListener = null;
         opcionListener = null;
+        textoReconocidoListener = null;
         opcionesActuales = null;
         opcionesActualesTokenizadas = null;
+        escucharSoloAndroid = false;
 
         detenerCapturaModelo();
 
@@ -335,16 +391,35 @@ public class EntradaAudio implements RecognitionListener {
         }
     }
 
-    private void cargarEtiquetasModelo() {
-        etiquetasModeloTokenizadas.clear();
-        if (edgeClassifier == null) {
-            return;
-        }
-        for (String etiqueta : edgeClassifier.obtenerEtiquetasModelo()) {
-            etiquetasModeloTokenizadas.add(tokenizar(etiqueta));
-        }
-    }
+     private void cargarEtiquetasModelo() {
+         etiquetasModeloTokenizadas.clear();
+         if (edgeClassifier == null) {
+             Log.w(TAG, "EdgeImpulseAudioClassifier es nulo");
+             return;
+         }
 
+         if (!edgeClassifier.isReady()) {
+             Log.w(TAG, "Edge Impulse Classifier no está listo");
+             return;
+         }
+
+         try {
+             List<String> etiquetas = edgeClassifier.obtenerEtiquetasModelo();
+             if (etiquetas == null || etiquetas.isEmpty()) {
+                 Log.w(TAG, "No se obtuvieron etiquetas del modelo");
+                 return;
+             }
+
+             for (String etiqueta : etiquetas) {
+                 etiquetasModeloTokenizadas.add(tokenizar(etiqueta));
+             }
+             Log.d(TAG, "Etiquetas del modelo cargadas: " + etiquetasModeloTokenizadas);
+         } catch (Exception e) {
+             Log.e(TAG, "Error cargando etiquetas del modelo", e);
+         }
+     }
+
+    @RequiresPermission(Manifest.permission.RECORD_AUDIO)
     private String capturarYClasificarConModelo() {
         if (!escuchaHabilitada || detenerSolicitado || !hasRecordPermission() || !modeloDisponible()) {
             return null;
@@ -368,6 +443,7 @@ public class EntradaAudio implements RecognitionListener {
         AudioRecord localAudioRecord = null;
         short[] audioBuffer = new short[RAW_AUDIO_SAMPLE_COUNT];
         try {
+
             localAudioRecord = new AudioRecord(
                     MediaRecorder.AudioSource.MIC,
                     SAMPLE_RATE,
@@ -436,73 +512,86 @@ public class EntradaAudio implements RecognitionListener {
         }
     }
 
-    private void procesarResultadoModelo(String etiquetaDetectada) {
-        estaEscuchando = false;
+     private void procesarResultadoModelo(String etiquetaDetectada) {
+         estaEscuchando = false;
 
-        if (!escuchaHabilitada || detenerSolicitado) {
-            return;
-        }
+         if (!escuchaHabilitada || detenerSolicitado) {
+             return;
+         }
 
-        if (resolverResultadoModelo(etiquetaDetectada)) {
-            return;
-        }
+         Log.d(TAG, "Procesando resultado del modelo: " + (etiquetaDetectada != null ? etiquetaDetectada : "nulo"));
 
-        if (estaInicializado && speechRecognizer != null) {
-            iniciarEscucha();
-            return;
-        }
+         if (resolverResultadoModelo(etiquetaDetectada)) {
+             Log.d(TAG, "Resultado del modelo resuelta exitosamente");
+             return;
+         }
 
-        if (salidaAudio != null) {
-            salidaAudio.hablar("No entendí. Repita por favor.", true, () -> {
-                if (escuchaHabilitada && !detenerSolicitado) {
-                    iniciarEscuchaHibrida();
-                }
-            });
-        } else {
-            iniciarEscuchaHibrida();
-        }
-    }
+         Log.d(TAG, "Modelo no resolvió, fallback a STT");
 
-    private boolean resolverResultadoModelo(String etiquetaDetectada) {
-        if (etiquetaDetectada == null || etiquetaDetectada.trim().isEmpty()) {
-            return false;
-        }
+         if (estaInicializado && speechRecognizer != null) {
+             iniciarEscucha();
+             return;
+         }
 
-        String etiquetaToken = tokenizar(etiquetaDetectada);
-        if (!etiquetasModeloTokenizadas.contains(etiquetaToken)) {
-            return false;
-        }
+         if (salidaAudio != null) {
+             salidaAudio.hablar("No entendí. Repita por favor.", true, () -> {
+                 if (escuchaHabilitada && !detenerSolicitado) {
+                     iniciarEscuchaHibrida();
+                 }
+             });
+         } else {
+             iniciarEscuchaHibrida();
+         }
+     }
 
-        if (confirmacionListener != null) {
-            if (afirmacionesTokenizadas.contains(etiquetaToken)) {
-                OnConfirmacionListener cb = confirmacionListener;
-                confirmacionListener = null;
-                if (cb != null) cb.onResultado(true);
-                return true;
-            }
+     private boolean resolverResultadoModelo(String etiquetaDetectada) {
+         if (etiquetaDetectada == null || etiquetaDetectada.trim().isEmpty()) {
+             Log.d(TAG, "Etiqueta detectada es nula o vacía");
+             return false;
+         }
 
-            if (negacionesTokenizadas.contains(etiquetaToken)) {
-                OnConfirmacionListener cb = confirmacionListener;
-                confirmacionListener = null;
-                if (cb != null) cb.onResultado(false);
-                return true;
-            }
-        }
+         String etiquetaToken = tokenizar(etiquetaDetectada);
+         if (!etiquetasModeloTokenizadas.contains(etiquetaToken)) {
+             Log.w(TAG, "Etiqueta '" + etiquetaDetectada + "' (token: '" + etiquetaToken + "') no está en etiquetas del modelo. Disponibles: " + etiquetasModeloTokenizadas);
+             return false;
+         }
 
-        if (opcionListener != null && opcionesActualesTokenizadas != null) {
-            for (int i = 0; i < opcionesActualesTokenizadas.size(); i++) {
-                String opcionToken = opcionesActualesTokenizadas.get(i);
-                if (opcionToken.contains(etiquetaToken) || etiquetaToken.contains(opcionToken)) {
-                    OnOpcionSeleccionadaListener cb = opcionListener;
-                    opcionListener = null;
-                    if (cb != null) cb.onOpcionSeleccionada(i);
-                    return true;
-                }
-            }
-        }
+         if (confirmacionListener != null) {
+             Log.d(TAG, "Evaluando confirmacion. EtiquetaToken: " + etiquetaToken);
+             if (afirmacionesTokenizadas.contains(etiquetaToken)) {
+                 Log.d(TAG, "Confirmacion positiva detectada");
+                 OnConfirmacionListener cb = confirmacionListener;
+                 confirmacionListener = null;
+                 if (cb != null) cb.onResultado(true);
+                 return true;
+             }
 
-        return false;
-    }
+             if (negacionesTokenizadas.contains(etiquetaToken)) {
+                 Log.d(TAG, "Confirmacion negativa detectada");
+                 OnConfirmacionListener cb = confirmacionListener;
+                 confirmacionListener = null;
+                 if (cb != null) cb.onResultado(false);
+                 return true;
+             }
+         }
+
+         if (opcionListener != null && opcionesActualesTokenizadas != null) {
+             Log.d(TAG, "Buscando en opciones: " + opcionesActualesTokenizadas);
+             for (int i = 0; i < opcionesActualesTokenizadas.size(); i++) {
+                 String opcionToken = opcionesActualesTokenizadas.get(i);
+                 if (opcionToken.contains(etiquetaToken) || etiquetaToken.contains(opcionToken)) {
+                     Log.d(TAG, "Opcion seleccionada: index=" + i + ", token=" + opcionToken);
+                     OnOpcionSeleccionadaListener cb = opcionListener;
+                     opcionListener = null;
+                     if (cb != null) cb.onOpcionSeleccionada(i);
+                     return true;
+                 }
+             }
+             Log.w(TAG, "No se encontró coincidencia en opciones para token: " + etiquetaToken);
+         }
+
+         return false;
+     }
 
     private void detenerCapturaModelo() {
         Thread hiloActual = modelThread;
@@ -531,56 +620,75 @@ public class EntradaAudio implements RecognitionListener {
         }
     }
 
-    @Override
-    public void onResults(Bundle results) {
-        estaEscuchando = false;
-        if (!escuchaHabilitada || detenerSolicitado) {
-            return;
-        }
+     @Override
+     public void onResults(Bundle results) {
+         estaEscuchando = false;
+         if (!escuchaHabilitada || detenerSolicitado) {
+             return;
+         }
 
-        ArrayList<String> matches = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
-        if (matches != null && !matches.isEmpty()) {
-            String resultado = normalizar(matches.get(0));
-            Log.d(TAG, "Resultado reconocido: " + resultado);
+         ArrayList<String> matches = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
+          if (textoReconocidoListener != null) {
+              if (matches != null && !matches.isEmpty()) {
+                  String resultado = normalizar(matches.get(0));
+                  OnTextoReconocidoListener cb = textoReconocidoListener;
+                  textoReconocidoListener = null;
+                  escucharSoloAndroid = false;
+                  if (cb != null) cb.onTextoReconocido(resultado);
+                  return;
+              }
+          }
 
-            if (confirmacionListener != null) {
-                String tokenResultado = tokenizar(resultado);
-                if (afirmacionesTokenizadas.contains(tokenResultado)) {
-                    OnConfirmacionListener cb = confirmacionListener;
-                    confirmacionListener = null;
-                    if (cb != null) cb.onResultado(true);
-                    return;
-                } else if (negacionesTokenizadas.contains(tokenResultado)) {
-                    OnConfirmacionListener cb = confirmacionListener;
-                    confirmacionListener = null;
-                    if (cb != null) cb.onResultado(false);
-                    return;
-                }
-            }
+         if (matches != null && !matches.isEmpty()) {
+             String resultado = normalizar(matches.get(0));
+             Log.d(TAG, "Resultado reconocido por STT: " + resultado);
 
-            if (opcionListener != null && opcionesActuales != null) {
-                for (int i = 0; i < opcionesActuales.size(); i++) {
-                    if (resultado.contains(opcionesActuales.get(i))) {
-                        OnOpcionSeleccionadaListener cb = opcionListener;
-                        opcionListener = null;
-                        if (cb != null) cb.onOpcionSeleccionada(i);
-                        return;
-                    }
-                }
-            }
-        }
+             if (confirmacionListener != null) {
+                 String tokenResultado = tokenizar(resultado);
+                 if (afirmacionesTokenizadas.contains(tokenResultado)) {
+                     OnConfirmacionListener cb = confirmacionListener;
+                     confirmacionListener = null;
+                     if (cb != null) cb.onResultado(true);
+                     return;
+                 } else if (negacionesTokenizadas.contains(tokenResultado)) {
+                     OnConfirmacionListener cb = confirmacionListener;
+                     confirmacionListener = null;
+                     if (cb != null) cb.onResultado(false);
+                     return;
+                 }
+             }
 
+             if (opcionListener != null && opcionesActuales != null) {
+                 for (int i = 0; i < opcionesActuales.size(); i++) {
+                     if (resultado.contains(opcionesActuales.get(i))) {
+                         OnOpcionSeleccionadaListener cb = opcionListener;
+                         opcionListener = null;
+                         if (cb != null) cb.onOpcionSeleccionada(i);
+                         return;
+                     }
+                 }
+             }
+         }
 
-        if (salidaAudio != null) {
-            salidaAudio.hablar("No entendí. Repita por favor.", true, () -> {
-                if (escuchaHabilitada && !detenerSolicitado) {
-                    iniciarEscucha();
-                }
-            });
-        } else {
-            iniciarEscucha();
-        }
-    }
+         // STT no entendió - reintentar con modelo o STT nuevamente
+         if (salidaAudio != null) {
+             salidaAudio.hablar("No entendí. Repita por favor.", true, () -> {
+                 if (escuchaHabilitada && !detenerSolicitado) {
+                      if (escucharSoloAndroid) {
+                          iniciarEscucha();
+                      } else {
+                          iniciarEscuchaHibrida(); // Reintentar con modelo primero
+                      }
+                 }
+             });
+         } else {
+              if (escucharSoloAndroid) {
+                  iniciarEscucha();
+              } else {
+                  iniciarEscuchaHibrida();
+              }
+         }
+     }
 
     @Override
     public void onError(int error) {
@@ -639,5 +747,9 @@ public class EntradaAudio implements RecognitionListener {
 
     public interface OnOpcionSeleccionadaListener {
         void onOpcionSeleccionada(int indice);
+    }
+
+    public interface OnTextoReconocidoListener {
+        void onTextoReconocido(String textoReconocido);
     }
 }

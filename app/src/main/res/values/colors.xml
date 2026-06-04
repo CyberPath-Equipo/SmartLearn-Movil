@@ -12,7 +12,8 @@
     <color name="colorHeader">#1E3A8A</color>
     <color name="colorHeaderLight">#3B82F6</color>
     <color name="colorBackground">#BFE4F4</color>
-    <color name="colorSurface">#F7EFE5</color>
+    <color name="colorSurface">#A1D0E4</color>
+    <color name="colorSurfaceBackward">#FFFFFF</color>
 
     <!-- ========= CARD ========= -->
     <color name="cardColor">#B6D6F0</color>
@@ -23,9 +24,9 @@
     <color name="colorOnBackground">#0B1A2B</color>
 
     <!-- ========= COLORES DE ACCIÓN (MEJORADOS) ========= -->
-    <color name="colorSecondary">#10B981</color>
+    <color name="colorSecondary">#3FAF7A</color>
     <color name="colorSecondaryLight">#34D399</color>
-    <color name="colorAccent">#06B6D4</color>
+    <color name="colorAccent">#2E8CA0</color>
     <color name="colorAccentLight">#22D3EE</color>
 
     <!-- ========= COLORES COMPLEMENTARIOS ========= -->
@@ -74,5 +75,5 @@
     <color name="switch_thumb_tint_light">#BDBDBD</color>
     <color name="switch_thumb_tint_dark">#1976D2</color>
 
-    <color name="cardview_background">#FFFFFFFF</color>
+    <color name="cardview_background">#C7E6F6FF</color>
 </resources>

@@ -22,7 +22,7 @@
         <item name="colorOnSecondary">@color/black</item>
         <item name="colorTertiary">@color/colorAccent</item>
         <item name="colorOnTertiary">@color/black</item>
-        <item name="colorButtonNormal">@color/colorSurface</item>
+        <item name="colorButtonNormal">@color/colorSecondary</item>
         <item name="colorError">@color/colorError</item>
         <item name="colorSurfaceVariant">@color/colorSurface</item>
         <item name="colorOnSurfaceVariant">@color/colorOnSurface</item>

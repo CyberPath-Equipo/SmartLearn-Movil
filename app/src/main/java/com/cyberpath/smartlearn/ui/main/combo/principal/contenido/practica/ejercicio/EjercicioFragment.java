@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.TypedValue;
+import android.view.animation.OvershootInterpolator;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,6 +54,7 @@ public class EjercicioFragment extends Fragment {
     private Button btnCheck;
     private LinearLayout layoutQuiz, layoutResultado, layoutRetroalimentacion;
     private TextView tvResultadoTitulo, tvPuntaje, tvPorcentaje;
+    private TextView tvFeedbackFx;
     private Button btnVolver, btnRetroalimentacion;
     private long sessionStartMs = 0L;
 
@@ -86,6 +88,7 @@ public class EjercicioFragment extends Fragment {
         tvResultadoTitulo = view.findViewById(R.id.tv_resultado_titulo);
         tvPuntaje = view.findViewById(R.id.tv_puntaje);
         tvPorcentaje = view.findViewById(R.id.tv_porcentaje);
+        tvFeedbackFx = view.findViewById(R.id.tv_feedback_fx);
         btnVolver = view.findViewById(R.id.btn_volver);
         btnRetroalimentacion = view.findViewById(R.id.btn_retroalimentacion);
 
@@ -463,6 +466,66 @@ public class EjercicioFragment extends Fragment {
     public void mostrarSiguientePregunta() {
         if (ejercicioLogic != null) {
             ejercicioLogic.mostrarSiguientePregunta();
+        }
+    }
+
+    public void animarResultadoVerificacion(boolean correcta, Runnable onEnd) {
+        if (!isAdded() || tvFeedbackFx == null) {
+            if (onEnd != null) onEnd.run();
+            return;
+        }
+
+        tvFeedbackFx.setVisibility(View.VISIBLE);
+        tvFeedbackFx.setText(correcta ? "✨" : "✖");
+        tvFeedbackFx.setTextColor(requireContext().getColor(correcta ? R.color.colorSecondary : R.color.colorError));
+        tvFeedbackFx.setScaleX(0.3f);
+        tvFeedbackFx.setScaleY(0.3f);
+        tvFeedbackFx.setAlpha(0f);
+
+        tvFeedbackFx.animate()
+                .alpha(1f)
+                .scaleX(1.25f)
+                .scaleY(1.25f)
+                .setDuration(260)
+                .setInterpolator(new OvershootInterpolator(1.6f))
+                .withEndAction(() -> tvFeedbackFx.animate()
+                        .alpha(0f)
+                        .scaleX(0.75f)
+                        .scaleY(0.75f)
+                        .setDuration(230)
+                        .withEndAction(() -> {
+                            tvFeedbackFx.setVisibility(View.GONE);
+                            if (onEnd != null) onEnd.run();
+                        })
+                        .start())
+                .start();
+    }
+
+    public void animarResumenResultado() {
+        if (!isAdded() || layoutResultado == null) {
+            return;
+        }
+
+        layoutResultado.setAlpha(0f);
+        layoutResultado.setTranslationY(40f);
+        layoutResultado.animate()
+                .alpha(1f)
+                .translationY(0f)
+                .setDuration(320)
+                .start();
+
+        if (tvResultadoTitulo != null) {
+            tvResultadoTitulo.setScaleX(0.85f);
+            tvResultadoTitulo.setScaleY(0.85f);
+            tvResultadoTitulo.animate().scaleX(1f).scaleY(1f).setDuration(260).setStartDelay(80).start();
+        }
+        if (tvPuntaje != null) {
+            tvPuntaje.setAlpha(0f);
+            tvPuntaje.animate().alpha(1f).setDuration(220).setStartDelay(140).start();
+        }
+        if (tvPorcentaje != null) {
+            tvPorcentaje.setAlpha(0f);
+            tvPorcentaje.animate().alpha(1f).setDuration(220).setStartDelay(220).start();
         }
     }
 }

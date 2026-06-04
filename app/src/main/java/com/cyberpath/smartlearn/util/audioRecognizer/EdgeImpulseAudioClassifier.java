@@ -33,7 +33,19 @@ public class EdgeImpulseAudioClassifier {
     }
 
     public boolean isReady() {
-        return bibliotecaCargada;
+        if (!bibliotecaCargada) {
+            return false;
+        }
+
+        // Validar que el modelo tiene etiquetas cargadas
+        List<String> etiquetas = obtenerEtiquetasModelo();
+        boolean modeloTieneEtiquetas = !etiquetas.isEmpty();
+
+        if (!modeloTieneEtiquetas) {
+            Log.w(TAG, "Modelo cargado pero sin etiquetas disponibles");
+        }
+
+        return modeloTieneEtiquetas;
     }
 
     public String clasificar(short[] audioData) {

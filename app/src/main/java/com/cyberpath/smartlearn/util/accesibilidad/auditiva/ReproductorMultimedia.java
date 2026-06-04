@@ -46,12 +46,12 @@ public class ReproductorMultimedia {
 
     /**
      * @param ctx     Context (preferiblemente Activity)
-     * @param baseUrl Base URL del TranslationEngine (ej: "http://.../smartlearn/api/lsm/")
+     * @param baseUrl Base URL del TranslationEngine.
      */
     public ReproductorMultimedia(Context ctx, String baseUrl) {
         this.ctx = ctx.getApplicationContext();
         if (!baseUrl.endsWith("/")) baseUrl = baseUrl + "/";
-        this.engine = new TranslationEngine(baseUrl);
+        this.engine = new TranslationEngine(this.ctx, baseUrl);
     }
 
     /**
@@ -98,16 +98,14 @@ public class ReproductorMultimedia {
     public void play(final String text) {
         if (!mappingLoaded) {
             // cargar y luego reproducir
-            loadMappingAsync(this.lessonId, (ok, msg) -> {
-                mainHandler.post(() -> {
-                    mappingLoaded = ok;
-                    if (!ok) {
-                        if (listener != null) listener.onError("Error cargando mapping: " + msg);
-                        return;
-                    }
-                    playInternal(text);
-                });
-            });
+            loadMappingAsync(this.lessonId, (ok, msg) -> mainHandler.post(() -> {
+                mappingLoaded = ok;
+                if (!ok) {
+                    if (listener != null) listener.onError("Error cargando mapping: " + msg);
+                    return;
+                }
+                playInternal(text);
+            }));
         } else {
             playInternal(text);
         }

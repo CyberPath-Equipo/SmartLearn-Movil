@@ -8,7 +8,8 @@ import android.widget.ImageView;
 
 import androidx.media3.common.MediaItem;
 import androidx.media3.common.Player;
-import androidx.media3.exoplayer.ExoPlaybackException;
+import androidx.media3.common.AudioAttributes;
+import androidx.media3.common.PlaybackException;
 import androidx.media3.exoplayer.ExoPlayer;
 import androidx.media3.ui.PlayerView;
 
@@ -95,13 +96,23 @@ public class ReproductorContenido {
         if (exoPlayer == null) {
             exoPlayer = new ExoPlayer.Builder(ctx).build();
             playerView.setPlayer(exoPlayer);
+            exoPlayer.setAudioAttributes(
+                    new AudioAttributes.Builder()
+                            .setUsage(androidx.media3.common.C.USAGE_MEDIA)
+                            .setContentType(androidx.media3.common.C.AUDIO_CONTENT_TYPE_MOVIE)
+                            .build(),
+                    true
+            );
+            exoPlayer.setVolume(0f);
 
             exoPlayer.addListener(new Player.Listener() {
+                @Override
                 public void onPlaybackStateChanged(int state) {
                     if (state == Player.STATE_ENDED) runNext();
                 }
 
-                public void onPlayerError(ExoPlaybackException error) {
+                @Override
+                public void onPlayerError(PlaybackException error) {
                     runNext();
                 }
             });
@@ -117,6 +128,7 @@ public class ReproductorContenido {
         }
 
         MediaItem mediaItem = MediaItem.fromUri(it.url);
+        exoPlayer.setVolume(0f);
         exoPlayer.setMediaItem(mediaItem);
         exoPlayer.prepare();
         exoPlayer.play();

@@ -13,303 +13,467 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <LinearLayout
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg_esquinas_redondeadas_fondo"
-            android:backgroundTint="?attr/colorSurface"
-            android:orientation="vertical"
-            android:padding="16dp">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="Ayuda y Soporte"
-                android:textAppearance="?attr/textAppearanceHeadlineMedium"
-                android:textColor="?attr/colorOnSurface"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:gravity="center"
-                android:text="Estamos aquí para ayudarte"
-                android:textAppearance="?attr/textAppearanceTitleLarge"
-                android:textColor="?attr/colorOnSurface"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:text="Si eres profesor y quieres colaborar creando contenido para Smart Learn, regístrate en nuestra página web:"
-                android:textAppearance="?attr/textAppearanceBodyLarge"
-                android:textColor="?attr/colorOnSurface" />
+            android:layout_margin="12dp"
+            app:cardBackgroundColor="#CCFFFFFF"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="6dp">
 
             <LinearLayout
-                android:id="@+id/layout_registro_profesores"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:background="?android:attr/selectableItemBackground"
-                android:clickable="true"
-                android:focusable="true"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:padding="12dp">
-
-                <ImageView
-                    android:layout_width="28dp"
-                    android:layout_height="28dp"
-                    android:src="@drawable/ic_web"
-                    app:tint="?attr/colorTertiary" />
+                android:orientation="vertical"
+                android:background="@drawable/bg_card_elevated"
+                android:padding="16dp">
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:layout_weight="1"
-                    android:autoLink="web"
-                    android:linksClickable="true"
-                    android:text="http://smartlearn.com/profesores/registro"
-                    android:textColorLink="?attr/colorTertiary"
-                    android:textSize="15sp"
+                    android:text="Ayuda y Soporte"
+                    android:textAlignment="center"
+                    android:textAppearance="?attr/textAppearanceHeadlineMedium"
+                    android:textColor="?attr/colorOnSurface"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:textAlignment="center"
+                    android:text="Estamos aquí para ayudarte"
+                    android:textAppearance="?attr/textAppearanceBodyMedium"
+                    android:textColor="?attr/colorOnSurfaceVariant"
                     android:textStyle="bold" />
             </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
 
-            <!-- Web -->
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="35dp"
-                android:text="¿Tienes problemas o dudas? Contáctanos por cualquiera de estos medios:"
-                android:textAppearance="?attr/textAppearanceBodyLarge"
-                android:textColor="?attr/colorOnSurface" />
-
-            <LinearLayout
-                android:id="@+id/layout_web"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:background="?android:attr/selectableItemBackground"
-                android:clickable="true"
-                android:focusable="true"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:padding="12dp">
-
-                <ImageView
-                    android:layout_width="28dp"
-                    android:layout_height="28dp"
-                    android:src="@drawable/ic_web"
-                    app:tint="?attr/colorSecondary" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:layout_weight="1"
-                    android:autoLink="web"
-                    android:linksClickable="true"
-                    android:text="http://smartlearn.com"
-                    android:textColorLink="?attr/colorSecondary"
-                    android:textSize="15sp" />
-            </LinearLayout>
-
-            <!-- Instagram -->
-            <LinearLayout
-                android:id="@+id/layout_instagram"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:background="?android:attr/selectableItemBackground"
-                android:clickable="true"
-                android:focusable="true"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:padding="12dp">
-
-                <ImageView
-                    android:layout_width="28dp"
-                    android:layout_height="28dp"
-                    android:src="@drawable/ic_instagram"
-                    app:tint="@color/colorSocialInstagram" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:layout_weight="1"
-                    android:autoLink="web"
-                    android:linksClickable="true"
-                    android:text="\u0040cyberpath_contacto"
-                    android:textColor="@color/colorSocialInstagram"
-                    android:textSize="15sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/layout_correo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:background="?android:attr/selectableItemBackground"
-                android:clickable="true"
-                android:focusable="true"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:padding="12dp">
-
-                <ImageView
-                    android:layout_width="28dp"
-                    android:layout_height="28dp"
-                    android:src="@drawable/ic_correo"
-                    app:tint="?attr/colorTertiary" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:layout_weight="1"
-                    android:autoLink="email"
-                    android:linksClickable="true"
-                    android:text="cyberpath_contacto@gmail.com"
-                    android:textColorLink="?attr/colorTertiary"
-                    android:textSize="15sp" />
-            </LinearLayout>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
-                android:gravity="center"
-                android:text="¡Gracias por usar Smart Learn!\n- El equipo de CyberPath"
-                android:textAppearance="?attr/textAppearanceBodyLarge"
-                android:textColor="?attr/colorOnSurface" />
-
-        </LinearLayout>
-
-        <!-- Cuestionario de Satisfacción -->
-        <LinearLayout
+        <!-- TARJETA CONTENEDORA DE CONTACTO Y MEDIOS -->
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:background="@drawable/bg_esquinas_redondeadas_fondo"
-            android:backgroundTint="?attr/colorSurface"
-            android:orientation="vertical"
-            android:padding="16dp">
+            android:layout_marginBottom="16dp"
+            app:cardBackgroundColor="#CCFFFFFF"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="6dp">
 
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:gravity="center"
-                android:text="Cuestionario de Satisfacción"
-                android:textAppearance="?attr/textAppearanceTitleLarge"
-                android:textColor="?attr/colorOnSurface" />
+                android:orientation="vertical"
+                android:background="@drawable/bg_card_elevated"
+                android:padding="16dp">
 
-            <!-- Pregunta 1: Calidad del contenido -->
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:text="¿Cómo calificarías la calidad del contenido?"
-                android:textAppearance="?attr/textAppearanceBodyLarge"
-                android:textColor="?attr/colorOnSurface" />
-
-            <RatingBar
-                android:id="@+id/rating_contenido"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:numStars="5"
-                android:rating="0"
-                android:stepSize="1" />
-
-            <!-- Pregunta 2: Facilidad de uso -->
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:text="¿Cómo calificarías la facilidad de uso de la app?"
-                android:textAppearance="?attr/textAppearanceBodyLarge"
-                android:textColor="?attr/colorOnSurface" />
-
-            <RatingBar
-                android:id="@+id/rating_facilidad"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:numStars="5"
-                android:rating="0"
-                android:stepSize="1" />
-
-            <!-- Pregunta 3: Recomendación -->
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:text="¿Recomendarías la app a un amigo?"
-                android:textAppearance="?attr/textAppearanceBodyLarge"
-                android:textColor="?attr/colorOnSurface" />
-
-            <RadioGroup
-                android:id="@+id/rg_recomendacion"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:orientation="horizontal">
-
-                <RadioButton
-                    android:id="@+id/rb_si"
-                    android:layout_width="wrap_content"
+                <TextView
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Sí"
+                    android:layout_marginBottom="12dp"
+                    android:text="Si eres profesor y quieres colaborar creando contenido para Smart Learn, regístrate en nuestra página web:"
+                    android:textAppearance="?attr/textAppearanceBodyMedium"
                     android:textColor="?attr/colorOnSurface" />
 
-                <RadioButton
-                    android:id="@+id/rb_no"
-                    android:layout_width="wrap_content"
+                <!-- Enlace Profesores -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/layout_registro_profesores"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="No"
+                    android:layout_marginBottom="24dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    app:cardBackgroundColor="@color/cardColor"
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="2dp"
+                    app:strokeColor="@color/colorSurface"
+                    app:strokeWidth="3dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="16dp">
+
+                        <ImageView
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:src="@drawable/ic_web"
+                            app:tint="?attr/colorTertiary" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:maxLines="2"
+                            android:layout_marginStart="16dp"
+                            android:layout_weight="1"
+                            android:autoLink="web"
+                            android:linksClickable="true"
+                            android:text="http://smartlearn.com/profesores/registro"
+                            android:textColorLink="?attr/colorTertiary"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    android:text="¿Tienes problemas o dudas? Contáctanos por cualquiera de estos medios:"
+                    android:textAppearance="?attr/textAppearanceBodyMedium"
                     android:textColor="?attr/colorOnSurface" />
-            </RadioGroup>
 
-            <!-- Comentarios opcionales -->
-            <TextView
+                <!-- Enlace Web -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/layout_web"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    app:cardBackgroundColor="@color/cardColor"
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="2dp"
+                    app:strokeColor="@color/colorSurface"
+                    app:strokeWidth="3dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="16dp">
+
+                        <ImageView
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:src="@drawable/ic_web"
+                            app:tint="?attr/colorSecondary" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_weight="1"
+                            android:autoLink="web"
+                            android:linksClickable="true"
+                            android:text="http://smartlearn.com"
+                            android:textColorLink="?attr/colorSecondary"
+                            android:textSize="15sp" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Enlace Instagram -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/layout_instagram"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    app:cardBackgroundColor="@color/cardColor"
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="2dp"
+                    app:strokeColor="@color/colorSurface"
+                    app:strokeWidth="3dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="16dp">
+
+                        <ImageView
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:src="@drawable/ic_instagram"
+                            app:tint="@color/colorSocialInstagram" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_weight="1"
+                            android:autoLink="web"
+                            android:linksClickable="true"
+                            android:text="\u0040cyberpath_contacto"
+                            android:textColor="@color/colorSocialInstagram"
+                            android:textSize="15sp" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Enlace Correo -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/layout_correo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="24dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    app:cardBackgroundColor="@color/cardColor"
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="2dp"
+                    app:strokeColor="@color/colorSurface"
+                    app:strokeWidth="3dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="16dp">
+
+                        <ImageView
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:src="@drawable/ic_correo"
+                            app:tint="?attr/colorTertiary" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_weight="1"
+                            android:autoLink="email"
+                            android:linksClickable="true"
+                            android:text="cyberpath_contacto@gmail.com"
+                            android:textColorLink="?attr/colorTertiary"
+                            android:textSize="15sp" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="¡Gracias por usar Smart Learn!\n- El equipo de CyberPath"
+                    android:textAppearance="?attr/textAppearanceBodyMedium"
+                    android:textColor="?attr/colorOnSurfaceVariant" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- TARJETA CONTENEDORA DEL CUESTIONARIO -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="16dp"
+            app:cardBackgroundColor="#CCFFFFFF"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="6dp">
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:text="Comentarios adicionales (opcional):"
-                android:textAppearance="?attr/textAppearanceBodyLarge"
-                android:textColor="?attr/colorOnSurface" />
+                android:orientation="vertical"
+                android:background="@drawable/bg_card_elevated"
+                android:padding="16dp">
 
-            <EditText
-                android:id="@+id/et_comentarios"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:hint="Escribe tus comentarios aquí..."
-                android:inputType="textMultiLine"
-                android:minLines="3"
-                android:textColor="?attr/colorOnSurface"
-                android:textColorHint="?attr/colorOnSurface" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:textAlignment="center"
+                    android:text="Cuestionario de Satisfacción"
+                    android:textAppearance="?attr/textAppearanceTitleLarge"
+                    android:textColor="?attr/colorOnSurface"
+                    android:textStyle="bold" />
 
-            <!-- Botón Enviar -->
-            <Button
-                android:id="@+id/btn_enviar_feedback"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:backgroundTint="?attr/colorTertiary"
-                android:text="Enviar Feedback"
-                android:textAppearance="?attr/textAppearanceTitleLarge"
-                android:textColor="@android:color/white" />
+                <!-- Pregunta 1: Calidad -->
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    app:cardBackgroundColor="@color/cardColor"
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="2dp"
+                    app:strokeColor="@color/colorSurface"
+                    app:strokeWidth="3dp">
 
-        </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
 
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="12dp"
+                            android:text="¿Cómo calificarías la calidad del contenido?"
+                            android:textAppearance="?attr/textAppearanceBodyLarge"
+                            android:textColor="?attr/colorOnSurface"
+                            android:textStyle="bold" />
+
+                        <RatingBar
+                            android:id="@+id/rating_contenido"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:numStars="5"
+                            android:rating="0"
+                            android:stepSize="1" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Pregunta 2: Facilidad -->
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    app:cardBackgroundColor="@color/cardColor"
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="2dp"
+                    app:strokeColor="@color/colorSurface"
+                    app:strokeWidth="3dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="12dp"
+                            android:text="¿Cómo calificarías la facilidad de uso de la app?"
+                            android:textAppearance="?attr/textAppearanceBodyLarge"
+                            android:textColor="?attr/colorOnSurface"
+                            android:textStyle="bold" />
+
+                        <RatingBar
+                            android:id="@+id/rating_facilidad"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:numStars="5"
+                            android:rating="0"
+                            android:stepSize="1" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Pregunta 3: Recomendación -->
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    app:cardBackgroundColor="@color/cardColor"
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="2dp"
+                    app:strokeColor="@color/colorSurface"
+                    app:strokeWidth="3dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="8dp"
+                            android:text="¿Recomendarías la app a un amigo?"
+                            android:textAppearance="?attr/textAppearanceBodyLarge"
+                            android:textColor="?attr/colorOnSurface"
+                            android:textStyle="bold" />
+
+                        <RadioGroup
+                            android:id="@+id/rg_recomendacion"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <RadioButton
+                                android:id="@+id/rb_si"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Sí"
+                                android:textColor="?attr/colorOnSurface"
+                                android:textSize="16sp" />
+
+                            <RadioButton
+                                android:id="@+id/rb_no"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="No"
+                                android:textColor="?attr/colorOnSurface"
+                                android:textSize="16sp" />
+                        </RadioGroup>
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Comentarios Opcionales -->
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="24dp"
+                    app:cardBackgroundColor="@color/cardColor"
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="2dp"
+                    app:strokeColor="@color/colorSurface"
+                    app:strokeWidth="3dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="12dp"
+                            android:text="Comentarios adicionales (opcional):"
+                            android:textAppearance="?attr/textAppearanceBodyLarge"
+                            android:textColor="?attr/colorOnSurface"
+                            android:textStyle="bold" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Escribe tus comentarios aquí..."
+                            app:boxBackgroundMode="outline"
+                            app:boxCornerRadiusTopStart="12dp"
+                            app:boxCornerRadiusTopEnd="12dp"
+                            app:boxCornerRadiusBottomStart="12dp"
+                            app:boxCornerRadiusBottomEnd="12dp"
+                            app:boxStrokeColor="?attr/colorPrimary">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/et_comentarios"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="textMultiLine"
+                                android:minLines="3"
+                                android:textColor="?attr/colorOnSurface"
+                                android:textSize="16sp" />
+                        </com.google.android.material.textfield.TextInputLayout>
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_enviar_feedback"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:text="Enviar Feedback"
+                    android:textAllCaps="false"
+                    android:textAppearance="?attr/textAppearanceTitleMedium"
+                    android:textStyle="bold"
+                    app:backgroundTint="?attr/colorTertiary"
+                    android:textColor="?attr/colorOnTertiary"
+                    app:cornerRadius="12dp"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp" />
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
     </LinearLayout>
-
 </ScrollView>

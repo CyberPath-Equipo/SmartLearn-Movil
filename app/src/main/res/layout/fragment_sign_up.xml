@@ -20,10 +20,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="180dp"
-        android:background="@drawable/bg_acceso"
-        android:elevation="12dp"
+        android:background="@drawable/bg_card_elevated"
+        android:elevation="16dp"
         android:orientation="vertical"
-        android:padding="6dp">
+        android:padding="8dp"
+        android:animation="@anim/slide_up">
 
         <ScrollView
             android:layout_width="match_parent"
@@ -41,7 +42,7 @@
                     android:layout_marginBottom="16dp"
                     android:gravity="center"
                     android:text="Registro de Usuarios"
-                    android:textColor="?attr/colorPrimary"
+                    android:textColor="?attr/colorOnSurface"
                     android:textSize="36sp"
                     android:textStyle="bold" />
 
@@ -51,10 +52,10 @@
                     android:layout_marginHorizontal="12dp"
                     android:layout_marginBottom="12dp"
                     app:boxBackgroundMode="outline"
-                    app:boxStrokeColor="?attr/colorPrimary"
+                    app:boxStrokeColor="?attr/colorOnSurface"
                     app:boxStrokeWidth="@dimen/cardview_default_elevation"
                     app:startIconDrawable="@drawable/ic_usuario"
-                    app:startIconTint="?attr/colorPrimary">
+                    app:startIconTint="?attr/colorOnSurface">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_nombre"
@@ -69,7 +70,7 @@
                         android:paddingEnd="16dp"
                         android:paddingBottom="14dp"
                         android:textColor="?attr/colorOnSurface"
-                        android:textColorHint="?attr/colorOnSurfaceVariant"
+                        android:textColorHint="?attr/colorOnSurface"
                         android:textSize="18sp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -79,10 +80,10 @@
                     android:layout_marginHorizontal="12dp"
                     android:layout_marginBottom="12dp"
                     app:boxBackgroundMode="outline"
-                    app:boxStrokeColor="?attr/colorPrimary"
+                    app:boxStrokeColor="?attr/colorOnSurface"
                     app:boxStrokeWidth="@dimen/cardview_default_elevation"
                     app:startIconDrawable="@drawable/ic_usuario"
-                    app:startIconTint="?attr/colorPrimary">
+                    app:startIconTint="?attr/colorOnSurface">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_nombre_completo"
@@ -97,7 +98,7 @@
                         android:paddingEnd="16dp"
                         android:paddingBottom="14dp"
                         android:textColor="?attr/colorOnSurface"
-                        android:textColorHint="?attr/colorOnSurfaceVariant"
+                        android:textColorHint="?attr/colorOnSurface"
                         android:textSize="18sp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -107,11 +108,12 @@
                     android:layout_marginHorizontal="12dp"
                     android:layout_marginBottom="12dp"
                     app:boxBackgroundMode="outline"
-                    app:boxStrokeColor="?attr/colorPrimary"
+                    app:boxStrokeColor="?attr/colorOnSurface"
                     app:boxStrokeWidth="@dimen/cardview_default_elevation"
                     app:endIconMode="password_toggle"
+                    app:endIconTint="?attr/colorOnSurface"
                     app:startIconDrawable="@drawable/ic_contrasena"
-                    app:startIconTint="?attr/colorPrimary">
+                    app:startIconTint="?attr/colorOnSurface">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_contrasena"
@@ -126,7 +128,7 @@
                         android:paddingEnd="16dp"
                         android:paddingBottom="14dp"
                         android:textColor="?attr/colorOnSurface"
-                        android:textColorHint="?attr/colorOnSurfaceVariant"
+                        android:textColorHint="?attr/colorOnSurface"
                         android:textSize="18sp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -136,10 +138,10 @@
                     android:layout_marginHorizontal="12dp"
                     android:layout_marginBottom="12dp"
                     app:boxBackgroundMode="outline"
-                    app:boxStrokeColor="?attr/colorPrimary"
+                    app:boxStrokeColor="?attr/colorOnSurface"
                     app:boxStrokeWidth="@dimen/cardview_default_elevation"
                     app:startIconDrawable="@drawable/ic_correo"
-                    app:startIconTint="?attr/colorPrimary">
+                    app:startIconTint="?attr/colorOnSurface">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_correo"
@@ -154,7 +156,7 @@
                         android:paddingEnd="16dp"
                         android:paddingBottom="14dp"
                         android:textColor="?attr/colorOnSurface"
-                        android:textColorHint="?attr/colorOnSurfaceVariant"
+                        android:textColorHint="?attr/colorOnSurface"
                         android:textSize="18sp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -165,7 +167,7 @@
                     android:layout_marginTop="15dp"
                     android:gravity="center"
                     android:text="Accesibilidad para\n Discapacidad Visual"
-                    android:textColor="?attr/colorPrimary"
+                    android:textColor="?attr/colorOnSurface"
                     android:textSize="20sp" />
 
                 <RadioGroup
@@ -182,7 +184,8 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="Activa"
-                        android:textColor="?attr/colorPrimary"
+                        android:textColor="?attr/colorOnSurface"
+                        android:buttonTint="?attr/colorOnSurface"
                         android:textSize="18sp" />
 
                     <RadioButton
@@ -191,7 +194,8 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="Inactiva"
-                        android:textColor="?attr/colorPrimary"
+                        android:textColor="?attr/colorOnSurface"
+                        android:buttonTint="?attr/colorOnSurface"
                         android:textSize="18sp" />
                 </RadioGroup>
 
@@ -202,7 +206,7 @@
                     android:layout_marginTop="8dp"
                     android:gravity="center"
                     android:text="Accesibilidad para\n Discapacidad Auditiva"
-                    android:textColor="?attr/colorPrimary"
+                    android:textColor="?attr/colorOnSurface"
                     android:textSize="20sp" />
 
                 <RadioGroup
@@ -219,7 +223,8 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="Activa"
-                        android:textColor="?attr/colorPrimary"
+                        android:textColor="?attr/colorOnSurface"
+                        android:buttonTint="?attr/colorOnSurface"
                         android:textSize="18sp" />
 
                     <RadioButton
@@ -228,7 +233,8 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="Inactiva"
-                        android:textColor="?attr/colorPrimary"
+                        android:textColor="?attr/colorOnSurface"
+                        android:buttonTint="?attr/colorOnSurface"
                         android:textSize="18sp" />
                 </RadioGroup>
 
@@ -239,7 +245,7 @@
                     android:layout_marginTop="8dp"
                     android:gravity="center"
                     android:text="Tipo de Usuario"
-                    android:textColor="?attr/colorPrimary"
+                    android:textColor="?attr/colorOnSurface"
                     android:textSize="20sp" />
 
                 <RadioGroup
@@ -256,7 +262,8 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="Alumno"
-                        android:textColor="?attr/colorPrimary"
+                        android:textColor="?attr/colorOnSurface"
+                        android:buttonTint="?attr/colorOnSurface"
                         android:textSize="18sp" />
 
                     <RadioButton
@@ -265,7 +272,8 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="Docente"
-                        android:textColor="?attr/colorPrimary"
+                        android:textColor="?attr/colorOnSurface"
+                        android:buttonTint="?attr/colorOnSurface"
                         android:textSize="18sp" />
                 </RadioGroup>
 
@@ -278,12 +286,12 @@
                     android:layout_marginBottom="10dp"
                     android:contentDescription="Botón para registrar al nuevo usuario"
                     android:text="Registrar"
-                    android:textColor="?attr/colorOnSecondary"
+                    android:textColor="@color/colorSurfaceBackward"
                     android:textSize="18sp"
                     android:textStyle="bold"
-                    app:backgroundTint="?attr/colorSecondary"
+                    app:backgroundTint="@color/colorSecondary"
                     app:cornerRadius="12dp"
-                    app:strokeColor="?attr/colorPrimary"
+                    app:strokeColor="@color/colorSurfaceBackward"
                     app:strokeWidth="2dp" />
 
                 <com.google.android.material.button.MaterialButton
@@ -295,12 +303,12 @@
                     android:layout_marginBottom="10dp"
                     android:contentDescription="Botón para regresar a la pantalla anterior"
                     android:text="Regresar"
-                    android:textColor="?attr/colorOnTertiary"
+                    android:textColor="@color/colorSurfaceBackward"
                     android:textSize="18sp"
                     android:textStyle="bold"
-                    app:backgroundTint="?attr/colorTertiary"
+                    app:backgroundTint="@color/colorAccent"
                     app:cornerRadius="12dp"
-                    app:strokeColor="?attr/colorPrimary"
+                    app:strokeColor="@color/colorSurfaceBackward"
                     app:strokeWidth="2dp" />
             </LinearLayout>
         </ScrollView>
@@ -338,5 +346,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:contentDescription="Indicador de carga mientras se realiza el registro"
+        android:indeterminateTint="?attr/colorOnSurface"
         android:visibility="gone" />
 </FrameLayout>

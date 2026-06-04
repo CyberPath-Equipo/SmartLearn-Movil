@@ -251,6 +251,22 @@ public class DescargarDatos {
 
         contenidoDAO.insertarPregunta(pregunta);
 
+        // Si la API ya envió las opciones dentro de la pregunta, persistirlas sin depender de otra llamada.
+        if (pregunta.getOpciones() != null && !pregunta.getOpciones().isEmpty()) {
+            for (Opcion opcion : pregunta.getOpciones()) {
+                if (opcion.getIdPregunta() == null) {
+                    opcion.setIdPregunta(pregunta.getId());
+                }
+                if (opcion.getIdPregunta() == null) {
+                    notificarError("Opción inválida durante descarga");
+                    return;
+                }
+                contenidoDAO.insertarOpcion(opcion);
+            }
+            procesarPreguntas(preguntas, indicePregunta + 1, idEjercicio, ejercicios, indiceEjercicio, idSubtema, subtemas, indiceSubtemaActual, idTemaActual, temas, indiceTemaActual, idMateria);
+            return;
+        }
+
 
         Call<List<Opcion>> call = apiService.getOpcionesByPregunta(pregunta.getId());
         call.enqueue(new Callback<List<Opcion>>() {
@@ -263,7 +279,7 @@ public class DescargarDatos {
                         if (opcion.getIdPregunta() == null) {
                             opcion.setIdPregunta(pregunta.getId());
                         }
-                        if (opcion.getIdPregunta() == null || opcion.getId() == null) {
+                        if (opcion.getIdPregunta() == null) {
                             notificarError("Opción inválida durante descarga");
                             return;
                         }

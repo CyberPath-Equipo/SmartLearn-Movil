@@ -22,6 +22,7 @@ import com.cyberpath.smartlearn.logic.main.combo.cuenta.CuentaLogic;
 import com.cyberpath.smartlearn.ui.acceso.AccesoActivity;
 import com.cyberpath.smartlearn.util.constants.UsuarioCst;
 import com.cyberpath.smartlearn.util.preferences.PreferencesManager;
+import com.google.android.material.card.MaterialCardView;
 
 public class CuentaFragment extends Fragment {
 
@@ -82,23 +83,17 @@ public class CuentaFragment extends Fragment {
         }
         actualizarEstadosAccesibilidad();
 
-        LinearLayout btnCambiarNombre = view.findViewById(R.id.btn_cambiar_nombre);
+        MaterialCardView btnCambiarNombre = view.findViewById(R.id.btn_cambiar_nombre);
         btnCambiarNombre.setOnClickListener(v -> navegarAEdicion("nombre"));
 
-        LinearLayout btnCambiarNombreCompleto = view.findViewById(R.id.btn_cambiar_nombre_completo);
+        MaterialCardView btnCambiarNombreCompleto = view.findViewById(R.id.btn_cambiar_nombre_completo);
         btnCambiarNombreCompleto.setOnClickListener(v -> navegarAEdicion("nombreCompleto"));
 
-        LinearLayout btnCambiarCorreo = view.findViewById(R.id.btn_cambiar_correo);
+        MaterialCardView btnCambiarCorreo = view.findViewById(R.id.btn_cambiar_correo);
         btnCambiarCorreo.setOnClickListener(v -> navegarAEdicion("correo"));
 
-        LinearLayout btnCambiarContrasena = view.findViewById(R.id.btn_cambiar_contrasena);
+        MaterialCardView btnCambiarContrasena = view.findViewById(R.id.btn_cambiar_contrasena);
         btnCambiarContrasena.setOnClickListener(v -> navegarAEdicion("contrasena"));
-
-        LinearLayout btnAccesibilidadVisual = view.findViewById(R.id.btn_accesibilidad_visual);
-        btnAccesibilidadVisual.setOnClickListener(v -> navegarAEdicion("accesibilidadVisual"));
-
-        LinearLayout btnAccesibilidadAuditiva = view.findViewById(R.id.btn_accesibilidad_auditiva);
-        btnAccesibilidadAuditiva.setOnClickListener(v -> navegarAEdicion("accesibilidadAuditiva"));
 
         Button btnEliminarCuenta = view.findViewById(R.id.btn_eliminar_cuenta);
         if (btnEliminarCuenta != null) {

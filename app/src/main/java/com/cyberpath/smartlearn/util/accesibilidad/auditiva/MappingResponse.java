@@ -30,6 +30,9 @@ public class MappingResponse {
         @SerializedName("file")
         public String file;
 
+        @SerializedName("url")
+        public String url;
+
         @SerializedName("durationMs")
         public Integer durationMs;
     }

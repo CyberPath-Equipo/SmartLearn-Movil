@@ -5,13 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:animation="@anim/fade_in"
     tools:context=".ui.main.combo.principal.materia.MateriasFragment">
 
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="12dp"
         app:cardBackgroundColor="#CCFFFFFF"
         app:cardCornerRadius="20dp"
         app:cardElevation="6dp"
@@ -38,7 +36,7 @@
                     android:layout_height="wrap_content"
                     android:text="¡Hola, Usuario!"
                     android:textAppearance="?attr/textAppearanceHeadlineMedium"
-                    android:textColor="?attr/colorTertiary"
+                    android:textColor="@color/colorOnSurface"
                     android:textStyle="bold" />
 
                 <ImageView
@@ -64,7 +62,7 @@
         android:id="@+id/card_carrusel_materias"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="12dp"
+        android:layout_marginTop="12dp"
         app:cardBackgroundColor="#CCFFFFFF"
         app:cardCornerRadius="20dp"
         app:cardElevation="6dp"
@@ -83,7 +81,7 @@
                 android:text="Materias Inscritas:"
                 android:textAlignment="center"
                 android:textAppearance="?attr/textAppearanceTitleLarge"
-                android:textColor="?attr/colorTertiary"
+                android:textColor="?attr/colorOnSurface"
                 android:textStyle="bold" />
 
             <TextView
@@ -93,7 +91,7 @@
                 android:layout_marginTop="4dp"
                 android:text="Desliza para explorar más materias"
                 android:textAppearance="?attr/textAppearanceBodyMedium"
-                android:textColor="?attr/colorTertiary" />
+                android:textColor="?attr/colorOnSurface" />
 
             <androidx.viewpager2.widget.ViewPager2
                 android:id="@+id/viewPagerMaterias"
@@ -120,7 +118,7 @@
                     android:layout_marginEnd="16dp"
                     android:contentDescription="Materia anterior"
                     android:src="@drawable/ic_arrow_back"
-                    app:backgroundTint="?attr/colorTertiary"
+                    app:backgroundTint="@color/colorSecondary"
                     app:fabSize="mini"
                     app:tint="?attr/colorOnTertiary" />
 
@@ -138,7 +136,7 @@
                     android:layout_marginStart="16dp"
                     android:contentDescription="Materia siguiente"
                     android:src="@drawable/ic_arrow_forward"
-                    app:backgroundTint="?attr/colorTertiary"
+                    app:backgroundTint="@color/colorSecondary"
                     app:fabSize="mini"
                     app:tint="?attr/colorOnTertiary" />
             </LinearLayout>

@@ -29,6 +29,7 @@ public class PreferencesManager {
     private static final String KEY_REGISTRO_NOMBRE_CUENTA = "registro_nombre_cuenta";
     private static final String KEY_NOMBRE_USUARIO = "nombre_usuario";
     private static final String KEY_CORREO_USUARIO = "correo_usuario";
+    private static final String KEY_USUARIO_VERIFICADO = "usuario_verificado";
     private static final String KEY_ACCESIBILIDAD_VISUAL = "accesibilidad_visual";
     private static final String KEY_ACCESIBILIDAD_AUDITIVA = "accesibilidad_auditiva";
     private static final String KEY_TAMANO_FUENTE = "tamano_letra";
@@ -129,6 +130,14 @@ public class PreferencesManager {
         return getPrefs(context).getString(KEY_CORREO_USUARIO, "");
     }
 
+    public static void setUsuarioVerificado(Context context, boolean verificado) {
+        getPrefs(context).edit().putBoolean(KEY_USUARIO_VERIFICADO, verificado).apply();
+    }
+
+    public static boolean isUsuarioVerificado(Context context) {
+        return getPrefs(context).getBoolean(KEY_USUARIO_VERIFICADO, false);
+    }
+
     // -----------------------
     // Accesibilidad / Audio
     // -----------------------
@@ -226,6 +235,7 @@ public class PreferencesManager {
                 .putString(KEY_REGISTRO_TRANSACTION_ID, "")
                 .putString(KEY_REGISTRO_CORREO, "")
                 .putString(KEY_REGISTRO_NOMBRE_CUENTA, "")
+                .putBoolean(KEY_USUARIO_VERIFICADO, false)
                 .apply();
     }
 

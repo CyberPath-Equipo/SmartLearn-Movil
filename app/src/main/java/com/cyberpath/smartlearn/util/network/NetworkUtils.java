@@ -8,23 +8,34 @@ import android.os.Build;
 
 public class NetworkUtils {
     public static boolean isInternetAvailable(Context context) {
-        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        if (connectivityManager == null) {
-            return false;
-        }
+        if (context == null) return false;
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            Network network = connectivityManager.getActiveNetwork();
-            if (network == null) {
+        try {
+            ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+            if (connectivityManager == null) {
                 return false;
             }
-            NetworkCapabilities capabilities = connectivityManager.getNetworkCapabilities(network);
-            return capabilities != null
-                    && capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
-                    && capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED);
-        } else {
-            android.net.NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
-            return networkInfo != null && networkInfo.isConnected();
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                Network network = connectivityManager.getActiveNetwork();
+                if (network == null) {
+                    return false;
+                }
+                NetworkCapabilities capabilities = connectivityManager.getNetworkCapabilities(network);
+                return capabilities != null
+                        && capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+                        && capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED);
+            } else {
+                android.net.NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+                return networkInfo != null && networkInfo.isConnected();
+            }
+        } catch (Exception ignored) {
+            return false;
         }
     }
+
+    public static boolean shouldUseOfflineMode(Context context) {
+        return !isInternetAvailable(context);
+    }
 }
+

@@ -26,7 +26,6 @@ public class TeoriaLogic {
     private final TeoriaRepository teoriaRepository;
     private final NavAccesibilidad navAccesibilidad;
     private final ArrayList<String> preguntas;
-    private boolean modoOffline = false;
     @Getter
     private Teoria teoriaActual;
 
@@ -51,10 +50,8 @@ public class TeoriaLogic {
             return;
         }
         if (NetworkUtils.isInternetAvailable(context)) {
-            modoOffline = false;
             cargarTeoriaAPI();
         } else {
-            modoOffline = true;
             cargarTeoriaLocal();
         }
     }
@@ -63,7 +60,7 @@ public class TeoriaLogic {
         ApiService apiService = RetrofitClient.getApiService();
         Call<Teoria> call = apiService.getTeoriaBySubtema(subtema.getId());
 
-        call.enqueue(new Callback<Teoria>() {
+        call.enqueue(new Callback<>() {
             @Override
             public void onResponse(Call<Teoria> call, Response<Teoria> response) {
                 if (fragment == null || !fragment.isAdded()) return;
@@ -114,8 +111,10 @@ public class TeoriaLogic {
         }
 
         if (navAccesibilidad != null && navAccesibilidad.isAccesibilidadAuditivaActivada()) {
-            String lessonId = subtema != null ? String.valueOf(subtema.getId()) : "lesson_1";
-            navAccesibilidad.reproducirContenido(contenido, "lesson_1");
+            String lessonId = subtema != null && subtema.getId() != null
+                    ? String.valueOf(subtema.getId())
+                    : "lesson_1";
+            navAccesibilidad.reproducirContenido(contenido, lessonId);
         }
     }
 

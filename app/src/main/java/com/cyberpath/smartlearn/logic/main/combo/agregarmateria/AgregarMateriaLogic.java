@@ -54,6 +54,15 @@ public class AgregarMateriaLogic {
 
     public void cargarDatos() {
         if (!datosCargados) {
+            if (NetworkUtils.shouldUseOfflineMode(context)) {
+                listaAllMaterias.clear();
+                listaMateriasDisponibles.clear();
+                listaMateriasFiltrada.clear();
+                fragment.actualizarAdapter(listaMateriasFiltrada);
+                fragment.showToast("Modo offline - catálogo no disponible sin internet");
+                datosCargados = true;
+                return;
+            }
             cargarMateriasUsuario(usuarioActual != null ? usuarioActual.getId() : null);
             cargarAllMaterias();
         } else {

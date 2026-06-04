@@ -2,10 +2,11 @@
 <resources>
     <!-- ========= COLORES DARK ========= -->
     <!-- ========= COLORES BASE LIGHT ========= -->
-    <color name="colorHeader">#121E2C</color>
     <color name="colorBackground">#0F1722</color>
     <color name="colorSurface">#1B2A38</color>
+    <color name="colorSurfaceBackward">#000000</color>
     <color name="cardColor">#243446</color>
+
 
     <!-- ========= COLORES DE TEXTO ========= -->
     <color name="colorOnSurfacePrimary">#C4C4C4</color>

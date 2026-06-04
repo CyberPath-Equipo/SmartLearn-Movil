@@ -20,6 +20,8 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.cyberpath.smartlearn.R;
+import com.cyberpath.smartlearn.data.local.database.dao.ContenidoDAO;
+import com.cyberpath.smartlearn.data.model.contenido.Materia;
 import com.cyberpath.smartlearn.data.model.contenido.Subtema;
 import com.cyberpath.smartlearn.data.model.contenido.Tema;
 import com.cyberpath.smartlearn.logic.main.combo.principal.subtema.NavAccesibilidad;
@@ -43,6 +45,7 @@ public class SubtemasFragment extends Fragment {
     private AdaptadorSubtemas adapterSubtemas;
     private TextView textoTema;
     private Tema tema;
+    private Materia materiaPadre;
     private ImageView[] indicadores;
     private LinearLayout indicadoresContainer;
     private com.google.android.material.floatingactionbutton.FloatingActionButton btnPrev;
@@ -72,6 +75,11 @@ public class SubtemasFragment extends Fragment {
         tema = SubtemasFragmentArgs.fromBundle(getArguments()).getTema();
         if (tema != null) {
             textoTema.setText(tema.getNombre());
+            materiaPadre = new ContenidoDAO(requireContext()).obtenerMateria(tema.getIdMateria());
+            if (materiaPadre == null && tema.getSlugMateria() != null && !tema.getSlugMateria().isEmpty()) {
+                materiaPadre = new Materia();
+                materiaPadre.setSlug(tema.getSlugMateria());
+            }
         }
 
         crearCarrusel(view);
@@ -102,7 +110,7 @@ public class SubtemasFragment extends Fragment {
 
     private void crearCarrusel(View view) {
         viewPagerSubtemas = view.findViewById(R.id.viewPagerSubtemas);
-        adapterSubtemas = new AdaptadorSubtemas(new ArrayList<>(), this::onSubtemaClick);
+        adapterSubtemas = new AdaptadorSubtemas(new ArrayList<>(), this::onSubtemaClick, materiaPadre);
         viewPagerSubtemas.setAdapter(adapterSubtemas);
 
         viewPagerSubtemas.setOffscreenPageLimit(3);
@@ -265,6 +273,7 @@ public class SubtemasFragment extends Fragment {
 
     public void actualizarAdapter(List<Subtema> subtemas) {
         if (adapterSubtemas != null) {
+            adapterSubtemas.setMateriaPadre(materiaPadre);
             adapterSubtemas.actualizarLista(new ArrayList<>(subtemas));
             viewPagerSubtemas.post(() -> {
                 int realSize = subtemasLogic != null ? subtemasLogic.getRealSize() : 0;

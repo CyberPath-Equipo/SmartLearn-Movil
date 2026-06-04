@@ -9,7 +9,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.cyberpath.smartlearn.R;
+import com.cyberpath.smartlearn.data.model.contenido.Materia;
 import com.cyberpath.smartlearn.data.model.contenido.Subtema;
 
 import java.util.ArrayList;
@@ -20,9 +22,15 @@ public class AdaptadorSubtemas extends RecyclerView.Adapter<AdaptadorSubtemas.Su
     private final OnSubtemaClickListener listener;
     private List<Subtema> listaSubtemasOriginal = new ArrayList<>();
     private List<Subtema> listaSubtemasDuplicada = new ArrayList<>();
+    private Materia materiaPadre;
 
     public AdaptadorSubtemas(List<Subtema> listaSubtemas, OnSubtemaClickListener listener) {
+        this(listaSubtemas, listener, null);
+    }
+
+    public AdaptadorSubtemas(List<Subtema> listaSubtemas, OnSubtemaClickListener listener, Materia materiaPadre) {
         this.listener = listener;
+        this.materiaPadre = materiaPadre;
         if (listaSubtemas != null) {
             this.listaSubtemasOriginal = new ArrayList<>(listaSubtemas);
         }
@@ -54,6 +62,11 @@ public class AdaptadorSubtemas extends RecyclerView.Adapter<AdaptadorSubtemas.Su
         notifyDataSetChanged();
     }
 
+    public void setMateriaPadre(Materia materiaPadre) {
+        this.materiaPadre = materiaPadre;
+        notifyDataSetChanged();
+    }
+
     public int getRealSize() {
         return listaSubtemasOriginal != null ? listaSubtemasOriginal.size() : 0;
     }
@@ -62,7 +75,7 @@ public class AdaptadorSubtemas extends RecyclerView.Adapter<AdaptadorSubtemas.Su
     @Override
     public SubtemaViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.element_carousel, parent, false);
+                .inflate(R.layout.element_carousel_materias, parent, false);
         return new SubtemaViewHolder(view);
     }
 
@@ -87,9 +100,12 @@ public class AdaptadorSubtemas extends RecyclerView.Adapter<AdaptadorSubtemas.Su
         } else {
             holder.tvNombre.setText("");
             holder.tvDescripcion.setText("Descripción no disponible");
+            holder.imageSubtema.setImageResource(R.drawable.ic_launcher_foreground);
+            holder.itemView.setOnClickListener(null);
+            return;
         }
 
-        holder.imageSubtema.setImageResource(R.drawable.ic_launcher_foreground);
+        cargarImagenDesdeMateria(holder.imageSubtema);
 
         holder.itemView.setOnClickListener(v -> {
             if (listener != null && subtema != null) {
@@ -105,6 +121,19 @@ public class AdaptadorSubtemas extends RecyclerView.Adapter<AdaptadorSubtemas.Su
 
     public interface OnSubtemaClickListener {
         void onSubtemaClick(Subtema subtema);
+    }
+
+    private void cargarImagenDesdeMateria(ImageView imageView) {
+        if (materiaPadre != null && materiaPadre.getSlug() != null && !materiaPadre.getSlug().isEmpty()) {
+            Glide.with(imageView.getContext())
+                    .load(materiaPadre.getSlug())
+                    .placeholder(R.drawable.ic_launcher_foreground)
+                    .error(R.drawable.ic_launcher_foreground)
+                    .centerCrop()
+                    .into(imageView);
+        } else {
+            imageView.setImageResource(R.drawable.ic_launcher_foreground);
+        }
     }
 
     public static class SubtemaViewHolder extends RecyclerView.ViewHolder {

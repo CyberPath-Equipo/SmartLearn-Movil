@@ -258,10 +258,27 @@ public class TwoFactorFragment extends Fragment implements View.OnClickListener 
         PreferencesManager.setIdUsuario(requireContext(), userId);
         PreferencesManager.setUsuarioRegistrado(requireContext(), true);
         PreferencesManager.setSesionActiva(requireContext(), true);
+        PreferencesManager.setUsuarioVerificado(requireContext(), true);
+
+        Usuario usuarioActual = UsuarioCst.USUARIO_ACTUAL;
+        if (usuarioActual == null || usuarioActual.getId() == null || usuarioActual.getId() != userId) {
+            usuarioActual = new Usuario();
+            usuarioActual.setId(userId);
+        }
+        usuarioActual.setVerificado(true);
+        if (loginResponse.getNombreCuenta() != null && !loginResponse.getNombreCuenta().trim().isEmpty()) {
+            usuarioActual.setNombreCuenta(loginResponse.getNombreCuenta());
+        }
+        UsuarioCst.USUARIO_ACTUAL = usuarioActual;
 
         UsuarioCst.asignarConstantesUsuario(requireContext(), userId, new UsuarioCst.UsuarioLoadCallback() {
             @Override
             public void onUsuarioLoaded(Usuario usuario) {
+                if (usuario != null) {
+                    usuario.setVerificado(true);
+                    UsuarioCst.USUARIO_ACTUAL = usuario;
+                    PreferencesManager.setUsuarioVerificado(requireContext(), true);
+                }
                 navigateToMain();
             }
 
@@ -274,12 +291,18 @@ public class TwoFactorFragment extends Fragment implements View.OnClickListener 
 
     private void completeSetup() {
         PreferencesManager.setSesionActiva(requireContext(), true);
+        PreferencesManager.setUsuarioVerificado(requireContext(), true);
 
         int userId = idUsuario > 0 ? idUsuario : PreferencesManager.getIdUsuario(requireContext());
         if (userId > 0) {
             UsuarioCst.asignarConstantesUsuario(requireContext(), userId, new UsuarioCst.UsuarioLoadCallback() {
                 @Override
                 public void onUsuarioLoaded(Usuario usuario) {
+                    if (usuario != null) {
+                        usuario.setVerificado(true);
+                        UsuarioCst.USUARIO_ACTUAL = usuario;
+                        PreferencesManager.setUsuarioVerificado(requireContext(), true);
+                    }
                     navigateToMain();
                 }
 

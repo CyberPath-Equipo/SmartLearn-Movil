@@ -5,6 +5,7 @@ import android.content.Context;
 import com.cyberpath.smartlearn.data.model.usuario.Usuario;
 import com.cyberpath.smartlearn.data.remote.api.ApiService;
 import com.cyberpath.smartlearn.data.remote.api.RetrofitClient;
+import com.cyberpath.smartlearn.util.network.NetworkUtils;
 import com.cyberpath.smartlearn.util.preferences.PreferencesManager;
 
 import retrofit2.Call;
@@ -18,6 +19,17 @@ public class UsuarioCst {
     public static void asignarConstantesUsuario(Context context, Integer id, UsuarioLoadCallback callback) {
         if (id == null || id <= 0) {
             if (callback != null) callback.onError("ID de usuario inválido");
+            return;
+        }
+
+        if (NetworkUtils.shouldUseOfflineMode(context)) {
+            Usuario usuarioLocal = reconstructFromPreferences(context);
+            if (usuarioLocal != null) {
+                USUARIO_ACTUAL = usuarioLocal;
+                if (callback != null) callback.onUsuarioLoaded(USUARIO_ACTUAL);
+            } else if (callback != null) {
+                callback.onError("Sin conexión y sin datos locales de usuario");
+            }
             return;
         }
 
@@ -40,7 +52,13 @@ public class UsuarioCst {
 
             @Override
             public void onFailure(Call<Usuario> call, Throwable t) {
-                if (callback != null) callback.onError("Error de red: " + t.getMessage());
+                Usuario usuarioLocal = reconstructFromPreferences(context);
+                if (usuarioLocal != null) {
+                    USUARIO_ACTUAL = usuarioLocal;
+                    if (callback != null) callback.onUsuarioLoaded(USUARIO_ACTUAL);
+                } else if (callback != null) {
+                    callback.onError("Error de red: " + t.getMessage());
+                }
             }
         });
     }
@@ -61,6 +79,7 @@ public class UsuarioCst {
         usuario.setId(idUsuario);
         usuario.setNombreCuenta(PreferencesManager.getNombreUsuario(context));
         usuario.setCorreo(PreferencesManager.getCorreoUsuario(context));
+        usuario.setVerificado(PreferencesManager.isUsuarioVerificado(context));
         return usuario;
     }
 
