@@ -236,6 +236,7 @@ public class EjercicioFragment extends Fragment {
             int numeroIndicador = i + 1;
             String textoFormateado = String.format(Locale.getDefault(), "%d      %s", numeroIndicador, opcion.getTexto());
             btn.setText(textoFormateado);
+            btn.setTextSize(15f);
 
             int colorAsignado = coloresGamificados[i % coloresGamificados.length];
             btn.setBackgroundTintList(

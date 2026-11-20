@@ -11,10 +11,10 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitClient {
 
-
-    private static final String BASE_URL = "http://192.168.1.110:8080/";
-    //efre-des
-    //private static final String BASE_URL = "https://smartlearn.westus.cloudapp.azure.com/";
+    //efren-local
+    //private static final String BASE_URL = "http://192.168.1.110:8080/";
+    //efren-des
+    private static final String BASE_URL = "https://smartlearn.westus.cloudapp.azure.com/";
     //marco-des
     //private static final String BASE_URL = "https://marco-des.mexicocentral.cloudapp.azure.com/";
 
