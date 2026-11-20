@@ -172,6 +172,11 @@ public class SubtemasLogic {
         listaSubtemas.clear();
     }
 
+    public int getPosicionActual() {
+        return fragment.getPosicionActualViewPager();
+    }
+
+
     public int getRealSize() {
         return listaSubtemas != null ? listaSubtemas.size() : 0;
     }

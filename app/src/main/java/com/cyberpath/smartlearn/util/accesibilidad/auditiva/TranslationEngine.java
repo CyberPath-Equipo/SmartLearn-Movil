@@ -40,9 +40,7 @@ public class TranslationEngine {
         this(null, baseUrl);
     }
 
-    /**
-     * Carga el mapping desde assets y, si no existe, intenta el formato remoto anterior.
-     */
+
     public void loadMappingAsync(String lessonId, MappingCallback cb) {
         if (mappingLoaded) {
             if (cb != null) cb.onLoaded(true, null);
@@ -118,11 +116,11 @@ public class TranslationEngine {
     private String normalize(String s) {
         if (s == null) return "";
         String tmp = s.toLowerCase(Locale.ROOT).trim();
-        // quitar acentos
+
         tmp = Normalizer.normalize(tmp, Normalizer.Form.NFD).replaceAll("\\p{M}", "");
-        // quitar caracteres no alfanuméricos, permitir espacios
+
         tmp = tmp.replaceAll("[^a-z0-9\\s]", "");
-        // colapsar espacios
+
         tmp = tmp.replaceAll("\\s+", " ").trim();
         return tmp;
     }
@@ -136,7 +134,7 @@ public class TranslationEngine {
             return out;
         }
 
-        // 1. Buscar frase completa
+
         if (phraseMap.containsKey(clean)) {
             Log.d("TranslationEngine", "✅ Frase encontrada!");
             List<String> glosses = phraseMap.get(clean);

@@ -1,25 +1,37 @@
 package com.cyberpath.smartlearn.ui.main.combo.principal.subtema;
 
+import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.cyberpath.smartlearn.R;
 import com.cyberpath.smartlearn.data.model.contenido.Materia;
 import com.cyberpath.smartlearn.data.model.contenido.Subtema;
+import com.cyberpath.smartlearn.util.ui.CarruselUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class AdaptadorSubtemas extends RecyclerView.Adapter<AdaptadorSubtemas.SubtemaViewHolder> {
-
+    private static final int colorRandom = 0;
     private final OnSubtemaClickListener listener;
+    private final int[][] paresColoresGradiente = {
+            {R.color.accentGradientStart, R.color.accentGradientEnd},
+            {R.color.accentGradientStart2, R.color.accentGradientEnd2},
+            {R.color.accentGradientStart3, R.color.accentGradientEnd3},
+            {R.color.accentGradientStart4, R.color.accentGradientEnd4}
+    };
     private List<Subtema> listaSubtemasOriginal = new ArrayList<>();
     private List<Subtema> listaSubtemasDuplicada = new ArrayList<>();
     private Materia materiaPadre;
@@ -75,7 +87,7 @@ public class AdaptadorSubtemas extends RecyclerView.Adapter<AdaptadorSubtemas.Su
     @Override
     public SubtemaViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.element_carousel_materias, parent, false);
+                .inflate(R.layout.element_carousel_temas, parent, false);
         return new SubtemaViewHolder(view);
     }
 
@@ -83,23 +95,34 @@ public class AdaptadorSubtemas extends RecyclerView.Adapter<AdaptadorSubtemas.Su
     public void onBindViewHolder(@NonNull SubtemaViewHolder holder, int position) {
         if (listaSubtemasOriginal == null || listaSubtemasOriginal.isEmpty()) {
             holder.tvNombre.setText("");
-            holder.tvDescripcion.setText("");
             holder.imageSubtema.setImageResource(R.drawable.ic_launcher_foreground);
             holder.itemView.setOnClickListener(null);
             return;
         }
 
-        int realPosition = (position - 1 + listaSubtemasOriginal.size()) % listaSubtemasOriginal.size();
-        if (realPosition < 0) realPosition += listaSubtemasOriginal.size();
+        int realSize = getRealSize();
 
-        Subtema subtema = listaSubtemasOriginal.get(realPosition);
+        if (realSize == 0) {
+            holder.tvNombre.setText("");
+            holder.imageSubtema.setImageResource(R.drawable.ic_launcher_foreground);
+            holder.itemView.setOnClickListener(null);
+            return;
+        }
+
+        int posicionNormalizada = CarruselUtils.normalizarPosicion(position, realSize);
+        Subtema subtema = listaSubtemasOriginal.get(posicionNormalizada);
+
+        int indiceColor = posicionNormalizada % paresColoresGradiente.length;
+        aplicarGradienteTarjeta(
+                holder.contenedorGradiente,
+                paresColoresGradiente[indiceColor][0],
+                paresColoresGradiente[indiceColor][1]
+        );
 
         if (subtema != null) {
             holder.tvNombre.setText(subtema.getNombre() != null ? subtema.getNombre() : "");
-            holder.tvDescripcion.setText("Descripción");
         } else {
             holder.tvNombre.setText("");
-            holder.tvDescripcion.setText("Descripción no disponible");
             holder.imageSubtema.setImageResource(R.drawable.ic_launcher_foreground);
             holder.itemView.setOnClickListener(null);
             return;
@@ -114,13 +137,20 @@ public class AdaptadorSubtemas extends RecyclerView.Adapter<AdaptadorSubtemas.Su
         });
     }
 
+    private void aplicarGradienteTarjeta(View contenedor, int idColorInicio, int idColorFin) {
+        Drawable fondo = contenedor.getBackground();
+        if (fondo instanceof GradientDrawable) {
+            Context context = contenedor.getContext();
+            GradientDrawable gradiente = (GradientDrawable) fondo.mutate();
+            int colorInicio = ContextCompat.getColor(context, idColorInicio);
+            int colorFin = ContextCompat.getColor(context, idColorFin);
+            gradiente.setColors(new int[]{colorInicio, colorFin});
+        }
+    }
+
     @Override
     public int getItemCount() {
         return listaSubtemasDuplicada != null ? listaSubtemasDuplicada.size() : 0;
-    }
-
-    public interface OnSubtemaClickListener {
-        void onSubtemaClick(Subtema subtema);
     }
 
     private void cargarImagenDesdeMateria(ImageView imageView) {
@@ -136,15 +166,20 @@ public class AdaptadorSubtemas extends RecyclerView.Adapter<AdaptadorSubtemas.Su
         }
     }
 
+    public interface OnSubtemaClickListener {
+        void onSubtemaClick(Subtema subtema);
+    }
+
     public static class SubtemaViewHolder extends RecyclerView.ViewHolder {
+        LinearLayout contenedorGradiente;
         ImageView imageSubtema;
-        TextView tvNombre, tvDescripcion;
+        TextView tvNombre;
 
         public SubtemaViewHolder(@NonNull View itemView) {
             super(itemView);
+            contenedorGradiente = itemView.findViewById(R.id.contenedorGradienteTema);
             imageSubtema = itemView.findViewById(R.id.imageMateria);
             tvNombre = itemView.findViewById(R.id.tvNombreMateria);
-            tvDescripcion = itemView.findViewById(R.id.tvDescripcionMateria);
         }
     }
 }

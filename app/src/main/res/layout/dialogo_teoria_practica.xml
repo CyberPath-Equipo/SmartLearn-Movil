@@ -49,34 +49,43 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="12dp"
-                android:backgroundTint="?attr/colorTertiary"
                 android:contentDescription="Botón para iniciar sesión"
                 android:text="Teoría"
-                android:textAppearance="?attr/textAppearanceBodyLarge"
-                android:textColor="?attr/colorOnPrimary"
-                android:textStyle="bold" />
+                android:textColor="@color/colorSurfaceBackward"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:backgroundTint="@color/colorAccentLight"
+                app:cornerRadius="12dp"
+                app:strokeColor="@color/colorSurfaceBackward"
+                app:strokeWidth="2dp" />
 
             <Button
                 android:id="@+id/btn_practica"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:backgroundTint="?attr/colorTertiary"
                 android:contentDescription="Botón para iniciar sesión"
                 android:text="Práctica"
-                android:textAppearance="?attr/textAppearanceBodyLarge"
-                android:textColor="?attr/colorOnPrimary"
-                android:textStyle="bold" />
+                android:textColor="@color/colorSurfaceBackward"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:backgroundTint="@color/colorHeaderLight"
+                app:cornerRadius="12dp"
+                app:strokeColor="@color/colorSurfaceBackward"
+                app:strokeWidth="2dp" />
         </LinearLayout>
 
         <Button
             android:id="@+id/btn_cancelar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="?attr/colorButtonNormal"
             android:contentDescription="Botón para iniciar sesión"
             android:text="Cancelar"
-            android:textAppearance="?attr/textAppearanceBodyLarge"
-            android:textColor="?attr/colorOnSurface"
-            android:textStyle="bold" />
+            android:textColor="@color/colorSurfaceBackward"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:backgroundTint="@color/colorDangerStrong"
+            app:cornerRadius="12dp"
+            app:strokeColor="@color/colorSurfaceBackward"
+            app:strokeWidth="2dp" />
     </LinearLayout>
 </androidx.cardview.widget.CardView>

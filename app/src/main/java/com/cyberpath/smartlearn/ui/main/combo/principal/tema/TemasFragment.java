@@ -5,6 +5,7 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -22,11 +23,12 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.cyberpath.smartlearn.R;
 import com.cyberpath.smartlearn.data.model.contenido.Materia;
 import com.cyberpath.smartlearn.data.model.contenido.Tema;
-import com.cyberpath.smartlearn.logic.main.combo.principal.tema.NavAccesibilidad;
 import com.cyberpath.smartlearn.logic.main.combo.principal.tema.TemasLogic;
+import com.cyberpath.smartlearn.logic.main.combo.principal.tema.TemasNavAccesibilidad;
 import com.cyberpath.smartlearn.util.accesibilidad.visual.EntradaAudio;
 import com.cyberpath.smartlearn.util.accesibilidad.visual.SalidaAudio;
 import com.cyberpath.smartlearn.util.preferences.PreferencesManager;
+import com.cyberpath.smartlearn.util.ui.CarruselUtils;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -39,12 +41,10 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 public class TemasFragment extends Fragment {
-
-    private TemasLogic temasLogic;
-    private NavAccesibilidad navAccesibilidad;
-    private EntradaAudio entradaAudio;
     private Materia materia;
-
+    private TemasLogic temasLogic;
+    private TemasNavAccesibilidad temasNavAccesibilidad;
+    private EntradaAudio entradaAudio;
     private TextView textoMateria;
     private ViewPager2 viewPagerTemas;
     private AdaptadorTemas adapterTemas;
@@ -56,8 +56,7 @@ public class TemasFragment extends Fragment {
     private ImageView[] indicadores;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_temas, container, false);
     }
 
@@ -77,15 +76,25 @@ public class TemasFragment extends Fragment {
         }
 
         temasLogic = new TemasLogic(this, materia);
-        navAccesibilidad = new NavAccesibilidad(requireContext(), this, temasLogic, viewPagerTemas, adapterTemas);
+        temasNavAccesibilidad = new TemasNavAccesibilidad(requireContext(), this, temasLogic, viewPagerTemas, adapterTemas);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        android.util.Log.d("TemasFragment", "onResume llamado");
+        animarEntradaCarrusel();
+        if (temasLogic != null) {
+            temasLogic.cargarTemas();
+        }
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
 
-        if (navAccesibilidad != null) {
-            navAccesibilidad.detenerNavegacion();
+        if (temasNavAccesibilidad != null) {
+            temasNavAccesibilidad.detenerNavegacion();
         }
 
         if (temasLogic != null) {
@@ -94,7 +103,7 @@ public class TemasFragment extends Fragment {
 
         viewPagerTemas = null;
         adapterTemas = null;
-        navAccesibilidad = null;
+        temasNavAccesibilidad = null;
         temasLogic = null;
     }
 
@@ -158,8 +167,8 @@ public class TemasFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        if (navAccesibilidad != null) {
-            navAccesibilidad.detenerNavegacion();
+        if (temasNavAccesibilidad != null) {
+            temasNavAccesibilidad.detenerNavegacion();
         }
         try {
             EntradaAudio.obtenerInstancia().detenerEscucha();
@@ -304,6 +313,30 @@ public class TemasFragment extends Fragment {
         }
     }
 
+    private void animarEntradaCarrusel() {
+        View root = getView();
+        if (root == null) return;
+
+        View cardCarrusel = root.findViewById(R.id.card_carrusel_temas);
+        if (cardCarrusel == null) return;
+
+        cardCarrusel.post(() -> {
+            float inicioX = -cardCarrusel.getWidth();
+            if (inicioX == 0f) {
+                inicioX = -getResources().getDisplayMetrics().widthPixels;
+            }
+
+            cardCarrusel.setTranslationX(inicioX);
+            cardCarrusel.setAlpha(0f);
+            cardCarrusel.animate()
+                    .translationX(0f)
+                    .alpha(1f)
+                    .setDuration(650)
+                    .setInterpolator(new DecelerateInterpolator())
+                    .start();
+        });
+    }
+
     private void onTemaClick(Tema tema) {
         if (tema != null && materia != null) {
             tema.setSlugMateria(materia.getSlug());
@@ -312,7 +345,7 @@ public class TemasFragment extends Fragment {
         NavHostFragment.findNavController(this).navigate(action);
     }
 
-    public void simularRegresar() {
+    public void regresarPantallaAnterior() {
         requireActivity().runOnUiThread(() -> {
             try {
                 if (!NavHostFragment.findNavController(this).popBackStack()) {
@@ -339,27 +372,13 @@ public class TemasFragment extends Fragment {
     public void actualizarAdapter(List<Tema> temas) {
         if (adapterTemas != null) {
             adapterTemas.actualizarLista(new ArrayList<>(temas));
-            viewPagerTemas.post(() -> {
-                int realSize = temasLogic != null ? temasLogic.getRealSize() : 0;
-                if (realSize <= 0) {
-                    actualizarIndicadores(viewPagerTemas.getCurrentItem());
-                    actualizarBotones(viewPagerTemas.getCurrentItem());
-                    return;
-                }
-                if (realSize == 1) {
-                    viewPagerTemas.setCurrentItem(0, false);
-                } else {
-                    viewPagerTemas.setCurrentItem(1, false);
-                }
-                actualizarIndicadores(viewPagerTemas.getCurrentItem());
-                actualizarBotones(viewPagerTemas.getCurrentItem());
-            });
         }
     }
 
-    public void moverViewPagerAPosicion(int posicion, boolean smooth) {
-        if (viewPagerTemas != null) {
-            viewPagerTemas.setCurrentItem(posicion, smooth);
+    public void moverViewPager(int posicion) {
+        if (viewPagerTemas != null && adapterTemas != null) {
+            int centered = CarruselUtils.centrarPosicion(posicion, adapterTemas.getRealSize());
+            viewPagerTemas.setCurrentItem(centered, false);
         }
     }
 
@@ -367,14 +386,14 @@ public class TemasFragment extends Fragment {
         if (!PreferencesManager.isAsistenciaVozActivada(requireContext())) {
             return;
         }
-        if (navAccesibilidad != null) {
-            navAccesibilidad.iniciarNavegacion();
+        if (temasNavAccesibilidad != null) {
+            temasNavAccesibilidad.iniciarNavegacion();
         }
     }
 
     public int getPosicionActualViewPager() {
         if (viewPagerTemas == null) return 0;
-        return viewPagerTemas.getCurrentItem();
+        return getRealPositionFromPageIndex(viewPagerTemas.getCurrentItem());
     }
 
     public void entrarTemaDesdeAccesibilidad(Tema tema, BiConsumer<Boolean, Tema> callback) {
@@ -428,10 +447,6 @@ public class TemasFragment extends Fragment {
     }
 
     private int getRealPositionFromPageIndex(int pageIndex) {
-        int realSize = temasLogic != null ? temasLogic.getRealSize() : 0;
-        if (realSize <= 1) return 0;
-        int realPos = (pageIndex - 1) % realSize;
-        if (realPos < 0) realPos += realSize;
-        return realPos;
+        return CarruselUtils.normalizarPosicion(pageIndex, adapterTemas != null ? adapterTemas.getRealSize() : 0);
     }
 }

@@ -5,18 +5,15 @@ import android.content.SharedPreferences;
 
 public class PreferencesManager {
 
-    // -----------------------
-    // Temas disponibles
-    // -----------------------
+
     public static final int THEME_LIGHT = 0;
     public static final int THEME_DARK = 1;
     public static final int THEME_ACCESSIBLE = 2;
     public static final int TEXT_SIZE_SMALL = 0;
     public static final int TEXT_SIZE_MEDIUM = 1;
     public static final int TEXT_SIZE_LARGE = 2;
-    // -----------------------
-    // Constantes de keys
-    // -----------------------
+
+
     private static final String PREFS_NAME = "smartlearn_prefs";
     private static final String KEY_USUARIO_REGISTRADO = "usuario_registrado";
     private static final String KEY_TOKEN = "token";
@@ -36,16 +33,12 @@ public class PreferencesManager {
     private static final String KEY_ID_SUBTEMA_ULTIMA_CONEXION = "subtema_ultima_conexion";
     private static final String KEY_TEMA_APP = "tema_app";
 
-    // -----------------------
-    // Helper
-    // -----------------------
+
     private static SharedPreferences getPrefs(Context context) {
         return context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
     }
 
-    // -----------------------
-    // Usuario / Sesión
-    // -----------------------
+
     public static void setUsuarioRegistrado(Context context, boolean registrado) {
         getPrefs(context).edit().putBoolean(KEY_USUARIO_REGISTRADO, registrado).apply();
     }
@@ -111,9 +104,7 @@ public class PreferencesManager {
                 .apply();
     }
 
-    // -----------------------
-    // Datos de usuario (persistencia local)
-    // -----------------------
+
     public static void setNombreUsuario(Context context, String nombre) {
         getPrefs(context).edit().putString(KEY_NOMBRE_USUARIO, nombre).apply();
     }
@@ -138,9 +129,7 @@ public class PreferencesManager {
         return getPrefs(context).getBoolean(KEY_USUARIO_VERIFICADO, false);
     }
 
-    // -----------------------
-    // Accesibilidad / Audio
-    // -----------------------
+
     public static boolean isModoAudioActivado(Context context) {
         return isAccesibilidadVisualActivada(context);
     }
@@ -169,9 +158,7 @@ public class PreferencesManager {
         return getPrefs(context).getBoolean(KEY_ACCESIBILIDAD_AUDITIVA, false);
     }
 
-    // -----------------------
-    // Preferencias de interfaz
-    // -----------------------
+
     public static void setTamanoTexto(Context context, int tamano) {
         getPrefs(context).edit().putInt(KEY_TAMANO_FUENTE, normalizeTamanoTexto(tamano)).apply();
     }
@@ -228,14 +215,6 @@ public class PreferencesManager {
     public static void clearSesion(Context context) {
         getPrefs(context).edit()
                 .putBoolean(KEY_SESION_ACTIVA, false)
-                .putString(KEY_TOKEN, "")
-                .putInt(KEY_ID_USUARIO, -1)
-                .putString(KEY_TRUSTED_DEVICE_TOKEN, "")
-                .putBoolean(KEY_REGISTRO_PENDIENTE, false)
-                .putString(KEY_REGISTRO_TRANSACTION_ID, "")
-                .putString(KEY_REGISTRO_CORREO, "")
-                .putString(KEY_REGISTRO_NOMBRE_CUENTA, "")
-                .putBoolean(KEY_USUARIO_VERIFICADO, false)
                 .apply();
     }
 

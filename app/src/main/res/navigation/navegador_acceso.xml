@@ -3,28 +3,28 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navegador_acceso"
-    app:startDestination="@id/loginFragment">
+    app:startDestination="@id/InicioSesionFragment">
 
     <fragment
-        android:id="@+id/loginFragment"
-        android:name="com.cyberpath.smartlearn.ui.acceso.LoginFragment"
+        android:id="@+id/InicioSesionFragment"
+        android:name="com.cyberpath.smartlearn.ui.acceso.InicioSesionFragment"
         android:label="fragment_login"
-        tools:layout="@layout/fragment_login">
+        tools:layout="@layout/fragment_inicio_sesion">
         <action
             android:id="@+id/action_loginFragment_to_signUpFragment"
-            app:destination="@id/signUpFragment" />
+            app:destination="@id/RegistroFragment" />
         <action
             android:id="@+id/action_loginFragment_to_twoFactorFragment"
             app:destination="@id/twoFactorFragment" />
     </fragment>
     <fragment
-        android:id="@+id/signUpFragment"
-        android:name="com.cyberpath.smartlearn.ui.acceso.SignUpFragment"
+        android:id="@+id/RegistroFragment"
+        android:name="com.cyberpath.smartlearn.ui.acceso.RegistroFragment"
         android:label="fragment_sign_up"
-        tools:layout="@layout/fragment_sign_up">
+        tools:layout="@layout/fragment_registro">
         <action
             android:id="@+id/action_signUpFragment_to_loginFragment"
-            app:destination="@id/loginFragment" />
+            app:destination="@id/InicioSesionFragment" />
         <action
             android:id="@+id/action_signUpFragment_to_twoFactorFragment"
             app:destination="@id/twoFactorFragment" />

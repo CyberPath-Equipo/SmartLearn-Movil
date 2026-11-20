@@ -5,8 +5,8 @@
     android:id="@+id/container_teoria"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/android:colorBackground"
     android:animation="@anim/fade_in"
+    android:background="?attr/android:colorBackground"
     tools:context=".ui.main.combo.principal.contenido.teoria.TeoriaFragment">
 
     <ScrollView
@@ -32,9 +32,16 @@
                 android:gravity="center"
                 android:text="Nombre Subtema"
                 android:textAppearance="?attr/textAppearanceHeadlineMedium"
-                android:textColor="?attr/colorTertiary"
+                android:textColor="@color/colorOnSurface"
                 android:textStyle="bold" />
 
+            <LinearLayout
+                android:id="@+id/contenedor_teoria"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingHorizontal="20dp" />
+            <!--
             <TextView
                 android:id="@+id/tv_contenido_teoria"
                 android:layout_width="match_parent"
@@ -45,6 +52,7 @@
                 android:text="Mucho texto"
                 android:textAppearance="?attr/textAppearanceBodyMedium"
                 android:textColor="?attr/colorOnSurface" />
+            -->
         </LinearLayout>
     </ScrollView>
 
@@ -57,10 +65,10 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         android:contentDescription="Volver"
+        android:elevation="4dp"
         android:text="Volver"
         android:textAllCaps="false"
-        android:elevation="4dp"
-        app:backgroundTint="?attr/colorSecondary"
+        app:backgroundTint="@color/colorAccent"
         app:cornerRadius="12dp" />
 
     <!-- Contenedor para reproductor multimedia de lenguaje de señas -->

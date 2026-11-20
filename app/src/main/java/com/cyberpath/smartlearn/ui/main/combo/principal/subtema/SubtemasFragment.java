@@ -7,6 +7,7 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -24,22 +25,26 @@ import com.cyberpath.smartlearn.data.local.database.dao.ContenidoDAO;
 import com.cyberpath.smartlearn.data.model.contenido.Materia;
 import com.cyberpath.smartlearn.data.model.contenido.Subtema;
 import com.cyberpath.smartlearn.data.model.contenido.Tema;
-import com.cyberpath.smartlearn.logic.main.combo.principal.subtema.NavAccesibilidad;
 import com.cyberpath.smartlearn.logic.main.combo.principal.subtema.SubtemasLogic;
+import com.cyberpath.smartlearn.logic.main.combo.principal.subtema.SubtemasNavAccesibilidad;
 import com.cyberpath.smartlearn.util.accesibilidad.visual.EntradaAudio;
 import com.cyberpath.smartlearn.util.accesibilidad.visual.SalidaAudio;
 import com.cyberpath.smartlearn.util.preferences.PreferencesManager;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiConsumer;
 
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor
 public class SubtemasFragment extends Fragment {
     private final Handler mainHandler = new Handler(Looper.getMainLooper());
     private SubtemasLogic subtemasLogic;
-    private NavAccesibilidad navAccesibilidad;
+    private SubtemasNavAccesibilidad subtemasNavAccesibilidad;
     private EntradaAudio entradaAudio;
     private ViewPager2 viewPagerSubtemas;
     private AdaptadorSubtemas adapterSubtemas;
@@ -48,12 +53,8 @@ public class SubtemasFragment extends Fragment {
     private Materia materiaPadre;
     private ImageView[] indicadores;
     private LinearLayout indicadoresContainer;
-    private com.google.android.material.floatingactionbutton.FloatingActionButton btnPrev;
-    private com.google.android.material.floatingactionbutton.FloatingActionButton btnNext;
+    private FloatingActionButton btnPrev, btnNext;
     private MaterialButton btnVolver;
-
-    public SubtemasFragment() {
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -87,15 +88,25 @@ public class SubtemasFragment extends Fragment {
         crearBotonVolver(view);
 
         subtemasLogic = new SubtemasLogic(this, tema);
-        navAccesibilidad = new NavAccesibilidad(requireContext(), this, subtemasLogic, viewPagerSubtemas, adapterSubtemas);
+        subtemasNavAccesibilidad = new SubtemasNavAccesibilidad(requireContext(), this, subtemasLogic, viewPagerSubtemas, adapterSubtemas);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        android.util.Log.d("SubtemasFragment", "onResume llamado");
+        animarEntradaCarrusel();
+        if (subtemasLogic != null) {
+            subtemasLogic.cargarSubtemas();
+        }
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
 
-        if (navAccesibilidad != null) {
-            navAccesibilidad.detenerNavegacion();
+        if (subtemasNavAccesibilidad != null) {
+            subtemasNavAccesibilidad.detenerNavegacion();
         }
 
         if (subtemasLogic != null) {
@@ -104,7 +115,7 @@ public class SubtemasFragment extends Fragment {
 
         viewPagerSubtemas = null;
         adapterSubtemas = null;
-        navAccesibilidad = null;
+        subtemasNavAccesibilidad = null;
         subtemasLogic = null;
     }
 
@@ -168,8 +179,8 @@ public class SubtemasFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        if (navAccesibilidad != null) {
-            navAccesibilidad.detenerNavegacion();
+        if (subtemasNavAccesibilidad != null) {
+            subtemasNavAccesibilidad.detenerNavegacion();
         }
         try {
             EntradaAudio.obtenerInstancia().detenerEscucha();
@@ -214,6 +225,30 @@ public class SubtemasFragment extends Fragment {
             } else {
                 requireActivity().onBackPressed();
             }
+        });
+    }
+
+    private void animarEntradaCarrusel() {
+        View root = getView();
+        if (root == null) return;
+
+        View cardCarrusel = root.findViewById(R.id.card_carrusel_subtemas);
+        if (cardCarrusel == null) return;
+
+        cardCarrusel.post(() -> {
+            float inicioX = -cardCarrusel.getWidth();
+            if (inicioX == 0f) {
+                inicioX = -getResources().getDisplayMetrics().widthPixels;
+            }
+
+            cardCarrusel.setTranslationX(inicioX);
+            cardCarrusel.setAlpha(0f);
+            cardCarrusel.animate()
+                    .translationX(0f)
+                    .alpha(1f)
+                    .setDuration(650)
+                    .setInterpolator(new DecelerateInterpolator())
+                    .start();
         });
     }
 
@@ -303,14 +338,14 @@ public class SubtemasFragment extends Fragment {
         if (!PreferencesManager.isAsistenciaVozActivada(requireContext())) {
             return;
         }
-        if (navAccesibilidad != null) {
-            navAccesibilidad.iniciarNavegacion();
+        if (subtemasNavAccesibilidad != null) {
+            subtemasNavAccesibilidad.iniciarNavegacion();
         }
     }
 
     public int getPosicionActualViewPager() {
         if (viewPagerSubtemas == null) return 0;
-        return viewPagerSubtemas.getCurrentItem();
+        return getRealPositionFromPageIndex(viewPagerSubtemas.getCurrentItem());
     }
 
     public void entrarSubtemaDesdeAccesibilidad(Subtema subtema, BiConsumer<Boolean, Subtema> callback) {

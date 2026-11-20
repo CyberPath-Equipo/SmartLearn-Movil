@@ -21,7 +21,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.cyberpath.smartlearn.R;
 import com.cyberpath.smartlearn.data.model.contenido.Materia;
 import com.cyberpath.smartlearn.logic.main.combo.agregarmateria.AgregarMateriaLogic;
-import com.cyberpath.smartlearn.logic.main.combo.agregarmateria.NavAccesibilidad;
+import com.cyberpath.smartlearn.logic.main.combo.agregarmateria.AgregarMateriaNavAccesibilidad;
 import com.cyberpath.smartlearn.util.accesibilidad.visual.EntradaAudio;
 import com.cyberpath.smartlearn.util.accesibilidad.visual.SalidaAudio;
 import com.cyberpath.smartlearn.util.preferences.PreferencesManager;
@@ -36,7 +36,7 @@ public class AgregarMateriaFragment extends Fragment {
     private ViewPager2 carruselMaterias;
     private AdaptadorAgregarMaterias adapterMaterias;
     private Runnable filtroRunnable;
-    private NavAccesibilidad navAccesibilidad;
+    private AgregarMateriaNavAccesibilidad agregarMateriaNavAccesibilidad;
 
     private AgregarMateriaLogic agregarMateriaLogic;
     private EntradaAudio entradaAudio;
@@ -87,7 +87,7 @@ public class AgregarMateriaFragment extends Fragment {
             }
         });
 
-        navAccesibilidad = new NavAccesibilidad(requireContext(), this, agregarMateriaLogic, carruselMaterias, adapterMaterias);
+        agregarMateriaNavAccesibilidad = new AgregarMateriaNavAccesibilidad(requireContext(), this, agregarMateriaLogic, carruselMaterias, adapterMaterias);
 
         searchViewMaterias.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -117,8 +117,8 @@ public class AgregarMateriaFragment extends Fragment {
             filtroHandler.removeCallbacks(filtroRunnable);
             filtroRunnable = null;
         }
-        if (navAccesibilidad != null) {
-            navAccesibilidad.detenerNavegacion();
+        if (agregarMateriaNavAccesibilidad != null) {
+            agregarMateriaNavAccesibilidad.detenerNavegacion();
         }
         searchViewMaterias = null;
         carruselMaterias = null;
@@ -129,8 +129,8 @@ public class AgregarMateriaFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        if (navAccesibilidad != null) {
-            navAccesibilidad.detenerNavegacion();
+        if (agregarMateriaNavAccesibilidad != null) {
+            agregarMateriaNavAccesibilidad.detenerNavegacion();
         }
         try {
             EntradaAudio.obtenerInstancia().detenerEscucha();
@@ -211,8 +211,8 @@ public class AgregarMateriaFragment extends Fragment {
         if (!PreferencesManager.isAsistenciaVozActivada(requireContext())) {
             return;
         }
-        if (navAccesibilidad != null) {
-            navAccesibilidad.iniciarNavegacion();
+        if (agregarMateriaNavAccesibilidad != null) {
+            agregarMateriaNavAccesibilidad.iniciarNavegacion();
         }
     }
 

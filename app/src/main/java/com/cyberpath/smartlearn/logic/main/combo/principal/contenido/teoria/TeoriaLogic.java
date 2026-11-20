@@ -24,7 +24,7 @@ public class TeoriaLogic {
     private final Context context;
     private final Subtema subtema;
     private final TeoriaRepository teoriaRepository;
-    private final NavAccesibilidad navAccesibilidad;
+    private final TeoriaNavAccesibilidad teoriaNavAccesibilidad;
     private final ArrayList<String> preguntas;
     @Getter
     private Teoria teoriaActual;
@@ -33,12 +33,13 @@ public class TeoriaLogic {
         this(fragment, subtema, preguntas, null);
     }
 
-    public TeoriaLogic(TeoriaFragment fragment, Subtema subtema, ArrayList<String> preguntas, NavAccesibilidad navAccesibilidad) {
+    public TeoriaLogic(TeoriaFragment fragment, Subtema subtema, ArrayList<String> preguntas,
+                       TeoriaNavAccesibilidad teoriaNavAccesibilidad) {
         this.fragment = fragment;
         this.context = fragment.requireContext();
         this.subtema = subtema;
         this.preguntas = preguntas;
-        this.navAccesibilidad = navAccesibilidad;
+        this.teoriaNavAccesibilidad = teoriaNavAccesibilidad;
         this.teoriaRepository = new TeoriaRepository(context);
 
         cargarTeoria();
@@ -71,6 +72,7 @@ public class TeoriaLogic {
                         teoriaActual.setIdSubtema(subtema.getId());
                     }
 
+
                     mostrarContenido(teoriaActual);
                 } else {
                     cargarTeoriaLocal();
@@ -90,6 +92,8 @@ public class TeoriaLogic {
             teoriaActual = teoriaRepository.obtenerTeoriaPorSubtema(subtema.getId());
 
             if (teoriaActual != null) {
+
+
                 mostrarContenido(teoriaActual);
             } else {
                 fragment.mostrarError("No hay teoría disponible sin conexión");
@@ -104,19 +108,16 @@ public class TeoriaLogic {
     private void mostrarContenido(Teoria teoria) {
         String contenido = teoria.getContenido();
 
-        if (preguntas != null && !preguntas.isEmpty()) {
-            fragment.resaltarPalabrasClave(contenido, preguntas);
-        } else {
-            fragment.mostrarTeoria(contenido);
-        }
 
-        if (navAccesibilidad != null && navAccesibilidad.isAccesibilidadAuditivaActivada()) {
+        fragment.mostrarContenido(contenido, preguntas);
+
+        if (teoriaNavAccesibilidad != null && teoriaNavAccesibilidad.isAccesibilidadAuditivaActivada()) {
             String lessonId = subtema != null && subtema.getId() != null
                     ? String.valueOf(subtema.getId())
                     : "lesson_1";
-            navAccesibilidad.reproducirContenido(contenido, lessonId);
+            teoriaNavAccesibilidad.reproducirContenido(contenido, lessonId);
         }
+
+        fragment.iniciarNavegacionPorVoz();
     }
-
-
 }

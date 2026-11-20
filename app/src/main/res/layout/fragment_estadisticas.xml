@@ -9,8 +9,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:animation="@anim/fade_in">
+        android:animation="@anim/fade_in"
+        android:orientation="vertical">
 
         <LinearLayout
             android:id="@+id/layout_loading"
@@ -29,9 +29,9 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@drawable/bg_card_elevated"
                     android:gravity="center"
                     android:orientation="vertical"
-                    android:background="@drawable/bg_card_elevated"
                     android:padding="32dp">
 
                     <ProgressBar
@@ -80,7 +80,7 @@
                         android:text="Panel de rendimiento"
                         android:textAlignment="center"
                         android:textAppearance="?attr/textAppearanceHeadlineMedium"
-                        android:textColor="?attr/colorOnSurface"
+                        android:textColor="@color/colorOnSurface"
                         android:textStyle="bold" />
 
                     <TextView
@@ -106,21 +106,21 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
                     android:background="@drawable/bg_card_elevated"
+                    android:orientation="vertical"
                     android:padding="16dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_marginBottom="16dp">
+                        android:layout_marginBottom="16dp"
+                        android:orientation="horizontal">
 
                         <com.google.android.material.card.MaterialCardView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
                             android:layout_marginEnd="6dp"
+                            android:layout_weight="1"
                             app:cardBackgroundColor="@color/cardColor"
                             app:cardCornerRadius="16dp"
                             app:cardElevation="2dp"
@@ -139,7 +139,7 @@
                                     android:gravity="center"
                                     android:text="Ejercicios"
                                     android:textAppearance="?attr/textAppearanceTitleMedium"
-                                    android:textColor="?attr/colorOnSurface"
+                                    android:textColor="@color/colorOnSurface"
                                     android:textStyle="bold" />
 
                                 <org.eazegraph.lib.charts.PieChart
@@ -155,15 +155,15 @@
                                     android:layout_marginTop="4dp"
                                     android:gravity="center"
                                     android:textAppearance="?attr/textAppearanceBodyMedium"
-                                    android:textColor="?attr/colorOnSurface" />
+                                    android:textColor="@color/colorOnSurface" />
                             </LinearLayout>
                         </com.google.android.material.card.MaterialCardView>
 
                         <com.google.android.material.card.MaterialCardView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
                             android:layout_marginStart="6dp"
+                            android:layout_weight="1"
                             app:cardBackgroundColor="@color/cardColor"
                             app:cardCornerRadius="16dp"
                             app:cardElevation="2dp"
@@ -182,7 +182,7 @@
                                     android:gravity="center"
                                     android:text="Promedio"
                                     android:textAppearance="?attr/textAppearanceTitleMedium"
-                                    android:textColor="?attr/colorOnSurface"
+                                    android:textColor="@color/colorOnSurface"
                                     android:textStyle="bold" />
 
                                 <org.eazegraph.lib.charts.PieChart
@@ -198,7 +198,7 @@
                                     android:layout_marginTop="4dp"
                                     android:gravity="center"
                                     android:textAppearance="?attr/textAppearanceBodyMedium"
-                                    android:textColor="?attr/colorOnSurface" />
+                                    android:textColor="@color/colorOnSurface" />
                             </LinearLayout>
                         </com.google.android.material.card.MaterialCardView>
                     </LinearLayout>
@@ -224,7 +224,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:textAppearance="?attr/textAppearanceBodyLarge"
-                                android:textColor="?attr/colorOnSurface"
+                                android:textColor="@color/colorOnSurface"
                                 android:textStyle="bold"
                                 tools:text="Tiempo total: 12 horas" />
 
@@ -260,7 +260,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="Tiempo de estudio - últimos 7 días"
                                 android:textAppearance="?attr/textAppearanceTitleLarge"
-                                android:textColor="?attr/colorOnSurface"
+                                android:textColor="@color/colorOnSurface"
                                 android:textStyle="bold" />
 
                             <com.github.mikephil.charting.charts.BarChart
@@ -292,7 +292,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="Rendimiento histórico (diagrama de puntos)"
                                 android:textAppearance="?attr/textAppearanceTitleLarge"
-                                android:textColor="?attr/colorOnSurface"
+                                android:textColor="@color/colorOnSurface"
                                 android:textStyle="bold" />
 
                             <com.github.mikephil.charting.charts.ScatterChart
@@ -324,7 +324,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="Intereses detectados"
                                 android:textAppearance="?attr/textAppearanceTitleLarge"
-                                android:textColor="?attr/colorOnSurface"
+                                android:textColor="@color/colorOnSurface"
                                 android:textStyle="bold" />
 
                             <LinearLayout
@@ -357,7 +357,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="Análisis de comportamiento"
                                 android:textAppearance="?attr/textAppearanceTitleLarge"
-                                android:textColor="?attr/colorOnSurface"
+                                android:textColor="@color/colorOnSurface"
                                 android:textStyle="bold" />
 
                             <TextView
@@ -375,14 +375,14 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="12dp"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
                         android:text="Actualizar"
                         android:textAllCaps="false"
                         android:textAppearance="?attr/textAppearanceTitleMedium"
                         android:textStyle="bold"
                         app:backgroundTint="?attr/colorSecondary"
-                        app:cornerRadius="12dp"
-                        android:insetTop="0dp"
-                        android:insetBottom="0dp" />
+                        app:cornerRadius="12dp" />
 
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>

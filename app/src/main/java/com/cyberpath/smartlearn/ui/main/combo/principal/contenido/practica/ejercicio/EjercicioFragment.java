@@ -4,11 +4,10 @@ import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.TypedValue;
-import android.view.animation.OvershootInterpolator;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.OvershootInterpolator;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -26,13 +25,15 @@ import com.cyberpath.smartlearn.data.model.ejercicio.Ejercicio;
 import com.cyberpath.smartlearn.data.model.ejercicio.Opcion;
 import com.cyberpath.smartlearn.data.model.ejercicio.Pregunta;
 import com.cyberpath.smartlearn.logic.main.combo.principal.contenido.practica.ejercicio.EjercicioLogic;
-import com.cyberpath.smartlearn.logic.main.combo.principal.contenido.practica.ejercicio.NavAccesibilidad;
+import com.cyberpath.smartlearn.logic.main.combo.principal.contenido.practica.ejercicio.EjercicioNavAccesibilidad;
 import com.cyberpath.smartlearn.util.accesibilidad.visual.EntradaAudio;
 import com.cyberpath.smartlearn.util.accesibilidad.visual.SalidaAudio;
 import com.cyberpath.smartlearn.util.preferences.PreferencesManager;
+import com.google.android.material.button.MaterialButton;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.function.BiConsumer;
 
 import lombok.Getter;
@@ -43,7 +44,7 @@ public class EjercicioFragment extends Fragment {
     private final Handler mainHandler = new Handler(Looper.getMainLooper());
     private final List<Button> currentOptionButtons = new ArrayList<>();
     private EjercicioLogic ejercicioLogic;
-    private NavAccesibilidad navAccesibilidad;
+    private EjercicioNavAccesibilidad ejercicioNavAccesibilidad;
     private Ejercicio ejercicio;
     @Getter
     @Setter
@@ -58,7 +59,6 @@ public class EjercicioFragment extends Fragment {
     private Button btnVolver, btnRetroalimentacion;
     private long sessionStartMs = 0L;
 
-    // estado de selección local (un solo índice seleccionado, -1 = none)
     private int selectedOptionIndex = -1;
 
     public EjercicioFragment() {
@@ -94,7 +94,6 @@ public class EjercicioFragment extends Fragment {
 
         listaPreguntas = new ArrayList<>();
 
-        // Al presionar "Verificar" delegamos al logic (que ahora debe consultar la opción seleccionada a través del fragment)
         btnCheck.setOnClickListener(v -> {
             if (ejercicioLogic != null) {
                 ejercicioLogic.verificarRespuesta();
@@ -123,7 +122,7 @@ public class EjercicioFragment extends Fragment {
 
         ejercicioLogic = new EjercicioLogic(this, ejercicio);
 
-        navAccesibilidad = new NavAccesibilidad(requireContext(), this, ejercicioLogic);
+        ejercicioNavAccesibilidad = new EjercicioNavAccesibilidad(requireContext(), this, ejercicioLogic);
     }
 
     @Override
@@ -143,15 +142,15 @@ public class EjercicioFragment extends Fragment {
         super.onDestroyView();
         registrarSesionPractica();
 
-        if (navAccesibilidad != null) {
-            navAccesibilidad.detenerNavegacion();
+        if (ejercicioNavAccesibilidad != null) {
+            ejercicioNavAccesibilidad.detenerNavegacion();
         }
 
         if (ejercicioLogic != null) {
             ejercicioLogic.limpiarDatos();
         }
 
-        navAccesibilidad = null;
+        ejercicioNavAccesibilidad = null;
         ejercicioLogic = null;
     }
 
@@ -210,10 +209,6 @@ public class EjercicioFragment extends Fragment {
         }
     }
 
-    /**
-     * Crea botones para cada opción. La selección queda local (selectedOptionIndex) hasta que el usuario
-     * presione "Verificar".
-     */
     public void mostrarOpciones(List<Opcion> opciones) {
         if (llOptions == null) return;
 
@@ -223,43 +218,35 @@ public class EjercicioFragment extends Fragment {
 
         if (opciones == null || opciones.isEmpty()) return;
 
+        int[] coloresGamificados = {
+                R.color.blue_option,
+                R.color.orange_option,
+                R.color.purple_option
+        };
+
+        LayoutInflater inflater = LayoutInflater.from(getContext());
+
         for (int i = 0; i < opciones.size(); i++) {
             Opcion opcion = opciones.get(i);
-            Button btn = new Button(getContext());
-            btn.setId(View.generateViewId());
-            btn.setText(opcion.getTexto());
-            btn.setTag(opcion);
-            btn.setAllCaps(false);
-            btn.setTextSize(16);
 
-            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT
+            MaterialButton btn = (MaterialButton) inflater.inflate(R.layout.element_opcion_pregunta, llOptions, false);
+            btn.setId(View.generateViewId());
+            btn.setTag(opcion);
+
+            int numeroIndicador = i + 1;
+            String textoFormateado = String.format(Locale.getDefault(), "%d      %s", numeroIndicador, opcion.getTexto());
+            btn.setText(textoFormateado);
+
+            int colorAsignado = coloresGamificados[i % coloresGamificados.length];
+            btn.setBackgroundTintList(
+                    ColorStateList.valueOf(requireContext().getColor(colorAsignado))
             );
-            // margen entre botones
-            final int marginPx = (int) (8 * getResources().getDisplayMetrics().density);
-            lp.setMargins(0, 0, 0, marginPx);
-            btn.setLayoutParams(lp);
 
             final int index = i;
             btn.setOnClickListener(v -> {
-                // selección (solo un botón seleccionado a la vez)
-                if (selectedOptionIndex == index) {
-                    selectedOptionIndex = -1; // deseleccionar si toca el mismo nuevamente
-                } else {
-                    selectedOptionIndex = index;
-                }
+                selectedOptionIndex = (selectedOptionIndex == index) ? -1 : index;
                 updateOptionSelectionUI();
             });
-
-            // estilos iniciales (no seleccionado)
-            btn.setBackgroundTintList(
-                    ColorStateList.valueOf(requireContext().getColor(R.color.colorAccent))
-            );
-
-            btn.setTextColor(
-                    requireContext().getColor(R.color.colorSurface)
-            );
 
             llOptions.addView(btn);
             currentOptionButtons.add(btn);
@@ -267,40 +254,20 @@ public class EjercicioFragment extends Fragment {
     }
 
     private void updateOptionSelectionUI() {
+        int strokeWidthPx = (int) (3 * getResources().getDisplayMetrics().density);
+
         for (int i = 0; i < currentOptionButtons.size(); i++) {
-            Button b = currentOptionButtons.get(i);
+            MaterialButton btn = (MaterialButton) currentOptionButtons.get(i);
+
             if (i == selectedOptionIndex) {
-                b.setBackgroundTintList(
-                        ColorStateList.valueOf(requireContext().getColor(R.color.colorSecondary))
-                );
-
-                b.setTextColor(
-                        requireContext().getColor(R.color.colorSurface)
-                );
+                btn.setAlpha(1.0f);
+                btn.setStrokeWidth(strokeWidthPx);
+                btn.setStrokeColor(ColorStateList.valueOf(requireContext().getColor(android.R.color.white)));
             } else {
-                b.setBackgroundTintList(
-                        ColorStateList.valueOf(requireContext().getColor(R.color.colorAccent))
-                );
-                b.setTextColor(
-                        requireContext().getColor(R.color.colorSurface)
-                );
+                btn.setAlpha(0.6f);
+                btn.setStrokeWidth(0);
             }
         }
-    }
-
-    private int getColorAttr(int attrRes) {
-        TypedValue tv = new TypedValue();
-        if (requireContext().getTheme().resolveAttribute(attrRes, tv, true)) {
-            // si es color directo en theme
-            if (tv.type >= TypedValue.TYPE_FIRST_COLOR_INT && tv.type <= TypedValue.TYPE_LAST_COLOR_INT) {
-                return tv.data;
-            } else {
-                // si es referencia a recurso
-                return requireContext().getResources().getColor(tv.resourceId, requireContext().getTheme());
-            }
-        }
-        // fallback
-        return requireContext().getResources().getColor(android.R.color.black);
     }
 
     public void setBtnCheckEnabled(boolean enabled) {
@@ -360,8 +327,8 @@ public class EjercicioFragment extends Fragment {
         if (!PreferencesManager.isAsistenciaVozActivada(requireContext())) {
             return;
         }
-        if (navAccesibilidad != null) {
-            mainHandler.postDelayed(() -> navAccesibilidad.iniciarNavegacion(), 200);
+        if (ejercicioNavAccesibilidad != null) {
+            mainHandler.postDelayed(() -> ejercicioNavAccesibilidad.iniciarNavegacion(), 200);
         }
     }
 
@@ -381,9 +348,7 @@ public class EjercicioFragment extends Fragment {
         return ejercicioLogic != null ? ejercicioLogic.getNumeroOpcionesPreguntaActual() : 0;
     }
 
-    /**
-     * Selecciona la opción con índice idx (se usa para accesibilidad/automatización).
-     */
+
     public void seleccionarOpcionPorIndice(int idx) {
         mainHandler.post(() -> {
             if (idx < 0 || idx >= currentOptionButtons.size()) return;
@@ -401,16 +366,12 @@ public class EjercicioFragment extends Fragment {
         return selectedOptionIndex != -1;
     }
 
-    /**
-     * Devuelve el índice de la opción seleccionada, o -1 si ninguna.
-     */
+
     public int getSelectedOptionIndex() {
         return selectedOptionIndex;
     }
 
-    /**
-     * Devuelve la Opcion (modelo) seleccionada, o null si ninguna.
-     */
+
     public Opcion getSelectedOpcion() {
         if (selectedOptionIndex < 0 || selectedOptionIndex >= currentOptionButtons.size())
             return null;
@@ -483,16 +444,16 @@ public class EjercicioFragment extends Fragment {
         tvFeedbackFx.setAlpha(0f);
 
         tvFeedbackFx.animate()
-                .alpha(1f)
-                .scaleX(1.25f)
-                .scaleY(1.25f)
-                .setDuration(260)
+                .alpha(0.4f)
+                .scaleX(2f)
+                .scaleY(2f)
+                .setDuration(400)
                 .setInterpolator(new OvershootInterpolator(1.6f))
                 .withEndAction(() -> tvFeedbackFx.animate()
                         .alpha(0f)
                         .scaleX(0.75f)
                         .scaleY(0.75f)
-                        .setDuration(230)
+                        .setDuration(250)
                         .withEndAction(() -> {
                             tvFeedbackFx.setVisibility(View.GONE);
                             if (onEnd != null) onEnd.run();

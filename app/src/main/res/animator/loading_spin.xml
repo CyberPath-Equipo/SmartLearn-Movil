@@ -2,9 +2,9 @@
 <set xmlns:android="http://schemas.android.com/apk/res/android">
     <objectAnimator
         android:duration="600"
+        android:interpolator="@android:interpolator/linear"
         android:propertyName="rotation"
         android:valueTo="360"
-        android:valueType="floatType"
-        android:interpolator="@android:interpolator/linear" />
+        android:valueType="floatType" />
 </set>
 

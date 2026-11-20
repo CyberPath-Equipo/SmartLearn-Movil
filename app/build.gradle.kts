@@ -15,11 +15,6 @@ android {
         versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        externalNativeBuild {
-            cmake {
-                abiFilters += "arm64-v8a"
-            }
-        }
     }
 
     buildTypes {
@@ -50,12 +45,6 @@ android {
         }
     }
 
-    externalNativeBuild {
-        cmake {
-            path = file("src/main/cpp/CMakeLists.txt")
-            version = "4.1.2"
-        }
-    }
 }
 
 dependencies {

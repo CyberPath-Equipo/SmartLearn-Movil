@@ -2,26 +2,33 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:id="@+id/materiasFragment"
-        app:actionLayout="@layout/element_item_menu"/>
+    <item
+        android:id="@+id/materiasFragment"
+        app:actionLayout="@layout/element_item_menu" />
 
-    <item android:id="@+id/agregarMateriaFragment"
-        app:actionLayout="@layout/element_item_menu"/>
+    <item
+        android:id="@+id/agregarMateriaFragment"
+        app:actionLayout="@layout/element_item_menu" />
 
-    <item android:id="@+id/configuracionFragment"
-        app:actionLayout="@layout/element_item_menu"/>
+    <item
+        android:id="@+id/configuracionFragment"
+        app:actionLayout="@layout/element_item_menu" />
 
-    <item android:id="@+id/accesibilidadFragment"
-        app:actionLayout="@layout/element_item_menu"/>
+    <item
+        android:id="@+id/accesibilidadFragment"
+        app:actionLayout="@layout/element_item_menu" />
 
-    <item android:id="@+id/estadisticasFragment"
-        app:actionLayout="@layout/element_item_menu"/>
+    <item
+        android:id="@+id/estadisticasFragment"
+        app:actionLayout="@layout/element_item_menu" />
 
-    <item android:id="@+id/cuentaFragment"
-        app:actionLayout="@layout/element_item_menu"/>
+    <item
+        android:id="@+id/cuentaFragment"
+        app:actionLayout="@layout/element_item_menu" />
 
-    <item android:id="@+id/ayudaFragment"
-        app:actionLayout="@layout/element_item_menu"/>
+    <item
+        android:id="@+id/ayudaFragment"
+        app:actionLayout="@layout/element_item_menu" />
 
     <item
         android:id="@+id/ultimoSubtema"

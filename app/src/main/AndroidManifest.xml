@@ -31,13 +31,17 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".ui.acceso.AccesoActivity"
+            android:name=".ui.carga.CargaActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            </intent-filter> />
+        </activity>
+        <activity
+            android:name=".ui.acceso.AccesoActivity"
+            android:exported="false">
         </activity>
         <activity
             android:name=".util.audioRecognizer.TestAudioRecognizerActivity"
@@ -53,9 +57,6 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
-        <activity
-            android:name=".ui.carga.CargaActivity"
-            android:exported="false" />
     </application>
 
 </manifest>

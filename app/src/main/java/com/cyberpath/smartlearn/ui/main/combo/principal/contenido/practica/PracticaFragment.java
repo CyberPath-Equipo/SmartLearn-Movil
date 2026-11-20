@@ -19,8 +19,8 @@ import androidx.navigation.fragment.NavHostFragment;
 import com.cyberpath.smartlearn.R;
 import com.cyberpath.smartlearn.data.model.contenido.Subtema;
 import com.cyberpath.smartlearn.data.model.ejercicio.Ejercicio;
-import com.cyberpath.smartlearn.logic.main.combo.principal.contenido.practica.NavAccesibilidad;
 import com.cyberpath.smartlearn.logic.main.combo.principal.contenido.practica.PracticaLogic;
+import com.cyberpath.smartlearn.logic.main.combo.principal.contenido.practica.PracticaNavAccesibilidad;
 import com.cyberpath.smartlearn.util.accesibilidad.visual.EntradaAudio;
 import com.cyberpath.smartlearn.util.accesibilidad.visual.SalidaAudio;
 import com.cyberpath.smartlearn.util.preferences.PreferencesManager;
@@ -33,7 +33,7 @@ import java.util.function.BiConsumer;
 public class PracticaFragment extends Fragment implements AdapterView.OnItemClickListener {
     private final Handler mainHandler = new Handler(Looper.getMainLooper());
     private PracticaLogic practicaLogic;
-    private NavAccesibilidad navAccesibilidad;
+    private PracticaNavAccesibilidad practicaNavAccesibilidad;
     private ListView listViewEjercicios;
     private AdaptadorPractica adaptadorEjercicios;
     private TextView tvSubtema;
@@ -78,7 +78,7 @@ public class PracticaFragment extends Fragment implements AdapterView.OnItemClic
 
         practicaLogic = new PracticaLogic(this, subtema);
 
-        navAccesibilidad = new NavAccesibilidad(requireContext(), this, practicaLogic, listViewEjercicios, adaptadorEjercicios);
+        practicaNavAccesibilidad = new PracticaNavAccesibilidad(requireContext(), this, practicaLogic, listViewEjercicios, adaptadorEjercicios);
 
         btnVolver = view.findViewById(R.id.btn_volver);
         btnVolver.setOnClickListener(v -> {
@@ -95,8 +95,8 @@ public class PracticaFragment extends Fragment implements AdapterView.OnItemClic
     public void onDestroyView() {
         super.onDestroyView();
 
-        if (navAccesibilidad != null) {
-            navAccesibilidad.detenerNavegacion();
+        if (practicaNavAccesibilidad != null) {
+            practicaNavAccesibilidad.detenerNavegacion();
         }
 
         if (practicaLogic != null) {
@@ -105,7 +105,7 @@ public class PracticaFragment extends Fragment implements AdapterView.OnItemClic
 
         listViewEjercicios = null;
         adaptadorEjercicios = null;
-        navAccesibilidad = null;
+        practicaNavAccesibilidad = null;
         practicaLogic = null;
         btnVolver = null;
     }
@@ -113,8 +113,8 @@ public class PracticaFragment extends Fragment implements AdapterView.OnItemClic
     @Override
     public void onPause() {
         super.onPause();
-        if (navAccesibilidad != null) {
-            navAccesibilidad.detenerNavegacion();
+        if (practicaNavAccesibilidad != null) {
+            practicaNavAccesibilidad.detenerNavegacion();
         }
         try {
             EntradaAudio.obtenerInstancia().detenerEscucha();
@@ -166,8 +166,8 @@ public class PracticaFragment extends Fragment implements AdapterView.OnItemClic
         if (!PreferencesManager.isAsistenciaVozActivada(requireContext())) {
             return;
         }
-        if (navAccesibilidad != null) {
-            navAccesibilidad.iniciarNavegacion();
+        if (practicaNavAccesibilidad != null) {
+            practicaNavAccesibilidad.iniciarNavegacion();
         }
     }
 

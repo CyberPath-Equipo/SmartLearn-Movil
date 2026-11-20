@@ -35,9 +35,7 @@ import retrofit2.http.Path;
 
 public interface ApiService {
 
-    // ============================
-    // /smartlearn/api/usuario
-    // ============================
+
     @GET("/smartlearn/api/usuario")
     Call<List<Usuario>> getUsuarios();
 
@@ -84,9 +82,7 @@ public interface ApiService {
     @DELETE("/smartlearn/api/usuario/{id}")
     Call<Void> deleteUsuario(@Path("id") int id);
 
-    // ============================
-    // /smartlearn/api/materia
-    // ============================
+
     @GET("/smartlearn/api/materia")
     Call<List<Materia>> getMaterias();
 
@@ -96,15 +92,11 @@ public interface ApiService {
     @GET("/smartlearn/api/materia/{id}/total-ejercicios")
     Call<Long> getTotalEjerciciosByMateria(@Path("id") int idMateria);
 
-    // ============================
-    // /smartlearn/api/tema
-    // ============================
+
     @GET("/smartlearn/api/tema/{id}/subtemas")
     Call<List<Subtema>> getSubtemasByTema(@Path("id") Integer idTema);
 
-    // ============================
-    // /smartlearn/api/subtema
-    // ============================
+
     @GET("/smartlearn/api/subtema/{id}")
     Call<Subtema> getSubtemaById(@Path("id") Integer idSubtema);
 
@@ -117,51 +109,37 @@ public interface ApiService {
     @GET("/smartlearn/api/subtema/{id}/ejercicios")
     Call<List<Ejercicio>> getEjerciciosBySubtema(@Path("id") Integer idSubtema);
 
-    // ============================
-    // /smartlearn/api/teoria
-    // ============================
+
     @GET("/smartlearn/api/teoria/{id}")
     Call<Teoria> getTeoriaById(@Path("id") Integer idSubtema);
 
-    // ============================
-    // /smartlearn/api/usuario-materia
-    // ============================
+
     @POST("/smartlearn/api/usuario-materia")
     Call<UsuarioMateria> saveUsuarioEjercicio(@Body UsuarioMateria usuarioMateria);
 
-    // ============================
-    // /smartlearn/api/ultima-conexion
-    // ============================
+
     @POST("/smartlearn/api/ultima-conexion")
     Call<UltimaConexion> saveUsuarioEjercicio(@Body UltimaConexion ultimaConexion);
 
     @PUT("/smartlearn/api/ultima-conexion/{id}")
     Call<UltimaConexion> updateUsuario(@Path("id") int id, @Body UltimaConexion ultimaConexion);
 
-    // ============================
-    // /smartlearn/api/ejercicio
-    // ============================
+
     @GET("/smartlearn/api/ejercicio/{id}/preguntas")
     Call<List<Pregunta>> getPreguntasByEjercicio(@Path("id") Integer idEjercicio);
 
     @PUT("/smartlearn/api/ejercicio/{id}")
     Call<Ejercicio> updateUsuario(@Path("id") int id, @Body Ejercicio ejercicio);
 
-    // ============================
-    // /smartlearn/api/pregunta
-    // ============================
+
     @GET("/smartlearn/api/pregunta/{id}/opciones")
     Call<List<Opcion>> getOpcionesByPregunta(@Path("id") Integer idPregunta);
 
-    // ============================
-    // /smartlearn/api/intento-ejercicio
-    // ============================
+
     @POST("/smartlearn/api/intento-ejercicio")
     Call<IntentoEjercicio> saveUsuarioEjercicio(@Body IntentoEjercicio intentoEjercicio);
 
-    // ============================
-    // /smartlearn/api/usuario-ejercicio
-    // ============================
+
     @POST("/smartlearn/api/usuario-ejercicio")
     Call<UsuarioEjercicio> saveUsuarioEjercicio(@Body UsuarioEjercicio usuarioEjercicio);
 }

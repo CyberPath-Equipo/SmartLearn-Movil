@@ -6,10 +6,10 @@ import android.os.Looper;
 import android.view.View;
 import android.widget.ImageView;
 
-import androidx.media3.common.MediaItem;
-import androidx.media3.common.Player;
 import androidx.media3.common.AudioAttributes;
+import androidx.media3.common.MediaItem;
 import androidx.media3.common.PlaybackException;
+import androidx.media3.common.Player;
 import androidx.media3.exoplayer.ExoPlayer;
 import androidx.media3.ui.PlayerView;
 
@@ -45,6 +45,20 @@ public class ReproductorContenido {
         playing = true;
         index = Math.max(0, index);
         handler.post(stepImage);
+    }
+
+    public void stop() {
+        playing = false;
+        handler.removeCallbacksAndMessages(null);
+        stopVideo();
+    }
+
+    public void release() {
+        stop();
+        if (exoPlayer != null) {
+            exoPlayer.release();
+            exoPlayer = null;
+        }
     }    private final Runnable stepImage = new Runnable() {
         @Override
         public void run() {
@@ -60,20 +74,6 @@ public class ReproductorContenido {
             }
         }
     };
-
-    public void stop() {
-        playing = false;
-        handler.removeCallbacksAndMessages(null);
-        stopVideo();
-    }
-
-    public void release() {
-        stop();
-        if (exoPlayer != null) {
-            exoPlayer.release();
-            exoPlayer = null;
-        }
-    }
 
     private void showImage(ContenidoItem it) {
         playerView.setVisibility(View.GONE);
@@ -159,6 +159,8 @@ public class ReproductorContenido {
         boolean exoIsPlaying = exoPlayer != null && exoPlayer.isPlaying();
         return playing || exoIsPlaying;
     }
+
+
 
 
 }

@@ -45,7 +45,7 @@ public class AccesibilidadFragment extends Fragment {
         imgVisual.setImageResource(visualActiva ? R.drawable.ic_eye_closed : R.drawable.ic_eye);
 
         switchAuditiva.setChecked(auditivaActiva);
-        imgAuditiva.setImageResource(auditivaActiva ? R.drawable.ic_volume_muted : R.drawable.ic_volume);
+        imgAuditiva.setImageResource(auditivaActiva ? R.drawable.ic_accesibilidad_visual_desactivada : R.drawable.ic_accesibilidad_visual_activada);
 
         switchVisual.setOnCheckedChangeListener((buttonView, isChecked) -> {
             PreferencesManager.setAccesibilidadVisualActivada(requireContext(), isChecked);
@@ -59,7 +59,7 @@ public class AccesibilidadFragment extends Fragment {
         switchAuditiva.setOnCheckedChangeListener((buttonView, isChecked) -> {
             PreferencesManager.setAccesibilidadAuditivaActivada(requireContext(), isChecked);
 
-            cambiarIconoConAnimacion(imgAuditiva, isChecked ? R.drawable.ic_volume_muted : R.drawable.ic_volume);
+            cambiarIconoConAnimacion(imgAuditiva, isChecked ? R.drawable.ic_accesibilidad_visual_desactivada : R.drawable.ic_accesibilidad_visual_activada);
 
             requireActivity().recreate();
         });

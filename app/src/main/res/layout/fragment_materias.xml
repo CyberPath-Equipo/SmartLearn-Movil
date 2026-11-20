@@ -18,12 +18,10 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
             android:background="@drawable/bg_card_elevated"
-            android:paddingStart="16dp"
-            android:paddingTop="14dp"
-            android:paddingEnd="16dp"
-            android:paddingBottom="14dp">
+            android:orientation="vertical"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="14dp">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -34,6 +32,7 @@
                     android:id="@+id/tv_nombre_usuario"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
                     android:text="¡Hola, Usuario!"
                     android:textAppearance="?attr/textAppearanceHeadlineMedium"
                     android:textColor="@color/colorOnSurface"
@@ -43,7 +42,10 @@
                     android:layout_width="36dp"
                     android:layout_height="36dp"
                     android:layout_alignParentEnd="true"
-                    android:src="@drawable/ic_usuario" />
+                    android:layout_centerVertical="true"
+                    android:contentDescription="Perfil de usuario"
+                    android:src="@drawable/ic_usuario"
+                    app:tint="@color/colorOnSurface" />
             </RelativeLayout>
 
             <SearchView
@@ -61,8 +63,10 @@
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/card_carrusel_materias"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginTop="12dp"
+        android:layout_marginBottom="16dp"
+        android:layout_weight="1"
         app:cardBackgroundColor="#CCFFFFFF"
         app:cardCornerRadius="20dp"
         app:cardElevation="6dp"
@@ -70,9 +74,9 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
+            android:layout_height="match_parent"
             android:background="@drawable/bg_card_elevated"
+            android:orientation="vertical"
             android:paddingVertical="15dp">
 
             <TextView
@@ -81,7 +85,7 @@
                 android:text="Materias Inscritas:"
                 android:textAlignment="center"
                 android:textAppearance="?attr/textAppearanceTitleLarge"
-                android:textColor="?attr/colorOnSurface"
+                android:textColor="@color/colorOnSurface"
                 android:textStyle="bold" />
 
             <TextView
@@ -90,13 +94,14 @@
                 android:layout_marginHorizontal="15dp"
                 android:layout_marginTop="4dp"
                 android:text="Desliza para explorar más materias"
+                android:textAlignment="center"
                 android:textAppearance="?attr/textAppearanceBodyMedium"
-                android:textColor="?attr/colorOnSurface" />
+                android:textColor="@color/colorOnSurface" />
 
             <androidx.viewpager2.widget.ViewPager2
                 android:id="@+id/viewPagerMaterias"
                 android:layout_width="match_parent"
-                android:layout_height="350dp"
+                android:layout_height="330dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="8dp"
                 android:clipChildren="false"

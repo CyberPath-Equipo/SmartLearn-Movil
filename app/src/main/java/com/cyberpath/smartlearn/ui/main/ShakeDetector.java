@@ -10,6 +10,7 @@ class ShakeDetector implements SensorEventListener {
     private final long cooldownMs;
     private final OnShakeListener onShakeListener;
     private long lastShakeAt;
+
     ShakeDetector(long cooldownMs, OnShakeListener onShakeListener) {
         this.cooldownMs = cooldownMs;
         this.onShakeListener = onShakeListener;
@@ -41,14 +42,13 @@ class ShakeDetector implements SensorEventListener {
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
-        // No-op
+
     }
 
     interface OnShakeListener {
         void onShake();
     }
 
-    // Isolated constant avoids pulling full SensorManager as dependency in this utility.
     private static final class SensorManagerConstants {
         private static final float GRAVITY_EARTH = 9.80665f;
     }

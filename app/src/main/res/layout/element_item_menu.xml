@@ -5,6 +5,7 @@
     android:layout_height="wrap_content"
     android:paddingHorizontal="12dp"
     android:paddingVertical="5dp">
+
     <LinearLayout
         android:id="@+id/container_item_estandar"
         android:layout_width="match_parent"
@@ -12,7 +13,8 @@
         android:background="@drawable/bg_item_menu"
         android:clickable="true"
         android:focusable="true"
-        android:foreground="?attr/selectableItemBackground" android:gravity="center_vertical"
+        android:foreground="?attr/selectableItemBackground"
+        android:gravity="center_vertical"
         android:orientation="horizontal"
         android:padding="14dp">
 
@@ -20,8 +22,8 @@
             android:id="@+id/img_menu_icono"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            app:tint="@android:color/white"
-            android:contentDescription="Icono del menú" />
+            android:contentDescription="Icono del menú"
+            app:tint="@android:color/white" />
 
         <TextView
             android:id="@+id/tv_menu_texto"

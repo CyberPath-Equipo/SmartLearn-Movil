@@ -4,6 +4,7 @@ public class ContenidoItem {
     public Type type;
     public String url;
     public int durationMs;
+
     public ContenidoItem(Type type, String url, int durationMs) {
         this.type = type;
         this.url = url;

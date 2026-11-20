@@ -10,14 +10,13 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitClient {
-    //Marco
-    //private static final String BASE_URL = "http://192.168.1.77:8080/";
-    //Efrén
-    //private static final String BASE_URL = "http://192.168.1.110:8080/";
+
+
+    private static final String BASE_URL = "http://192.168.1.110:8080/";
     //efre-des
-    //private static final String BASE_URL = "https://efren-des.westus.cloudapp.azure.com/";
+    //private static final String BASE_URL = "https://smartlearn.westus.cloudapp.azure.com/";
     //marco-des
-    private static final String BASE_URL = "https://marco-des.mexicocentral.cloudapp.azure.com/";
+    //private static final String BASE_URL = "https://marco-des.mexicocentral.cloudapp.azure.com/";
 
     private static Retrofit retrofit;
     private static volatile ApiService apiService;
@@ -35,13 +34,10 @@ public class RetrofitClient {
         if (apiService == null) {
             synchronized (RetrofitClient.class) {
                 if (apiService == null) {
-                    // Logging (solo DEBUG)
                     HttpLoggingInterceptor logging = new HttpLoggingInterceptor(message ->
                             android.util.Log.d("HTTP", message));
-                    // En desarrollo BODY, en producción cambiar a BASIC o NONE
                     logging.setLevel(HttpLoggingInterceptor.Level.BODY);
 
-                    // Interceptor de autenticación (usa appContext)
                     AuthInterceptor authInterceptor = new AuthInterceptor(appContext);
 
                     OkHttpClient client = new OkHttpClient.Builder()

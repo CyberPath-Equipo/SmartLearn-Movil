@@ -1,82 +1,60 @@
 package com.cyberpath.smartlearn.ui.main.combo.principal.tema;
 
+import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.cyberpath.smartlearn.R;
 import com.cyberpath.smartlearn.data.model.contenido.Materia;
 import com.cyberpath.smartlearn.data.model.contenido.Tema;
+import com.cyberpath.smartlearn.util.ui.CarruselUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import lombok.Setter;
+
 public class AdaptadorTemas extends RecyclerView.Adapter<AdaptadorTemas.TemaViewHolder> {
-
+    private static final int colorRandom = 0;
     private final OnTemaClickListener listener;
-    private List<Tema> listaTemasOriginal = new ArrayList<>();
-    private List<Tema> listaTemasDuplicada = new ArrayList<>();
+    private final int[][] paresColoresGradiente = {
+            {R.color.accentGradientStart, R.color.accentGradientEnd},
+            {R.color.accentGradientStart2, R.color.accentGradientEnd2},
+            {R.color.accentGradientStart3, R.color.accentGradientEnd3},
+            {R.color.accentGradientStart4, R.color.accentGradientEnd4}
+    };
+    private List<Tema> listaTemas = new ArrayList<>();
+    @Setter
     private Materia materia;
-
-    public AdaptadorTemas(List<Tema> listaTemas, OnTemaClickListener listener) {
-        this(listaTemas, listener, null);
-    }
 
     public AdaptadorTemas(List<Tema> listaTemas, OnTemaClickListener listener, Materia materia) {
         this.listener = listener;
         this.materia = materia;
         if (listaTemas != null) {
-            this.listaTemasOriginal = new ArrayList<>(listaTemas);
+            this.listaTemas = new ArrayList<>(listaTemas);
         }
-        actualizarListaDuplicada();
     }
 
-    public void actualizarListaDuplicada() {
-        listaTemasDuplicada = new ArrayList<>();
-
-        if (listaTemasOriginal == null || listaTemasOriginal.isEmpty()) {
-            return;
-        }
-
-        int size = listaTemasOriginal.size();
-
-        if (size == 1) {
-            listaTemasDuplicada.addAll(listaTemasOriginal);
-            return;
-        }
-
-        listaTemasDuplicada.add(listaTemasOriginal.get(size - 1));
-        listaTemasDuplicada.addAll(listaTemasOriginal);
-        listaTemasDuplicada.add(listaTemasOriginal.get(0));
-    }
-
-    public void actualizarLista(List<Tema> nuevasTemas) {
-        this.listaTemasOriginal = nuevasTemas != null ? new ArrayList<>(nuevasTemas) : new ArrayList<>();
-        actualizarListaDuplicada();
+    public void actualizarLista(List<Tema> nuevosTemas) {
+        this.listaTemas = nuevosTemas != null ? new ArrayList<>(nuevosTemas) : new ArrayList<>();
         notifyDataSetChanged();
     }
 
     public int getRealSize() {
-        return listaTemasOriginal != null ? listaTemasOriginal.size() : 0;
+        return listaTemas != null ? listaTemas.size() : 0;
     }
 
-    /**
-     * Establece la materia padre para cargar sus imágenes.
-     */
-    public void setMateria(Materia materia) {
-        this.materia = materia;
-    }
-
-    /**
-     * Carga una imagen desde el slug de la materia usando Glide.
-     * Si no hay materia o slug está vacío, carga la imagen por defecto.
-     */
     private void cargarImagenDesdeMateria(ImageView imageView) {
         if (materia != null && materia.getSlug() != null && !materia.getSlug().isEmpty()) {
             Glide.with(imageView.getContext())
@@ -100,40 +78,59 @@ public class AdaptadorTemas extends RecyclerView.Adapter<AdaptadorTemas.TemaView
 
     @Override
     public void onBindViewHolder(@NonNull TemaViewHolder holder, int position) {
-        if (listaTemasOriginal == null || listaTemasOriginal.isEmpty()) {
+        int realSize = getRealSize();
+
+        if (realSize == 0) {
             holder.tvNombre.setText("");
-            holder.tvDescripcion.setText("");
             holder.imageTema.setImageResource(R.drawable.ic_launcher_foreground);
             holder.itemView.setOnClickListener(null);
             return;
         }
 
-        int realPosition = (position - 1 + listaTemasOriginal.size()) % listaTemasOriginal.size();
-        if (realPosition < 0) realPosition += listaTemasOriginal.size();
+        int posicionNormalizada = CarruselUtils.normalizarPosicion(position, realSize);
+        Tema tema = listaTemas.get(posicionNormalizada);
 
-        Tema tema = listaTemasOriginal.get(realPosition);
+        int indiceColor = posicionNormalizada % paresColoresGradiente.length;
+        aplicarGradienteTarjeta(
+                holder.contenedorGradiente,
+                paresColoresGradiente[indiceColor][0],
+                paresColoresGradiente[indiceColor][1]
+        );
 
         if (tema != null) {
             holder.tvNombre.setText(tema.getNombre() != null ? tema.getNombre() : "");
-            holder.tvDescripcion.setText("Descripción");
+
+            cargarImagenDesdeMateria(holder.imageTema);
+
+            holder.itemView.setOnClickListener(v -> {
+                if (listener != null && tema != null) {
+                    listener.onTemaClick(tema);
+                }
+            });
         } else {
             holder.tvNombre.setText("");
-            holder.tvDescripcion.setText("Descripción no disponible");
+            holder.imageTema.setImageResource(R.drawable.ic_launcher_foreground);
+            holder.itemView.setOnClickListener(null);
         }
+    }
 
-        // Cargar imagen desde la materia padre
-        cargarImagenDesdeMateria(holder.imageTema);
-
-        holder.itemView.setOnClickListener(v -> {
-            if (listener != null && tema != null) {
-                listener.onTemaClick(tema);
-            }
-        });
+    private void aplicarGradienteTarjeta(View contenedor, int idColorInicio, int idColorFin) {
+        Drawable fondo = contenedor.getBackground();
+        if (fondo instanceof GradientDrawable) {
+            Context context = contenedor.getContext();
+            GradientDrawable gradiente = (GradientDrawable) fondo.mutate();
+            int colorInicio = ContextCompat.getColor(context, idColorInicio);
+            int colorFin = ContextCompat.getColor(context, idColorFin);
+            gradiente.setColors(new int[]{colorInicio, colorFin});
+        }
     }
 
     @Override
     public int getItemCount() {
-        return listaTemasDuplicada != null ? listaTemasDuplicada.size() : 0;
+        int realSize = getRealSize();
+        if (realSize == 0) return 0;
+        if (realSize == 1) return 1;
+        return Integer.MAX_VALUE;
     }
 
     public interface OnTemaClickListener {
@@ -141,14 +138,15 @@ public class AdaptadorTemas extends RecyclerView.Adapter<AdaptadorTemas.TemaView
     }
 
     public static class TemaViewHolder extends RecyclerView.ViewHolder {
+        LinearLayout contenedorGradiente;
         ImageView imageTema;
-        TextView tvNombre, tvDescripcion;
+        TextView tvNombre;
 
         public TemaViewHolder(@NonNull View itemView) {
             super(itemView);
+            contenedorGradiente = itemView.findViewById(R.id.contenedorGradienteTema);
             imageTema = itemView.findViewById(R.id.imageMateria);
             tvNombre = itemView.findViewById(R.id.tvNombreMateria);
-            tvDescripcion = itemView.findViewById(R.id.tvDescripcionMateria);
         }
     }
 }

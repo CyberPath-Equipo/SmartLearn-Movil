@@ -8,8 +8,8 @@ import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 
 import com.cyberpath.smartlearn.data.local.database.dao.ContenidoDAO;
-import com.cyberpath.smartlearn.data.local.database.sincronizar.DescargarDatos;
 import com.cyberpath.smartlearn.data.local.database.repository.TemasRepository;
+import com.cyberpath.smartlearn.data.local.database.sincronizar.DescargarDatos;
 import com.cyberpath.smartlearn.data.model.contenido.Materia;
 import com.cyberpath.smartlearn.data.model.contenido.Tema;
 import com.cyberpath.smartlearn.data.remote.api.ApiService;
@@ -52,11 +52,6 @@ public class TemasLogic {
     }
 
     public void cargarTemas() {
-        if (materia == null || materia.getId() == null) {
-            fragment.showToast("Materia inválida");
-            return;
-        }
-
         if (NetworkUtils.isInternetAvailable(context)) {
             modoOffline = false;
             cargarTemasAPI();
@@ -85,7 +80,7 @@ public class TemasLogic {
                     if (listaTemas.isEmpty()) {
                         fragment.showToast("No hay temas para esta materia");
                     } else {
-                        fragment.moverViewPagerAPosicion(1, false);
+                        fragment.moverViewPager(1);
                     }
 
                     fragment.iniciarNavegacionPorVoz();
@@ -117,7 +112,7 @@ public class TemasLogic {
                 fragment.showToast("No hay temas disponibles sin conexión");
             } else {
                 fragment.showToast("Modo offline - Temas locales");
-                fragment.moverViewPagerAPosicion(1, false);
+                fragment.moverViewPager(1);
             }
 
             fragment.iniciarNavegacionPorVoz();
@@ -261,6 +256,10 @@ public class TemasLogic {
 
     public void limpiarDatos() {
         listaTemas.clear();
+    }
+
+    public int getPosicionActual() {
+        return fragment.getPosicionActualViewPager();
     }
 
     public int getRealSize() {

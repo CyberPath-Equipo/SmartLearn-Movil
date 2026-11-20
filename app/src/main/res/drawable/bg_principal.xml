@@ -5,18 +5,18 @@
     </item>
 
     <item
-        android:drawable="@drawable/patron_linea_base"
         android:width="400sp"
         android:height="400sp"
+        android:drawable="@drawable/patron_linea_base"
         android:gravity="right"
         android:right="230sp"
-        android:top="40sp"/>
+        android:top="40sp" />
 
     <item
-        android:drawable="@drawable/patron_linea_base"
         android:width="400sp"
         android:height="400sp"
+        android:drawable="@drawable/patron_linea_base"
         android:gravity="left"
         android:left="220sp"
-        android:top="420sp"/>
+        android:top="420sp" />
 </layer-list>

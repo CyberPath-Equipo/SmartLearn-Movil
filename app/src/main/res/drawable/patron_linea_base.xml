@@ -7,23 +7,23 @@
 
     <group android:name="background_details">
         <path
+            android:pathData="M 16,14 L 16,22 M 12,18 L 20,18"
             android:strokeWidth="2"
-            android:strokeColor="#841C60AD"
-            android:pathData="M 16,14 L 16,22 M 12,18 L 20,18" />
+            android:strokeColor="#841C60AD" />
 
         <path
             android:fillColor="#841C60AD"
             android:pathData="M 14,88 L 17,88 L 17,91 L 14,91 Z" />
 
         <path
+            android:pathData="M 92,16 L 98,22"
             android:strokeWidth="2"
-            android:strokeColor="#841C60AD"
-            android:pathData="M 92,16 L 98,22" />
+            android:strokeColor="#841C60AD" />
 
         <path
+            android:pathData="M 96,86 L 96,92 M 93,89 L 99,89"
             android:strokeWidth="2"
-            android:strokeColor="#841C60AD"
-            android:pathData="M 96,86 L 96,92 M 93,89 L 99,89" />
+            android:strokeColor="#841C60AD" />
     </group>
 
     <group
@@ -31,27 +31,27 @@
         android:translateY="22">
 
         <group
-            android:translateX="0"
-            android:translateY="0"
             android:pivotX="30"
             android:pivotY="30"
-            android:rotation="45">
+            android:rotation="45"
+            android:translateX="0"
+            android:translateY="0">
             <path
+                android:pathData="M 0,0 L 60,0 L 60,60 L 0,60 Z"
                 android:strokeWidth="1.5"
-                android:strokeColor="#CC1C60AD"
-                android:pathData="M 0,0 L 60,0 L 60,60 L 0,60 Z" />
+                android:strokeColor="#CC1C60AD" />
         </group>
 
         <group
-            android:translateX="20"
-            android:translateY="0"
             android:pivotX="30"
             android:pivotY="30"
-            android:rotation="45">
+            android:rotation="45"
+            android:translateX="20"
+            android:translateY="0">
             <path
+                android:pathData="M 0,0 L 60,0 L 60,60 L 0,60 Z"
                 android:strokeWidth="1.5"
-                android:strokeColor="#CC1C60AD"
-                android:pathData="M 0,0 L 60,0 L 60,60 L 0,60 Z" />
+                android:strokeColor="#CC1C60AD" />
         </group>
 
     </group>

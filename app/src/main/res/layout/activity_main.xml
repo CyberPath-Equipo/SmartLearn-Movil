@@ -12,11 +12,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="125dp"
-            android:layout_marginTop="-10dp"
-            android:background="@drawable/bg_gradient_header"/>
+            android:background="@drawable/bg_gradient_header" />
 
         <include
             android:id="@+id/header_fijo"
@@ -24,8 +24,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="10dp"
-            android:layout_marginTop="-70dp"
-            android:layout_marginBottom="30dp" />
+            android:layout_marginTop="-80dp"
+            android:layout_marginBottom="15dp" />
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/nav_host_fragment"

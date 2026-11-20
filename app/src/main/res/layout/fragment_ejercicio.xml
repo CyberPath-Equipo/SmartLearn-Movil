@@ -28,7 +28,6 @@
             android:textColor="?attr/colorOnSurface"
             android:textStyle="bold" />
 
-        <!-- Reemplazado RadioGroup por un contenedor donde añadir botones dinámicamente -->
         <LinearLayout
             android:id="@+id/ll_options"
             android:layout_width="match_parent"
@@ -43,12 +42,13 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="12dp"
             android:text="Verificar"
-            android:textAppearance="?attr/textAppearanceBodyLarge"
-            android:textColor="?attr/colorOnBackground"
-            android:textAllCaps="false"
-            app:backgroundTint="?attr/colorTertiary"
+            android:textColor="@color/colorSurfaceBackward"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:backgroundTint="@color/colorAccent"
             app:cornerRadius="12dp"
-            android:elevation="4dp" />
+            app:strokeColor="@color/colorSurfaceBackward"
+            app:strokeWidth="2dp" />
 
         <TextView
             android:id="@+id/tv_feedback_fx"
@@ -76,39 +76,41 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
+            android:animation="@anim/bounce_in"
             android:text="¡Has terminado!"
-            android:textColor="?attr/colorSecondary"
+            android:textColor="@color/colorHeaderLight"
             android:textSize="28sp"
-            android:textStyle="bold"
-            android:animation="@anim/bounce_in" />
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tv_puntaje"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
+            android:animation="@anim/scale_up"
             android:textSize="24sp"
-            android:textStyle="bold"
-            android:animation="@anim/scale_up" />
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tv_porcentaje"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="32dp"
-            android:textSize="18sp"
-            android:animation="@anim/fade_in" />
+            android:animation="@anim/fade_in"
+            android:textSize="18sp" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_volver"
             android:layout_width="match_parent"
             android:layout_height="52dp"
             android:text="Volver a ejercicios"
-            android:textColor="?attr/colorOnBackground"
-            android:textAllCaps="false"
-            app:backgroundTint="?attr/colorSecondary"
+            android:textColor="@color/colorSurfaceBackward"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:backgroundTint="@color/colorSecondary"
             app:cornerRadius="12dp"
-            android:elevation="4dp" />
+            app:strokeColor="@color/colorSurfaceBackward"
+            app:strokeWidth="2dp" />
 
         <LinearLayout
             android:id="@+id/layout_retroalimentacion"
@@ -126,13 +128,18 @@
                 android:text="¿Deseas navegar a la teoría para revisar tus preguntas erroneas?"
                 android:textSize="18sp" />
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_retroalimentacion"
                 android:layout_width="match_parent"
                 android:layout_height="52dp"
-                android:backgroundTint="?attr/colorSecondary"
                 android:text="Revisar Teoría"
-                android:textColor="?attr/colorSurface" />
+                android:textColor="@color/colorSurfaceBackward"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:backgroundTint="@color/colorAccent"
+                app:cornerRadius="12dp"
+                app:strokeColor="@color/colorSurfaceBackward"
+                app:strokeWidth="2dp" />
         </LinearLayout>
 
     </LinearLayout>

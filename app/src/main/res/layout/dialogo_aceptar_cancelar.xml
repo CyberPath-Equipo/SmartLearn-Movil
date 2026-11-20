@@ -44,27 +44,33 @@
             android:orientation="horizontal">
 
             <Button
+                android:id="@+id/btnAceptar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="Botón para iniciar sesión"
+                android:text="Aceptar"
+                android:textColor="@color/colorSurfaceBackward"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:backgroundTint="@color/colorSecondary"
+                app:cornerRadius="12dp"
+                app:strokeColor="@color/colorSurfaceBackward"
+                app:strokeWidth="2dp" />
+
+            <Button
                 android:id="@+id/btnCancelar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="12dp"
-                android:backgroundTint="?attr/colorTertiary"
                 android:contentDescription="Botón para iniciar sesión"
                 android:text="Cancelar"
-                android:textAppearance="?attr/textAppearanceBodyLarge"
-                android:textColor="?attr/colorOnPrimary"
-                android:textStyle="bold" />
-
-            <Button
-                android:id="@+id/btnAceptar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:backgroundTint="?attr/colorSecondary"
-                android:contentDescription="Botón para iniciar sesión"
-                android:text="Aceptar"
-                android:textAppearance="?attr/textAppearanceBodyLarge"
-                android:textColor="?attr/colorOnPrimary"
-                android:textStyle="bold" />
+                android:textColor="@color/colorSurfaceBackward"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:backgroundTint="@color/colorDangerStrong"
+                app:cornerRadius="12dp"
+                app:strokeColor="@color/colorSurfaceBackward"
+                app:strokeWidth="2dp" />
         </LinearLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

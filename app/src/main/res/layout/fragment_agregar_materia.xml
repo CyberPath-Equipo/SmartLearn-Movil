@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:animation="@anim/fade_in"
+    android:orientation="vertical"
     tools:context=".ui.main.combo.agregarmateria.AgregarMateriaFragment">
 
     <com.google.android.material.card.MaterialCardView
@@ -31,10 +31,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Inscripción"
+                android:textAlignment="center"
                 android:textAppearance="?attr/textAppearanceHeadlineMedium"
                 android:textColor="@color/colorOnSurface"
-                android:textStyle="bold"
-                android:textAlignment="center"/>
+                android:textStyle="bold" />
 
             <SearchView
                 android:id="@+id/searchViewMaterias"
@@ -61,8 +61,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
             android:background="@drawable/bg_card_elevated"
+            android:orientation="vertical"
             android:paddingVertical="15dp">
 
             <TextView

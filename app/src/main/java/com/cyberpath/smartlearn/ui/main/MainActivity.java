@@ -45,6 +45,15 @@ import java.util.Locale;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private static final String TAG = "MainActivity";
     private static final long SHAKE_COOLDOWN_MS = 1800L;
+    private static final List<ModuloVoz> MODULOS_VOZ = Arrays.asList(
+            new ModuloVoz(R.id.materiasFragment, "principal", Arrays.asList("principal", "materias", "inicio")),
+            new ModuloVoz(R.id.agregarMateriaFragment, "agregar materia", Arrays.asList("agregar materia", "crear materia", "nueva materia")),
+            new ModuloVoz(R.id.configuracionFragment, "configuracion", Arrays.asList("configuracion", "configurar", "ajustes")),
+            new ModuloVoz(R.id.accesibilidadFragment, "accesibilidad", Arrays.asList("accesibilidad", "accesible")),
+            new ModuloVoz(R.id.estadisticasFragment, "estadisticas", Arrays.asList("estadisticas", "progreso", "avance")),
+            new ModuloVoz(R.id.cuentaFragment, "cuenta", Arrays.asList("cuenta", "perfil", "usuario")),
+            new ModuloVoz(R.id.ayudaFragment, "ayuda", Arrays.asList("ayuda", "soporte"))
+    );
     private ImageView btnPrincipal, btnDesplegarMenu;
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
@@ -56,17 +65,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private AlertDialog dialogoShake;
     private NavController.OnDestinationChangedListener audioCleanupListener;
     private boolean flujoVozShakeActivo;
-
-    private static final List<ModuloVoz> MODULOS_VOZ = Arrays.asList(
-            new ModuloVoz(R.id.materiasFragment, "principal", Arrays.asList("principal", "materias", "inicio")),
-            new ModuloVoz(R.id.agregarMateriaFragment, "agregar materia", Arrays.asList("agregar materia", "crear materia", "nueva materia")),
-            new ModuloVoz(R.id.configuracionFragment, "configuracion", Arrays.asList("configuracion", "configurar", "ajustes")),
-            new ModuloVoz(R.id.accesibilidadFragment, "accesibilidad", Arrays.asList("accesibilidad", "accesible")),
-            new ModuloVoz(R.id.estadisticasFragment, "estadisticas", Arrays.asList("estadisticas", "progreso", "avance")),
-            new ModuloVoz(R.id.cuentaFragment, "cuenta", Arrays.asList("cuenta", "perfil", "usuario")),
-            new ModuloVoz(R.id.ayudaFragment, "ayuda", Arrays.asList("ayuda", "soporte"))
-    );
-
     private TextView tvUltimoSubtemaMenu;
     private MenuItem ultimoSubtemaItem;
     private Subtema ultimoSubtema;
@@ -106,8 +104,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (ultimoSubtemaItem != null && ultimoSubtemaItem.getActionView() != null) {
             View actionView = ultimoSubtemaItem.getActionView();
 
-            if (actionView.getParent() instanceof View) {
-                View padre = (View) actionView.getParent();
+            if (actionView.getParent() instanceof View padre) {
                 android.view.ViewGroup.LayoutParams params = padre.getLayoutParams();
                 params.width = android.view.ViewGroup.LayoutParams.MATCH_PARENT;
                 padre.setLayoutParams(params);
@@ -232,7 +229,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             return;
         }
 
-        if (!entradaAudio.isSpeechRecognizerReady()) {
+        if (!entradaAudio.isReady()) {
             salidaAudio.hablar("Para moverte por voz necesito el reconocimiento de Android y permiso de microfono.", true);
             mostrarDialogoIrMaterias();
             return;
@@ -640,8 +637,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (item != null && item.getActionView() != null) {
             View actionView = item.getActionView();
 
-            if (actionView.getParent() instanceof View) {
-                View padre = (View) actionView.getParent();
+            if (actionView.getParent() instanceof View padre) {
                 android.view.ViewGroup.LayoutParams params = padre.getLayoutParams();
                 params.width = android.view.ViewGroup.LayoutParams.MATCH_PARENT;
                 padre.setLayoutParams(params);
@@ -662,15 +658,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    private static final class ModuloVoz {
-        private final int idItemMenu;
-        private final String nombreVisible;
-        private final List<String> aliases;
-
-        private ModuloVoz(int idItemMenu, String nombreVisible, List<String> aliases) {
-            this.idItemMenu = idItemMenu;
-            this.nombreVisible = nombreVisible;
-            this.aliases = aliases;
-        }
+    private record ModuloVoz(int idItemMenu, String nombreVisible, List<String> aliases) {
     }
 }

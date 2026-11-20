@@ -276,7 +276,7 @@ public class EjercicioLogic {
             return;
         }
 
-        // Obtener opción seleccionada desde el fragment (nuevo comportamiento)
+
         Opcion selectedOpcion = fragment.getSelectedOpcion();
         if (selectedOpcion == null) {
             fragment.showToast("Selecciona una opción");

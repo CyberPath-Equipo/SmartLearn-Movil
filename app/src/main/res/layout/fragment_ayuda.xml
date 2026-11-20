@@ -24,8 +24,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
                 android:background="@drawable/bg_card_elevated"
+                android:orientation="vertical"
                 android:padding="16dp">
 
                 <TextView
@@ -41,8 +41,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp"
-                    android:textAlignment="center"
                     android:text="Estamos aquí para ayudarte"
+                    android:textAlignment="center"
                     android:textAppearance="?attr/textAppearanceBodyMedium"
                     android:textColor="?attr/colorOnSurfaceVariant"
                     android:textStyle="bold" />
@@ -61,8 +61,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
                 android:background="@drawable/bg_card_elevated"
+                android:orientation="vertical"
                 android:padding="16dp">
 
                 <TextView
@@ -104,11 +104,11 @@
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:maxLines="2"
                             android:layout_marginStart="16dp"
                             android:layout_weight="1"
                             android:autoLink="web"
                             android:linksClickable="true"
+                            android:maxLines="2"
                             android:text="http://smartlearn.com/profesores/registro"
                             android:textColorLink="?attr/colorTertiary"
                             android:textSize="15sp"
@@ -270,16 +270,16 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
                 android:background="@drawable/bg_card_elevated"
+                android:orientation="vertical"
                 android:padding="16dp">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
-                    android:textAlignment="center"
                     android:text="Cuestionario de Satisfacción"
+                    android:textAlignment="center"
                     android:textAppearance="?attr/textAppearanceTitleLarge"
                     android:textColor="?attr/colorOnSurface"
                     android:textStyle="bold" />
@@ -440,10 +440,10 @@
                             android:layout_height="wrap_content"
                             android:hint="Escribe tus comentarios aquí..."
                             app:boxBackgroundMode="outline"
-                            app:boxCornerRadiusTopStart="12dp"
-                            app:boxCornerRadiusTopEnd="12dp"
-                            app:boxCornerRadiusBottomStart="12dp"
                             app:boxCornerRadiusBottomEnd="12dp"
+                            app:boxCornerRadiusBottomStart="12dp"
+                            app:boxCornerRadiusTopEnd="12dp"
+                            app:boxCornerRadiusTopStart="12dp"
                             app:boxStrokeColor="?attr/colorPrimary">
 
                             <com.google.android.material.textfield.TextInputEditText
@@ -463,15 +463,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"
                     android:text="Enviar Feedback"
                     android:textAllCaps="false"
                     android:textAppearance="?attr/textAppearanceTitleMedium"
+                    android:textColor="?attr/colorOnTertiary"
                     android:textStyle="bold"
                     app:backgroundTint="?attr/colorTertiary"
-                    android:textColor="?attr/colorOnTertiary"
-                    app:cornerRadius="12dp"
-                    android:insetTop="0dp"
-                    android:insetBottom="0dp" />
+                    app:cornerRadius="12dp" />
 
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>

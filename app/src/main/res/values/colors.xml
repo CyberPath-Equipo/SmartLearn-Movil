@@ -67,6 +67,12 @@
     <color name="gradientEnd">#3B82F6</color>
     <color name="accentGradientStart">#10B981</color>
     <color name="accentGradientEnd">#06B6D4</color>
+    <color name="accentGradientStart2">#3B82F6</color>
+    <color name="accentGradientEnd2">#6366F1</color>
+    <color name="accentGradientStart3">#8B5CF6</color>
+    <color name="accentGradientEnd3">#EC4899</color>
+    <color name="accentGradientStart4">#F97316</color>
+    <color name="accentGradientEnd4">#F43F5E</color>
 
     <!-- ========= SEEKBAR ========= -->
     <color name="switch_track_tint_light">#E0E0E0</color>
@@ -76,4 +82,8 @@
     <color name="switch_thumb_tint_dark">#1976D2</color>
 
     <color name="cardview_background">#C7E6F6FF</color>
+
+    <color name="blue_option">#69C5FF</color>
+    <color name="orange_option">#F29175</color>
+    <color name="purple_option">#8068A2</color>
 </resources>

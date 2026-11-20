@@ -12,11 +12,11 @@ public final class InputValidator {
     private InputValidator() {
     }
 
-    public static boolean isValidEmail(String correo) {
+    public static boolean isValidCorreo(String correo) {
         return correo != null && !correo.trim().isEmpty() && Patterns.EMAIL_ADDRESS.matcher(correo.trim()).matches();
     }
 
-    public static boolean isValidPassword(String contrasena) {
+    public static boolean isValidContrasena(String contrasena) {
         return contrasena != null && PASSWORD_PATTERN.matcher(contrasena).matches();
     }
 

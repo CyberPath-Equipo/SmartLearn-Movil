@@ -19,15 +19,18 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
+import androidx.viewpager2.widget.CompositePageTransformer;
+import androidx.viewpager2.widget.MarginPageTransformer;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.cyberpath.smartlearn.R;
 import com.cyberpath.smartlearn.data.model.contenido.Materia;
 import com.cyberpath.smartlearn.logic.main.combo.principal.materia.MateriasLogic;
-import com.cyberpath.smartlearn.logic.main.combo.principal.materia.NavAccesibilidad;
+import com.cyberpath.smartlearn.logic.main.combo.principal.materia.MateriasNavAccesibilidad;
 import com.cyberpath.smartlearn.util.accesibilidad.visual.EntradaAudio;
 import com.cyberpath.smartlearn.util.accesibilidad.visual.SalidaAudio;
 import com.cyberpath.smartlearn.util.preferences.PreferencesManager;
+import com.cyberpath.smartlearn.util.ui.CarruselUtils;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -35,20 +38,20 @@ import java.util.List;
 import java.util.function.BiConsumer;
 
 public class MateriasFragment extends Fragment {
-
     private final Handler filtroHandler = new Handler(Looper.getMainLooper());
     private MateriasLogic materiasLogic;
-    private NavAccesibilidad navAccesibilidadMaterias;
+    private AdaptadorMaterias adapterMaterias;
+    private MateriasNavAccesibilidad materiasNavAccesibilidadMaterias;
     private EntradaAudio entradaAudio;
     private SearchView searchViewMaterias;
-    private ViewPager2 carruselMaterias;
+    private ViewPager2 viewPagerMaterias;
     private ImageView[] indicadores;
     private LinearLayout indicadoresContainer;
-    private FloatingActionButton btnPrev;
-    private FloatingActionButton btnNext;
-    private AdaptadorMaterias adapterMaterias;
+    private FloatingActionButton btnPrev, btnNext;
     private Runnable filtroRunnable;
     private TextView nombreUsuario;
+
+    private int posicionIndicadorActual = -1;
 
     public MateriasFragment() {
     }
@@ -76,7 +79,7 @@ public class MateriasFragment extends Fragment {
 
         nombreUsuario = view.findViewById(R.id.tv_nombre_usuario);
         searchViewMaterias = view.findViewById(R.id.searchViewMaterias);
-        carruselMaterias = view.findViewById(R.id.viewPagerMaterias);
+        viewPagerMaterias = view.findViewById(R.id.viewPagerMaterias);
         indicadoresContainer = view.findViewById(R.id.indicadores_container);
         btnPrev = view.findViewById(R.id.btn_prev_materia);
         btnNext = view.findViewById(R.id.btn_next_materia);
@@ -90,13 +93,14 @@ public class MateriasFragment extends Fragment {
         nombreUsuario.setText(obtenerSaludoAleatorio(nombreUsuarioActual));
 
         adapterMaterias = new AdaptadorMaterias(new ArrayList<>(), this::onMateriaClick);
-        carruselMaterias.setAdapter(adapterMaterias);
+        viewPagerMaterias.setAdapter(adapterMaterias);
+        configuracionVisualCarrusel();
 
-        carruselMaterias.setOffscreenPageLimit(3);
-        carruselMaterias.setClipToPadding(false);
-        carruselMaterias.setClipChildren(false);
+        viewPagerMaterias.setOffscreenPageLimit(3);
+        viewPagerMaterias.setClipToPadding(false);
+        viewPagerMaterias.setClipChildren(false);
 
-        carruselMaterias.setPageTransformer(new ViewPager2.PageTransformer() {
+        viewPagerMaterias.setPageTransformer(new ViewPager2.PageTransformer() {
             private static final float MIN_SCALE = 0.85f;
             private static final float MIN_ALPHA = 0.5f;
 
@@ -114,21 +118,21 @@ public class MateriasFragment extends Fragment {
         });
 
         materiasLogic = new MateriasLogic(this);
-        navAccesibilidadMaterias = new NavAccesibilidad(requireContext(), this, materiasLogic, carruselMaterias, adapterMaterias);
+        materiasNavAccesibilidadMaterias = new MateriasNavAccesibilidad(this, materiasLogic, viewPagerMaterias, adapterMaterias);
 
         btnPrev.setOnClickListener(v -> {
             if (adapterMaterias == null || adapterMaterias.getRealSize() == 0) return;
-            int currentPage = carruselMaterias.getCurrentItem();
-            carruselMaterias.setCurrentItem(currentPage - 1, true);
+            int currentPage = viewPagerMaterias.getCurrentItem();
+            viewPagerMaterias.setCurrentItem(currentPage - 1, true);
         });
 
         btnNext.setOnClickListener(v -> {
             if (adapterMaterias == null || adapterMaterias.getRealSize() == 0) return;
-            int currentPage = carruselMaterias.getCurrentItem();
-            carruselMaterias.setCurrentItem(currentPage + 1, true);
+            int currentPage = viewPagerMaterias.getCurrentItem();
+            viewPagerMaterias.setCurrentItem(currentPage + 1, true);
         });
 
-        carruselMaterias.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+        viewPagerMaterias.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
@@ -169,8 +173,8 @@ public class MateriasFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        if (navAccesibilidadMaterias != null) {
-            navAccesibilidadMaterias.detenerNavegacion();
+        if (materiasNavAccesibilidadMaterias != null) {
+            materiasNavAccesibilidadMaterias.detenerNavegacion();
         }
         try {
             EntradaAudio.obtenerInstancia().detenerEscucha();
@@ -192,13 +196,30 @@ public class MateriasFragment extends Fragment {
     }
 
     private void actualizarIndicadores(int posicionActualPagina) {
-        if (adapterMaterias == null) return;
-        int total = adapterMaterias.getRealSize();
+        int total, nuevaPosicionReal;
+
+        if (adapterMaterias == null || indicadoresContainer == null) return;
+        total = adapterMaterias.getRealSize();
+        nuevaPosicionReal = getRealPositionFromPageIndex(posicionActualPagina);
+
+        if (indicadores == null || indicadores.length != total) {
+            reconstruirIndicadores(total, nuevaPosicionReal);
+            return;
+        }
+
+        if (posicionIndicadorActual >= 0 && posicionIndicadorActual < total) {
+            indicadores[posicionIndicadorActual].setImageResource(R.drawable.ic_dot_inactive);
+        }
+
+        indicadores[nuevaPosicionReal].setImageResource(R.drawable.ic_dot_active);
+        posicionIndicadorActual = nuevaPosicionReal;
+    }
+
+    private void reconstruirIndicadores(int total, int posicionReal) {
         indicadoresContainer.removeAllViews();
         indicadores = new ImageView[total];
         int sizePx = dpToPx(10);
         int marginPx = dpToPx(4);
-        int posicionReal = getRealPositionFromPageIndex(posicionActualPagina);
         for (int i = 0; i < total; i++) {
             indicadores[i] = new ImageView(requireContext());
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(sizePx, sizePx);
@@ -207,18 +228,14 @@ public class MateriasFragment extends Fragment {
             indicadores[i].setImageResource(i == posicionReal ? R.drawable.ic_dot_active : R.drawable.ic_dot_inactive);
             indicadoresContainer.addView(indicadores[i]);
         }
+        posicionIndicadorActual = posicionReal;
     }
 
     private void actualizarBotones(int posicionPagina) {
         int total = adapterMaterias != null ? adapterMaterias.getRealSize() : 0;
-        if (total == 0) {
-            btnPrev.setAlpha(0.4f);
-            btnNext.setAlpha(0.4f);
-            return;
-        }
-        int realPos = getRealPositionFromPageIndex(posicionPagina);
-        btnPrev.setAlpha(realPos > 0 ? 1.0f : 0.4f);
-        btnNext.setAlpha(realPos < total - 1 ? 1.0f : 0.4f);
+        boolean hayNavegacion = total > 1;
+        btnPrev.setAlpha(hayNavegacion ? 1.0f : 0.4f);
+        btnNext.setAlpha(hayNavegacion ? 1.0f : 0.4f);
     }
 
     private int dpToPx(int dp) {
@@ -226,12 +243,12 @@ public class MateriasFragment extends Fragment {
     }
 
     private int getRealPositionFromPageIndex(int pageIndex) {
-        if (adapterMaterias == null) return 0;
-        int realSize = adapterMaterias.getRealSize();
-        if (realSize == 0) return 0;
-        int realPos = pageIndex % realSize;
-        if (realPos < 0) realPos += realSize;
-        return realPos;
+        return CarruselUtils.normalizarPosicion(pageIndex, adapterMaterias != null ? adapterMaterias.getRealSize() : 0);
+    }
+
+    public int getPosicionActualViewPager() {
+        if (viewPagerMaterias == null) return 0;
+        return getRealPositionFromPageIndex(viewPagerMaterias.getCurrentItem());
     }
 
     private void animarEntradaCarrusel() {
@@ -281,11 +298,10 @@ public class MateriasFragment extends Fragment {
         }
     }
 
-
     public void moverViewPager(int posicion) {
-        if (carruselMaterias != null && adapterMaterias != null) {
-            int centered = materiasLogic.centeredPositionForIndex(posicion, adapterMaterias.getRealSize());
-            carruselMaterias.setCurrentItem(centered, false);
+        if (viewPagerMaterias != null && adapterMaterias != null) {
+            int centered = CarruselUtils.centrarPosicion(posicion, adapterMaterias.getRealSize());
+            viewPagerMaterias.setCurrentItem(centered, false);
         }
     }
 
@@ -293,19 +309,9 @@ public class MateriasFragment extends Fragment {
         if (!PreferencesManager.isAsistenciaVozActivada(requireContext())) {
             return;
         }
-        if (navAccesibilidadMaterias != null) {
-            navAccesibilidadMaterias.iniciarNavegacion();
+        if (materiasNavAccesibilidadMaterias != null) {
+            materiasNavAccesibilidadMaterias.iniciarNavegacion();
         }
-    }
-
-    public int getPosicionActualViewPager() {
-        if (carruselMaterias == null || adapterMaterias == null) return 0;
-        int current = carruselMaterias.getCurrentItem();
-        int realSize = adapterMaterias.getRealSize();
-        if (realSize == 0) return 0;
-        int realPos = current % realSize;
-        if (realPos < 0) realPos += realSize;
-        return realPos;
     }
 
     public void entrarMateriaDesdeAccesibilidad(Materia materia, BiConsumer<Boolean, Materia> callback) {
@@ -330,5 +336,23 @@ public class MateriasFragment extends Fragment {
         int indiceAleatorio = new java.util.Random().nextInt(saludos.length);
 
         return String.format(saludos[indiceAleatorio], nombre);
+    }
+
+    private void configuracionVisualCarrusel() {
+        viewPagerMaterias.setClipToPadding(false);
+        viewPagerMaterias.setClipChildren(false);
+        viewPagerMaterias.setOffscreenPageLimit(3);
+
+        CompositePageTransformer transformer = new CompositePageTransformer();
+        transformer.addTransformer(new MarginPageTransformer(30));
+
+        transformer.addTransformer((page, position) -> {
+            float offset = Math.abs(position);
+            float scale = 0.85f + (1 - offset) * 0.15f;
+            page.setScaleY(scale);
+            page.setAlpha(0.5f + (1 - offset) * 0.5f);
+        });
+
+        viewPagerMaterias.setPageTransformer(transformer);
     }
 }

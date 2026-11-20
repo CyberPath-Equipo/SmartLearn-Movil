@@ -23,8 +23,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
                 android:background="@drawable/bg_card_elevated"
+                android:orientation="vertical"
                 android:padding="16dp">
 
                 <TextView
@@ -41,8 +41,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp"
-                    android:textAlignment="center"
                     android:text="Ingresa el nuevo valor y tu contraseña actual"
+                    android:textAlignment="center"
                     android:textAppearance="?attr/textAppearanceBodyMedium"
                     android:textColor="?attr/colorOnSurfaceVariant" />
             </LinearLayout>
@@ -59,8 +59,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
                 android:background="@drawable/bg_card_elevated"
+                android:orientation="vertical"
                 android:padding="16dp">
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -70,10 +70,10 @@
                     android:layout_marginBottom="16dp"
                     android:hint="Nuevo valor"
                     app:boxBackgroundMode="outline"
-                    app:boxCornerRadiusTopStart="12dp"
-                    app:boxCornerRadiusTopEnd="12dp"
-                    app:boxCornerRadiusBottomStart="12dp"
                     app:boxCornerRadiusBottomEnd="12dp"
+                    app:boxCornerRadiusBottomStart="12dp"
+                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusTopStart="12dp"
                     app:boxStrokeColor="?attr/colorPrimary"
                     app:startIconDrawable="@drawable/ic_usuario"
                     app:startIconTint="?attr/colorOnSurfaceVariant">
@@ -123,10 +123,10 @@
                     android:layout_marginBottom="16dp"
                     android:hint="Confirmar nuevo valor"
                     app:boxBackgroundMode="outline"
-                    app:boxCornerRadiusTopStart="12dp"
-                    app:boxCornerRadiusTopEnd="12dp"
-                    app:boxCornerRadiusBottomStart="12dp"
                     app:boxCornerRadiusBottomEnd="12dp"
+                    app:boxCornerRadiusBottomStart="12dp"
+                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusTopStart="12dp"
                     app:boxStrokeColor="?attr/colorPrimary"
                     app:startIconDrawable="@drawable/ic_usuario"
                     app:startIconTint="?attr/colorOnSurfaceVariant">
@@ -147,10 +147,10 @@
                     android:layout_marginBottom="28dp"
                     android:hint="Contraseña actual (requerida)"
                     app:boxBackgroundMode="outline"
-                    app:boxCornerRadiusTopStart="12dp"
-                    app:boxCornerRadiusTopEnd="12dp"
-                    app:boxCornerRadiusBottomStart="12dp"
                     app:boxCornerRadiusBottomEnd="12dp"
+                    app:boxCornerRadiusBottomStart="12dp"
+                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusTopStart="12dp"
                     app:boxStrokeColor="?attr/colorPrimary"
                     app:endIconMode="password_toggle"
                     app:endIconTint="?attr/colorOnSurfaceVariant"
@@ -176,32 +176,32 @@
                         android:id="@+id/btn_cancelar"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:layout_marginEnd="6dp"
+                        android:layout_weight="1"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
                         android:text="Cancelar"
                         android:textAllCaps="false"
                         android:textAppearance="?attr/textAppearanceTitleMedium"
                         android:textColor="?attr/colorOnSurface"
                         app:backgroundTint="@color/colorAccent"
-                        app:cornerRadius="12dp"
-                        android:insetTop="0dp"
-                        android:insetBottom="0dp" />
+                        app:cornerRadius="12dp" />
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btn_guardar_cambio"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:layout_marginStart="6dp"
+                        android:layout_weight="1"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
                         android:text="Guardar"
                         android:textAllCaps="false"
                         android:textAppearance="?attr/textAppearanceTitleMedium"
                         android:textColor="?attr/colorSurface"
-                        app:backgroundTint="@color/colorSecondary"
                         android:textStyle="bold"
-                        app:cornerRadius="12dp"
-                        android:insetTop="0dp"
-                        android:insetBottom="0dp" />
+                        app:backgroundTint="@color/colorSecondary"
+                        app:cornerRadius="12dp" />
                 </LinearLayout>
 
             </LinearLayout>

@@ -10,12 +10,12 @@ import com.cyberpath.smartlearn.data.model.contenido.Materia;
 import com.cyberpath.smartlearn.data.model.contenido.Subtema;
 import com.cyberpath.smartlearn.data.model.contenido.Tema;
 import com.cyberpath.smartlearn.data.model.contenido.Teoria;
-import com.cyberpath.smartlearn.data.model.estadisticas.DatoHistorico;
-import com.cyberpath.smartlearn.data.model.estadisticas.InteresItem;
-import com.cyberpath.smartlearn.data.model.estadisticas.ResumenEstadisticas;
 import com.cyberpath.smartlearn.data.model.ejercicio.Ejercicio;
 import com.cyberpath.smartlearn.data.model.ejercicio.Opcion;
 import com.cyberpath.smartlearn.data.model.ejercicio.Pregunta;
+import com.cyberpath.smartlearn.data.model.estadisticas.DatoHistorico;
+import com.cyberpath.smartlearn.data.model.estadisticas.InteresItem;
+import com.cyberpath.smartlearn.data.model.estadisticas.ResumenEstadisticas;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +36,7 @@ public class ContenidoDAO {
     }
 
     public void close() {
-        // No cerramos dbHelper aqui para evitar invalidar el singleton en operaciones encadenadas.
+
     }
 
     public void beginTransaction() {
@@ -56,9 +56,7 @@ public class ContenidoDAO {
         }
     }
 
-    // -----------------------
-    // MATERIAS
-    // -----------------------
+
     public long insertarMateria(Materia materia) {
         open();
         ContentValues values = new ContentValues();
@@ -180,9 +178,7 @@ public class ContenidoDAO {
         return idsMaterias;
     }
 
-    // -----------------------
-    // temas
-    // -----------------------
+
     public long insertarTema(Tema tema) {
         open();
         ContentValues values = new ContentValues();
@@ -221,9 +217,7 @@ public class ContenidoDAO {
         return temas;
     }
 
-    // -----------------------
-    // SUBTEMAS
-    // -----------------------
+
     public long insertarSubtema(Subtema subtema) {
         open();
         ContentValues values = new ContentValues();
@@ -285,9 +279,7 @@ public class ContenidoDAO {
         return subtema;
     }
 
-    // -----------------------
-    // TEORÍA
-    // -----------------------
+
     public long insertarTeoria(Teoria teoria) {
         open();
         ContentValues values = new ContentValues();
@@ -325,9 +317,7 @@ public class ContenidoDAO {
         return teoria;
     }
 
-    // -----------------------
-    // EJERCICIOS
-    // -----------------------
+
     public long insertarEjercicio(Ejercicio ejercicio) {
         open();
         ContentValues values = new ContentValues();
@@ -373,9 +363,6 @@ public class ContenidoDAO {
     }
 
 
-    // -----------------------
-    // PREGUNTAS
-    // -----------------------
     public long insertarPregunta(Pregunta pregunta) {
         open();
         ContentValues values = new ContentValues();
@@ -417,9 +404,7 @@ public class ContenidoDAO {
         return preguntas;
     }
 
-    // -----------------------
-    // OPCIONES
-    // -----------------------
+
     public long insertarOpcion(Opcion opcion) {
         open();
         ContentValues values = new ContentValues();
@@ -635,9 +620,7 @@ public class ContenidoDAO {
         return intereses;
     }
 
-    // -----------------------
-    // BORRAR MATERIA DESCARGADA (BORRA EL CONTENIDO RELACIONADO)
-    // -----------------------
+
     public boolean borrarMateriaDescargada(Integer idMateria) {
         open();
 

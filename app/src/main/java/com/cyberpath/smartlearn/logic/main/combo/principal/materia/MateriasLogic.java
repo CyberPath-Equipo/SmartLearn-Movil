@@ -12,6 +12,7 @@ import com.cyberpath.smartlearn.data.remote.api.RetrofitClient;
 import com.cyberpath.smartlearn.ui.main.combo.principal.materia.MateriasFragment;
 import com.cyberpath.smartlearn.util.constants.UsuarioCst;
 import com.cyberpath.smartlearn.util.network.NetworkUtils;
+import com.cyberpath.smartlearn.util.ui.CarruselUtils;
 
 import java.text.Normalizer;
 import java.util.ArrayList;
@@ -26,13 +27,11 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MateriasLogic {
-
     private final MateriasFragment fragment;
     private final Context context;
     private final Usuario usuarioActual;
     private final MateriasRepository materiasRepository;
     private final ContenidoDAO contenidoDAO;
-
     private final List<Materia> listaMaterias = new ArrayList<>();
     @Getter
     private final List<Materia> listaMateriasFiltrada = new ArrayList<>();
@@ -41,7 +40,6 @@ public class MateriasLogic {
     private boolean datosCargados = false;
     private boolean modoOffline = false;
     private int progresosPendientes = 0;
-
 
     public MateriasLogic(MateriasFragment fragment) {
         this.fragment = fragment;
@@ -54,16 +52,15 @@ public class MateriasLogic {
 
     public void cargarMaterias() {
         if (!datosCargados) {
-            if (!NetworkUtils.shouldUseOfflineMode(context)) {
+            if (NetworkUtils.isInternetAvailable(context)) {
                 modoOffline = false;
-                cargarMateriasAPI(usuarioActual != null ? usuarioActual.getId() : null);
+                cargarMateriasAPI(usuarioActual.getId());
             } else {
                 modoOffline = true;
                 cargarMateriasLocal();
             }
         } else {
             actualizarListaMaterias();
-            fragment.iniciarNavegacionPorVoz();
         }
     }
 
@@ -197,7 +194,6 @@ public class MateriasLogic {
         }
     }
 
-
     private void calcularYActualizarProgreso(Materia materia, Integer idUsuario) {
         if (materia == null || materia.getId() == null) {
             decrementarProgresosPendientes();
@@ -317,14 +313,6 @@ public class MateriasLogic {
     }
 
     public void setPosicionActual(int posicion) {
-        fragment.moverViewPager(centeredPositionForIndex(posicion, listaMateriasFiltrada.size()));
-    }
-
-    public int centeredPositionForIndex(int index, int realSize) {
-        if (realSize <= 0) return 0;
-        if (realSize == 1) return index;
-        int half = Integer.MAX_VALUE / 2;
-        int base = half - (half % realSize);
-        return base + (index % realSize);
+        fragment.moverViewPager(CarruselUtils.centrarPosicion(posicion, listaMateriasFiltrada.size()));
     }
 }

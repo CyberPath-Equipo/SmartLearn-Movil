@@ -103,10 +103,6 @@ public class AdaptadorAgregarMaterias extends RecyclerView.Adapter<AdaptadorAgre
         return Integer.MAX_VALUE;
     }
 
-    public interface OnMateriaClickListener {
-        void onMateriaClick(Materia materia);
-    }
-
     private void cargarImagenDesdeSlug(ImageView imageView, String slugUrl) {
         if (slugUrl != null && !slugUrl.isEmpty()) {
             Glide.with(imageView.getContext())
@@ -118,6 +114,10 @@ public class AdaptadorAgregarMaterias extends RecyclerView.Adapter<AdaptadorAgre
         } else {
             imageView.setImageResource(R.drawable.ic_launcher_foreground);
         }
+    }
+
+    public interface OnMateriaClickListener {
+        void onMateriaClick(Materia materia);
     }
 
     public static class MateriaViewHolder extends RecyclerView.ViewHolder {

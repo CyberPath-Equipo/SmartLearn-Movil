@@ -25,10 +25,10 @@ public class AuthInterceptor implements Interceptor {
         Request original = chain.request();
 
         Request.Builder b = original.newBuilder()
-                .header("X-Client-Type", "mobile")               // evita BrowserBlockFilter
-                .header("User-Agent", "Smartlearn-Mobile/1.0");  // user-agent controlado
+                .header("X-Client-Type", "mobile")
+                .header("User-Agent", "Smartlearn-Mobile/1.0");
 
-        String token = PreferencesManager.getToken(ctx); // tu método para obtener token
+        String token = PreferencesManager.getToken(ctx);
         if (token != null && !token.isEmpty()) {
             b.header("Authorization", "Bearer " + token);
         }

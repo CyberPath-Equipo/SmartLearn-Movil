@@ -1,7 +1,7 @@
 package com.cyberpath.smartlearn.ui.main.combo.estadisticas;
 
-import android.os.Bundle;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +33,7 @@ import com.github.mikephil.charting.data.ScatterData;
 import com.github.mikephil.charting.data.ScatterDataSet;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.formatter.ValueFormatter;
+
 import org.eazegraph.lib.models.PieModel;
 
 import java.text.DecimalFormat;
@@ -174,9 +175,9 @@ public class EstadisticasFragment extends Fragment {
 
         for (int i = 0; i < datos.size(); i++) {
             DatoHistorico dato = datos.get(i);
-            entries.add(new BarEntry(i, dato.getValor()));
-            labels.add(dato.getEtiqueta());
-            maxDato = Math.max(maxDato, dato.getValor());
+            entries.add(new BarEntry(i, dato.valor()));
+            labels.add(dato.etiqueta());
+            maxDato = Math.max(maxDato, dato.valor());
         }
 
         BarDataSet dataSet = new BarDataSet(entries, "Minutos por dia");
@@ -213,8 +214,8 @@ public class EstadisticasFragment extends Fragment {
 
         for (int i = 0; i < datos.size(); i++) {
             DatoHistorico dato = datos.get(i);
-            entries.add(new com.github.mikephil.charting.data.Entry(i, dato.getValor()));
-            labels.add(dato.getEtiqueta());
+            entries.add(new com.github.mikephil.charting.data.Entry(i, dato.valor()));
+            labels.add(dato.etiqueta());
         }
 
         ScatterDataSet dataSet = new ScatterDataSet(entries, "Acierto en evaluaciones");
@@ -327,7 +328,7 @@ public class EstadisticasFragment extends Fragment {
         int posicion = 1;
         for (InteresItem interes : intereses) {
             TextView item = new TextView(requireContext());
-            item.setText(String.format(Locale.getDefault(), "%d) %s - %d min", posicion, interes.getTitulo(), interes.getMinutos()));
+            item.setText(String.format(Locale.getDefault(), "%d) %s - %d min", posicion, interes.titulo(), interes.minutos()));
             item.setPadding(dp(12), dp(10), dp(12), dp(10));
             item.setTextSize(14f);
             item.setTextColor(0xFF1D1D1D);
@@ -362,7 +363,7 @@ public class EstadisticasFragment extends Fragment {
 
         if (intereses != null && !intereses.isEmpty()) {
             analisis.append("Tu interes principal actual es: ")
-                    .append(intereses.get(0).getTitulo())
+                    .append(intereses.get(0).titulo())
                     .append(".");
         }
 

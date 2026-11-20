@@ -1,49 +1,68 @@
 package com.cyberpath.smartlearn.ui.main.combo.principal.contenido.teoria;
 
+import android.os.Build;
 import android.os.Bundle;
-import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.method.LinkMovementMethod;
-import android.text.style.ForegroundColorSpan;
+import android.text.Layout;
+import android.text.SpannableStringBuilder;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.media3.ui.PlayerView;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.bumptech.glide.Glide;
 import com.cyberpath.smartlearn.R;
 import com.cyberpath.smartlearn.data.local.database.dao.ContenidoDAO;
 import com.cyberpath.smartlearn.data.model.contenido.Subtema;
-import com.cyberpath.smartlearn.logic.main.combo.principal.contenido.teoria.NavAccesibilidad;
+import com.cyberpath.smartlearn.logic.main.combo.principal.contenido.teoria.TeoriaBloqueContenido;
+import com.cyberpath.smartlearn.logic.main.combo.principal.contenido.teoria.TeoriaContenidoFormatter;
 import com.cyberpath.smartlearn.logic.main.combo.principal.contenido.teoria.TeoriaLogic;
+import com.cyberpath.smartlearn.logic.main.combo.principal.contenido.teoria.TeoriaNavAccesibilidad;
+import com.cyberpath.smartlearn.logic.main.combo.principal.contenido.teoria.TeoriaNavAccesibilidadVisual;
 import com.cyberpath.smartlearn.util.preferences.PreferencesManager;
 import com.google.android.material.button.MaterialButton;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class TeoriaFragment extends Fragment {
-    private TextView tvTituloSubtema, tvContenidoTeoria;
+
+
+    private static final int ESPACIO_ENTRE_PARRAFOS_DP = 16;
+
+
+    private static final int ESPACIO_ENTRE_BLOQUES_DP = 12;
+
+
+    private static final int ALTO_MAXIMO_IMAGEN_DP = 260;
+
+    private TextView tvTituloSubtema;
     private MaterialButton btnVolver;
     private Subtema subtema;
     private ArrayList<String> preguntas;
     private TeoriaLogic teoriaLogic;
     private View contentContainer;
     private ScrollView scrollTeoria;
-    private NavAccesibilidad navAccesibilidad;
+    private LinearLayout contenedorTeoria;
+    private TeoriaNavAccesibilidad teoriaNavAccesibilidad;
+    private TeoriaNavAccesibilidadVisual teoriaNavAccesibilidadVisual;
     private ImageView imageViewLSM;
     private PlayerView playerViewLSM;
     private FrameLayout containerReproductorLSM;
     private long sessionStartMs = 0L;
+
+
+    private String textoPlanoParaVoz = "";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -60,7 +79,7 @@ public class TeoriaFragment extends Fragment {
         preguntas = TeoriaFragmentArgs.fromBundle(getArguments()).getPreguntas();
 
         tvTituloSubtema = view.findViewById(R.id.tv_titulo_subtema);
-        tvContenidoTeoria = view.findViewById(R.id.tv_contenido_teoria);
+        contenedorTeoria = view.findViewById(R.id.contenedor_teoria);
         btnVolver = view.findViewById(R.id.btn_volver);
         contentContainer = view.findViewById(R.id.content_container);
         scrollTeoria = view.findViewById(R.id.scroll_teoria);
@@ -75,8 +94,8 @@ public class TeoriaFragment extends Fragment {
         }
 
         btnVolver.setOnClickListener(v -> {
-            if (navAccesibilidad != null) {
-                navAccesibilidad.detenerReproduccion();
+            if (teoriaNavAccesibilidad != null) {
+                teoriaNavAccesibilidad.detenerReproduccion();
             }
 
             boolean popped = false;
@@ -89,24 +108,113 @@ public class TeoriaFragment extends Fragment {
 
         scrollTeoria.setClipToPadding(false);
 
-        navAccesibilidad = new NavAccesibilidad(requireContext(), this);
+        teoriaNavAccesibilidad = new TeoriaNavAccesibilidad(requireContext(), this);
+        teoriaNavAccesibilidadVisual = new TeoriaNavAccesibilidadVisual(requireContext(), this);
 
-        if (navAccesibilidad.isAccesibilidadAuditivaActivada()) {
-            navAccesibilidad.setTargetViews(imageViewLSM, playerViewLSM);
+        if (teoriaNavAccesibilidad.isAccesibilidadAuditivaActivada()) {
+            teoriaNavAccesibilidad.setTargetViews(imageViewLSM, playerViewLSM);
             if (containerReproductorLSM != null) {
                 containerReproductorLSM.setVisibility(View.VISIBLE);
             }
         }
 
-        teoriaLogic = new TeoriaLogic(this, subtema, preguntas, navAccesibilidad);
+        teoriaLogic = new TeoriaLogic(this, subtema, preguntas, teoriaNavAccesibilidad);
 
         view.post(this::adjustBottomSpacing);
     }
 
-    public void mostrarTeoria(String contenido) {
-        if (tvContenidoTeoria != null) {
-            tvContenidoTeoria.setText(contenido);
-            tvContenidoTeoria.post(this::adjustBottomSpacing);
+
+    public void mostrarContenido(String contenido, @Nullable ArrayList<String> preguntas) {
+        if (contenedorTeoria == null) return;
+
+        contenedorTeoria.removeAllViews();
+
+        String normalizado = TeoriaContenidoFormatter.normalizarParrafos(contenido);
+        List<TeoriaBloqueContenido> bloques = TeoriaContenidoFormatter.partirEnBloques(normalizado);
+
+        StringBuilder textoParaVoz = new StringBuilder();
+        boolean esPrimerBloque = true;
+
+        for (TeoriaBloqueContenido bloque : bloques) {
+            int margenSuperior = esPrimerBloque ? 0 : dpToPx(ESPACIO_ENTRE_BLOQUES_DP);
+
+            if (bloque.tipo == TeoriaBloqueContenido.Tipo.TEXTO) {
+                contenedorTeoria.addView(crearVistaDeTexto(bloque.valor, preguntas, margenSuperior));
+                if (textoParaVoz.length() > 0) textoParaVoz.append(" ");
+                textoParaVoz.append(bloque.valor);
+            } else {
+                contenedorTeoria.addView(crearVistaDeImagen(bloque.valor, margenSuperior));
+            }
+
+            esPrimerBloque = false;
+        }
+
+        textoPlanoParaVoz = textoParaVoz.toString();
+
+        contenedorTeoria.post(this::adjustBottomSpacing);
+    }
+
+    private TextView crearVistaDeTexto(String textoDelBloque, @Nullable ArrayList<String> preguntas, int margenSuperior) {
+        TextView textView = new TextView(requireContext());
+
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        );
+        params.topMargin = margenSuperior;
+        textView.setLayoutParams(params);
+
+        textView.setTextSize(17f);
+        textView.setLineSpacing(0f, 1.3f);
+        textView.setLetterSpacing(0.01f);
+        textView.setTextColor(getResources().getColor(android.R.color.black, requireContext().getTheme()));
+
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            textView.setJustificationMode(Layout.JUSTIFICATION_MODE_INTER_WORD);
+            textView.setBreakStrategy(Layout.BREAK_STRATEGY_HIGH_QUALITY);
+            textView.setHyphenationFrequency(Layout.HYPHENATION_FREQUENCY_NORMAL);
+        }
+
+        SpannableStringBuilder contenidoFormateado = TeoriaContenidoFormatter.construirSpannableDeBloque(
+                requireContext(), textoDelBloque, preguntas, ESPACIO_ENTRE_PARRAFOS_DP);
+        textView.setText(contenidoFormateado);
+
+        return textView;
+    }
+
+    private ImageView crearVistaDeImagen(String url, int margenSuperior) {
+        ImageView imageView = new ImageView(requireContext());
+
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        );
+        params.topMargin = margenSuperior;
+
+
+        params.gravity = android.view.Gravity.CENTER_HORIZONTAL;
+        imageView.setLayoutParams(params);
+
+        imageView.setAdjustViewBounds(true);
+        imageView.setMaxHeight(dpToPx(ALTO_MAXIMO_IMAGEN_DP));
+        imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+
+
+        Glide.with(this)
+                .load(url)
+                .error(android.R.drawable.stat_notify_error)
+                .into(imageView);
+
+        return imageView;
+    }
+
+    public void iniciarNavegacionPorVoz() {
+        if (!PreferencesManager.isAsistenciaVozActivada(requireContext())) {
+            return;
+        }
+        if (teoriaNavAccesibilidadVisual != null) {
+            teoriaNavAccesibilidadVisual.iniciarNavegacion(textoPlanoParaVoz);
         }
     }
 
@@ -116,67 +224,21 @@ public class TeoriaFragment extends Fragment {
         }
     }
 
-    public void resaltarPalabrasClave(String textoTeoria, ArrayList<String> preguntas) {
-        if (tvContenidoTeoria == null) return;
-        if (preguntas == null || preguntas.isEmpty() || textoTeoria == null) {
-            tvContenidoTeoria.setText(textoTeoria);
-            tvContenidoTeoria.post(this::adjustBottomSpacing);
-            return;
-        }
-
-        SpannableString spannable = new SpannableString(textoTeoria);
-        String textoMinus = textoTeoria.toLowerCase();
-
-        for (String pregunta : preguntas) {
-            if (pregunta == null || pregunta.trim().isEmpty()) continue;
-
-            String[] palabrasPregunta = pregunta.toLowerCase()
-                    .replaceAll("[¿?.,!¡\"()]", " ")
-                    .trim()
-                    .split("\\s+");
-
-            for (String palabra : palabrasPregunta) {
-                if (palabra.length() < 3) continue;
-
-                int index = 0;
-                while (index < textoMinus.length()) {
-                    int start = textoMinus.indexOf(palabra, index);
-                    if (start == -1) break;
-
-                    int end = start + palabra.length();
-                    boolean esPalabraCompleta = start <= 0 || !Character.isLetterOrDigit(textoMinus.charAt(start - 1));
-
-                    if (end < textoMinus.length() && Character.isLetterOrDigit(textoMinus.charAt(end))) {
-                        esPalabraCompleta = false;
-                    }
-
-                    if (esPalabraCompleta) {
-                        spannable.setSpan(
-                                new ForegroundColorSpan(ContextCompat.getColor(requireContext(), R.color.colorSecondary)
-                                ),
-                                start,
-                                end,
-                                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-                        );
-                    }
-
-                    index = end;
-                }
-            }
-        }
-
-        tvContenidoTeoria.setText(spannable);
-        tvContenidoTeoria.setMovementMethod(LinkMovementMethod.getInstance());
-        tvContenidoTeoria.post(this::adjustBottomSpacing);
-    }
-
     private void adjustBottomSpacing() {
-        if (contentContainer == null || tvContenidoTeoria == null || btnVolver == null || scrollTeoria == null)
+        if (contentContainer == null || contenedorTeoria == null || btnVolver == null || scrollTeoria == null)
             return;
 
         btnVolver.post(() -> {
             int btnHeight = btnVolver.getHeight() > 0 ? btnVolver.getHeight() : dpToPx(56);
-            int lineHeight = tvContenidoTeoria.getLineHeight() > 0 ? tvContenidoTeoria.getLineHeight() : dpToPx(20);
+
+
+            int lineHeight = dpToPx(20);
+            if (contenedorTeoria.getChildCount() > 0) {
+                View ultimo = contenedorTeoria.getChildAt(contenedorTeoria.getChildCount() - 1);
+                if (ultimo instanceof TextView && ((TextView) ultimo).getLineHeight() > 0) {
+                    lineHeight = ((TextView) ultimo).getLineHeight();
+                }
+            }
 
             int extraLines = 3;
             int extra = btnHeight + (lineHeight * extraLines) + dpToPx(12);
@@ -215,8 +277,11 @@ public class TeoriaFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         registrarSesionEstudio();
-        if (navAccesibilidad != null) {
-            navAccesibilidad.release();
+        if (teoriaNavAccesibilidad != null) {
+            teoriaNavAccesibilidad.release();
+        }
+        if (teoriaNavAccesibilidadVisual != null) {
+            teoriaNavAccesibilidadVisual.release();
         }
     }
 
@@ -239,5 +304,17 @@ public class TeoriaFragment extends Fragment {
         Integer idSubtema = subtema != null ? subtema.getId() : null;
         ContenidoDAO dao = new ContenidoDAO(requireContext());
         dao.registrarSesionEstudio(idUsuario, idSubtema, "TEORIA", duracionSegundos);
+    }
+
+    public void regresarPantallaAnterior() {
+        requireActivity().runOnUiThread(() -> {
+            try {
+                if (!NavHostFragment.findNavController(this).popBackStack()) {
+                    requireActivity().onBackPressed();
+                }
+            } catch (Exception e) {
+                requireActivity().onBackPressed();
+            }
+        });
     }
 }

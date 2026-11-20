@@ -251,7 +251,7 @@ public class DescargarDatos {
 
         contenidoDAO.insertarPregunta(pregunta);
 
-        // Si la API ya envió las opciones dentro de la pregunta, persistirlas sin depender de otra llamada.
+
         if (pregunta.getOpciones() != null && !pregunta.getOpciones().isEmpty()) {
             for (Opcion opcion : pregunta.getOpciones()) {
                 if (opcion.getIdPregunta() == null) {

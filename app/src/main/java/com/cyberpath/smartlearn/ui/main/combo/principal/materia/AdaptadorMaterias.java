@@ -1,24 +1,37 @@
 package com.cyberpath.smartlearn.ui.main.combo.principal.materia;
 
+import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.cyberpath.smartlearn.R;
 import com.cyberpath.smartlearn.data.model.contenido.Materia;
+import com.cyberpath.smartlearn.util.ui.CarruselUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class AdaptadorMaterias extends RecyclerView.Adapter<AdaptadorMaterias.MateriaViewHolder> {
+    private static final int colorRandom = 0;
     private final OnMateriaClickListener listener;
+    private final int[][] paresColoresGradiente = {
+            {R.color.accentGradientStart, R.color.accentGradientEnd},
+            {R.color.accentGradientStart2, R.color.accentGradientEnd2},
+            {R.color.accentGradientStart3, R.color.accentGradientEnd3},
+            {R.color.accentGradientStart4, R.color.accentGradientEnd4}
+    };
     private List<Materia> listaMaterias = new ArrayList<>();
 
     public AdaptadorMaterias(List<Materia> listaMaterias, OnMateriaClickListener listener) {
@@ -42,12 +55,8 @@ public class AdaptadorMaterias extends RecyclerView.Adapter<AdaptadorMaterias.Ma
     public long getItemId(int position) {
         int realSize = getRealSize();
         if (realSize == 0) return position;
-
-        int realPos = position % realSize;
-        if (realPos < 0) realPos += realSize;
-
-        Materia m = listaMaterias.get(realPos);
-        return m != null && m.getId() != null ? m.getId().longValue() : realPos;
+        Materia m = listaMaterias.get(CarruselUtils.normalizarPosicion(position, realSize));
+        return m != null && m.getId() != null ? m.getId().longValue() : 0;
     }
 
     @NonNull
@@ -72,10 +81,15 @@ public class AdaptadorMaterias extends RecyclerView.Adapter<AdaptadorMaterias.Ma
             return;
         }
 
-        int realPos = position % realSize;
-        if (realPos < 0) realPos += realSize;
+        int posicionNormalizada = CarruselUtils.normalizarPosicion(position, realSize);
+        Materia materia = listaMaterias.get(posicionNormalizada);
 
-        Materia materia = listaMaterias.get(realPos);
+        int indiceColor = posicionNormalizada % paresColoresGradiente.length;
+        aplicarGradienteTarjeta(
+                holder.contenedorGradiente,
+                paresColoresGradiente[indiceColor][0],
+                paresColoresGradiente[indiceColor][1]
+        );
 
         if (materia != null) {
             holder.tvNombre.setText(materia.getNombre() != null ? materia.getNombre() : "");
@@ -87,7 +101,6 @@ public class AdaptadorMaterias extends RecyclerView.Adapter<AdaptadorMaterias.Ma
             holder.progressBar.setProgress(materia.getProgreso());
             holder.tvProgreso.setText("Progreso: " + materia.getProgreso() + "%");
 
-            // Cargar imagen desde slug usando Glide
             cargarImagenDesdeSlug(holder.imageMateria, materia.getSlug());
 
             holder.itemView.setOnClickListener(v -> {
@@ -105,6 +118,17 @@ public class AdaptadorMaterias extends RecyclerView.Adapter<AdaptadorMaterias.Ma
         }
     }
 
+    private void aplicarGradienteTarjeta(View contenedor, int idColorInicio, int idColorFin) {
+        Drawable fondo = contenedor.getBackground();
+        if (fondo instanceof GradientDrawable) {
+            Context context = contenedor.getContext();
+            GradientDrawable gradiente = (GradientDrawable) fondo.mutate();
+            int colorInicio = ContextCompat.getColor(context, idColorInicio);
+            int colorFin = ContextCompat.getColor(context, idColorFin);
+            gradiente.setColors(new int[]{colorInicio, colorFin});
+        }
+    }
+
     @Override
     public int getItemCount() {
         int realSize = getRealSize();
@@ -113,10 +137,6 @@ public class AdaptadorMaterias extends RecyclerView.Adapter<AdaptadorMaterias.Ma
         return Integer.MAX_VALUE;
     }
 
-    /**
-     * Carga una imagen desde una URL usando Glide.
-     * Si la URL no existe o está vacía, carga la imagen por defecto.
-     */
     private void cargarImagenDesdeSlug(ImageView imageView, String slugUrl) {
         if (slugUrl != null && !slugUrl.isEmpty()) {
             Glide.with(imageView.getContext())
@@ -135,12 +155,14 @@ public class AdaptadorMaterias extends RecyclerView.Adapter<AdaptadorMaterias.Ma
     }
 
     public static class MateriaViewHolder extends RecyclerView.ViewHolder {
+        LinearLayout contenedorGradiente;
         ImageView imageMateria;
         TextView tvNombre, tvDescripcion, tvProgreso;
         ProgressBar progressBar;
 
         public MateriaViewHolder(@NonNull View itemView) {
             super(itemView);
+            contenedorGradiente = itemView.findViewById(R.id.contenedorGradienteMateria);
             imageMateria = itemView.findViewById(R.id.imageMateria);
             tvNombre = itemView.findViewById(R.id.tvNombreMateria);
             tvDescripcion = itemView.findViewById(R.id.tvDescripcionMateria);
